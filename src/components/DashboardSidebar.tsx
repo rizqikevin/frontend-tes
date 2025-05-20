@@ -1,20 +1,19 @@
-
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
-import DelamataBilanoLogo from './DelamataBilanoLogo';
-import { 
-  LayoutDashboard, 
-  BarChart, 
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import DelamataBilanoLogo from "./DelamataBilanoLogo";
+import {
+  LayoutDashboard,
+  BarChart,
   Lamp,
-  Bell, 
+  Bell,
   Settings,
-  ChevronRight, 
+  ChevronRight,
   ChevronDown,
   Sun,
   Moon,
-  PanelLeft
-} from 'lucide-react';
+  PanelLeft,
+} from "lucide-react";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -27,22 +26,24 @@ interface SidebarItemProps {
   to?: string;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ 
-  icon, 
-  text, 
-  active = false, 
+const SidebarItem: React.FC<SidebarItemProps> = ({
+  icon,
+  text,
+  active = false,
   hasSubmenu = false,
   expanded = false,
   onClick,
   children,
-  to = "#" 
+  to = "#",
 }) => {
   return (
     <div className="mb-1">
       <Link
         to={to}
         className={`flex items-center px-4 py-2 text-sm ${
-          active ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+          active
+            ? "bg-gray-700 text-white"
+            : "text-gray-300 hover:bg-gray-700 hover:text-white"
         } rounded-md cursor-pointer`}
         onClick={onClick}
       >
@@ -54,11 +55,9 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           </span>
         )}
       </Link>
-      
+
       {expanded && children && (
-        <div className="ml-6 mt-1 space-y-1">
-          {children}
-        </div>
+        <div className="ml-6 mt-1 space-y-1">{children}</div>
       )}
     </div>
   );
@@ -66,44 +65,51 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
 const DashboardSidebar: React.FC = () => {
   const { user, logout } = useAuth();
-  const [expandedItem, setExpandedItem] = useState<string | null>("lainHarian");
+  const [expandedItem, setExpandedItem] = useState<string | null>(
+    "LalinHarian"
+  );
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-  
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+
   // Update Dashboard component about sidebar state
   useEffect(() => {
     // Dispatch custom event when sidebar state changes
-    window.dispatchEvent(new CustomEvent('sidebarStateChange', { 
-      detail: { collapsed: isSidebarCollapsed } 
-    }));
-    
+    window.dispatchEvent(
+      new CustomEvent("sidebarStateChange", {
+        detail: { collapsed: isSidebarCollapsed },
+      })
+    );
+
     // Apply theme class to document element
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("light");
     } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add("light");
+      document.documentElement.classList.remove("dark");
     }
   }, [theme, isSidebarCollapsed]);
-  
-  const toggleTheme = (newTheme: 'light' | 'dark') => {
+
+  const toggleTheme = (newTheme: "light" | "dark") => {
     setTheme(newTheme);
   };
-  
+
   const toggleExpand = (item: string) => {
     setExpandedItem(expandedItem === item ? null : item);
   };
-  
+
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
-  
+
   if (isSidebarCollapsed) {
     return (
       <div className="dashboard-sidebar-collapsed">
         <div className="flex justify-center py-4">
-          <button onClick={toggleSidebar} className="text-white hover:bg-gray-700 p-2 rounded">
+          <button
+            onClick={toggleSidebar}
+            className="text-white hover:bg-gray-700 p-2 rounded"
+          >
             <PanelLeft size={22} />
           </button>
         </div>
@@ -127,16 +133,19 @@ const DashboardSidebar: React.FC = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="dashboard-sidebar">
       <div className="px-4 py-4 mb-6 flex items-center justify-between">
         <DelamataBilanoLogo />
-        <button onClick={toggleSidebar} className="text-white hover:bg-gray-700 p-1 rounded">
+        <button
+          onClick={toggleSidebar}
+          className="text-white hover:bg-gray-700 p-1 rounded"
+        >
           <PanelLeft size={18} />
         </button>
       </div>
-      
+
       <div className="px-3 mb-6">
         <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">
           MAIN
@@ -147,24 +156,24 @@ const DashboardSidebar: React.FC = () => {
           to="/dashboard"
         />
       </div>
-      
+
       <div className="px-3 mb-6">
         <SidebarItem
           icon={<BarChart size={18} />}
-          text="Lain Harian"
+          text="Lalin Harian"
           hasSubmenu={true}
-          expanded={expandedItem === "lainHarian"}
-          onClick={() => toggleExpand("lainHarian")}
+          expanded={expandedItem === "LalinHarian"}
+          onClick={() => toggleExpand("LalinHarian")}
         >
           <SidebarItem
             icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
-            text="Lain Report"
-            to="/dashboard/lain-report"
+            text="Lalin Report"
+            to="/dashboard/Lalin-report"
           />
           <SidebarItem
             icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
-            text="Lain Portable Report"
-            to="/dashboard/lain-portable-report"
+            text="Lalin Portable Report"
+            to="/dashboard/Lalin-portable-report"
           />
           <SidebarItem
             icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
@@ -173,7 +182,7 @@ const DashboardSidebar: React.FC = () => {
           />
         </SidebarItem>
       </div>
-      
+
       <div className="px-3 mb-6">
         <SidebarItem
           icon={<Lamp size={18} />}
@@ -183,7 +192,7 @@ const DashboardSidebar: React.FC = () => {
           onClick={() => toggleExpand("streetLight")}
         />
       </div>
-      
+
       <div className="px-3 mb-6">
         <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">
           SETTINGS
@@ -201,19 +210,27 @@ const DashboardSidebar: React.FC = () => {
           onClick={() => toggleExpand("settings")}
         />
       </div>
-      
+
       <div className="px-3 mt-auto absolute bottom-4 flex justify-between w-full pr-6">
-        <button 
-          className={`flex items-center space-x-2 px-4 py-1 text-sm ${theme === 'light' ? 'bg-gray-700 text-white' : 'text-white bg-transparent'} hover:bg-gray-700 rounded`}
-          onClick={() => toggleTheme('light')}
+        <button
+          className={`flex items-center space-x-2 px-4 py-1 text-sm ${
+            theme === "light"
+              ? "bg-gray-700 text-white"
+              : "text-white bg-transparent"
+          } hover:bg-gray-700 rounded`}
+          onClick={() => toggleTheme("light")}
         >
           <Sun size={16} />
           <span className="text-sm">Light</span>
         </button>
-        
-        <button 
-          className={`flex items-center space-x-2 px-4 py-1 text-sm ${theme === 'dark' ? 'bg-gray-700 text-white' : 'text-white bg-transparent'} hover:bg-gray-700 rounded`}
-          onClick={() => toggleTheme('dark')}
+
+        <button
+          className={`flex items-center space-x-2 px-4 py-1 text-sm ${
+            theme === "dark"
+              ? "bg-gray-700 text-white"
+              : "text-white bg-transparent"
+          } hover:bg-gray-700 rounded`}
+          onClick={() => toggleTheme("dark")}
         >
           <Moon size={16} />
           <span className="text-sm">Dark</span>
