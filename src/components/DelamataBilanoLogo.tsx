@@ -20,7 +20,7 @@ const DelamataBilanoLogo: React.FC = () => {
         </svg>
       </div>
       <div className="text-white font-bold leading-tight">
-        <div className="text-lg">Delamata Bilano</div>
+        <div className="text-lg">Delameta Bilano</div>
         <div className="text-xs uppercase tracking-wider">ENCOSYS</div>
       </div>
     </div>
