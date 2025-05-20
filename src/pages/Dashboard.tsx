@@ -145,11 +145,8 @@ const Dashboard: React.FC = () => {
 
       {/* Main Content */}
       <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
-        <header className="flex justify-between items-center py-6 px-8 border-b border-dashboard-accent">
-          <div>
-            {/* <h1 className="text-2xl font-medium">Transaction Overview</h1>
-            <p className="text-gray-400">Pantau setiap detail transaksi</p> */}
-          </div>
+        <header className="flex justify-between items-center py-1 px-8">
+          <div></div>
 
           <div className="flex items-center space-x-2">
             {user && (
