@@ -187,9 +187,11 @@ const Dashboard: React.FC = () => {
         <main className="p-8">
           {/* Date filters */}
           <div className="flex justify-between mb-8">
-            <div className="flex items-center space-x-4">
-              <h2 className="text-xl font-medium">Call Logs</h2>
-              <p className="text-gray-400">Jumlah Aktivitas Log VIoP</p>
+            <div className="flex justify-between items-center px-8">
+              <div>
+                <h1 className="text-xl font-medium">Call Logs</h1>
+                <p className="text-gray-400">Jumlah Aktifitas Call Vlop</p>
+              </div>
             </div>
 
             <div className="flex items-center space-x-4">
@@ -236,36 +238,39 @@ const Dashboard: React.FC = () => {
           {/* Call Logs Section */}
           <div className="bg-dashboard-accent rounded-lg p-6 mb-8">
             <div className="overflow-x-auto">
-              <table className="dashboard-table">
+              <table className="min-w-full text-left text-sm text-white">
                 <thead>
-                  <tr>
-                    <th className="rounded-tl-lg">#</th>
-                    <th>Tanggal</th>
-                    <th>Nama Penelepon</th>
-                    <th>Nomor Penelepon</th>
-                    <th>Nama Penerima</th>
-                    <th>Nomor Penerima</th>
-                    <th>Status</th>
-                    <th>Durasi</th>
-                    <th>Time Bridge Enter</th>
-                    <th>Time Dial Begin</th>
-                    <th className="rounded-tr-lg">Time Hangup</th>
+                  <tr className="border-b border-gray-700">
+                    <th className="px-4 py-3 text-white">#</th>
+                    <th className="px-4 py-3 text-white">Tanggal</th>
+                    <th className="px-4 py-3 text-white">Nama Penelepon</th>
+                    <th className="px-4 py-3 text-white">Nomor Penelepon</th>
+                    <th className="px-4 py-3 text-white">Nama Penerima</th>
+                    <th className="px-4 py-3 text-white">Nomor Penerima</th>
+                    <th className="px-4 py-3 text-white">Status</th>
+                    <th className="px-4 py-3 text-white">Durasi</th>
+                    <th className="px-4 py-3 text-white">Time Bridge Enter</th>
+                    <th className="px-4 py-3 text-white">Time Dial Begin</th>
+                    <th className="px-4 py-3 text-white">Time Hangup</th>
                   </tr>
                 </thead>
                 <tbody>
                   {mockTransactionData.map((item) => (
-                    <tr key={item.id} className="border-b border-gray-700">
-                      <td>{item.id}</td>
-                      <td>{item.date}</td>
-                      <td>{item.namaPenelepon}</td>
-                      <td>{item.nomorPenelepon}</td>
-                      <td>{item.namaPenerima}</td>
-                      <td>{item.nomorPenerima}</td>
-                      <td>{item.status}</td>
-                      <td>{item.durasi}</td>
-                      <td>{item.timeBridgeEnter}</td>
-                      <td>{item.timeDialBegin}</td>
-                      <td>{item.timeHangup}</td>
+                    <tr
+                      key={item.id}
+                      className="border-b border-gray-700 hover:bg-gray-800 transition"
+                    >
+                      <td className="px-5 py-5">{item.id}</td>
+                      <td className="px-5 py-5">{item.date}</td>
+                      <td className="px-5 py-5">{item.namaPenelepon}</td>
+                      <td className="px-5 py-5">{item.nomorPenelepon}</td>
+                      <td className="px-5 py-5">{item.namaPenerima}</td>
+                      <td className="px-5 py-5">{item.nomorPenerima}</td>
+                      <td className="px-5 py-5">{item.status}</td>
+                      <td className="px-5 py-5">{item.durasi}</td>
+                      <td className="px-5 py-5">{item.timeBridgeEnter}</td>
+                      <td className="px-5 py-5">{item.timeDialBegin}</td>
+                      <td className="px-5 py-5">{item.timeHangup}</td>
                     </tr>
                   ))}
                 </tbody>
