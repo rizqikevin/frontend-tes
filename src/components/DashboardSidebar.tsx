@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
-import DelamataBilanoLogo from "./DelamataBilanoLogo";
+import HmwLogo from "./HmwLogo";
 import {
   LayoutDashboard,
   BarChart,
@@ -12,7 +11,21 @@ import {
   ChevronDown,
   Sun,
   Moon,
-  PanelLeft,
+  PencilLine,
+  Video,
+  RectangleHorizontal,
+  BusFrontIcon,
+  Car,
+  CloudDownloadIcon,
+  MapPinPlusIcon,
+  MessageCircleMoreIcon,
+  LucideCloudy,
+  Cast,
+  ChartNoAxesColumnIcon,
+  ZapIcon,
+  Wind,
+  AlertCircle,
+  Timer,
 } from "lucide-react";
 
 interface SidebarItemProps {
@@ -55,7 +68,6 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           </span>
         )}
       </Link>
-
       {expanded && children && (
         <div className="ml-6 mt-1 space-y-1">{children}</div>
       )}
@@ -64,23 +76,19 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 };
 
 const DashboardSidebar: React.FC = () => {
-  const { user, logout } = useAuth();
   const [expandedItem, setExpandedItem] = useState<string | null>(
     "LalinHarian"
   );
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
-  // Update Dashboard component about sidebar state
   useEffect(() => {
-    // Dispatch custom event when sidebar state changes
     window.dispatchEvent(
       new CustomEvent("sidebarStateChange", {
         detail: { collapsed: isSidebarCollapsed },
       })
     );
 
-    // Apply theme class to document element
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
       document.documentElement.classList.remove("light");
@@ -105,96 +113,200 @@ const DashboardSidebar: React.FC = () => {
   if (isSidebarCollapsed) {
     return (
       <div className="dashboard-sidebar-collapsed">
-        <div className="flex justify-center py-4">
+        <div className="px-4 py-4 mb-6 flex justify-center relative">
           <button
             onClick={toggleSidebar}
-            className="text-white hover:bg-gray-700 p-2 rounded"
+            className="absolute -bottom-96 left-full transform -translate-y-1/2 -translate-x-1/2 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600"
           >
-            <PanelLeft size={22} />
+            &gt;
           </button>
-        </div>
-        <div className="flex flex-col items-center gap-4 px-2 py-4">
-          <Link to="/dashboard" className="p-2 rounded hover:bg-gray-700">
-            <LayoutDashboard size={22} className="text-gray-300" />
-          </Link>
-          <div className="p-2 rounded hover:bg-gray-700 cursor-pointer">
-            <BarChart size={22} className="text-gray-300" />
-          </div>
-          <div className="p-2 rounded hover:bg-gray-700 cursor-pointer">
-            <Lamp size={22} className="text-gray-300" />
-          </div>
-          <div className="p-2 rounded hover:bg-gray-700 cursor-pointer">
-            <Bell size={22} className="text-gray-300" />
-          </div>
-          <div className="p-2 rounded hover:bg-gray-700 cursor-pointer">
-            <Settings size={22} className="text-gray-300" />
-          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="dashboard-sidebar">
-      <div className="px-4 py-4 mb-6 flex items-center justify-between">
-        <DelamataBilanoLogo />
+    <div className="dashboard-sidebar relative h-screen bg-gray-900 text-white">
+      <div className="px-4 py-4 mb-6 flex justify-center relative">
+        <HmwLogo />
         <button
           onClick={toggleSidebar}
-          className="text-white hover:bg-gray-700 p-1 rounded"
+          className="absolute -bottom-96 left-full transform -translate-y-1/2 -translate-x-1/2 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600"
         >
-          <PanelLeft size={18} />
+          &lt;
         </button>
       </div>
 
-      <div className="px-3 mb-6">
-        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">
-          MAIN
+      <div className="overflow-y-auto max-h-[50vh] pr-1 scrollbar-hidden">
+        <div className="px-3 mb-3">
+          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">
+            MAIN
+          </div>
+          <SidebarItem
+            icon={<LayoutDashboard size={18} />}
+            text="Dashboard"
+            to="/dashboard"
+          />
         </div>
-        <SidebarItem
-          icon={<LayoutDashboard size={18} />}
-          text="Dashboard"
-          to="/dashboard"
-        />
+
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<PencilLine size={18} />}
+            text="Input Business Plan"
+            to="/business-plan"
+          />
+        </div>
+
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<BarChart size={18} />}
+            text="Lalin Harian"
+            hasSubmenu
+            expanded={expandedItem === "LalinHarian"}
+            onClick={() => toggleExpand("LalinHarian")}
+          >
+            <SidebarItem
+              icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
+              text="Lalin Report"
+              to="/dashboard/Lalin-report"
+            />
+            <SidebarItem
+              icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
+              text="Lalin Portable Report"
+              to="/dashboard/Lalin-portable-report"
+            />
+            <SidebarItem
+              icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
+              text="Camera"
+              to="/dashboard/camera"
+            />
+          </SidebarItem>
+        </div>
+
+        <div className="px-3 mb-2">
+          <SidebarItem icon={<Video size={18} />} text="CCTV" to="/cctv" />
+        </div>
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<RectangleHorizontal size={18} />}
+            text="VMS"
+            to="/vms"
+          />
+        </div>
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<BusFrontIcon size={18} />}
+            text="ALPR"
+            to="/alpr"
+          />
+        </div>
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<Car size={18} />}
+            text="Incident"
+            to="/incident"
+          />
+        </div>
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<CloudDownloadIcon size={18} />}
+            text="Vlop"
+            to="/vlop"
+          />
+        </div>
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<MapPinPlusIcon size={18} />}
+            text="GPS Vehicle Tracking"
+            to="/gps-vehicle-tracking"
+          />
+        </div>
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<MessageCircleMoreIcon size={18} />}
+            text="Sosial Media"
+            to="/sosial-media"
+          />
+        </div>
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<LucideCloudy size={18} />}
+            text="Weather"
+            to="/weather"
+          />
+        </div>
+
+        <div className="px-3 mt-auto mb-2">
+          <SidebarItem icon={<Cast size={18} />} text="Floods" to="/floods" />
+        </div>
+
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<Lamp size={18} />}
+            text="Street Light"
+            hasSubmenu
+            expanded={expandedItem === "streetLight"}
+            onClick={() => toggleExpand("streetLight")}
+          />
+          {expandedItem === "streetLight" && (
+            <div className="ml-6 mt-1 space-y-1">
+              <SidebarItem icon={<Cast size={18} />} text="RJU" to="/rju" />
+              <SidebarItem
+                icon={<Cast size={18} />}
+                text="Lampu Hias"
+                to="/lampu-hias"
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<ChartNoAxesColumnIcon size={18} />}
+            text="PDB"
+            to="/pdb"
+          />
+        </div>
+
+        <div className="px-3 mb-2">
+          <SidebarItem icon={<ZapIcon size={18} />} text="UPS" to="/ups" />
+        </div>
+
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<Wind size={18} />}
+            text="Air Quality"
+            to="/air-quality"
+          />
+        </div>
+
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<AlertCircle size={18} />}
+            text="Genset"
+            to="/genset"
+          />
+        </div>
+
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<Timer size={18} />}
+            text="Log History"
+            to="/log-history"
+          />
+        </div>
+
+        <div className="px-3 mb-2">
+          <SidebarItem
+            icon={<Settings size={18} />}
+            text="Log Alat"
+            to="/log-alat"
+          />
+        </div>
       </div>
 
-      <div className="px-3 mb-6">
-        <SidebarItem
-          icon={<BarChart size={18} />}
-          text="Lalin Harian"
-          hasSubmenu={true}
-          expanded={expandedItem === "LalinHarian"}
-          onClick={() => toggleExpand("LalinHarian")}
-        >
-          <SidebarItem
-            icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
-            text="Lalin Report"
-            to="/dashboard/Lalin-report"
-          />
-          <SidebarItem
-            icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
-            text="Lalin Portable Report"
-            to="/dashboard/Lalin-portable-report"
-          />
-          <SidebarItem
-            icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
-            text="Camera"
-            to="/dashboard/camera"
-          />
-        </SidebarItem>
-      </div>
-
-      <div className="px-3 mb-6">
-        <SidebarItem
-          icon={<Lamp size={18} />}
-          text="Street Light"
-          hasSubmenu={true}
-          expanded={expandedItem === "streetLight"}
-          onClick={() => toggleExpand("streetLight")}
-        />
-      </div>
-
-      <div className="px-3 mb-6">
-        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">
+      <div className="px-3 mt-auto absolute bottom-64 w-full">
+        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4 sticky top-0">
           SETTINGS
         </div>
         <SidebarItem
@@ -205,7 +317,7 @@ const DashboardSidebar: React.FC = () => {
         <SidebarItem
           icon={<Settings size={18} />}
           text="Settings"
-          hasSubmenu={true}
+          hasSubmenu
           expanded={expandedItem === "settings"}
           onClick={() => toggleExpand("settings")}
         />

@@ -9,145 +9,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-// Mock data for the table
-const mockTransactionData = [
-  {
-    id: "01",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "02",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "03",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "04",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "05",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "06",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "07",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "08",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "09",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-];
+import MapView from "@/components/MapView";
 
 const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const currentDate = new Date();
-  const [startDate, setStartDate] = useState("01 - Januari - 2024");
-  const [endDate, setEndDate] = useState("31 - Desember - 2024");
+  const [startDate, setStartDate] = useState("27 - February - 2025");
+  const [endDate, setEndDate] = useState("27 - February - 2025");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-dashboard-dark text-white">
-      {/* Sidebar */}
       <DashboardSidebar />
-
-      {/* Main Content */}
       <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
         <header className="flex justify-between items-center py-1 px-8">
           <div></div>
-
           <div className="flex items-center space-x-2">
             {user && (
               <div className="flex items-center">
@@ -182,24 +58,34 @@ const Dashboard: React.FC = () => {
         </header>
 
         <main className="p-8">
-          {/* Date filters */}
           <div className="flex justify-between mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
-                <h1 className="text-2xl font-medium">Transaction Overview</h1>
-                <p className="text-gray-400">Pantau setiap detail transaksi</p>
+                <h1 className="text-2xl font-semibold">
+                  Geographic Informasi Sistem
+                </h1>
+                <p className="text-gray-400">
+                  Pantau detail dari setiap kejadian
+                </p>
               </div>
             </div>
-
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <div className="border border-gray-700 rounded flex items-center px-5 py-2 bg-dashboard-accent">
+                    <select className="bg-dashboard-accent text-white">
+                      <option value="1">Geographic Informasi Sistem</option>
+                      <option value="2">Transaction Overview</option>
+                      <option value="3">Overload-Over Dimention</option>
+                    </select>
+                  </div>
+                </div>
                 <div className="relative">
                   <div className="border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent">
                     <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                     <span>{startDate}</span>
                   </div>
                 </div>
-
                 <div className="flex items-center">
                   <svg
                     width="24"
@@ -217,7 +103,6 @@ const Dashboard: React.FC = () => {
                     />
                   </svg>
                 </div>
-
                 <div className="relative">
                   <div className="border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent">
                     <Calendar className="h-5 w-5 mr-2 text-gray-400" />
@@ -225,98 +110,153 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
               </div>
-
               <Button className="px-4 py-2 bg-white text-black rounded hover:bg-gray-200">
                 Search
               </Button>
             </div>
           </div>
 
-          {/* Call Logs Section */}
-          <div className="bg-dashboard-accent rounded-lg p-6 mb-8">
-            <div className="flex justify-between items-center px-0">
-              <div>
-                <h1 className="text-xl font-medium">Call Logs</h1>
-                <p className="text-gray-400">Jumlah Aktifitas Call Vlop</p>
+          {/* Top Cards */}
+          <div className="grid grid-cols-6 gap-4 mb-8">
+            {[
+              { label: "Total Revenue", value: "Rp 59,492.10" },
+              { label: "Total Transaction", value: "2101" },
+              { label: "Active Gate", value: "9" },
+              { label: "Inactive Gate", value: "1" },
+              { label: "Total Beban Ruas", value: "1.000" },
+              { label: "Total LHR", value: "500" },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3"
+              >
+                <div className="text-gray-400 text-sm mb-1">{item.label}</div>
+                <div className="text-lg font-semibold">{item.value}</div>
+                <div className="text-xs text-gray-500 mt-1">25/02/2025</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Top Cards */}
+          <div className="grid grid-cols-5 gap-4 mb-8">
+            <div className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3">
+              <select className=" bg-dashboard-accent text-white text-sm mb-1">
+                <option value="">Pilih Ruas Jalan</option>
+                <option value="dolok-merawan-sinaksak">
+                  Dolok Merawan - Sinaksak
+                </option>
+                <option value="sinaksak-kuala-tanjung">
+                  Sinaksak - Kuala Tanjung
+                </option>
+                <option value="kuala-tanjung-tanjung-morawa">
+                  Kuala Tanjung - Tanjung Morawa
+                </option>
+                <option value="tanjung-morawa-teluk-nibung">
+                  Tanjung Morawa - Teluk Nibung
+                </option>
+                <option value="teluk-nibung-tanjung-balai">
+                  Teluk Nibung - Tanjung Balai
+                </option>
+              </select>
+            </div>
+            <div className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3">
+              <select className=" bg-dashboard-accent text-white text-sm mb-1">
+                <option value="">Semua Jenis Alat</option>
+                <option value="dolok-merawan-sinaksak">CCTV</option>
+                <option value="sinaksak-kuala-tanjung">VMS</option>
+                <option value="kuala-tanjung-tanjung-morawa">Gardu</option>
+                <option value="tanjung-morawa-teluk-nibung">Toll Gate</option>
+                <option value="teluk-nibung-tanjung-balai">Street Light</option>
+              </select>
+            </div>
+            <div className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3">
+              <select className=" bg-dashboard-accent text-white text-sm mb-1">
+                <option value="">Semua Status</option>
+                <option value="dolok-merawan-sinaksak">CCTV</option>
+                <option value="sinaksak-kuala-tanjung">VMS</option>
+                <option value="kuala-tanjung-tanjung-morawa">Gardu</option>
+                <option value="tanjung-morawa-teluk-nibung">Toll Gate</option>
+                <option value="teluk-nibung-tanjung-balai">Street Light</option>
+              </select>
+            </div>
+            <div className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3">
+              <select className=" bg-dashboard-accent text-white text-sm mb-1">
+                <option value="">Semua Kondisi</option>
+                <option value="dolok-merawan-sinaksak">CCTV</option>
+                <option value="sinaksak-kuala-tanjung">VMS</option>
+                <option value="kuala-tanjung-tanjung-morawa">Gardu</option>
+                <option value="tanjung-morawa-teluk-nibung">Toll Gate</option>
+                <option value="teluk-nibung-tanjung-balai">Street Light</option>
+              </select>
+            </div>
+            <div className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3">
+              <button className=" bg-dashboard-accent text-white text-sm mb-1">
+                Search
+              </button>
+            </div>
+          </div>
+
+          {/* Map and Log Section Placeholder */}
+          <div className="grid grid-cols-3 gap-4">
+            <div className="col-span-2 bg-dashboard- rounded shadow">
+              <div className="object-cover rounded">
+                <MapView />
               </div>
             </div>
-            <div className="overflow-x-auto mt-5">
-              <table className="min-w-full text-left text-sm text-white">
-                <thead>
-                  <tr className="border-b border-gray-700">
-                    <th className="px-4 py-3 text-white">#</th>
-                    <th className="px-4 py-3 text-white">Tanggal</th>
-                    <th className="px-4 py-3 text-white">Nama Penelepon</th>
-                    <th className="px-4 py-3 text-white">Nomor Penelepon</th>
-                    <th className="px-4 py-3 text-white">Nama Penerima</th>
-                    <th className="px-4 py-3 text-white">Nomor Penerima</th>
-                    <th className="px-4 py-3 text-white">Status</th>
-                    <th className="px-4 py-3 text-white">Durasi</th>
-                    <th className="px-4 py-3 text-white">Time Bridge Enter</th>
-                    <th className="px-4 py-3 text-white">Time Dial Begin</th>
-                    <th className="px-4 py-3 text-white">Time Hangup</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {mockTransactionData.map((item) => (
-                    <tr
-                      key={item.id}
-                      className="border-b border-gray-700 hover:bg-gray-800 transition"
-                    >
-                      <td className="px-5 py-5">{item.id}</td>
-                      <td className="px-5 py-5">{item.date}</td>
-                      <td className="px-5 py-5">{item.namaPenelepon}</td>
-                      <td className="px-5 py-5">{item.nomorPenelepon}</td>
-                      <td className="px-5 py-5">{item.namaPenerima}</td>
-                      <td className="px-5 py-5">{item.nomorPenerima}</td>
-                      <td className="px-5 py-5">{item.status}</td>
-                      <td className="px-5 py-5">{item.durasi}</td>
-                      <td className="px-5 py-5">{item.timeBridgeEnter}</td>
-                      <td className="px-5 py-5">{item.timeDialBegin}</td>
-                      <td className="px-5 py-5">{item.timeHangup}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination */}
-            <div className="flex justify-end items-center mt-4 text-sm">
-              <div>
-                Rows per page:
-                <select className="ml-2 bg-transparent border border-gray-700 rounded px-2 py-1">
-                  <option>09</option>
-                  <option>20</option>
-                  <option>50</option>
-                </select>
-              </div>
-
-              <div className="flex items-center ml-5">
-                <span className="mr-4">1-09 of 100</span>
-                <div className="inline-flex">
-                  <button className="px-2 py-1">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path
-                        d="M12.5 15L7.5 10L12.5 5"
-                        stroke="white"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-                  <button className="px-2 py-1">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path
-                        d="M7.5 15L12.5 10L7.5 5"
-                        stroke="white"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
+            <div className="bg-dashboard-dark">
+              <div className="bg-dashboard-accent rounded-lg p-4 mb-4">
+                <h2 className="text-base font-semibold mb-4">Log error alat</h2>
+                <div className="flex gap-4 mb-4">
+                  <select className="bg-dashboard-dark text-white border border-gray-600 rounded px-3 py-2 text-sm w-1/2">
+                    <option>Pilih Ruas Jalan</option>
+                  </select>
+                  <select className="bg-dashboard-dark text-white border border-gray-600 rounded px-3 py-2 text-sm w-1/2">
+                    <option>Semua Jenis Alat</option>
+                  </select>
                 </div>
+
+                <table className="table-auto text-sm w-full">
+                  <thead>
+                    <tr className="text-gray-400 text-left">
+                      <th className="py-2">Jenis Alat</th>
+                      <th>Ruas</th>
+                      <th>Waktu</th>
+                      <th>Lama Error</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-white">
+                    <tr className="border-t border-gray-700">
+                      <td className="py-2">CCTV</td>
+                      <td>Kuala Tanjung</td>
+                      <td>30/04/2025, 11:12:35 WIB</td>
+                      <td>
+                        <span className="bg-red-600 text-white text-xs px-2 py-1 rounded">
+                          2 Hari 2 Jam
+                        </span>
+                      </td>
+                    </tr>
+                    <tr className="border-t border-gray-700">
+                      <td className="py-2">VMS</td>
+                      <td>Kuala Tanjung</td>
+                      <td>01/05/2025, 13:12:35 WIB</td>
+                      <td>
+                        <span className="bg-yellow-500 text-white text-xs px-2 py-1 rounded">
+                          1 Hari 2 Jam
+                        </span>
+                      </td>
+                    </tr>
+                    <tr className="border-t border-gray-700">
+                      <td className="py-2">Toll Gate</td>
+                      <td>Gerbang Sinaksak</td>
+                      <td>02/05/2025, 13:12:35 WIB</td>
+                      <td>
+                        <span className="bg-green-600 text-white text-xs px-2 py-1 rounded">
+                          1 Jam
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

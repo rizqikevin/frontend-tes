@@ -45,6 +45,16 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  /* CSS untuk menyembunyikan scrollbar */
+.scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;

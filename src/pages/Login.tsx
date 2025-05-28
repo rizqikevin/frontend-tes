@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
-import DelamataBilanoLogo from "@/components/DelamataBilanoLogo";
+import DelamataBilanoLogo from "@/components/HmwLogo";
 
 const Login = () => {
   const [username, setUsername] = useState("");
