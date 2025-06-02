@@ -1,6 +1,4 @@
-# React Auth Dashboard Flow
-
-A React-based project demonstrating authentication flow and dashboard management.
+# HWM DASHBOARD
 
 ## Features
 
