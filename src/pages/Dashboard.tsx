@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
+import GeographicInfoSystem from "@/components/GeographicInfoSystem";
+import TransactionOverview from "@/components/TransactionOverview";
+import OverloadOverDimention from "@/components/OverloadOverDimention";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronDown, LogOut } from "lucide-react";
 import {
@@ -9,21 +12,109 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import MapView from "@/components/MapView";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
-  const currentDate = new Date();
-  const [startDate, setStartDate] = useState("27 - February - 2025");
-  const [endDate, setEndDate] = useState("27 - February - 2025");
+  const [startDate] = useState("27 - February - 2025");
+  const [endDate] = useState("27 - February - 2025");
+  const [selectedView, setSelectedView] = useState("geographic");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+  // Listen for theme changes and sidebar state changes
+  useEffect(() => {
+    const handleSidebarChange = (event: CustomEvent) => {
+      setIsSidebarCollapsed(event.detail.collapsed);
+    };
+
+    const checkTheme = () => {
+      const savedTheme =
+        (localStorage.getItem("theme") as "light" | "dark") || "dark";
+      setTheme(savedTheme);
+    };
+
+    // Initial theme check
+    checkTheme();
+
+    // Listen for theme changes
+    const themeInterval = setInterval(checkTheme, 100);
+
+    window.addEventListener(
+      "sidebarStateChange",
+      handleSidebarChange as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        "sidebarStateChange",
+        handleSidebarChange as EventListener
+      );
+      clearInterval(themeInterval);
+    };
+  }, []);
+
+  const isDark = theme === "dark";
+
+  const getViewTitle = () => {
+    switch (selectedView) {
+      case "geographic":
+        return "Geographic Informasi Sistem";
+      case "transaction":
+        return "Transaction Overview";
+      case "overload":
+        return "Overload - Over Dimention";
+      default:
+        return "Geographic Informasi Sistem";
+    }
+  };
+
+  const getViewDescription = () => {
+    switch (selectedView) {
+      case "geographic":
+        return "Pantau detail dari setiap kejadian";
+      case "transaction":
+        return "Pantau setiap detail transaksi";
+      case "overload":
+        return "Monitoring kendaraan berlebih muatan dan dimensi";
+      default:
+        return "Pantau detail dari setiap kejadian";
+    }
+  };
+
+  const renderContent = () => {
+    switch (selectedView) {
+      case "geographic":
+        return <GeographicInfoSystem />;
+      case "transaction":
+        return <TransactionOverview />;
+      case "overload":
+        return <OverloadOverDimention />;
+      default:
+        return <GeographicInfoSystem />;
+    }
+  };
 
   return (
-    <div className="flex min-h-screen bg-dashboard-dark text-white">
+    <div
+      className={`flex min-h-screen bg-dashboard-dark text-white ${
+        isDark ? "bg-dashboard-dark text-white" : "bg-gray-50 text-gray-900"
+      }`}
+    >
       <DashboardSidebar />
       <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
-        <header className="flex justify-between items-center py-1 px-8">
-          <div></div>
+        <header
+          className={`flex justify-end items-center py-1 px-8 ${
+            isDark ? "border-gray-700" : "border-gray-200 text-black"
+          }`}
+        >
           <div className="flex items-center space-x-2">
             {user && (
               <div className="flex items-center">
@@ -41,10 +132,18 @@ const Dashboard: React.FC = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     align="end"
-                    className="bg-dashboard-accent border border-gray-700"
+                    className={`${
+                      isDark
+                        ? "bg-gray-800 border-gray-700"
+                        : "bg-white border-gray-200"
+                    }`}
                   >
                     <DropdownMenuItem
-                      className="text-gray-200 flex items-center space-x-2"
+                      className={`${
+                        isDark
+                          ? "text-gray-200 hover:bg-gray-700"
+                          : "text-gray-900 hover:bg-gray-100"
+                      } flex items-center space-x-2`}
                       onClick={logout}
                     >
                       <LogOut className="h-4 w-4 mr-2" />
@@ -61,24 +160,35 @@ const Dashboard: React.FC = () => {
           <div className="flex justify-between mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
-                <h1 className="text-2xl font-semibold">
-                  Geographic Informasi Sistem
+                <h1
+                  className={`text-2xl font-semibold ${
+                    isDark ? "text-white" : "text-black"
+                  }`}
+                >
+                  {getViewTitle()}
                 </h1>
-                <p className="text-gray-400">
-                  Pantau detail dari setiap kejadian
-                </p>
+                <p className="text-gray-400">{getViewDescription()}</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-4">
                 <div className="relative">
-                  <div className="border border-gray-700 rounded flex items-center px-5 py-2 bg-dashboard-accent">
-                    <select className="bg-dashboard-accent text-white">
-                      <option value="1">Geographic Informasi Sistem</option>
-                      <option value="2">Transaction Overview</option>
-                      <option value="3">Overload-Over Dimention</option>
-                    </select>
-                  </div>
+                  <Select value={selectedView} onValueChange={setSelectedView}>
+                    <SelectTrigger className="w-64 bg-dashboard-accent text-white px-4 py-2 border border-gray-700 rounded flex items-center">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="geographic">
+                        Geographic Informasi Sistem
+                      </SelectItem>
+                      <SelectItem value="transaction">
+                        Transaction Overview
+                      </SelectItem>
+                      <SelectItem value="overload">
+                        Overload - Over Dimention
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="relative">
                   <div className="border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent">
@@ -116,150 +226,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Top Cards */}
-          <div className="grid grid-cols-6 gap-4 mb-8">
-            {[
-              { label: "Total Revenue", value: "Rp 59,492.10" },
-              { label: "Total Transaction", value: "2101" },
-              { label: "Active Gate", value: "9" },
-              { label: "Inactive Gate", value: "1" },
-              { label: "Total Beban Ruas", value: "1.000" },
-              { label: "Total LHR", value: "500" },
-            ].map((item, index) => (
-              <div
-                key={index}
-                className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3"
-              >
-                <div className="text-gray-400 text-sm mb-1">{item.label}</div>
-                <div className="text-lg font-semibold">{item.value}</div>
-                <div className="text-xs text-gray-500 mt-1">25/02/2025</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Top Cards */}
-          <div className="grid grid-cols-5 gap-4 mb-8">
-            <div className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3">
-              <select className=" bg-dashboard-accent text-white text-sm mb-1">
-                <option value="">Pilih Ruas Jalan</option>
-                <option value="dolok-merawan-sinaksak">
-                  Dolok Merawan - Sinaksak
-                </option>
-                <option value="sinaksak-kuala-tanjung">
-                  Sinaksak - Kuala Tanjung
-                </option>
-                <option value="kuala-tanjung-tanjung-morawa">
-                  Kuala Tanjung - Tanjung Morawa
-                </option>
-                <option value="tanjung-morawa-teluk-nibung">
-                  Tanjung Morawa - Teluk Nibung
-                </option>
-                <option value="teluk-nibung-tanjung-balai">
-                  Teluk Nibung - Tanjung Balai
-                </option>
-              </select>
-            </div>
-            <div className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3">
-              <select className=" bg-dashboard-accent text-white text-sm mb-1">
-                <option value="">Semua Jenis Alat</option>
-                <option value="dolok-merawan-sinaksak">CCTV</option>
-                <option value="sinaksak-kuala-tanjung">VMS</option>
-                <option value="kuala-tanjung-tanjung-morawa">Gardu</option>
-                <option value="tanjung-morawa-teluk-nibung">Toll Gate</option>
-                <option value="teluk-nibung-tanjung-balai">Street Light</option>
-              </select>
-            </div>
-            <div className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3">
-              <select className=" bg-dashboard-accent text-white text-sm mb-1">
-                <option value="">Semua Status</option>
-                <option value="dolok-merawan-sinaksak">CCTV</option>
-                <option value="sinaksak-kuala-tanjung">VMS</option>
-                <option value="kuala-tanjung-tanjung-morawa">Gardu</option>
-                <option value="tanjung-morawa-teluk-nibung">Toll Gate</option>
-                <option value="teluk-nibung-tanjung-balai">Street Light</option>
-              </select>
-            </div>
-            <div className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3">
-              <select className=" bg-dashboard-accent text-white text-sm mb-1">
-                <option value="">Semua Kondisi</option>
-                <option value="dolok-merawan-sinaksak">CCTV</option>
-                <option value="sinaksak-kuala-tanjung">VMS</option>
-                <option value="kuala-tanjung-tanjung-morawa">Gardu</option>
-                <option value="tanjung-morawa-teluk-nibung">Toll Gate</option>
-                <option value="teluk-nibung-tanjung-balai">Street Light</option>
-              </select>
-            </div>
-            <div className="bg-dashboard-accent border border-gray-700 rounded px-4 py-3">
-              <button className=" bg-dashboard-accent text-white text-sm mb-1">
-                Search
-              </button>
-            </div>
-          </div>
-
-          {/* Map and Log Section Placeholder */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="col-span-2 bg-dashboard- rounded shadow">
-              <div className="object-cover rounded">
-                <MapView />
-              </div>
-            </div>
-            <div className="bg-dashboard-dark">
-              <div className="bg-dashboard-accent rounded-lg p-4 mb-4">
-                <h2 className="text-base font-semibold mb-4">Log error alat</h2>
-                <div className="flex gap-4 mb-4">
-                  <select className="bg-dashboard-dark text-white border border-gray-600 rounded px-3 py-2 text-sm w-1/2">
-                    <option>Pilih Ruas Jalan</option>
-                  </select>
-                  <select className="bg-dashboard-dark text-white border border-gray-600 rounded px-3 py-2 text-sm w-1/2">
-                    <option>Semua Jenis Alat</option>
-                  </select>
-                </div>
-
-                <table className="table-auto text-sm w-full">
-                  <thead>
-                    <tr className="text-gray-400 text-left">
-                      <th className="py-2">Jenis Alat</th>
-                      <th>Ruas</th>
-                      <th>Waktu</th>
-                      <th>Lama Error</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-white">
-                    <tr className="border-t border-gray-700">
-                      <td className="py-2">CCTV</td>
-                      <td>Kuala Tanjung</td>
-                      <td>30/04/2025, 11:12:35 WIB</td>
-                      <td>
-                        <span className="bg-red-600 text-white text-xs px-2 py-1 rounded">
-                          2 Hari 2 Jam
-                        </span>
-                      </td>
-                    </tr>
-                    <tr className="border-t border-gray-700">
-                      <td className="py-2">VMS</td>
-                      <td>Kuala Tanjung</td>
-                      <td>01/05/2025, 13:12:35 WIB</td>
-                      <td>
-                        <span className="bg-yellow-500 text-white text-xs px-2 py-1 rounded">
-                          1 Hari 2 Jam
-                        </span>
-                      </td>
-                    </tr>
-                    <tr className="border-t border-gray-700">
-                      <td className="py-2">Toll Gate</td>
-                      <td>Gerbang Sinaksak</td>
-                      <td>02/05/2025, 13:12:35 WIB</td>
-                      <td>
-                        <span className="bg-green-600 text-white text-xs px-2 py-1 rounded">
-                          1 Jam
-                        </span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          {renderContent()}
         </main>
       </div>
     </div>

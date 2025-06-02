@@ -26,6 +26,7 @@ import {
   Wind,
   AlertCircle,
   Timer,
+  ChevronLeft,
 } from "lucide-react";
 
 interface SidebarItemProps {
@@ -49,7 +50,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   children,
   to = "#",
 }) => {
-  return (
+  const content = (
     <div className="mb-1">
       <Link
         to={to}
@@ -73,6 +74,16 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       )}
     </div>
   );
+
+  if (hasSubmenu) {
+    return content;
+  }
+
+  return (
+    <Link to={to} className="block">
+      {content}
+    </Link>
+  );
 };
 
 const DashboardSidebar: React.FC = () => {
@@ -83,23 +94,40 @@ const DashboardSidebar: React.FC = () => {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark";
+    setTheme(savedTheme);
+    applyTheme(savedTheme);
+  }, []);
+
+  const applyTheme = (newTheme: "light" | "dark") => {
+    const root = document.documentElement;
+
+    if (newTheme === "dark") {
+      root.classList.add("dark");
+      root.classList.remove("light");
+      document.body.style.backgroundColor = "#1E1E1E";
+      document.body.style.color = "#ffffff";
+    } else {
+      root.classList.add("light");
+      root.classList.remove("dark");
+      document.body.style.backgroundColor = "#ffffff";
+      document.body.style.color = "#000000";
+    }
+
+    localStorage.setItem("theme", newTheme);
+  };
+
+  useEffect(() => {
     window.dispatchEvent(
       new CustomEvent("sidebarStateChange", {
         detail: { collapsed: isSidebarCollapsed },
       })
     );
-
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-      document.documentElement.classList.remove("light");
-    } else {
-      document.documentElement.classList.add("light");
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme, isSidebarCollapsed]);
+  }, [isSidebarCollapsed]);
 
   const toggleTheme = (newTheme: "light" | "dark") => {
     setTheme(newTheme);
+    applyTheme(newTheme);
   };
 
   const toggleExpand = (item: string) => {
@@ -112,13 +140,24 @@ const DashboardSidebar: React.FC = () => {
 
   if (isSidebarCollapsed) {
     return (
-      <div className="dashboard-sidebar-collapsed">
-        <div className="px-4 py-4 mb-6 flex justify-center relative">
+      <div
+        className={`fixed left-0 z-10 min-h-screen w-2 flex flex-col ${
+          theme === "dark"
+            ? "bg-transparent text-white"
+            : "bg-white text-gray-900 border-r border-gray-200"
+        }`}
+      >
+        {/* Centered arrow button to expand sidebar */}
+        <div className="flex-1 flex items-center justify-center">
           <button
             onClick={toggleSidebar}
-            className="absolute -bottom-96 left-full transform -translate-y-1/2 -translate-x-1/2 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600"
+            className={`p-3 rounded-full transition-colors  ${
+              theme === "dark"
+                ? "text-white hover:bg-gray-700 bg-gray-700"
+                : "text-gray-900 hover:bg-gray-100 bg-gray-100"
+            }`}
           >
-            &gt;
+            <ChevronRight size={15} />
           </button>
         </div>
       </div>
@@ -126,20 +165,47 @@ const DashboardSidebar: React.FC = () => {
   }
 
   return (
-    <div className="dashboard-sidebar relative h-screen bg-gray-900 text-white">
+    <div
+      className={`fixed left-0 z-10 min-h-screen transition-all duration-300 ease-in-out ${
+        isSidebarCollapsed ? "w-8" : "w-64"
+      } ${
+        theme === "dark"
+          ? "bg-dashboard-sidebar text-white"
+          : "bg-gray-50 text-black border-r border-gray-200"
+      }`}
+    >
+      <div
+        className={`fixed left-60 z-10 min-h-screen flex flex-col transition-all duration-300 ease-in-out ${
+          theme === "dark"
+            ? "bg-transparent text-white"
+            : "bg-white text-gray-900 border-r border-gray-200"
+        }`}
+      >
+        {/* Centered arrow button to expand sidebar */}
+        <div className="flex-1 flex items-center justify-center">
+          <button
+            onClick={toggleSidebar}
+            className={`p-3 rounded-full transition-colors duration-300  ${
+              theme === "dark"
+                ? "text-white hover:bg-gray-700 bg-gray-700"
+                : "text-gray-900 hover:bg-gray-100 bg-gray-100"
+            }`}
+          >
+            <ChevronLeft size={15} />
+          </button>
+        </div>
+      </div>
       <div className="px-4 py-4 mb-6 flex justify-center relative">
         <HmwLogo />
-        <button
-          onClick={toggleSidebar}
-          className="absolute -bottom-96 left-full transform -translate-y-1/2 -translate-x-1/2 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600"
-        >
-          &lt;
-        </button>
       </div>
 
       <div className="overflow-y-auto max-h-[50vh] pr-1 scrollbar-hidden">
         <div className="px-3 mb-3">
-          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">
+          <div
+            className={`text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4 ${
+              theme === "dark" ? "text-gray-400" : "text-gray-700"
+            }`}
+          >
             MAIN
           </div>
           <SidebarItem
@@ -153,7 +219,7 @@ const DashboardSidebar: React.FC = () => {
           <SidebarItem
             icon={<PencilLine size={18} />}
             text="Input Business Plan"
-            to="/business-plan"
+            to="/input-business"
           />
         </div>
 
@@ -165,21 +231,51 @@ const DashboardSidebar: React.FC = () => {
             expanded={expandedItem === "LalinHarian"}
             onClick={() => toggleExpand("LalinHarian")}
           >
-            <SidebarItem
-              icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
-              text="Lalin Report"
-              to="/dashboard/Lalin-report"
-            />
-            <SidebarItem
-              icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
-              text="Lalin Portable Report"
-              to="/dashboard/Lalin-portable-report"
-            />
-            <SidebarItem
-              icon={<span className="w-2 h-2 bg-gray-400 rounded-full" />}
-              text="Camera"
+            <Link
+              to="/dashboard/lain-report"
+              className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
+                theme === "dark"
+                  ? "text-gray-300 hover:bg-gray-700 hover:text-white"
+                  : "text-gray-800 hover:bg-gray-100 hover:text-gray-900"
+              }`}
+            >
+              <span
+                className={`mr-3 w-2 h-2 rounded-full ${
+                  theme === "dark" ? "bg-gray-400" : "bg-gray-600"
+                }`}
+              />
+              <span>Lain Report</span>
+            </Link>
+            <Link
+              to="/dashboard/lain-portable-report"
+              className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
+                theme === "dark"
+                  ? "text-gray-300 hover:bg-gray-700 hover:text-white"
+                  : "text-gray-800 hover:bg-gray-100 hover:text-gray-900"
+              }`}
+            >
+              <span
+                className={`mr-3 w-2 h-2 rounded-full ${
+                  theme === "dark" ? "bg-gray-400" : "bg-gray-600"
+                }`}
+              />
+              <span>Lain Portable Report</span>
+            </Link>
+            <Link
               to="/dashboard/camera"
-            />
+              className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
+                theme === "dark"
+                  ? "text-gray-300 hover:bg-gray-700 hover:text-white"
+                  : "text-gray-800 hover:bg-gray-100 hover:text-gray-900"
+              }`}
+            >
+              <span
+                className={`mr-3 w-2 h-2 rounded-full ${
+                  theme === "dark" ? "bg-gray-400" : "bg-gray-600"
+                }`}
+              />
+              <span>Camera</span>
+            </Link>
           </SidebarItem>
         </div>
 
@@ -306,7 +402,11 @@ const DashboardSidebar: React.FC = () => {
       </div>
 
       <div className="px-3 mt-auto absolute bottom-64 w-full">
-        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4 sticky top-0">
+        <div
+          className={`text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4 sticky top-0 ${
+            theme === "dark" ? "text-gray-400" : "text-gray-700"
+          }`}
+        >
           SETTINGS
         </div>
         <SidebarItem
@@ -325,10 +425,10 @@ const DashboardSidebar: React.FC = () => {
 
       <div className="px-3 mt-auto absolute bottom-4 flex justify-between w-full pr-6">
         <button
-          className={`flex items-center space-x-2 px-4 py-1 text-sm ${
+          className={`flex items-center space-x-2 px-4 py-1 text-sm transition-colors ${
             theme === "light"
-              ? "bg-gray-700 text-white"
-              : "text-white bg-transparent"
+              ? "bg-blue-500 text-white"
+              : "text-gray-300 bg-transparent"
           } hover:bg-gray-700 rounded`}
           onClick={() => toggleTheme("light")}
         >
@@ -337,11 +437,11 @@ const DashboardSidebar: React.FC = () => {
         </button>
 
         <button
-          className={`flex items-center space-x-2 px-4 py-1 text-sm ${
+          className={`flex items-center space-x-2 px-4 py-1 text-sm  transition-colors ${
             theme === "dark"
-              ? "bg-gray-700 text-white"
-              : "text-white bg-transparent"
-          } hover:bg-gray-700 rounded`}
+              ? "bg-blue-500 text-white"
+              : "text-gray-600 bg-transparent"
+          } hover:bg-gray-100 rounded`}
           onClick={() => toggleTheme("dark")}
         >
           <Moon size={16} />

@@ -11,125 +11,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 // Mock data for the table
-const mockTransactionData = [
-  {
-    id: "01",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "02",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "03",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "04",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "05",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "06",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "07",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "08",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-  {
-    id: "09",
-    date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
-  },
-];
+const mockTransactionData = Array.from({ length: 9 }).map((_, i) => ({
+  id: i + 1,
+  date: "28/02/2025",
+  time: "14:09:35 PM",
+  status: "Open",
+  gate: "Kuala Tanjung",
+  booth: "03",
+  transaction: "E-Toll Mndiri",
+  class: "Gol-1",
+  receipt: "910749",
+  plate: "B2563KZM",
+  uid: "6032982848939946",
+  shift: "2",
+}));
 
 const Vlop: React.FC = () => {
   const { user, logout } = useAuth();
@@ -179,11 +74,7 @@ const Vlop: React.FC = () => {
       <DashboardSidebar />
 
       {/* Main Content */}
-      <div
-        className={`flex-1 ${
-          isSidebarCollapsed ? "ml-16" : "ml-64"
-        } transition-all duration-300`}
-      >
+      <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
         <header className="flex justify-between items-center py-1 px-8">
           <div></div>
 
@@ -225,8 +116,15 @@ const Vlop: React.FC = () => {
           <div className="flex justify-between mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
-                <h1 className="text-2xl font-medium">Transaction Overview</h1>
-                <p className="text-gray-400">Pantau setiap detail transaksi</p>
+                <Button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200">
+                  Report
+                </Button>
+                <Button
+                  className="bg-transparent border-white rounded-lg px-4 py-2 text-white hover:bg-gray-700 ml-2"
+                  variant="outline"
+                >
+                  Camera
+                </Button>
               </div>
             </div>
 
@@ -275,44 +173,57 @@ const Vlop: React.FC = () => {
           <div className="bg-dashboard-accent rounded-lg p-6 mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
-                <h1 className="text-xl font-medium">Call Logs</h1>
-                <p className="text-gray-400">Jumlah Aktifitas Call Vlop</p>
+                <h1 className="text-xl font-medium">Logs ALPR</h1>
+                <p className="text-gray-400">Jumlah Aktifitas ALPR</p>
               </div>
             </div>
             <div className="overflow-x-auto mt-5">
-              <table className="min-w-full text-left text-sm text-white">
-                <thead>
-                  <tr className="border-b border-gray-700">
-                    <th className="px-4 py-3 text-white">#</th>
-                    <th className="px-4 py-3 text-white">Tanggal</th>
-                    <th className="px-4 py-3 text-white">Nama Penelepon</th>
-                    <th className="px-4 py-3 text-white">Nomor Penelepon</th>
-                    <th className="px-4 py-3 text-white">Nama Penerima</th>
-                    <th className="px-4 py-3 text-white">Nomor Penerima</th>
-                    <th className="px-4 py-3 text-white">Status</th>
-                    <th className="px-4 py-3 text-white">Durasi</th>
-                    <th className="px-4 py-3 text-white">Time Bridge Enter</th>
-                    <th className="px-4 py-3 text-white">Time Dial Begin</th>
-                    <th className="px-4 py-3 text-white">Time Hangup</th>
+              <table className="w-full table-auto text-sm text-left">
+                <thead className="bg-dashboard-accent text-white">
+                  <tr>
+                    <th className="p-2">#</th>
+                    <th className="p-2">Image</th>
+                    <th className="p-2">Tanggal</th>
+                    <th className="p-2">Waktu</th>
+                    <th className="p-2">Status</th>
+                    <th className="p-2">Gerbang</th>
+                    <th className="p-2">Gardu</th>
+                    <th className="p-2">Transaksi</th>
+                    <th className="p-2">Golongan</th>
+                    <th className="p-2">Resi</th>
+                    <th className="p-2">Nomor Plat</th>
+                    <th className="p-2">UID</th>
+                    <th className="p-2">Shift</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {mockTransactionData.map((item) => (
-                    <tr
-                      key={item.id}
-                      className="border-b border-gray-700 hover:bg-gray-800 transition"
-                    >
-                      <td className="px-5 py-5">{item.id}</td>
-                      <td className="px-5 py-5">{item.date}</td>
-                      <td className="px-5 py-5">{item.namaPenelepon}</td>
-                      <td className="px-5 py-5">{item.nomorPenelepon}</td>
-                      <td className="px-5 py-5">{item.namaPenerima}</td>
-                      <td className="px-5 py-5">{item.nomorPenerima}</td>
-                      <td className="px-5 py-5">{item.status}</td>
-                      <td className="px-5 py-5">{item.durasi}</td>
-                      <td className="px-5 py-5">{item.timeBridgeEnter}</td>
-                      <td className="px-5 py-5">{item.timeDialBegin}</td>
-                      <td className="px-5 py-5">{item.timeHangup}</td>
+                  {mockTransactionData.map((row, index) => (
+                    <tr key={row.id} className="border-b border-gray-700">
+                      <td className="p-2">
+                        {String(index + 1).padStart(2, "0")}
+                      </td>
+                      <td className="p-2">
+                        {index === 0 ? (
+                          <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Anjungan_JPO_Karet_Sudirman_Jakarta.jpg"
+                            alt="img"
+                            className="w-20 h-12 object-cover"
+                          />
+                        ) : (
+                          <div className="w-20 h-12 bg-gray-600" />
+                        )}
+                      </td>
+                      <td className="p-2">{row.date}</td>
+                      <td className="p-2">{row.time}</td>
+                      <td className="p-2">{row.status}</td>
+                      <td className="p-2">{row.gate}</td>
+                      <td className="p-2">{row.booth}</td>
+                      <td className="p-2">{row.transaction}</td>
+                      <td className="p-2">{row.class}</td>
+                      <td className="p-2">{row.receipt}</td>
+                      <td className="p-2">{row.plate}</td>
+                      <td className="p-2">{row.uid}</td>
+                      <td className="p-2">{row.shift}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -12,6 +12,10 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Vlop from "./pages/Vlop";
+import InputBusiness from "./pages/InputBusiness";
+import CCTVList from "./pages/CctvList";
+import VMS from "./pages/Vms";
+import LogALPRTable from "./pages/Alpr";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +41,38 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Vlop />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="input-business"
+              element={
+                <ProtectedRoute>
+                  <InputBusiness />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cctv"
+              element={
+                <ProtectedRoute>
+                  <CCTVList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/vms"
+              element={
+                <ProtectedRoute>
+                  <VMS />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/alpr"
+              element={
+                <ProtectedRoute>
+                  <LogALPRTable />
                 </ProtectedRoute>
               }
             />

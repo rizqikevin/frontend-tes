@@ -7,12 +7,14 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-const center: [number, number] = [3.134, 99.147];
+const center: [number, number] = [3.226, 99.227];
 const positions: [number, number][] = [
   [3.305, 99.353],
   [3.384, 99.175],
   [3.152, 99.097],
   [3.025, 99.07],
+  [3.134, 99.152],
+  [3.134, 99.384],
 ];
 
 export default function MapView() {
@@ -20,7 +22,7 @@ export default function MapView() {
     <MapContainer
       center={center}
       zoom={11}
-      style={{ height: "100vh", width: "100%" }}
+      style={{ height: "70vh", width: "100%" }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
@@ -72,6 +74,32 @@ export default function MapView() {
             <h4>CCTV Akses Dolok Merawan - Sinaksak</h4>
             <p>Ruas: Dolok Merawan - Sinaksak</p>
             <p>Lokasi: KM 20</p>
+            <p>Kondisi: Online</p>
+            <p>Posisi: Kiri</p>
+            <button>Laporkan</button>
+          </div>
+        </Popup>
+      </Marker>
+      <Marker position={[3.134, 99.152]}>
+        <Popup>
+          <div style={{ width: 250 }}>
+            <img src="/cctv.jpg" width="100%" />
+            <h4>CCTV Akses Dolok Merawan - Sinaksak</h4>
+            <p>Ruas: Dolok Merawan - Sinaksak</p>
+            <p>Lokasi: KM 25</p>
+            <p>Kondisi: Online</p>
+            <p>Posisi: Kanan</p>
+            <button>Laporkan</button>
+          </div>
+        </Popup>
+      </Marker>
+      <Marker position={[3.134, 99.384]}>
+        <Popup>
+          <div style={{ width: 250 }}>
+            <img src="/cctv.jpg" width="100%" />
+            <h4>CCTV Akses Dolok Merawan - Sinaksak</h4>
+            <p>Ruas: Dolok Merawan - Sinaksak</p>
+            <p>Lokasi: KM 30</p>
             <p>Kondisi: Online</p>
             <p>Posisi: Kiri</p>
             <button>Laporkan</button>
