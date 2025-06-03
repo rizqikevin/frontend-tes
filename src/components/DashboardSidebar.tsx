@@ -166,7 +166,7 @@ const DashboardSidebar: React.FC = () => {
 
   return (
     <div
-      className={`fixed left-0 z-10 min-h-screen transition-all duration-300 ease-in-out ${
+      className={`fixed left-0 z-10 min-h-screen transition-all duration-500 ease-in-out ${
         isSidebarCollapsed ? "w-8" : "w-64"
       } ${
         theme === "dark"
@@ -176,6 +176,8 @@ const DashboardSidebar: React.FC = () => {
     >
       <div
         className={`fixed left-60 z-10 min-h-screen flex flex-col transition-all duration-300 ease-in-out ${
+          isSidebarCollapsed ? "w-64" : "w-8"
+        } ${
           theme === "dark"
             ? "bg-transparent text-white"
             : "bg-white text-gray-900 border-r border-gray-200"
@@ -185,7 +187,7 @@ const DashboardSidebar: React.FC = () => {
         <div className="flex-1 flex items-center justify-center">
           <button
             onClick={toggleSidebar}
-            className={`p-3 rounded-full transition-colors duration-300  ${
+            className={`p-3 rounded-full transition-color ${
               theme === "dark"
                 ? "text-white hover:bg-gray-700 bg-gray-700"
                 : "text-gray-900 hover:bg-gray-100 bg-gray-100"

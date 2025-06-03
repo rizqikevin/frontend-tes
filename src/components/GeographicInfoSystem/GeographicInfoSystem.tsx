@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import MapView from "@/components/MapView";
+import MapView from "../MapView";
 
 import {
   Select,

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
-import GeographicInfoSystem from "@/components/GeographicInfoSystem";
-import TransactionOverview from "@/components/TransactionOverview";
-import OverloadOverDimention from "@/components/OverloadOverDimention";
+import GeographicInfoSystem from "@/components/GeographicInfoSystem/GeographicInfoSystem";
+import TransactionOverview from "@/components/TransactionOverview/TransactionOverview";
+import { OverloadOverDimention } from "@/components/OverloadOverDimention/OverloadOverDimention";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronDown, LogOut } from "lucide-react";
 import {
@@ -106,7 +106,7 @@ const Dashboard: React.FC = () => {
     <div
       className={`flex min-h-screen bg-dashboard-dark text-white ${
         isDark ? "bg-dashboard-dark text-white" : "bg-gray-50 text-gray-900"
-      }`}
+      } transition-all duration-300`}
     >
       <DashboardSidebar />
       <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
