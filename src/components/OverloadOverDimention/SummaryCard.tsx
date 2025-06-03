@@ -19,11 +19,11 @@ export const SummaryCard: React.FC<Props> = ({
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg shadow-sm w-72">
       <div className="flex items-center justify-between">
-        <div>
+        <VehicleDoughnutChart patuh={patuh} tidakPatuh={tidakPatuh} size={48} />
+        <div className="mr-4">
           <p className="font-semibold">Golongan {golongan}</p>
           <p className="text-sm text-gray-400">Tanggal: {tanggal}</p>
         </div>
-        <VehicleDoughnutChart patuh={patuh} tidakPatuh={tidakPatuh} size={48} />
       </div>
       <div className="mt-4 text-sm space-y-1">
         <div className="flex justify-between">

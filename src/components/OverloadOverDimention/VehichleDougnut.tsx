@@ -14,24 +14,27 @@ export const VehichleDougnut = () => {
         <span>Semua Golongan</span>
         <span>Hari Ini</span>
       </div>
-      <Doughnut
-        data={{
-          labels: ["Patuh", "Tidak Patuh"],
-          datasets: [
-            {
-              data: [patuh, tidakPatuh],
-              backgroundColor: ["#4caf50", "#f44336"],
-              borderWidth: 0,
+      <div className="relative w-[350px] h-[350px] mx-auto">
+        <Doughnut
+          data={{
+            labels: ["Patuh", "Tidak Patuh"],
+            datasets: [
+              {
+                data: [patuh, tidakPatuh],
+                backgroundColor: ["#4caf50", "#f44336"],
+                borderWidth: 0,
+              },
+            ],
+          }}
+          options={{
+            plugins: {
+              legend: { display: false },
             },
-          ],
-        }}
-        options={{
-          plugins: {
-            legend: { display: false },
-          },
-          cutout: "70%",
-        }}
-      />
+            cutout: "70%",
+            maintainAspectRatio: false,
+          }}
+        />
+      </div>
       <div className="absolute text-center text-white text-xl font-bold mt-96 left-3/4 m-4 pl-80 -translate-x-1/2 -translate-y-[140%] z-[9999]">
         <p>{total}</p>
         <p className="text-sm">Total Kendaraan</p>

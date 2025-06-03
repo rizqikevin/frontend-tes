@@ -20,7 +20,7 @@ export const DoughnutChart = ({
 }: DoughnutChartProps) => {
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-64 h-full">
-      <h4 className="text-sm mb-2">{title}</h4>
+      <h4 className="text-base font-semibold mb-2">{title}</h4>
       <p className="text-center mt-4 font-semibold py-2">{total}</p>
       <Doughnut
         data={{

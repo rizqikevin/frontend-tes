@@ -44,4 +44,3 @@ const VehicleDoughnutChart: React.FC<Props> = ({
 };
 
 export default VehicleDoughnutChart;
-export { VehicleDoughnutChart };
