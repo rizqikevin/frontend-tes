@@ -10,7 +10,7 @@ export const VehichleDougnut = () => {
 
   return (
     <div className="bg-[#2b2b2b] rounded-lg p-4 shadow-sm text-white flex flex-col justify-between">
-      <div className="flex justify-between mb-4 text-sm">
+      <div className="flex justify-between mb-4 text-sm font-semibold">
         <span>Semua Golongan</span>
         <span>Hari Ini</span>
       </div>
@@ -40,8 +40,19 @@ export const VehichleDougnut = () => {
         <p className="text-sm">Total Kendaraan</p>
       </div>
       <div className="flex justify-between flex-col text-sm mt-4 gap-2">
-        <span className="text-green-400">● Patuh {patuh}</span>
-        <span className="text-red-500">● Tidak Patuh {tidakPatuh}</span>
+        <div className="flex justify-between">
+          <span className="flex items-center gap-1 text-white">
+            <span className="text-lg leading-3 text-green-500">●</span> Patuh
+          </span>
+          <span className="text-green-500">{patuh}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="flex items-center gap-1 text-white">
+            <span className="text-lg leading-3 text-red-500">●</span> Tidak
+            Patuh
+          </span>
+          <span className="text-red-500">{tidakPatuh}</span>
+        </div>
       </div>
     </div>
   );

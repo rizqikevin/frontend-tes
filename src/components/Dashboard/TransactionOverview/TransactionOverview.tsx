@@ -39,7 +39,7 @@ export const TransactionOverview = () => {
   ];
 
   return (
-    <div className="bg-dashboard-dark min-h-screen p-6 text-white space-y-4 ">
+    <div className="bg-dashboard-dark min-h-screen p-1 text-white space-y-4 ">
       <div className="grid grid-cols-6 gap-4 mb-6">
         <CardPanel
           title="Kuala Tanjung"

@@ -2,7 +2,7 @@ import React from "react";
 import { SummaryCard } from "./SummaryCard";
 import { ImageCard } from "./ImageCard";
 import { VehicleInfo } from "./VehicleInfo";
-import { VehichleDougnut } from "./VehichleDougnut";
+import { VehichleDougnut } from "./VehicleDougnut";
 
 export const OverloadOverDimention: React.FC = () => {
   return (
