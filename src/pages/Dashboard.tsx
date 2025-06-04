@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
-import GeographicInfoSystem from "@/components/GeographicInfoSystem/GeographicInfoSystem";
-import TransactionOverview from "@/components/TransactionOverview/TransactionOverview";
-import { OverloadOverDimention } from "@/components/OverloadOverDimention/OverloadOverDimention";
+import GeographicInfoSystem from "@/components/Dashboard/GeographicInfoSystem/GeographicInfoSystem";
+import TransactionOverview from "@/components/Dashboard/TransactionOverview/TransactionOverview";
+import { OverloadOverDimention } from "@/components/Dashboard/OverloadOverDimention/OverloadOverDimention";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronDown, LogOut } from "lucide-react";
 import {

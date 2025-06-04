@@ -2,7 +2,7 @@ import React from "react";
 
 export const GrowthPanel: React.FC = () => {
   return (
-    <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full md:w-40 h-full">
+    <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full md:w-50 h-full">
       <div className="text-sm font-semibold mb-4 leading-tight">
         Akumulasi Pertumbuhan dan <p>Penurunan</p>
       </div>

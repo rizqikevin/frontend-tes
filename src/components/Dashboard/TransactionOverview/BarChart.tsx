@@ -25,8 +25,8 @@ const BarChart: React.FC<BarChartProps> = ({
   legend = true,
 }) => {
   return (
-    <div className=" bg-dashboard-accent">
-      <div className=" p-4 rounded-lg text-white shadow-md w-[380px] h-[292px]">
+    <div className=" bg-dashboard-accent rounded-lg">
+      <div className=" p-4 rounded-lg text-white w-[380px] h-[292px]">
         <h4 className="text-xs font-semibold mb-2">{title}</h4>
         <Bar
           data={{
