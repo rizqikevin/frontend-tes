@@ -43,6 +43,7 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
           </SelectContent>
         </Select>
       </div>
+      <hr className="my-3 border-gray-400" />
 
       <div className="space-y-2">
         <div className="grid grid-cols-4 gap-2 text-xs font-medium p-2 rounded">

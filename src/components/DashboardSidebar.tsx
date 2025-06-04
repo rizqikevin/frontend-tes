@@ -234,7 +234,7 @@ const DashboardSidebar: React.FC = () => {
             onClick={() => toggleExpand("LalinHarian")}
           >
             <Link
-              to="/dashboard/lain-report"
+              to="/lain-report"
               className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
                 theme === "dark"
                   ? "text-gray-300 hover:bg-gray-700 hover:text-white"
@@ -249,7 +249,7 @@ const DashboardSidebar: React.FC = () => {
               <span>Lain Report</span>
             </Link>
             <Link
-              to="/dashboard/lain-portable-report"
+              to="/lain-portable-report"
               className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
                 theme === "dark"
                   ? "text-gray-300 hover:bg-gray-700 hover:text-white"
@@ -264,7 +264,7 @@ const DashboardSidebar: React.FC = () => {
               <span>Lain Portable Report</span>
             </Link>
             <Link
-              to="/dashboard/camera"
+              to="/camera"
               className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
                 theme === "dark"
                   ? "text-gray-300 hover:bg-gray-700 hover:text-white"

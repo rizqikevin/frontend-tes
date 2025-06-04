@@ -16,6 +16,7 @@ import InputBusiness from "./pages/InputBusiness";
 import CCTVList from "./pages/CctvList";
 import VMS from "./pages/Vms";
 import LogALPRTable from "./pages/Alpr";
+import Camera from "./pages/Camera";
 
 const queryClient = new QueryClient();
 
@@ -73,6 +74,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <LogALPRTable />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/camera"
+              element={
+                <ProtectedRoute>
+                  <Camera />
                 </ProtectedRoute>
               }
             />

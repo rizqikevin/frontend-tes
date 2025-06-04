@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useEffect, useState } from "react";
 
-const VMS = () => {
+const Camera = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
@@ -71,14 +71,19 @@ const VMS = () => {
       {/* Sidebar */}
       <div className="w-[250px] bg-zinc-800 p-4 border-l border-zinc-700 flex flex-col justify-between">
         <div>
-          <h2 className="font-semibold text-lg mb-4">VMS</h2>
+          <h2 className="font-semibold text-lg mb-4">Camera List</h2>
 
           <div className="mt-4 ">
             <Input
               placeholder="Search..."
               className="text-black bg-dashboard-accent"
             />
-            <div className="text-sm text-zinc-400 mt-6">Gate KM 78</div>
+            <div className="text-sm text-zinc-400 mt-6">
+              CCTV Counting On RAMP Kuala Tanjung
+            </div>
+            <div className="text-sm text-zinc-400 mt-2">
+              CCTV Counting Off RAMP Kuala Tanjung
+            </div>
           </div>
         </div>
       </div>
@@ -86,4 +91,4 @@ const VMS = () => {
   );
 };
 
-export default VMS;
+export default Camera;
