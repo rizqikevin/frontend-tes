@@ -2,38 +2,32 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { Button } from "@/components/ui/button";
-import { Calendar, ChevronDown, LogOut } from "lucide-react";
+import { Calendar, ChevronDown, Image, LogOut, Video } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // Mock data for the table
-const mockTransactionData = Array.from({ length: 9 }).map((_, i) => ({
+const MockIcidentData = Array.from({ length: 9 }).map((_, i) => ({
   id: i + 1,
   date: "28/02/2025",
   time: "14:09:35 PM",
   status: "Open",
   gate: "Kuala Tanjung",
-  booth: "03",
-  transaction: "E-Toll Mndiri",
-  class: "Gol-1",
-  receipt: "910749",
-  plate: "B2563KZM",
-  uid: "6032982848939946",
-  shift: "2",
+  image: "https://via.placeholder.com/80x45.png?text=ANPR",
 }));
 
-const Vlop: React.FC = () => {
+export const Incident: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState("01 - Januari - 2024");
   const [endDate, setEndDate] = useState("31 - Desember - 2024");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
-  // Listen for theme changes and sidebar state changes
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
       setIsSidebarCollapsed(event.detail.collapsed);
@@ -69,12 +63,14 @@ const Vlop: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-dashboard-dark text-white">
-      {/* Sidebar */}
       <DashboardSidebar />
 
-      {/* Main Content */}
-      <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
-        <header className="flex justify-end items-center py-1 px-8">
+      <div
+        className={`flex-1 bg-dashboard-dark ${
+          isSidebarCollapsed ? "ml-16" : "ml-64"
+        }`}
+      >
+        <header className="flex justify-end item-center py-1 px-8">
           <div className="flex items-center space-x-2">
             {user && (
               <div className="flex items-center">
@@ -107,32 +103,26 @@ const Vlop: React.FC = () => {
             )}
           </div>
         </header>
-
         <main className="p-8">
-          {/* Date filters */}
           <div className="flex justify-between mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
-                <Button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200">
-                  Report
-                </Button>
                 <Button
-                  className="bg-transparent border-white rounded-lg px-4 py-2 text-white hover:bg-gray-700 ml-2"
                   variant="outline"
+                  className="bg-trasparent text-white border-white rounded-lg hover:bg-gray-700"
                 >
-                  Camera
+                  Report Insiden
                 </Button>
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <div className="border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent">
+                <div className="border border-white rounded-lg flex item-center px-4 py-2 bg-dashboard-accent">
                   <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                   <span>{startDate}</span>
                 </div>
               </div>
-
               <div className="flex items-center">
                 <svg
                   width="24"
@@ -152,51 +142,64 @@ const Vlop: React.FC = () => {
               </div>
 
               <div className="relative">
-                <div className="border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent">
+                <div className="border border-white rounded-lg flex items-center px-4 py-2 bg-dashboard-accent">
                   <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                   <span>{endDate}</span>
                 </div>
               </div>
-
-              <Button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200">
+              <Button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-700">
                 Search
               </Button>
             </div>
           </div>
 
-          {/* Call Logs Section */}
           <div className="bg-dashboard-accent rounded-lg p-6 mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
-                <h1 className="text-xl font-medium">Logs ALPR</h1>
-                <p className="text-gray-400">Jumlah Aktifitas ALPR</p>
+                <h1 className="text-xl font-medium">Log Insiden</h1>
+                <p className="text-gray-400">Jumlah Aktivitas Log Insiden</p>
               </div>
             </div>
             <div className="overflow-x-auto mt-5">
-              <table className="w-full table-auto text-sm text-left">
-                <thead className="bg-dashboard-accent text-white">
+              <table className="w-full">
+                <thead>
                   <tr>
-                    <th className="p-2">#</th>
-                    <th className="p-2">Image</th>
-                    <th className="p-2">Tanggal</th>
-                    <th className="p-2">Waktu</th>
-                    <th className="p-2">Status</th>
-                    <th className="p-2">Gerbang</th>
-                    <th className="p-2">Gardu</th>
-                    <th className="p-2">Transaksi</th>
-                    <th className="p-2">Golongan</th>
-                    <th className="p-2">Resi</th>
-                    <th className="p-2">Nomor Plat</th>
-                    <th className="p-2">UID</th>
-                    <th className="p-2">Shift</th>
+                    <th className="pr-2 py-2 flex justify-center items-center">
+                      #
+                    </th>
+                    <th className="pr-48 py-2">Image</th>
+                    <th className="pr-48 py-2">Tanggal</th>
+                    <th className="pr-48 py-2 flex justify-center items-center">
+                      Waktu
+                    </th>
+                    <th className="pr-48 py-2">Keterangan</th>
+                    <th className="pr-48 py-2">Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {mockTransactionData.map((row, index) => (
+                  {MockIcidentData.map((row, index) => (
                     <tr key={row.id} className="border-b border-gray-700">
                       <td className="p-2">
-                        {String(index + 1).padStart(2, "0")}
+                        <div className="flex items-center gap-2">
+                          <Button
+                            className="text-white hover:bg-gray-700"
+                            variant="ghost"
+                          >
+                            <Image size={16} />
+                          </Button>
+                          <Button
+                            className="text-white hover:bg-gray-700"
+                            variant="ghost"
+                          >
+                            <Video size={16} />
+                          </Button>
+                          <Checkbox type="submit" className="rounded-none" />
+                          <span className="ml-2">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                        </div>
                       </td>
+
                       <td className="p-2">
                         {index === 0 ? (
                           <img
@@ -205,37 +208,28 @@ const Vlop: React.FC = () => {
                             className="w-20 h-12 object-cover"
                           />
                         ) : (
-                          <div className="w-20 h-12 bg-gray-600" />
+                          <div className="w-20 h-12 bg-gray-600"></div>
                         )}
                       </td>
                       <td className="p-2">{row.date}</td>
                       <td className="p-2">{row.time}</td>
-                      <td className="p-2">{row.status}</td>
+                      <td className="pl-10">{row.status}</td>
                       <td className="p-2">{row.gate}</td>
-                      <td className="p-2">{row.booth}</td>
-                      <td className="p-2">{row.transaction}</td>
-                      <td className="p-2">{row.class}</td>
-                      <td className="p-2">{row.receipt}</td>
-                      <td className="p-2">{row.plate}</td>
-                      <td className="p-2">{row.uid}</td>
-                      <td className="p-2">{row.shift}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
 
-            {/* Pagination */}
             <div className="flex justify-end items-center mt-4 text-sm">
               <div>
                 Rows per page:
-                <select className="ml-2 bg-transparent border border-gray-700 rounded px-2 py-1">
-                  <option value="09">09</option>
+                <select className="ml-2 bg-transparent border border-gray-700 px-2 py-1">
+                  <option value="10">09</option>
                   <option value="20">20</option>
-                  <option value="50">50</option>
+                  <option value="30">50</option>
                 </select>
               </div>
-
               <div className="flex items-center ml-5">
                 <span className="mr-4">1-09 of 100</span>
                 <div className="inline-flex">
@@ -270,5 +264,3 @@ const Vlop: React.FC = () => {
     </div>
   );
 };
-
-export default Vlop;

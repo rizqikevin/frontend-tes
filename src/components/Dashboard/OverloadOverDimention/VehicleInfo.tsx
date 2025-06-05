@@ -22,7 +22,7 @@ export const VehicleInfo: React.FC = () => {
         <span>Data Over Load :</span>
         <span>30 Ton</span>
         <span>Data Over Dimension :</span>
-        <span>15×5×3 Meter</span>
+        <span>15x5x3 Meter</span>
       </div>
       <div className="text-center mt-5">
         <button className="bg-yellow-400 text-black font-semibold px-52 py-2 mt-24 rounded-md">

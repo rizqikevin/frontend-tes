@@ -17,6 +17,7 @@ import CCTVList from "./pages/CctvList";
 import VMS from "./pages/Vms";
 import LogALPRTable from "./pages/Alpr";
 import Camera from "./pages/Camera";
+import { Incident } from "./pages/Incident";
 
 const queryClient = new QueryClient();
 
@@ -82,6 +83,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Camera />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/incident"
+              element={
+                <ProtectedRoute>
+                  <Incident />
                 </ProtectedRoute>
               }
             />

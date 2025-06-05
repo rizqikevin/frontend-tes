@@ -215,7 +215,11 @@ const InputBusiness: React.FC = () => {
                       <td className="px-5 py-5">{item.realisasipendapatan}</td>
                       <td className="px-5 py-5">{item.capaian}</td>
                       <td className="px-2 py-2 flex gap-2">
-                        <Button size="icon" variant="ghost">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="text-white hover:text-gray-600"
+                        >
                           <Pencil className="w-4 h-4" />
                         </Button>
                         <Button
