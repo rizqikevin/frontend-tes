@@ -18,6 +18,7 @@ import VMS from "./pages/Vms";
 import LogALPRTable from "./pages/Alpr";
 import Camera from "./pages/Camera";
 import { Incident } from "./pages/Incident";
+import { GPSVehicleTracking } from "./pages/GPSVehicleTracking";
 
 const queryClient = new QueryClient();
 
@@ -91,6 +92,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Incident />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/gps-vehicle-tracking"
+              element={
+                <ProtectedRoute>
+                  <GPSVehicleTracking />
                 </ProtectedRoute>
               }
             />

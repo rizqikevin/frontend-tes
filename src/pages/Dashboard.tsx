@@ -23,8 +23,8 @@ import {
 
 const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
-  const [startDate] = useState("27 - February - 2025");
-  const [endDate] = useState("27 - February - 2025");
+  const [startDate, setStartDate] = useState("27 - February - 2025");
+  const [endDate, setEndDate] = useState("27 - February - 2025");
   const [selectedView, setSelectedView] = useState("geographic");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
