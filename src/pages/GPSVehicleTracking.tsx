@@ -96,7 +96,7 @@ export const GPSVehicleTracking: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex min-h-screen text-black">
+    <div className="flex min-h-screen text-white">
       <DashboardSidebar />
       <div
         className={`flex-1 bg-dashboard-dark ${

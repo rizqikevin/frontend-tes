@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import HmwLogo from "./HmwLogo";
 import {
   LayoutDashboard,
@@ -40,52 +40,6 @@ interface SidebarItemProps {
   to?: string;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({
-  icon,
-  text,
-  active = false,
-  hasSubmenu = false,
-  expanded = false,
-  onClick,
-  children,
-  to = "#",
-}) => {
-  const content = (
-    <div className="mb-1">
-      <Link
-        to={to}
-        className={`flex items-center px-4 py-2 text-sm ${
-          active
-            ? "bg-gray-700 text-white"
-            : "text-gray-300 hover:bg-gray-700 hover:text-white"
-        } rounded-md cursor-pointer`}
-        onClick={onClick}
-      >
-        <span className="mr-3">{icon}</span>
-        <span className="flex-1">{text}</span>
-        {hasSubmenu && (
-          <span className="ml-auto">
-            {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-          </span>
-        )}
-      </Link>
-      {expanded && children && (
-        <div className="ml-6 mt-1 space-y-1">{children}</div>
-      )}
-    </div>
-  );
-
-  if (hasSubmenu) {
-    return content;
-  }
-
-  return (
-    <Link to={to} className="block">
-      {content}
-    </Link>
-  );
-};
-
 const DashboardSidebar: React.FC = () => {
   const [expandedItem, setExpandedItem] = useState<string | null>(
     "LalinHarian"
@@ -93,8 +47,59 @@ const DashboardSidebar: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
+  const SidebarItem: React.FC<SidebarItemProps> = ({
+    icon,
+    text,
+    active = false,
+    hasSubmenu = false,
+    expanded = false,
+    onClick,
+    children,
+    to = "#",
+  }) => {
+    const content = (
+      <div className="mb-1">
+        <NavLink
+          to={to}
+          className={`flex items-center px-4 py-2 text-sm  ${
+            theme === "dark"
+              ? "text-gray-300 hover:bg-gray-700 hover:text-white"
+              : "text-gray-800 hover:bg-gray-100 hover:text-gray-900"
+          }rounded-md cursor-pointer`}
+          onClick={onClick}
+        >
+          <span className="mr-3">{icon}</span>
+          <span className="flex-1">{text}</span>
+          {hasSubmenu && (
+            <span className="ml-auto">
+              {expanded ? (
+                <ChevronDown size={16} />
+              ) : (
+                <ChevronRight size={16} />
+              )}
+            </span>
+          )}
+        </NavLink>
+        {expanded && children && (
+          <div className="ml-6 mt-1 space-y-1">{children}</div>
+        )}
+      </div>
+    );
+
+    if (hasSubmenu) {
+      return content;
+    }
+
+    return (
+      <NavLink to={to} className="block">
+        {content}
+      </NavLink>
+    );
+  };
+
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark";
+    const savedTheme =
+      (localStorage.getItem("theme") as "light" | "dark") ?? "dark";
     setTheme(savedTheme);
     applyTheme(savedTheme);
   }, []);
@@ -233,7 +238,7 @@ const DashboardSidebar: React.FC = () => {
             expanded={expandedItem === "LalinHarian"}
             onClick={() => toggleExpand("LalinHarian")}
           >
-            <Link
+            <NavLink
               to="/lain-report"
               className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
                 theme === "dark"
@@ -247,8 +252,8 @@ const DashboardSidebar: React.FC = () => {
                 }`}
               />
               <span>Lain Report</span>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/lain-portable-report"
               className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
                 theme === "dark"
@@ -262,8 +267,8 @@ const DashboardSidebar: React.FC = () => {
                 }`}
               />
               <span>Lain Portable Report</span>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/camera"
               className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
                 theme === "dark"
@@ -277,7 +282,7 @@ const DashboardSidebar: React.FC = () => {
                 }`}
               />
               <span>Camera</span>
-            </Link>
+            </NavLink>
           </SidebarItem>
         </div>
 

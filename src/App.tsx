@@ -19,6 +19,8 @@ import LogALPRTable from "./pages/Alpr";
 import Camera from "./pages/Camera";
 import { Incident } from "./pages/Incident";
 import { GPSVehicleTracking } from "./pages/GPSVehicleTracking";
+import Weather from "./pages/Weather";
+import LogAlat from "./pages/LogAlat";
 
 const queryClient = new QueryClient();
 
@@ -100,6 +102,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <GPSVehicleTracking />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/weather"
+              element={
+                <ProtectedRoute>
+                  <Weather />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/log-alat"
+              element={
+                <ProtectedRoute>
+                  <LogAlat />
                 </ProtectedRoute>
               }
             />

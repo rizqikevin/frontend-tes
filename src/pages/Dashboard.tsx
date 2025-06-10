@@ -156,7 +156,11 @@ const Dashboard: React.FC = () => {
           </div>
         </header>
 
-        <main className="p-8">
+        <main
+          className={`p-8 ${
+            isDark ? "bg-dashboard-dark text-white" : "bg-gray-50 text-gray-900"
+          } transition-all duration-300`}
+        >
           <div className="flex justify-between mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
@@ -174,10 +178,22 @@ const Dashboard: React.FC = () => {
               <div className="flex items-center space-x-4">
                 <div className="relative">
                   <Select value={selectedView} onValueChange={setSelectedView}>
-                    <SelectTrigger className="w-64 bg-dashboard-accent text-white px-4 py-2 border border-gray-700 rounded flex items-center">
+                    <SelectTrigger
+                      className={`w-64 bg-dashboard-accent text-white px-4 py-2 border border-gray-700 rounded flex items-center ${
+                        isDark
+                          ? "bg-dashboard-accent text-white"
+                          : "bg-gray-50 text-gray-900"
+                      } `}
+                    >
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent
+                      className={`${
+                        isDark
+                          ? "bg-dashboard-accent text-white"
+                          : "bg-gray-50 text-gray-900"
+                      } `}
+                    >
                       <SelectItem value="geographic">
                         Geographic Informasi Sistem
                       </SelectItem>
@@ -191,7 +207,13 @@ const Dashboard: React.FC = () => {
                   </Select>
                 </div>
                 <div className="relative">
-                  <div className="border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent">
+                  <div
+                    className={`border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent ${
+                      isDark
+                        ? "bg-dashboard-accent text-white"
+                        : "bg-gray-50 text-gray-900"
+                    } `}
+                  >
                     <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                     <span>{startDate}</span>
                   </div>
@@ -214,13 +236,19 @@ const Dashboard: React.FC = () => {
                   </svg>
                 </div>
                 <div className="relative">
-                  <div className="border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent">
+                  <div
+                    className={`border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent ${
+                      isDark
+                        ? "bg-dashboard-accent text-white"
+                        : "bg-gray-50 text-gray-900"
+                    } `}
+                  >
                     <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                     <span>{endDate}</span>
                   </div>
                 </div>
               </div>
-              <Button className="px-4 py-2 bg-white text-black rounded hover:bg-gray-200">
+              <Button className="px-4 py-2 bg-white border text-black rounded hover:bg-gray-200">
                 Search
               </Button>
             </div>
