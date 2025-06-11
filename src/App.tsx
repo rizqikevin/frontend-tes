@@ -23,6 +23,7 @@ import Weather from "./pages/Weather";
 import LogAlat from "./pages/LogAlat";
 import LogHistory from "./pages/LogHistory";
 import { LalinReport } from "./pages/LalinReport";
+import { LalinPortableReport } from "./pages/LalinPortableReport";
 
 const queryClient = new QueryClient();
 
@@ -136,6 +137,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <LalinReport />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/lalin-portable-report"
+              element={
+                <ProtectedRoute>
+                  <LalinPortableReport />
                 </ProtectedRoute>
               }
             />
