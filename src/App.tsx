@@ -21,6 +21,7 @@ import { Incident } from "./pages/Incident";
 import { GPSVehicleTracking } from "./pages/GPSVehicleTracking";
 import Weather from "./pages/Weather";
 import LogAlat from "./pages/LogAlat";
+import LogHistory from "./pages/LogHistory";
 
 const queryClient = new QueryClient();
 
@@ -118,6 +119,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <LogAlat />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/log-history"
+              element={
+                <ProtectedRoute>
+                  <LogHistory />
                 </ProtectedRoute>
               }
             />
