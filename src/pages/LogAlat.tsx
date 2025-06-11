@@ -9,133 +9,95 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Mock data for the table
 const mockTransactionData = [
   {
     id: "01",
     date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
+    namaAlat: "Kamera",
+    kordinat: "-",
+    detail: "-",
   },
   {
     id: "02",
     date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
+    namaAlat: "UPS",
+    kordinat: "-",
+    detail: "-",
   },
   {
     id: "03",
     date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
+    namaAlat: "CCTV",
+    kordinat: "-",
+    detail: "-",
   },
   {
     id: "04",
     date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
+    namaAlat: "Kamera",
+    kordinat: "-",
+    detail: "-",
   },
   {
     id: "05",
     date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
+    namaAlat: "UPS",
+    kordinat: "-",
+    detail: "-",
   },
   {
     id: "06",
     date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
+    namaAlat: "CCTV",
+    kordinat: "-",
+    detail: "-",
   },
   {
     id: "07",
     date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
+    namaAlat: "Kamera",
+    kordinat: "-",
+    detail: "-",
   },
   {
     id: "08",
     date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
+    namaAlat: "UPS",
+    kordinat: "-",
+    detail: "-",
   },
   {
     id: "09",
     date: "28/02/2025",
-    namaPenelepon: "Anton",
-    nomorPenelepon: "086978568834",
-    namaPenerima: "Rudi",
-    nomorPenerima: "021777366",
-    status: "Terjawab",
-    durasi: "00:10:32",
-    timeBridgeEnter: "14:10:32",
-    timeDialBegin: "14:10:32",
-    timeHangup: "14:10:32",
+    namaAlat: "CCTV",
+    kordinat: "-",
+    detail: "-",
+  },
+  {
+    id: "10",
+    date: "28/02/2025",
+    namaAlat: "Kamera",
+    kordinat: "-",
+    detail: "-",
   },
 ];
 
 const LogAlat: React.FC = () => {
   const { user, logout } = useAuth();
-  const currentDate = new Date();
   const [startDate, setStartDate] = useState("01 - Januari - 2024");
   const [endDate, setEndDate] = useState("31 - Desember - 2024");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterLog, setFilterLog] = useState("");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
@@ -224,16 +186,29 @@ const LogAlat: React.FC = () => {
           {/* Date filters */}
           <div className="flex justify-between mb-8">
             <div className="flex justify-between items-center px-0">
-              <div>
-                <h1 className="text-2xl font-medium">Transaction Overview</h1>
-                <p className="text-gray-400">Pantau setiap detail transaksi</p>
+              <div className="flex items-center space-x-4">
+                <Input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-[800px]  bg-dashboard-accent"
+                />
+                <Select value={filterLog} onValueChange={setFilterLog}>
+                  <SelectTrigger className="w-[180px]  bg-dashboard-accent">
+                    <SelectValue placeholder="ALL" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-dashboard-accent">
+                    <SelectItem value="rkap">ALL</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-4">
                 <div className="relative">
-                  <div className="border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent">
+                  <div className="border border-gray-700 rounded-lg flex items-center px-4 py-2 bg-dashboard-accent">
                     <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                     <span>{startDate}</span>
                   </div>
@@ -258,7 +233,7 @@ const LogAlat: React.FC = () => {
                 </div>
 
                 <div className="relative">
-                  <div className="border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent">
+                  <div className="border border-gray-700 rounded-lg flex items-center px-4 py-2 bg-dashboard-accent">
                     <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                     <span>{endDate}</span>
                   </div>
@@ -275,8 +250,7 @@ const LogAlat: React.FC = () => {
           <div className="bg-dashboard-accent rounded-lg p-6 mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
-                <h1 className="text-xl font-medium">Call Logs</h1>
-                <p className="text-gray-400">Jumlah Aktifitas Call Vlop</p>
+                <h1 className="text-xl font-medium">Logs Alat</h1>
               </div>
             </div>
             <div className="overflow-x-auto mt-5">
@@ -284,16 +258,10 @@ const LogAlat: React.FC = () => {
                 <thead>
                   <tr className="border-b border-gray-700">
                     <th className="px-4 py-3 text-white">#</th>
-                    <th className="px-4 py-3 text-white">Tanggal</th>
-                    <th className="px-4 py-3 text-white">Nama Penelepon</th>
-                    <th className="px-4 py-3 text-white">Nomor Penelepon</th>
-                    <th className="px-4 py-3 text-white">Nama Penerima</th>
-                    <th className="px-4 py-3 text-white">Nomor Penerima</th>
-                    <th className="px-4 py-3 text-white">Status</th>
-                    <th className="px-4 py-3 text-white">Durasi</th>
-                    <th className="px-4 py-3 text-white">Time Bridge Enter</th>
-                    <th className="px-4 py-3 text-white">Time Dial Begin</th>
-                    <th className="px-4 py-3 text-white">Time Hangup</th>
+                    <th className="px-4 py-3 text-white">Time</th>
+                    <th className="px-4 py-3 text-white">Nama Alat</th>
+                    <th className="px-4 py-3 text-white">Kordinat</th>
+                    <th className="px-4 py-3 text-white">Detail</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -304,15 +272,9 @@ const LogAlat: React.FC = () => {
                     >
                       <td className="px-5 py-5">{item.id}</td>
                       <td className="px-5 py-5">{item.date}</td>
-                      <td className="px-5 py-5">{item.namaPenelepon}</td>
-                      <td className="px-5 py-5">{item.nomorPenelepon}</td>
-                      <td className="px-5 py-5">{item.namaPenerima}</td>
-                      <td className="px-5 py-5">{item.nomorPenerima}</td>
-                      <td className="px-5 py-5">{item.status}</td>
-                      <td className="px-5 py-5">{item.durasi}</td>
-                      <td className="px-5 py-5">{item.timeBridgeEnter}</td>
-                      <td className="px-5 py-5">{item.timeDialBegin}</td>
-                      <td className="px-5 py-5">{item.timeHangup}</td>
+                      <td className="px-5 py-5">{item.namaAlat}</td>
+                      <td className="px-5 py-5">{item.kordinat}</td>
+                      <td className="px-5 py-5">{item.detail}</td>
                     </tr>
                   ))}
                 </tbody>
