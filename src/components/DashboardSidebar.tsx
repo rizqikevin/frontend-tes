@@ -239,7 +239,7 @@ const DashboardSidebar: React.FC = () => {
             onClick={() => toggleExpand("LalinHarian")}
           >
             <NavLink
-              to="/lain-report"
+              to="/lalin-report"
               className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
                 theme === "dark"
                   ? "text-gray-300 hover:bg-gray-700 hover:text-white"
@@ -251,10 +251,10 @@ const DashboardSidebar: React.FC = () => {
                   theme === "dark" ? "bg-gray-400" : "bg-gray-600"
                 }`}
               />
-              <span>Lain Report</span>
+              <span>Lalin Report</span>
             </NavLink>
             <NavLink
-              to="/lain-portable-report"
+              to="/lalin-portable-report"
               className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
                 theme === "dark"
                   ? "text-gray-300 hover:bg-gray-700 hover:text-white"

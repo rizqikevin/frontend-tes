@@ -22,6 +22,7 @@ import { GPSVehicleTracking } from "./pages/GPSVehicleTracking";
 import Weather from "./pages/Weather";
 import LogAlat from "./pages/LogAlat";
 import LogHistory from "./pages/LogHistory";
+import { LalinReport } from "./pages/LalinReport";
 
 const queryClient = new QueryClient();
 
@@ -127,6 +128,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <LogHistory />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/lalin-report"
+              element={
+                <ProtectedRoute>
+                  <LalinReport />
                 </ProtectedRoute>
               }
             />
