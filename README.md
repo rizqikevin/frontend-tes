@@ -1,12 +1,5 @@
 # HWM DASHBOARD
 
-## Features
-
-- User authentication (login/logout)
-- Protected dashboard routes
-- Responsive UI
-- State management
-
 ## Getting Started
 
 ### Prerequisites
@@ -17,7 +10,7 @@
 ### Installation
 
 ```bash
-git clone https://github.com/rizqikevin/react-auth-dashboard-flow.git
+git clone https://git.delameta.id/software/master/tracomm/hwm-dashboard.git
 cd react-auth-dashboard-flow
 npm install
 # or
@@ -32,8 +25,6 @@ npm start
 yarn start
 ```
 
-The app will be available at [http://localhost:3000](http://localhost:3000).
-
 ## Project Structure
 
 ```
@@ -44,8 +35,3 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
     App.js
     index.js
 ```
-
-## Customization
-
-- Update authentication logic in `/src/utils/auth.js`
-- Modify dashboard components in `/src/components/Dashboard/`
