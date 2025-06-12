@@ -143,7 +143,7 @@ const Login = () => {
               <div className="relative">
                 <Input
                   id="password"
-                  type={password ? "text" : "password"}
+                  type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="bg-gray-800 border-gray-700 text-white w-full pl-10"

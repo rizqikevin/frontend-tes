@@ -26,6 +26,7 @@ import LogHistory from "./pages/LogHistory";
 import { LalinReport } from "./pages/LalinReport";
 import { LalinPortableReport } from "./pages/LalinPortableReport";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
+import SosialMedia from "./pages/SosialMedia";
 
 const queryClient = new QueryClient();
 
@@ -155,6 +156,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <LalinPortableReport />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/sosial-media"
+              element={
+                <ProtectedRoute>
+                  <SosialMedia />
                 </ProtectedRoute>
               }
             />
