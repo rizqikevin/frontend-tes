@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { Button } from "@/components/ui/button";
-import { Daily } from "@/components/LalinHarian/LalinPortableReport/Daily/Daily";
-import { Summary } from "@/components/LalinHarian/LalinPortableReport/Summary/Summary";
-import { Monthly } from "@/components/LalinHarian/LalinPortableReport/Monthly/Monthly";
+import { Daily } from "@/components/lalinharian/LalinPortableReport/Daily/Daily";
+import { Summary } from "@/components/lalinharian/LalinPortableReport/Summary/Summary";
+import { Monthly } from "@/components/lalinharian/LalinPortableReport/Monthly/Monthly";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -86,13 +86,9 @@ export const LalinPortableReport: React.FC = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger className="flex items-center space-x-2 cursor-pointer outline-none">
                     <div className="mr-2">
-                      <img
-                        src={user.image}
-                        alt={user.firstName}
-                        className="h-8 w-8 rounded-full"
-                      />
+                      <img src={user.image} className="h-8 w-8 rounded-full" />
                     </div>
-                    <div className="text-sm">Hi, {user.firstName}</div>
+                    <div className="text-sm">Hi, {user.name}</div>
                     <ChevronDown className="h-4 w-4" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent

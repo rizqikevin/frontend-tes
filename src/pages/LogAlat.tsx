@@ -155,11 +155,7 @@ const LogAlat: React.FC = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger className="flex items-center space-x-2 cursor-pointer outline-none">
                     <div className="mr-2">
-                      <img
-                        src={user.image}
-                        alt={user.firstName}
-                        className="h-8 w-8 rounded-full"
-                      />
+                      <img src={user.image} className="h-8 w-8 rounded-full" />
                     </div>
                     <div className="text-sm">Hi, {user.firstName}</div>
                     <ChevronDown className="h-4 w-4" />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Calendar, ChevronDown, LogOut } from "lucide-react";
 import DashboardSidebar from "@/components/DashboardSidebar";
-import MapSection from "@/components/Dashboard/GeographicInfoSystem/MapSection";
+import MapSection from "@/components/dashboard/GeographicInfoSystem/MapSection";
 import { useAuth } from "@/context/AuthContext";
 
 import {
@@ -108,11 +108,7 @@ export const GPSVehicleTracking: React.FC = () => {
           {user && (
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center space-x-2 cursor-pointer outline-none">
-                <img
-                  src={user.image}
-                  alt={user.firstName}
-                  className="h-8 w-8 rounded-full"
-                />
+                <img src={user.image} className="h-8 w-8 rounded-full" />
                 <span className="text-sm">Hi, {user.firstName}</span>
                 <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>

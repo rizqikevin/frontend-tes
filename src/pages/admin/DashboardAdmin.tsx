@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
-import GeographicInfoSystem from "@/components/Dashboard/GeographicInfoSystem/GeographicInfoSystem";
-import TransactionOverview from "@/components/Dashboard/TransactionOverview/TransactionOverview";
-import { OverloadOverDimention } from "@/components/Dashboard/OverloadOverDimention/OverloadOverDimention";
+import GeographicInfoSystem from "@/components/dashboard/GeographicInfoSystem/GeographicInfoSystem";
+import TransactionOverview from "@/components/dashboard/TransactionOverview/TransactionOverview";
+import { OverloadOverDimention } from "@/components/dashboard/OverloadOverDimention/OverloadOverDimention";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronDown, LogOut } from "lucide-react";
 import {
@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const Dashboard: React.FC = () => {
+const DashboardAdmin: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState("27 - February - 2025");
   const [endDate, setEndDate] = useState("27 - February - 2025");
@@ -66,7 +66,7 @@ const Dashboard: React.FC = () => {
   const getViewTitle = () => {
     switch (selectedView) {
       case "geographic":
-        return "Geographic Informasi Sistem";
+        return "Geographic Informasi Sistem Admin";
       case "transaction":
         return "Transaction Overview";
       case "overload":
@@ -121,13 +121,9 @@ const Dashboard: React.FC = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger className="flex items-center space-x-2 cursor-pointer outline-none">
                     <div className="mr-2">
-                      <img
-                        src={user.image}
-                        alt={user.firstName}
-                        className="h-8 w-8 rounded-full"
-                      />
+                      <img src={user.role} className="h-8 w-8 rounded-full" />
                     </div>
-                    <div className="text-sm">Hi, {user.firstName}</div>
+                    <div className="text-sm">Hi, {user.name}</div>
                     <ChevronDown className="h-4 w-4" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
@@ -261,4 +257,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardAdmin;

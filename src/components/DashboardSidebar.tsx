@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import HmwLogo from "./HmwLogo";
+import { useAuth } from "@/context/AuthContext";
+import { UserRole } from "@/types";
 import {
   LayoutDashboard,
   BarChart,
@@ -28,74 +30,24 @@ import {
   Timer,
   ChevronLeft,
 } from "lucide-react";
+import SidebarItem from "./SidebarItem";
 
-interface SidebarItemProps {
-  icon: React.ReactNode;
-  text: string;
-  active?: boolean;
-  hasSubmenu?: boolean;
-  expanded?: boolean;
-  onClick?: () => void;
-  children?: React.ReactNode;
-  to?: string;
-}
+export const DashboardSidebar: React.FC = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-const DashboardSidebar: React.FC = () => {
+  if (!user) {
+    return null;
+  }
+
+  const isAdmin = user.role === UserRole.ADMIN;
+  const isDireksi = user.role === UserRole.DIREKSI;
+
   const [expandedItem, setExpandedItem] = useState<string | null>(
     "LalinHarian"
   );
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
-
-  const SidebarItem: React.FC<SidebarItemProps> = ({
-    icon,
-    text,
-    active = false,
-    hasSubmenu = false,
-    expanded = false,
-    onClick,
-    children,
-    to = "#",
-  }) => {
-    const content = (
-      <div className="mb-1">
-        <NavLink
-          to={to}
-          className={`flex items-center px-4 py-2 text-sm  ${
-            theme === "dark"
-              ? "text-gray-300 hover:bg-gray-700 hover:text-white"
-              : "text-gray-800 hover:bg-gray-100 hover:text-gray-900"
-          }rounded-md cursor-pointer`}
-          onClick={onClick}
-        >
-          <span className="mr-3">{icon}</span>
-          <span className="flex-1">{text}</span>
-          {hasSubmenu && (
-            <span className="ml-auto">
-              {expanded ? (
-                <ChevronDown size={16} />
-              ) : (
-                <ChevronRight size={16} />
-              )}
-            </span>
-          )}
-        </NavLink>
-        {expanded && children && (
-          <div className="ml-6 mt-1 space-y-1">{children}</div>
-        )}
-      </div>
-    );
-
-    if (hasSubmenu) {
-      return content;
-    }
-
-    return (
-      <NavLink to={to} className="block">
-        {content}
-      </NavLink>
-    );
-  };
 
   useEffect(() => {
     const savedTheme =
@@ -215,11 +167,21 @@ const DashboardSidebar: React.FC = () => {
           >
             MAIN
           </div>
-          <SidebarItem
-            icon={<LayoutDashboard size={18} />}
-            text="Dashboard"
-            to="/dashboard"
-          />
+          {isDireksi && (
+            <SidebarItem
+              icon={<LayoutDashboard size={18} />}
+              text="Dashboard"
+              to="/dashboard/direksi"
+            />
+          )}
+
+          {isAdmin && (
+            <SidebarItem
+              icon={<LayoutDashboard size={18} />}
+              text="Dashboard Admin"
+              to="/dashboard/admin"
+            />
+          )}
         </div>
 
         <div className="px-3 mb-2">
@@ -229,6 +191,16 @@ const DashboardSidebar: React.FC = () => {
             to="/input-business"
           />
         </div>
+
+        {isAdmin && (
+          <div className="px-3 mb-2">
+            <SidebarItem
+              icon={<PencilLine size={18} />}
+              text="Input Prognosa"
+              to="/input-prognosa"
+            />
+          </div>
+        )}
 
         <div className="px-3 mb-2">
           <SidebarItem

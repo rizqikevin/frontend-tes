@@ -1,19 +1,87 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/context/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 import DelamataBilanoLogo from "@/components/HmwLogo";
+import { toast } from "sonner";
+import { login } from "@/services/auth-service";
+import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+import { UserRole } from "@/types";
+
+interface ErrorResponse {
+  message: string;
+  status?: number;
+  error?: string;
+}
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const { login, isLoading } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await login(username, password);
+    setIsLoading(true);
+
+    try {
+      // Validate input
+      if (!email || !password) {
+        toast.error("Email dan password harus diisi");
+        return;
+      }
+
+      console.log("Submitting login form:", {
+        email: email.trim(),
+        hasPassword: !!password,
+      });
+
+      const response = await login({
+        email: email.trim(),
+        password,
+      });
+
+      console.log("User role:", response.user.role);
+      console.log("Enum ADMIN:", UserRole.ADMIN);
+      const role = response.user.role;
+
+      if (response.user) {
+        toast.success("Login berhasil");
+        console.log("User after login:", response.user);
+
+        // Set timeout before navigating
+        setTimeout(() => {
+          if (role === UserRole.ADMIN) {
+            navigate("/dashboard/admin", { replace: true });
+            window.location.reload();
+            console.log("Navigating based on role:", role);
+          } else if (role === UserRole.DIREKSI) {
+            navigate("/dashboard/direksi", { replace: true });
+            console.log("Navigating based on role:", role);
+            window.location.reload();
+          } else {
+            toast.error("Role tidak dikenali");
+          }
+        }, 2000); // Set timeout 2 detik (2000 ms)
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      if (error instanceof Error) {
+        if (error instanceof AxiosError) {
+          const axiosError = error as AxiosError<ErrorResponse>;
+          toast.error(
+            axiosError.response?.data?.message || "Email atau password salah"
+          );
+        } else {
+          toast.error(error.message || "Email atau password salah");
+        }
+      } else {
+        toast.error("Email atau password salah");
+      }
+    } finally {
+      setIsLoading(false); // Ensure loading state is reset after error or success
+    }
   };
 
   return (
@@ -36,7 +104,7 @@ const Login = () => {
             <p className="text-gray-400">Welcome to PT Hutama Marga Waskita</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="username" className="block text-sm font-medium">
                 User Name or Email
@@ -45,8 +113,8 @@ const Login = () => {
                 <Input
                   id="username"
                   type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="bg-gray-800 border-gray-700 text-white w-full pl-10"
                   required
                   placeholder="User Name"
@@ -75,7 +143,7 @@ const Login = () => {
               <div className="relative">
                 <Input
                   id="password"
-                  type={showPassword ? "text" : "password"}
+                  type={password ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="bg-gray-800 border-gray-700 text-white w-full pl-10"
@@ -96,17 +164,6 @@ const Login = () => {
                     />
                   </svg>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400" />
-                  )}
-                </button>
               </div>
             </div>
 

@@ -5,11 +5,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { UserRole } from "./types";
 import "leaflet/dist/leaflet.css";
 
 // Pages
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/direksi/Dashboard";
 import NotFound from "./pages/NotFound";
 import Vlop from "./pages/Vlop";
 import InputBusiness from "./pages/InputBusiness";
@@ -24,6 +25,7 @@ import LogAlat from "./pages/LogAlat";
 import LogHistory from "./pages/LogHistory";
 import { LalinReport } from "./pages/LalinReport";
 import { LalinPortableReport } from "./pages/LalinPortableReport";
+import DashboardAdmin from "./pages/admin/DashboardAdmin";
 
 const queryClient = new QueryClient();
 
@@ -35,12 +37,20 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
             <Route
-              path="/dashboard"
+              path="/dashboard/direksi"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredRole={UserRole.DIREKSI}>
                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/admin"
+              element={
+                <ProtectedRoute requiredRole={UserRole.ADMIN}>
+                  <DashboardAdmin />
                 </ProtectedRoute>
               }
             />
