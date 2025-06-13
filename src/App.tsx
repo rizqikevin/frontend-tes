@@ -29,6 +29,7 @@ import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import SosialMedia from "./pages/SosialMedia";
 import { Floods } from "./pages/Floods";
 import Rju from "./pages/Rju";
+import { Pdb } from "./pages/Pdb";
 
 const queryClient = new QueryClient();
 
@@ -182,6 +183,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Rju />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/pdb"
+              element={
+                <ProtectedRoute>
+                  <Pdb />
                 </ProtectedRoute>
               }
             />

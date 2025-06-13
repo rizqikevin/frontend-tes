@@ -32,7 +32,7 @@ const datasets = [
     label: "CCTV On Ramp TEBING TINGGI (1A)",
     data: [
       120, 150, 200, 240, 300, 500, 700, 1000, 1300, 1600, 1700, 1800, 1900,
-      1850, 1900, 1950, 2000, 2100, 2200, 2300, 2400, 2600, 2800, 4000,
+      1850, 1900, 1950, 2000, 2100, 2200, 2300, 2400, 2600, 2800, 3000,
     ],
     borderColor: "#FACC15", // yellow-400
     backgroundColor: "#FACC15",
@@ -53,7 +53,7 @@ export const Chart: React.FC = () => {
     <>
       <div className="bg-dashboard-dark max-h-screen p-0 text-white space-y-4">
         <div className="p-1">
-          <LineChart title="Flood" labels={labels} datasets={datasets} />
+          <LineChart title="PDB" labels={labels} datasets={datasets} />
         </div>
       </div>
     </>

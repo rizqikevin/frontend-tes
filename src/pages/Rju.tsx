@@ -10,8 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import MapViewGps from "@/components/MapViewGps";
 import EnergyChart from "@/components/rju/EnergiChart";
 
