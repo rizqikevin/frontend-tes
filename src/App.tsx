@@ -27,6 +27,7 @@ import { LalinReport } from "./pages/LalinReport";
 import { LalinPortableReport } from "./pages/LalinPortableReport";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import SosialMedia from "./pages/SosialMedia";
+import { Floods } from "./pages/Floods";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +39,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Login />} />
             <Route
               path="/dashboard/direksi"
               element={
@@ -164,6 +165,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <SosialMedia />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/floods"
+              element={
+                <ProtectedRoute>
+                  <Floods />
                 </ProtectedRoute>
               }
             />

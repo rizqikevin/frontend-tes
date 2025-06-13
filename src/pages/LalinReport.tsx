@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { Button } from "@/components/ui/button";
-import { Daily } from "@/components/lalinharian/LalinReport/Daily/Daily";
-import { Summary } from "@/components/lalinharian/LalinReport/Summary/Summary";
-import { Monthly } from "@/components/lalinharian/LalinReport/Monthly/Monthly";
+import { Daily } from "@/components/lalinharian/Lalinreport/daily/Daily";
+import { Summary } from "@/components/lalinharian/Lalinreport/Summary/Summary";
+import { Monthly } from "@/components/lalinharian/Lalinreport/Monthly/Monthly";
 import {
   DropdownMenu,
   DropdownMenuContent,

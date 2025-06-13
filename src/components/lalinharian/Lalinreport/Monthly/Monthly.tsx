@@ -1,4 +1,4 @@
-import LineChart from "./LIneChart";
+import LineChart from "./LineChart";
 
 const labels = [
   "00:00",

@@ -2,20 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { Button } from "@/components/ui/button";
-import { Daily } from "@/components/lalinharian/lalinportablereport/daily/Daily";
-import { Summary } from "@/components/lalinharian/lalinportablereport/summary/Summary";
-import { Monthly } from "@/components/lalinharian/lalinportablereport/monthly/Monthly";
+import { Chart } from "@/components/floods/chart/Chart";
+import { Daily } from "@/components/floods/daily/Daily";
+import { Monthly } from "@/components/floods/monthly/Monthly";
+import { Yearly } from "@/components/floods/yearly/Yearly";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, LogOut } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@radix-ui/react-select";
+import { ChevronDown, LogOut, Search } from "lucide-react";
 
-export const LalinPortableReport: React.FC = () => {
+export const Floods: React.FC = () => {
   const { user, logout } = useAuth();
-  const [selectedTab, setSelectedTab] = useState("summary");
+  const [selectedTab, setSelectedTab] = useState("chart");
+  const [selectedOption, setSelectedOption] = useState("");
   const [startDate, setStartDate] = useState("27 - February - 2025");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
@@ -56,14 +65,16 @@ export const LalinPortableReport: React.FC = () => {
 
   const renderContent = () => {
     switch (selectedTab) {
-      case "summary":
-        return <Summary />;
+      case "chart":
+        return <Chart />;
       case "daily":
         return <Daily />;
       case "monthly":
         return <Monthly />;
+      case "yearly":
+        return <Yearly />;
       default:
-        return <Summary />;
+        return <Chart />;
     }
   };
 
@@ -88,7 +99,7 @@ export const LalinPortableReport: React.FC = () => {
                     <div className="mr-2">
                       <img src={user.image} className="h-8 w-8 rounded-full" />
                     </div>
-                    <div className="text-sm">Hi, {user.name}</div>
+                    <div className="text-sm">Hi, {user.firstName}</div>
                     <ChevronDown className="h-4 w-4" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
@@ -123,14 +134,14 @@ export const LalinPortableReport: React.FC = () => {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
               <Button
-                onClick={() => setSelectedTab("summary")}
+                onClick={() => setSelectedTab("chart")}
                 className={`${
-                  selectedTab === "summary"
+                  selectedTab === "chart"
                     ? "bg-gray-50 text-gray-900"
                     : "bg-dashboard-accent text-white"
                 }`}
               >
-                Summary
+                Chart
               </Button>
               <Button
                 onClick={() => setSelectedTab("daily")}
@@ -152,6 +163,19 @@ export const LalinPortableReport: React.FC = () => {
               >
                 Monthly
               </Button>
+              <Button
+                onClick={() => setSelectedTab("yearly")}
+                className={`${
+                  selectedTab === "yearly"
+                    ? "bg-gray-50 text-gray-900"
+                    : "bg-dashboard-accent text-white"
+                }`}
+              >
+                Yearly
+              </Button>
+            </div>
+            <div className="bg-dashboard-accent rounded-lg p-1 flex items-center">
+              <Button className="bg-dashboard-accent text-white">Search</Button>
             </div>
           </div>
           {renderContent()}
