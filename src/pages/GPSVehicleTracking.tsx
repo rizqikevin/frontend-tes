@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Calendar, ChevronDown, LogOut } from "lucide-react";
 import DashboardSidebar from "@/components/DashboardSidebar";
-import MapSection from "@/components/dashboard/GeographicInfoSystem/MapSection";
 import { useAuth } from "@/context/AuthContext";
 
 import {
@@ -131,11 +130,11 @@ export const GPSVehicleTracking: React.FC = () => {
         {/* MAIN */}
         <main className="p-6 space-y-6">
           <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 h-[70vh]">
+            <div className="lg:col-span-2 h-[100vh]">
               <MapViewGps />
             </div>
 
-            <div className="rounded-lg border p-4 bg-dashboard-accent max-h-[70vh] overflow-y-auto">
+            <div className="rounded-lg border p-4 bg-dashboard-accent max-h-[100vh] overflow-y-auto">
               {selectedVehicle ? (
                 <div>
                   <div className="flex justify-between">

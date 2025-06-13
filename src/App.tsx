@@ -28,6 +28,7 @@ import { LalinPortableReport } from "./pages/LalinPortableReport";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import SosialMedia from "./pages/SosialMedia";
 import { Floods } from "./pages/Floods";
+import Rju from "./pages/Rju";
 
 const queryClient = new QueryClient();
 
@@ -173,6 +174,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Floods />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/rju"
+              element={
+                <ProtectedRoute>
+                  <Rju />
                 </ProtectedRoute>
               }
             />
