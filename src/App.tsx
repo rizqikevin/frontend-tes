@@ -30,6 +30,8 @@ import SosialMedia from "./pages/SosialMedia";
 import { Floods } from "./pages/Floods";
 import Rju from "./pages/Rju";
 import { Pdb } from "./pages/Pdb";
+import { Ups } from "./pages/Ups";
+import { AirQuality } from "./pages/AirQuality";
 
 const queryClient = new QueryClient();
 
@@ -191,6 +193,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Pdb />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/ups"
+              element={
+                <ProtectedRoute>
+                  <Ups />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/air-quality"
+              element={
+                <ProtectedRoute>
+                  <AirQuality />
                 </ProtectedRoute>
               }
             />
