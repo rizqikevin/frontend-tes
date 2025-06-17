@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import HmwLogo from "./HmwLogo";
 import { useAuth } from "@/context/AuthContext";
 import { UserRole } from "@/types";
@@ -10,7 +10,6 @@ import {
   Bell,
   Settings,
   ChevronRight,
-  ChevronDown,
   Sun,
   Moon,
   PencilLine,
@@ -34,7 +33,6 @@ import SidebarItem from "./SidebarItem";
 
 export const DashboardSidebar: React.FC = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
 
   if (!user) {
     return null;

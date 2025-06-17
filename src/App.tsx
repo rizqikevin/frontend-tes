@@ -32,6 +32,7 @@ import Rju from "./pages/Rju";
 import { Pdb } from "./pages/Pdb";
 import { Ups } from "./pages/Ups";
 import { AirQuality } from "./pages/AirQuality";
+import { Genset } from "./pages/Genset";
 
 const queryClient = new QueryClient();
 
@@ -209,6 +210,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <AirQuality />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/genset"
+              element={
+                <ProtectedRoute>
+                  <Genset />
                 </ProtectedRoute>
               }
             />
