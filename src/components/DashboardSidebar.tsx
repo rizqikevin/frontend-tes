@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import HmwLogo from "./HmwLogo";
 import { useAuth } from "@/context/AuthContext";
@@ -46,6 +46,7 @@ export const DashboardSidebar: React.FC = () => {
   );
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const savedTheme =
@@ -53,6 +54,22 @@ export const DashboardSidebar: React.FC = () => {
     setTheme(savedTheme);
     applyTheme(savedTheme);
   }, []);
+
+  useEffect(() => {
+    const savedPosition = sessionStorage.getItem("sidebar-scroll");
+    if (scrollRef.current && savedPosition) {
+      scrollRef.current.scrollTop = parseInt(savedPosition);
+    }
+  }, []);
+
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      sessionStorage.setItem(
+        "sidebar-scroll",
+        scrollRef.current.scrollTop.toString()
+      );
+    }
+  };
 
   const applyTheme = (newTheme: "light" | "dark") => {
     const root = document.documentElement;
@@ -156,7 +173,11 @@ export const DashboardSidebar: React.FC = () => {
         <HmwLogo />
       </div>
 
-      <div className="overflow-y-auto max-h-[50vh] pr-1 scrollbar-hidden">
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className="overflow-y-auto max-h-[50vh] pr-1 scrollbar-hidden"
+      >
         <div className="px-3 mb-3">
           <div
             className={`text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4 ${
