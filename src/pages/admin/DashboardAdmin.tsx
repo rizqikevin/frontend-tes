@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
-import GeographicInfoSystem from "@/components/dashboard/GeographicInfoSystem/GeographicInfoSystem";
-import TransactionOverview from "@/components/dashboard/TransactionOverview/TransactionOverview";
-import { OverloadOverDimention } from "@/components/dashboard/OverloadOverDimention/OverloadOverDimention";
+import Dashboard from "@/components/dashboard/Admin/Dashboard";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronDown, LogOut } from "lucide-react";
 import {
@@ -62,45 +60,6 @@ const DashboardAdmin: React.FC = () => {
   }, []);
 
   const isDark = theme === "dark";
-
-  const getViewTitle = () => {
-    switch (selectedView) {
-      case "geographic":
-        return "Geographic Informasi Sistem Admin";
-      case "transaction":
-        return "Transaction Overview";
-      case "overload":
-        return "Overload - Over Dimention";
-      default:
-        return "Geographic Informasi Sistem";
-    }
-  };
-
-  const getViewDescription = () => {
-    switch (selectedView) {
-      case "geographic":
-        return "Pantau detail dari setiap kejadian";
-      case "transaction":
-        return "Pantau setiap detail transaksi";
-      case "overload":
-        return "Monitoring kendaraan berlebih muatan dan dimensi";
-      default:
-        return "Pantau detail dari setiap kejadian";
-    }
-  };
-
-  const renderContent = () => {
-    switch (selectedView) {
-      case "geographic":
-        return <GeographicInfoSystem />;
-      case "transaction":
-        return <TransactionOverview />;
-      case "overload":
-        return <OverloadOverDimention />;
-      default:
-        return <GeographicInfoSystem />;
-    }
-  };
 
   return (
     <div
@@ -165,43 +124,15 @@ const DashboardAdmin: React.FC = () => {
                     isDark ? "text-white" : "text-black"
                   }`}
                 >
-                  {getViewTitle()}
+                  Dashboard
                 </h1>
-                <p className="text-gray-400">{getViewDescription()}</p>
+                <p className="text-gray-400">
+                  Pantau detail dari setiap kejadian
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-4">
-                <div className="relative">
-                  <Select value={selectedView} onValueChange={setSelectedView}>
-                    <SelectTrigger
-                      className={`w-64 bg-dashboard-accent text-white px-4 py-2 border border-gray-700 rounded flex items-center ${
-                        isDark
-                          ? "bg-dashboard-accent text-white"
-                          : "bg-gray-50 text-gray-900"
-                      } `}
-                    >
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent
-                      className={`${
-                        isDark
-                          ? "bg-dashboard-accent text-white"
-                          : "bg-gray-50 text-gray-900"
-                      } `}
-                    >
-                      <SelectItem value="geographic">
-                        Geographic Informasi Sistem
-                      </SelectItem>
-                      <SelectItem value="transaction">
-                        Transaction Overview
-                      </SelectItem>
-                      <SelectItem value="overload">
-                        Overload - Over Dimention
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
                 <div className="relative">
                   <div
                     className={`border border-gray-700 rounded flex items-center px-4 py-2 bg-dashboard-accent ${
@@ -250,7 +181,7 @@ const DashboardAdmin: React.FC = () => {
             </div>
           </div>
 
-          {renderContent()}
+          <Dashboard />
         </main>
       </div>
     </div>

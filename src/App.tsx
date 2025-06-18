@@ -33,6 +33,7 @@ import { Pdb } from "./pages/Pdb";
 import { Ups } from "./pages/Ups";
 import { AirQuality } from "./pages/AirQuality";
 import { Genset } from "./pages/Genset";
+import { InputPrognosa } from "./pages/InputPrognosa";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +59,14 @@ const App = () => (
               element={
                 <ProtectedRoute requiredRole={UserRole.ADMIN}>
                   <DashboardAdmin />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/input-prognosa"
+              element={
+                <ProtectedRoute requiredRole={UserRole.ADMIN}>
+                  <InputPrognosa />
                 </ProtectedRoute>
               }
             />
