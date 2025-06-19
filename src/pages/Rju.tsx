@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import MapViewGps from "@/components/MapViewGps";
 import EnergyChart from "@/components/rju/EnergiChart";
+import Header from "@/components/Header";
 
 export interface VehicleData {
   id: number;
@@ -94,6 +95,8 @@ export const Rju: React.FC = () => {
     };
   }, []);
 
+  const isDark = theme === "dark";
+
   return (
     <div className="flex min-h-screen text-white">
       <DashboardSidebar />
@@ -103,30 +106,7 @@ export const Rju: React.FC = () => {
         }`}
       >
         {/* HEADER */}
-        <header className="flex justify-end items-center py-1 px-8">
-          {user && (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center space-x-2 cursor-pointer outline-none">
-                <img src={user.image} className="h-8 w-8 rounded-full" />
-                <span className="text-sm">Hi, {user.firstName}</span>
-                <ChevronDown className="h-4 w-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="bg-dashboard-accent border border-gray-700"
-              >
-                <DropdownMenuItem
-                  className="text-gray-200 flex items-center space-x-2"
-                  onClick={logout}
-                >
-                  <LogOut className="h-4 w-4 mr-2" />
-                  <span>Logout</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-        </header>
-
+        <Header isDark={isDark} user={user} logout={logout} />
         {/* MAIN */}
         <main className="p-6 space-y-6">
           <div className="grid lg:grid-cols-3 gap-6">

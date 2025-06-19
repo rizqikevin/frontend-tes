@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Header from "@/components/Header";
 
 // Mock data for the table
 const mockTransactionData = [
@@ -184,37 +185,7 @@ const Vlop: React.FC = () => {
           isSidebarCollapsed ? "ml-16" : "ml-64"
         } transition-all duration-300`}
       >
-        <header className="flex justify-between items-center py-1 px-8">
-          <div></div>
-
-          <div className="flex items-center space-x-2">
-            {user && (
-              <div className="flex items-center">
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center space-x-2 cursor-pointer outline-none">
-                    <div className="mr-2">
-                      <img src={user.image} className="h-8 w-8 rounded-full" />
-                    </div>
-                    <div className="text-sm">Hi, {user.firstName}</div>
-                    <ChevronDown className="h-4 w-4" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="end"
-                    className="bg-dashboard-accent border border-gray-700"
-                  >
-                    <DropdownMenuItem
-                      className="text-gray-200 flex items-center space-x-2"
-                      onClick={logout}
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      <span>Logout</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            )}
-          </div>
-        </header>
+        <Header isDark={isDark} user={user} logout={logout} />
 
         <main className="p-8">
           {/* Date filters */}
