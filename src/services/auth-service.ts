@@ -51,7 +51,7 @@ export const logout = () => {
   console.log("localStorage after login:", localStorage.getItem("user_data"));
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
-  window.location.href = "/login";
+  window.location.href = "/";
 };
 
 export const isAuthenticated = (): boolean => {
