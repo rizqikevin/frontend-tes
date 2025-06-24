@@ -91,7 +91,18 @@ const SosialMedia: React.FC = () => {
     >
       <DashboardSidebar />
       <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
-        <Header isDark={isDark} user={user} logout={logout} />
+        <Header
+          isDark={isDark}
+          user={
+            user
+              ? {
+                  name: user.name,
+                  role: String(user.role),
+                }
+              : null
+          }
+          logout={logout}
+        />
 
         <div className="min-h-screen text-white p-4 space-y-6">
           <SearchHeader />

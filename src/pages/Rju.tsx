@@ -106,7 +106,18 @@ export const Rju: React.FC = () => {
         }`}
       >
         {/* HEADER */}
-        <Header isDark={isDark} user={user} logout={logout} />
+        <Header
+          isDark={isDark}
+          user={
+            user
+              ? {
+                  name: user.name,
+                  role: String(user.role),
+                }
+              : null
+          }
+          logout={logout}
+        />
         {/* MAIN */}
         <main className="p-6 space-y-6">
           <div className="grid lg:grid-cols-3 gap-6">

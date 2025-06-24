@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import {
   createContext,
   useContext,
@@ -6,7 +5,6 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import { User } from "../types";
 import {
   login as authLogin,
   logout as authLogout,
@@ -15,7 +13,7 @@ import {
 } from "../services/auth-service";
 
 interface AuthContextType {
-  user: User | null;
+  user: ReturnType<typeof getCurrentUser>;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
@@ -24,39 +22,25 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState(getCurrentUser());
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        if (isAuthenticated()) {
-          const currentUser = getCurrentUser();
-          if (currentUser) {
-            setUser(currentUser);
-          }
-        }
-      } catch (error) {
-        console.error("Auth check error:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkAuth();
+    if (isAuthenticated()) {
+      setUser(getCurrentUser());
+    }
+    setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (username: string, password: string) => {
     try {
-      const response = await authLogin({ email, password });
-      if (response.user) {
-        setUser(response.user);
-        return true;
-      }
-      return false;
+      await authLogin({ username, password });
+      const currentUser = getCurrentUser();
+      setUser(currentUser);
+      return !!currentUser;
     } catch (error) {
-      console.error("Login error:", error);
-      throw error;
+      console.error("Login failed", error);
+      return false;
     }
   };
 
@@ -74,8 +58,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
+  if (!context) throw new Error("useAuth must be used in AuthProvider");
   return context;
 }

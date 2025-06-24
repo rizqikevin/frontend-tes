@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff } from "lucide-react";
 import DelamataBilanoLogo from "@/components/HmwLogo";
 import { toast } from "sonner";
 import { login } from "@/services/auth-service";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { UserRole } from "@/types";
+import { decodeJWT, DecodedToken } from "../utils/decodeJWT";
 
 interface ErrorResponse {
   message: string;
@@ -16,7 +16,7 @@ interface ErrorResponse {
 }
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -27,28 +27,39 @@ const Login = () => {
 
     try {
       // Validate input
-      if (!email || !password) {
+      if (!username || !password) {
         toast.error("Email dan password harus diisi");
         return;
       }
 
       console.log("Submitting login form:", {
-        email: email.trim(),
+        username: username.trim(),
         hasPassword: !!password,
       });
 
       const response = await login({
-        email: email.trim(),
+        username: username.trim(),
         password,
       });
 
-      console.log("User role:", response.user.role);
-      console.log("Enum ADMIN:", UserRole.ADMIN);
-      const role = response.user.role;
+      const token = localStorage.getItem("auth_token");
+      let role: number | null = null;
 
-      if (response.user) {
+      if (token) {
+        try {
+          const decoded = decodeJWT();
+          role = decoded.user.role;
+          console.log("Decoded role from JWT:", role);
+        } catch (err) {
+          console.error("Failed to decode token:", err);
+          toast.error("Gagal membaca role dari token");
+          return;
+        }
+      }
+
+      if (response) {
         toast.success("Login berhasil");
-        console.log("User after login:", response.user);
+        console.log("Login response:", response);
 
         // Set timeout before navigating
         setTimeout(() => {
@@ -113,8 +124,8 @@ const Login = () => {
                 <Input
                   id="username"
                   type="text"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className="bg-gray-800 border-gray-700 text-white w-full pl-10"
                   required
                   placeholder="User Name"

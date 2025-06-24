@@ -1,10 +1,9 @@
+import { decodeJWT } from "@/utils/decodeJWT";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 
 // Use relative URL in development to work with Vite proxy
-const API_URL = import.meta.env.DEV
-  ? "/api"
-  : "https://api.rizqikevin.my.id/api";
+const API_URL = import.meta.env.VITE_API_URL as string;
 console.log("API URL:", API_URL);
 
 // Define error response type
@@ -24,30 +23,32 @@ export const api = axios.create({
   },
 });
 
-// Add request interceptor for logging and auth
-api.interceptors.request.use(
-  (config) => {
-    // Log request details
-    console.log("API Request:", {
-      method: config.method,
-      url: config.url,
-      data: config.data,
-      headers: config.headers,
-    });
+// // Add request interceptor for logging and auth
+// api.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem("auth_token");
+//     if (token) {
+//       const decoded = decodeJWT();
+//       const now = Math.floor(Date.now() / 1000);
 
-    // Get token from localStorage
-    const token = localStorage.getItem("auth_token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+//       if (decoded && decoded.exp > now) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//       } else {
+//         console.warn(
+//           "Token expired or invalid, skipping Authorization header."
+//         );
+//         // Optional: handle expired token (logout or redirect)
+//         localStorage.removeItem("auth_token");
+//       }
+//     }
 
-    return config;
-  },
-  (error) => {
-    console.error("Request error:", error);
-    return Promise.reject(error);
-  }
-);
+//     return config;
+//   },
+//   (error) => {
+//     console.error("Request error:", error);
+//     return Promise.reject(error);
+//   }
+// );
 
 // Add response interceptor for logging and error handling
 api.interceptors.response.use(
@@ -105,20 +106,20 @@ api.interceptors.response.use(
   }
 );
 
-// Test API connection
-export const testApiConnection = async () => {
-  try {
-    console.log("Testing API connection...");
-    const response = await api.get("/health");
-    console.log("API connection test successful:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("API connection test failed:", error);
-    throw error;
-  }
-};
+// // Test API connection
+// export const testApiConnection = async () => {
+//   try {
+//     console.log("Testing API connection...");
+//     const response = await api.get("/health");
+//     console.log("API connection test successful:", response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error("API connection test failed:", error);
+//     throw error;
+//   }
+// };
 
-// Run API connection test
-testApiConnection().catch(console.error);
+// // Run API connection test
+// testApiConnection().catch(console.error);
 
 export default api;

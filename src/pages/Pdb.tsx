@@ -80,7 +80,18 @@ export const Pdb: React.FC = () => {
     >
       <DashboardSidebar />
       <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
-        <Header isDark={isDark} user={user} logout={logout} />
+        <Header
+          isDark={isDark}
+          user={
+            user
+              ? {
+                  name: user.name,
+                  role: String(user.role),
+                }
+              : null
+          }
+          logout={logout}
+        />
 
         <main
           className={`p-8 ${isDark ? "border-gray-700" : "border-gray-200"}`}

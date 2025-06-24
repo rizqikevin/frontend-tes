@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { Button } from "@/components/ui/button";
-import { Calendar, ChevronDown, Image, LogOut, Video } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Calendar, Image, Video } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Header from "@/components/Header";
 
@@ -71,7 +65,18 @@ export const Incident: React.FC = () => {
           isSidebarCollapsed ? "ml-16" : "ml-64"
         }`}
       >
-        <Header isDark={isDark} user={user} logout={logout} />
+        <Header
+          isDark={isDark}
+          user={
+            user
+              ? {
+                  name: user.name,
+                  role: String(user.role),
+                }
+              : null
+          }
+          logout={logout}
+        />
         <main className="p-8">
           <div className="flex justify-between mb-8">
             <div className="flex justify-between items-center px-0">

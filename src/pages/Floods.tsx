@@ -6,20 +6,6 @@ import { Chart } from "@/components/floods/chart/Chart";
 import { Daily } from "@/components/floods/daily/Daily";
 import { Monthly } from "@/components/floods/monthly/Monthly";
 import { Yearly } from "@/components/floods/yearly/Yearly";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@radix-ui/react-select";
-import { ChevronDown, LogOut, Search } from "lucide-react";
 import Header from "@/components/Header";
 
 export const Floods: React.FC = () => {
@@ -87,7 +73,18 @@ export const Floods: React.FC = () => {
     >
       <DashboardSidebar />
       <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
-        <Header isDark={isDark} user={user} logout={logout} />
+        <Header
+          isDark={isDark}
+          user={
+            user
+              ? {
+                  name: user.name,
+                  role: String(user.role),
+                }
+              : null
+          }
+          logout={logout}
+        />
 
         <main
           className={`p-8 ${isDark ? "border-gray-700" : "border-gray-200"}`}

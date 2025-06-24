@@ -3,20 +3,13 @@ import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import Dashboard from "@/components/dashboard/Admin/Dashboard";
 import { Button } from "@/components/ui/button";
-import { Calendar, ChevronDown, LogOut } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Calendar } from "lucide-react";
 import Header from "@/components/Header";
 
 const DashboardAdmin: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState("27 - February - 2025");
   const [endDate, setEndDate] = useState("27 - February - 2025");
-  const [selectedView, setSelectedView] = useState("geographic");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 

@@ -1,16 +1,16 @@
 import api from "./api";
-import { User } from "../types";
+import { decodeJWT } from "../utils/decodeJWT";
 
 const TOKEN_KEY = "auth_token";
-const USER_KEY = "user_data";
+const TOKEN_CCTV = "token_cctv";
 
 interface LoginResponse {
-  user: User;
   token: string;
+  tokencctv?: string;
 }
 
 interface LoginCredentials {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -20,24 +20,14 @@ export const login = async (
   try {
     console.log("Attempting login with:", credentials);
     const { data } = await api.post<LoginResponse>("/auth/login", credentials);
-    console.log("Login response:", data);
 
-    if (!data.token || !data.user) {
-      throw new Error("Invalid response from server");
+    if (!data.token) {
+      throw new Error("Invalid response: missing token");
     }
 
     // Save token and user data
     localStorage.setItem(TOKEN_KEY, data.token);
-    localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-
-    // Verify storage
-    const verification = {
-      hasToken: !!localStorage.getItem(TOKEN_KEY),
-      hasUser: !!localStorage.getItem(USER_KEY),
-      tokenLength: localStorage.getItem(TOKEN_KEY)?.length,
-      userData: JSON.parse(localStorage.getItem(USER_KEY) || "{}"),
-    };
-    console.log("Verification after storage:", verification);
+    localStorage.setItem(TOKEN_CCTV, data.tokencctv);
 
     return data;
   } catch (error) {
@@ -47,40 +37,29 @@ export const login = async (
 };
 
 export const logout = () => {
-  console.log("Logging out - clearing auth data");
-  console.log("localStorage after login:", localStorage.getItem("user_data"));
   localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
+  localStorage.removeItem(TOKEN_CCTV);
   window.location.href = "/";
-};
-
-export const isAuthenticated = (): boolean => {
-  const hasToken = !!localStorage.getItem(TOKEN_KEY);
-  const hasUser = !!localStorage.getItem(USER_KEY);
-  const isAuth = hasToken && hasUser;
-
-  console.log("Checking authentication:", {
-    hasToken,
-    hasUser,
-    isAuth,
-  });
-
-  return isAuth;
-};
-
-export const getCurrentUser = (): User | null => {
-  const userData = localStorage.getItem(USER_KEY);
-  console.log("localStorage after login:", localStorage.getItem("user_data"));
-  if (!userData) return null;
-
-  try {
-    return JSON.parse(userData);
-  } catch (error) {
-    console.error("Error parsing user data:", error);
-    return null;
-  }
 };
 
 export const getToken = (): string | null => {
   return localStorage.getItem(TOKEN_KEY);
+};
+
+export const getTokenCctv = (): string | null => {
+  return localStorage.getItem(TOKEN_CCTV);
+};
+
+export const isAuthenticated = (): boolean => {
+  const token = getToken();
+  if (!token) return false;
+
+  const decoded = decodeJWT();
+  const now = Math.floor(Date.now() / 1000);
+  return !!decoded && decoded.exp > now;
+};
+
+export const getCurrentUser = () => {
+  const decoded = decodeJWT();
+  return decoded?.user ?? null;
 };
