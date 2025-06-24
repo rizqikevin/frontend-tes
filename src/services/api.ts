@@ -23,32 +23,17 @@ export const api = axios.create({
   },
 });
 
-// // Add request interceptor for logging and auth
-// api.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem("auth_token");
-//     if (token) {
-//       const decoded = decodeJWT();
-//       const now = Math.floor(Date.now() / 1000);
-
-//       if (decoded && decoded.exp > now) {
-//         config.headers.Authorization = `Bearer ${token}`;
-//       } else {
-//         console.warn(
-//           "Token expired or invalid, skipping Authorization header."
-//         );
-//         // Optional: handle expired token (logout or redirect)
-//         localStorage.removeItem("auth_token");
-//       }
-//     }
-
-//     return config;
-//   },
-//   (error) => {
-//     console.error("Request error:", error);
-//     return Promise.reject(error);
-//   }
-// );
+// Add request interceptor to include token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("auth_token");
+    if (token && config.headers) {
+      config.headers["X-Auth"] = token;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 // Add response interceptor for logging and error handling
 api.interceptors.response.use(

@@ -15,6 +15,11 @@ export const Floods: React.FC = () => {
   const [startDate, setStartDate] = useState("27 - February - 2025");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [searchTrigger, setSearchTrigger] = useState(0);
+
+  const handleSearch = () => {
+    setSearchTrigger((prev) => prev + 1); // setiap klik Search, angkanya berubah
+  };
 
   // Listen for theme changes and sidebar state changes
   useEffect(() => {
@@ -51,15 +56,20 @@ export const Floods: React.FC = () => {
   const isDark = theme === "dark";
 
   const renderContent = () => {
+    const commonProps = {
+      location: selectedOption,
+      searchTrigger,
+    };
+
     switch (selectedTab) {
       case "chart":
         return <Chart />;
       case "daily":
-        return <Daily />;
+        return <Daily {...commonProps} />;
       case "monthly":
-        return <Monthly />;
+        return <Monthly {...commonProps} />;
       case "yearly":
-        return <Yearly />;
+        return <Yearly {...commonProps} />;
       default:
         return <Chart />;
     }
@@ -132,8 +142,23 @@ export const Floods: React.FC = () => {
                 Yearly
               </Button>
             </div>
-            <div className="bg-dashboard-accent rounded-lg p-1 flex items-center">
-              <Button className="bg-dashboard-accent text-white">Search</Button>
+            <div className=" rounded-lg p-1 flex items-center space-x-2 px-2">
+              <select
+                value={selectedOption}
+                onChange={(e) => setSelectedOption(e.target.value)}
+                className="bg-transparent text-white border border-white focus:outline-none focus:border-dashboard-600 rounded px-3 py-2"
+              >
+                <option value="">Pilih Lokasi</option>
+                <option value="kuala-tanjung">Offramp Kuala Tanjung</option>
+                <option value="tj-morawa">Offramp Tj. Morawa</option>
+                <option value="medan-mainroad">Mainroad Tol Medan</option>
+              </select>
+              <Button
+                className="bg-dashboard-accent text-white"
+                onClick={handleSearch}
+              >
+                Search
+              </Button>
             </div>
           </div>
           {renderContent()}

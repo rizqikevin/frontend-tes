@@ -7,7 +7,12 @@ const mockTransactionData = Array.from({ length: 9 }).map((_, i) => ({
   sensorvalue: "-",
 }));
 
-export const Yearly: React.FC = () => {
+interface YearlyProps {
+  location: string;
+  searchTrigger: number;
+}
+
+export const Yearly: React.FC<YearlyProps> = ({ location, searchTrigger }) => {
   return (
     <>
       <div className="bg-dashboard-accent rounded-lg p-4 overflow-x-auto mt-4">
