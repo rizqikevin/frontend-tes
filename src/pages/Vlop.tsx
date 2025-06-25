@@ -29,7 +29,7 @@ const Vlop: React.FC = () => {
   const [endDate, setEndDate] = useState<Date>(new Date());
 
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(100);
   const [total, setTotal] = useState(0);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
@@ -91,6 +91,8 @@ const Vlop: React.FC = () => {
   }, [page, limit, startDate, endDate]);
 
   const isDark = theme === "dark";
+
+  const totalPages = Math.ceil(total / limit);
 
   const getDuration = (start: string, end: string) => {
     const startTime = dayjs(start);
@@ -263,8 +265,10 @@ const Vlop: React.FC = () => {
                   </button>
                   <button
                     className="px-2 py-1"
-                    onClick={() => setPage((prev) => Math.min(prev + 1, total))}
-                    disabled={page === total}
+                    onClick={() =>
+                      setPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                    disabled={page === totalPages}
                   >
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                       <path

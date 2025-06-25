@@ -71,7 +71,9 @@ const Dashboard: React.FC = () => {
         </div>
         <div className="flex justify-end min-w-0">
           <div className="overflow-y-auto h-full max-h-[70vh] pr-1 scrollbar-hidden">
-            <WeatherCard />
+            <div className="rounded-lg border p-2 w-full h-auto bg-[#082d72] items-center mb-4">
+              <WeatherCard />
+            </div>
 
             <IncidentCard />
             <div className="mt-4">

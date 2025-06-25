@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
-import { Button } from "@/components/ui/button";
-import { Calendar, ChevronDown, Cloud, LogOut } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import WeatherCard from "@/components/WeatherCard";
 import Header from "@/components/Header";
 
@@ -167,7 +159,9 @@ const Weather: React.FC = () => {
 
         <main className="p-8">
           {/* Date filters */}
-          <WeatherCard />
+          <div className="rounded-lg border p-2 w-[350px] h-[230px] bg-[#082d72] items-center mb-4">
+            <WeatherCard />
+          </div>
 
           {/* Call Logs Section */}
           <div className="bg-dashboard-accent rounded-lg p-6 mb-8">
