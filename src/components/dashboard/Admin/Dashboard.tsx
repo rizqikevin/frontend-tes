@@ -63,14 +63,14 @@ const Dashboard: React.FC = () => {
     <div className="space-y-6">
       <StatsGrid statsData={statsData} />
 
-      <div className="grid grid-cols-3 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <MapSection />
-        <div className="grid grid-row-2 gap-4">
+        <div className="flex flex-col gap-4">
           <TrafficChart />
           <TrafficChart />
         </div>
-        <div className="flex justify-end">
-          <div className="overflow-y-auto max-h-[70vh] pr-1 scrollbar-hidden">
+        <div className="flex justify-end min-w-0">
+          <div className="overflow-y-auto h-full max-h-[70vh] pr-1 scrollbar-hidden">
             <WeatherCard />
 
             <IncidentCard />

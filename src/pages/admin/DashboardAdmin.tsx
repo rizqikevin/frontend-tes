@@ -55,7 +55,18 @@ const DashboardAdmin: React.FC = () => {
     >
       <DashboardSidebar />
       <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
-        <Header isDark={isDark} user={user} logout={logout} />
+        <Header
+          isDark={isDark}
+          user={
+            user
+              ? {
+                  name: user.name,
+                  role: String(user.role),
+                }
+              : null
+          }
+          logout={logout}
+        />
 
         <main
           className={`p-8 ${
