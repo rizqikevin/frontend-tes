@@ -18,7 +18,7 @@ export const Floods: React.FC = () => {
   const [searchTrigger, setSearchTrigger] = useState(0);
 
   const handleSearch = () => {
-    setSearchTrigger((prev) => prev + 1); // setiap klik Search, angkanya berubah
+    setSearchTrigger((prev) => prev + 1);
   };
 
   // Listen for theme changes and sidebar state changes
@@ -63,7 +63,7 @@ export const Floods: React.FC = () => {
 
     switch (selectedTab) {
       case "chart":
-        return <Chart />;
+        return <Daily {...commonProps} />;
       case "daily":
         return <Daily {...commonProps} />;
       case "monthly":
@@ -71,7 +71,7 @@ export const Floods: React.FC = () => {
       case "yearly":
         return <Yearly {...commonProps} />;
       default:
-        return <Chart />;
+        return <Daily {...commonProps} />;
     }
   };
 
@@ -101,7 +101,7 @@ export const Floods: React.FC = () => {
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
-              <Button
+              {/* <Button
                 onClick={() => setSelectedTab("chart")}
                 className={`${
                   selectedTab === "chart"
@@ -110,7 +110,7 @@ export const Floods: React.FC = () => {
                 }`}
               >
                 Chart
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => setSelectedTab("daily")}
                 className={`${
@@ -121,7 +121,7 @@ export const Floods: React.FC = () => {
               >
                 Daily
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => setSelectedTab("monthly")}
                 className={`${
                   selectedTab === "monthly"
@@ -140,10 +140,10 @@ export const Floods: React.FC = () => {
                 }`}
               >
                 Yearly
-              </Button>
+              </Button> */}
             </div>
             <div className=" rounded-lg p-1 flex items-center space-x-2 px-2">
-              <select
+              {/* <select
                 value={selectedOption}
                 onChange={(e) => setSelectedOption(e.target.value)}
                 className="bg-transparent text-white border border-white focus:outline-none focus:border-dashboard-600 rounded px-3 py-2"
@@ -152,13 +152,13 @@ export const Floods: React.FC = () => {
                 <option value="kuala-tanjung">Offramp Kuala Tanjung</option>
                 <option value="tj-morawa">Offramp Tj. Morawa</option>
                 <option value="medan-mainroad">Mainroad Tol Medan</option>
-              </select>
-              <Button
+              </select> */}
+              {/* <Button
                 className="bg-dashboard-accent text-white"
                 onClick={handleSearch}
               >
                 Search
-              </Button>
+              </Button> */}
             </div>
           </div>
           {renderContent()}
