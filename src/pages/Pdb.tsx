@@ -17,7 +17,7 @@ import Header from "@/components/Header";
 
 export const Pdb: React.FC = () => {
   const { user, logout } = useAuth();
-  const [selectedTab, setSelectedTab] = useState("chart");
+  const [selectedTab, setSelectedTab] = useState("daily");
   const [selectedOption, setSelectedOption] = useState("");
   const [startDate, setStartDate] = useState("27 - February - 2025");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -68,7 +68,7 @@ export const Pdb: React.FC = () => {
       case "yearly":
         return <Yearly />;
       default:
-        return <Chart />;
+        return <Daily />;
     }
   };
 
@@ -98,7 +98,7 @@ export const Pdb: React.FC = () => {
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
-              <Button
+              {/* <Button
                 onClick={() => setSelectedTab("chart")}
                 className={`${
                   selectedTab === "chart"
@@ -107,7 +107,7 @@ export const Pdb: React.FC = () => {
                 }`}
               >
                 Chart
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => setSelectedTab("daily")}
                 className={`${
@@ -118,7 +118,7 @@ export const Pdb: React.FC = () => {
               >
                 Daily
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => setSelectedTab("monthly")}
                 className={`${
                   selectedTab === "monthly"
@@ -127,8 +127,8 @@ export const Pdb: React.FC = () => {
                 }`}
               >
                 Monthly
-              </Button>
-              <Button
+              </Button> */}
+              {/* <Button
                 onClick={() => setSelectedTab("yearly")}
                 className={`${
                   selectedTab === "yearly"
@@ -137,11 +137,11 @@ export const Pdb: React.FC = () => {
                 }`}
               >
                 Yearly
-              </Button>
+              </Button> */}
             </div>
-            <div className="bg-dashboard-accent rounded-lg p-1 flex items-center">
+            {/* <div className="bg-dashboard-accent rounded-lg p-1 flex items-center">
               <Button className="bg-dashboard-accent text-white">Search</Button>
-            </div>
+            </div> */}
           </div>
           {renderContent()}
         </main>

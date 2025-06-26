@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "sonner";
+import { set } from "date-fns";
 
 interface AlprData {
   jentrn: string;
@@ -36,6 +37,7 @@ const Vlop: React.FC = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
 
   // Listen for theme changes and sidebar state changes
@@ -73,6 +75,7 @@ const Vlop: React.FC = () => {
   const isDark = theme === "dark";
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const response = await api.get("/alpr", {
         params: { limit, page },
@@ -94,12 +97,14 @@ const Vlop: React.FC = () => {
     } catch (error) {
       toast.error("Gagal memuat data alpr");
       console.error("Failed to fetch data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchData();
-  }, [limit, page, startDate, endDate]);
+  }, [limit, page]);
 
   const totalPages = Math.ceil(total / limit);
 
@@ -213,63 +218,71 @@ const Vlop: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((item, index) => (
-                    <React.Fragment key={item.resi}>
-                      <tr className="border-b border-gray-700">
-                        <td className="p-2">
-                          {String((page - 1) * limit + index + 1).padStart(
-                            2,
-                            "0"
-                          )}
-                        </td>
-                        <td className="p-2">
-                          <img
-                            src={item.pict_url
-                              .replace("(", "")
-                              .replace(")", "")}
-                            alt="snapshot"
-                            className="w-20 h-12 object-cover cursor-pointer"
-                            onClick={() =>
-                              setExpandedImage((prev) =>
-                                prev === item.pict_url ? null : item.pict_url
-                              )
-                            }
-                          />
-                        </td>
-                        <td className="p-2">
-                          {dayjs(item.tgl).format("DD/MM/YYYY")}
-                        </td>
-                        <td className="p-2">
-                          {dayjs(item.waktu).format("HH:mm:ss A")}
-                        </td>
-                        <td className="p-2">
-                          {item.status === "1" ? "Open" : "Close"}
-                        </td>
-                        <td className="p-2">{item.gerbang}</td>
-                        <td className="p-2">{item.gardu}</td>
-                        <td className="p-2">{item.jentrn}</td>
-                        <td className="p-2">{`Gol-${item.gol}`}</td>
-                        <td className="p-2">{item.resi}</td>
-                        <td className="p-2">{item.plat_number}</td>
-                        <td className="p-2">{item.id_kartu}</td>
-                        <td className="p-2">{item.gerbang_masuk}</td>
-                      </tr>
-                      {expandedImage === item.pict_url && (
-                        <tr className="bg-black/30">
-                          <td colSpan={13} className="p-0">
+                  {loading ? (
+                    <tr>
+                      <td colSpan={13} className="p-2 text-center">
+                        Loading...
+                      </td>
+                    </tr>
+                  ) : (
+                    data.map((item, index) => (
+                      <React.Fragment key={item.resi}>
+                        <tr className="border-b border-gray-700">
+                          <td className="p-2">
+                            {String((page - 1) * limit + index + 1).padStart(
+                              2,
+                              "0"
+                            )}
+                          </td>
+                          <td className="p-2">
                             <img
                               src={item.pict_url
                                 .replace("(", "")
                                 .replace(")", "")}
-                              alt="expanded"
-                              className="w-full max-h-[500px]  object-contain rounded-lg"
-                              onClick={() => setExpandedImage(null)}
+                              alt="snapshot"
+                              className="w-20 h-12 object-cover cursor-pointer"
+                              onClick={() =>
+                                setExpandedImage((prev) =>
+                                  prev === item.pict_url ? null : item.pict_url
+                                )
+                              }
                             />
                           </td>
+                          <td className="p-2">
+                            {dayjs(item.tgl).format("DD/MM/YYYY")}
+                          </td>
+                          <td className="p-2">
+                            {dayjs(item.waktu).format("HH:mm:ss A")}
+                          </td>
+                          <td className="p-2">
+                            {item.status === "1" ? "Open" : "Close"}
+                          </td>
+                          <td className="p-2">{item.gerbang}</td>
+                          <td className="p-2">{item.gardu}</td>
+                          <td className="p-2">{item.jentrn}</td>
+                          <td className="p-2">{`Gol-${item.gol}`}</td>
+                          <td className="p-2">{item.resi}</td>
+                          <td className="p-2">{item.plat_number}</td>
+                          <td className="p-2">{item.id_kartu}</td>
+                          <td className="p-2">{item.gerbang_masuk}</td>
                         </tr>
-                      )}
-                    </React.Fragment>
-                  ))}
+                        {expandedImage === item.pict_url && (
+                          <tr className="bg-black/30">
+                            <td colSpan={13} className="p-0">
+                              <img
+                                src={item.pict_url
+                                  .replace("(", "")
+                                  .replace(")", "")}
+                                alt="expanded"
+                                className="w-full max-h-[500px]  object-contain rounded-lg"
+                                onClick={() => setExpandedImage(null)}
+                              />
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

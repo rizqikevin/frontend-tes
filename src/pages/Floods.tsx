@@ -10,7 +10,7 @@ import Header from "@/components/Header";
 
 export const Floods: React.FC = () => {
   const { user, logout } = useAuth();
-  const [selectedTab, setSelectedTab] = useState("chart");
+  const [selectedTab, setSelectedTab] = useState("daily");
   const [selectedOption, setSelectedOption] = useState("");
   const [startDate, setStartDate] = useState("27 - February - 2025");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);

@@ -7,7 +7,6 @@ import Header from "@/components/Header";
 import api from "@/services/api";
 import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 interface VoipLog {
   linkedid: string;
@@ -27,7 +26,7 @@ const Voip: React.FC = () => {
   const [data, setData] = useState<VoipLog[]>([]);
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
-
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
@@ -62,6 +61,7 @@ const Voip: React.FC = () => {
   }, []);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const response = await api.get("/voip/all", {
         params: { limit, page },
@@ -83,12 +83,14 @@ const Voip: React.FC = () => {
       setTotal(response.data.total);
     } catch (error) {
       console.error("Failed to fetch VOIP logs:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchData();
-  }, [page, limit, startDate, endDate]);
+  }, [page, limit]);
 
   const isDark = theme === "dark";
 
@@ -189,36 +191,47 @@ const Voip: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((item, i) => (
-                    <tr
-                      key={item.linkedid}
-                      className="border-b border-gray-700 hover:bg-gray-800 transition"
-                    >
-                      <td className="px-5 py-3">
-                        {(page - 1) * limit + i + 1}
-                      </td>
-                      <td className="px-5 py-3">
-                        {dayjs(item.created_at).format("DD/MM/YYYY")}
-                      </td>
-                      <td className="px-5 py-3">{item.calleridname}</td>
-                      <td className="px-5 py-3">{item.calleridnum}</td>
-                      <td className="px-5 py-3">{item.destcalleridname}</td>
-                      <td className="px-5 py-3">{item.destcalleridnum}</td>
-                      <td className="px-5 py-3">{item.dialstatus}</td>
-                      <td className="px-5 py-3">
-                        {dayjs(item.timedialbegin).format("HH:mm:ss")}
-                      </td>
-                      <td className="px-5 py-3">
-                        {dayjs(item.timebridgeenter).format("HH:mm:ss")}
-                      </td>
-                      <td className="px-5 py-3">
-                        {dayjs(item.timehangup).format("HH:mm:ss")}
-                      </td>
-                      <td className="px-3 py-2">
-                        {getDuration(item.timedialbegin, item.timehangup)}
+                  {loading ? (
+                    <tr>
+                      <td
+                        colSpan={14}
+                        className="p-4 text-center text-gray-400"
+                      >
+                        Loading...
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    data.map((item, i) => (
+                      <tr
+                        key={item.linkedid}
+                        className="border-b border-gray-700 hover:bg-gray-800 transition"
+                      >
+                        <td className="px-5 py-3">
+                          {(page - 1) * limit + i + 1}
+                        </td>
+                        <td className="px-5 py-3">
+                          {dayjs(item.created_at).format("DD/MM/YYYY")}
+                        </td>
+                        <td className="px-5 py-3">{item.calleridname}</td>
+                        <td className="px-5 py-3">{item.calleridnum}</td>
+                        <td className="px-5 py-3">{item.destcalleridname}</td>
+                        <td className="px-5 py-3">{item.destcalleridnum}</td>
+                        <td className="px-5 py-3">{item.dialstatus}</td>
+                        <td className="px-5 py-3">
+                          {dayjs(item.timedialbegin).format("HH:mm:ss")}
+                        </td>
+                        <td className="px-5 py-3">
+                          {dayjs(item.timebridgeenter).format("HH:mm:ss")}
+                        </td>
+                        <td className="px-5 py-3">
+                          {dayjs(item.timehangup).format("HH:mm:ss")}
+                        </td>
+                        <td className="px-3 py-2">
+                          {getDuration(item.timedialbegin, item.timehangup)}
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

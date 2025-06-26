@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     proxy: {
       "/api": {
-        target: "https://api.rizqikevin.my.id",
+        target: "http://10.101.63.8",
         changeOrigin: true,
         secure: false,
       },
