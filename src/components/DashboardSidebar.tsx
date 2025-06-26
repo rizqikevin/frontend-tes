@@ -304,8 +304,8 @@ export const DashboardSidebar: React.FC = () => {
         <div className="px-3 mb-2">
           <SidebarItem
             icon={<CloudDownloadIcon size={18} />}
-            text="Vlop"
-            to="/vlop"
+            text="Voip"
+            to="/voip"
           />
         </div>
         <div className="px-3 mb-2">

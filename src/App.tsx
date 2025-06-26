@@ -12,7 +12,7 @@ import "leaflet/dist/leaflet.css";
 import Login from "./pages/Login";
 import Dashboard from "./pages/direksi/Dashboard";
 import NotFound from "./pages/NotFound";
-import Vlop from "./pages/Vlop";
+import Voip from "./pages/Voip";
 import InputBusiness from "./pages/InputBusiness";
 import CCTVList from "./pages/CctvList";
 import VMS from "./pages/Vms";
@@ -71,10 +71,10 @@ const App = () => (
               }
             />
             <Route
-              path="/vlop"
+              path="/voip"
               element={
                 <ProtectedRoute>
-                  <Vlop />
+                  <Voip />
                 </ProtectedRoute>
               }
             />

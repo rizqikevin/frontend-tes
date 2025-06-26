@@ -22,14 +22,14 @@ interface VoipLog {
   created_at: string;
 }
 
-const Vlop: React.FC = () => {
+const Voip: React.FC = () => {
   const { user, logout } = useAuth();
   const [data, setData] = useState<VoipLog[]>([]);
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
 
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(100);
+  const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
@@ -290,4 +290,4 @@ const Vlop: React.FC = () => {
   );
 };
 
-export default Vlop;
+export default Voip;
