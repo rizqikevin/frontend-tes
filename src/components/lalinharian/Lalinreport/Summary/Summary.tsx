@@ -37,12 +37,14 @@ export const Summary: React.FC = () => {
 
       // const labels = data.map((item: any) => item["Nama Lokasi"]);
 
-      const labels = data.map((item) => {
+      const labels = data.map((item: string) => {
         const match = item["Nama Lokasi"].match(
           /CCTV\s.*?\s([A-E])\s(\(\d[A-Z]\))/
         );
         if (match && match.length >= 3) {
-          return `CCTV ${match[1]} ${match[2]}`;
+          const group = match[1].replace(" ", " ");
+          // return `CCTV ${match[1]} ${match[2]}`;
+          return group;
         }
         return item["Nama Lokasi"];
       });

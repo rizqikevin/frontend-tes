@@ -27,9 +27,26 @@ interface LineChartProps {
   title: string;
   datasets: any[];
   labels: string[];
+  date: Date;
+  onDateChange: (date: Date) => void;
+  onApply: () => void;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ title, datasets, labels }) => {
+const LineChart: React.FC<LineChartProps> = ({
+  title,
+  datasets,
+  labels,
+  date,
+  onDateChange,
+  onApply,
+}) => {
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = new Date(e.target.value);
+    onDateChange(selected); // Trigger temp state update
+  };
+
+  const formattedDate = date.toISOString().split("T")[0];
+
   return (
     <div className="w-full bg-dashboard-accent text-white rounded-xl px-6 py-4">
       {/* Header */}
@@ -38,9 +55,17 @@ const LineChart: React.FC<LineChartProps> = ({ title, datasets, labels }) => {
         <div className="flex items-center gap-2 mt-2 md:mt-0">
           <div className="flex items-center border border-gray-400 px-2 py-2 rounded-lg">
             <Calendar className="h-5 w-5 mr-2 text-gray-400" />
-            <span>27 - February - 2025</span>
+            <input
+              type="date"
+              value={formattedDate}
+              onChange={handleDateChange}
+              className="bg-transparent outline-none text-white"
+            />
           </div>
-          <Button className="bg-white text-black px-3 py-1 rounded text-sm">
+          <Button
+            onClick={onApply}
+            className="bg-white text-black px-3 py-1 rounded text-sm"
+          >
             Terapkan
           </Button>
         </div>
@@ -54,7 +79,7 @@ const LineChart: React.FC<LineChartProps> = ({ title, datasets, labels }) => {
             responsive: true,
             maintainAspectRatio: false,
             interaction: {
-              mode: "index" as const,
+              mode: "index",
               intersect: false,
             },
             plugins: {
@@ -74,23 +99,13 @@ const LineChart: React.FC<LineChartProps> = ({ title, datasets, labels }) => {
             },
             scales: {
               x: {
-                ticks: {
-                  color: "#fff",
-                  maxRotation: 0,
-                  autoSkip: true,
-                },
-                grid: {
-                  color: "#444",
-                },
+                ticks: { color: "#fff" },
+                grid: { color: "#444" },
               },
               y: {
-                ticks: {
-                  color: "#fff",
-                  beginAtZero: true as any,
-                } as any,
-                grid: {
-                  color: "#444",
-                },
+                beginAtZero: true,
+                ticks: { color: "#fff" },
+                grid: { color: "#444" },
               },
             },
           }}

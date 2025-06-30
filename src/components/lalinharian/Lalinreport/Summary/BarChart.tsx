@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -36,12 +36,23 @@ const BarChart: React.FC<BarChartProps> = ({
   date,
   onDateChange,
 }) => {
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = new Date(event.target.value);
-    onDateChange(selected);
+  const [localDate, setLocalDate] = useState<string>(
+    date.toISOString().split("T")[0]
+  );
+
+  // Sync jika parent mengubah date
+  useEffect(() => {
+    setLocalDate(date.toISOString().split("T")[0]);
+  }, [date]);
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalDate(e.target.value);
   };
 
-  const formattedDate = date.toISOString().split("T")[0];
+  const handleApply = () => {
+    const selected = new Date(localDate);
+    onDateChange(selected);
+  };
 
   return (
     <div className="w-full bg-dashboard-accent text-white rounded-xl px-6 py-4">
@@ -53,13 +64,13 @@ const BarChart: React.FC<BarChartProps> = ({
             <Calendar className="h-5 w-5 mr-2 text-gray-400" />
             <input
               type="date"
-              value={formattedDate}
+              value={localDate}
               onChange={handleDateChange}
               className="bg-transparent outline-none text-white"
             />
           </div>
           <Button
-            onClick={() => onDateChange(date)}
+            onClick={handleApply}
             className="bg-white text-black px-3 py-1 rounded text-sm"
           >
             Terapkan
@@ -77,7 +88,9 @@ const BarChart: React.FC<BarChartProps> = ({
               maintainAspectRatio: false,
               datasets: {
                 bar: {
-                  barThickness: 150,
+                  barThickness: 120,
+                  categoryPercentage: 0.6,
+                  barPercentage: 0.9,
                 },
               },
               plugins: {
