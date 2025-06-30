@@ -25,9 +25,24 @@ interface BarChartProps {
   title: string;
   datasets: any[];
   labels: string[];
+  date: Date;
+  onDateChange: (date: Date) => void;
 }
 
-const BarChart: React.FC<BarChartProps> = ({ title, datasets, labels }) => {
+const BarChart: React.FC<BarChartProps> = ({
+  title,
+  labels,
+  datasets,
+  date,
+  onDateChange,
+}) => {
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = new Date(event.target.value);
+    onDateChange(selected);
+  };
+
+  const formattedDate = date.toISOString().split("T")[0];
+
   return (
     <div className="w-full bg-dashboard-accent text-white rounded-xl px-6 py-4">
       {/* Header */}
@@ -36,65 +51,63 @@ const BarChart: React.FC<BarChartProps> = ({ title, datasets, labels }) => {
         <div className="flex items-center gap-2 mt-2 md:mt-0">
           <div className="flex items-center border border-gray-400 px-2 py-2 rounded-lg">
             <Calendar className="h-5 w-5 mr-2 text-gray-400" />
-            <span>27 - Febuari - 2024</span>
+            <input
+              type="date"
+              value={formattedDate}
+              onChange={handleDateChange}
+              className="bg-transparent outline-none text-white"
+            />
           </div>
-
-          <Button className="bg-white text-black px-3 py-1 rounded text-sm">
+          <Button
+            onClick={() => onDateChange(date)}
+            className="bg-white text-black px-3 py-1 rounded text-sm"
+          >
             Terapkan
           </Button>
         </div>
       </div>
 
       {/* Chart */}
-      <div className="h-[600px] w-[1500px]">
-        <Bar
-          data={{
-            labels,
-            datasets,
-          }}
-          options={{
-            datasets: {
-              bar: {
-                barThickness: 150,
-              },
-            },
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: true,
-                position: "bottom",
-                labels: {
-                  color: "white",
-                  boxWidth: 12,
-                  padding: 12,
+      <div className="overflow-x-auto">
+        <div className="min-w-[1200px] h-[600px]">
+          <Bar
+            data={{ labels, datasets }}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              datasets: {
+                bar: {
+                  barThickness: 150,
                 },
               },
-              tooltip: {
-                enabled: true,
-              },
-            },
-            scales: {
-              x: {
-                ticks: {
-                  color: "white",
+              plugins: {
+                legend: {
+                  display: true,
+                  position: "bottom",
+                  labels: {
+                    color: "white",
+                    boxWidth: 12,
+                    padding: 12,
+                  },
                 },
-                grid: {
-                  color: "#444",
-                },
-              },
-              y: {
-                ticks: {
-                  color: "white",
-                  beginAtZero: true as any,
-                } as any,
-                grid: {
-                  color: "#444",
+                tooltip: {
+                  enabled: true,
                 },
               },
-            },
-          }}
-        />
+              scales: {
+                x: {
+                  ticks: { color: "white" },
+                  grid: { color: "#444" },
+                },
+                y: {
+                  beginAtZero: true,
+                  ticks: { color: "white" },
+                  grid: { color: "#444" },
+                },
+              },
+            }}
+          />
+        </div>
       </div>
     </div>
   );

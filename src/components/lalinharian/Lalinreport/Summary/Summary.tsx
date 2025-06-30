@@ -1,120 +1,95 @@
 import BarChart from "./BarChart";
+import { useEffect, useState } from "react";
+import { api } from "@/services/api";
 
-const labels = [
-  "CCTV A (1A)",
-  "CCTV B (1B)",
-  "CCTV C (1C)",
-  "CCTV D (1D)",
-  "CCTV E (1E)",
-  "CCTV A (2A)",
-  "CCTV B (2B)",
-  "CCTV C (2C)",
-  "CCTV D (2D)",
-];
+function generateColor(index: number) {
+  const colors = [
+    "#FFBD35", // yellow
+    "#6AC36A", // green
+    "#FF5C5C", // red
+    "#7DA7D9", // blue
+    "#B566F4", // purple
+    "#567EFF", // blue variant
+    "#AAAAAA", // gray
+    "#F47C57", // orange
+    "#3DDAD7", // teal
+  ];
 
-const tableData = [
-  {
-    id: 1,
-    location: "CCTV COUNTING TEBING TINGGI (ANTRIAN EXIT) A (1A)",
-    total: 621,
-  },
-  {
-    id: 2,
-    location: "CCTV COUNTING TEBING TINGGI (ANTRIAN EXIT) B (1B)",
-    total: 1578,
-  },
-  {
-    id: 3,
-    location: "CCTV COUNTING TEBING TINGGI (ANTRIAN EXIT) C (1C)",
-    total: 145,
-  },
-  {
-    id: 4,
-    location: "CCTV COUNTING TEBING TINGGI (ANTRIAN EXIT) D (1D)",
-    total: 226,
-  },
-  {
-    id: 5,
-    location: "CCTV COUNTING TEBING TINGGI (ANTRIAN EXIT) E (1E)",
-    total: 246,
-  },
-  {
-    id: 6,
-    location: "CCTV COUNTING INDRAPURA (ANTRIAN EXIT) A (2A)",
-    total: 0,
-  },
-  {
-    id: 7,
-    location: "CCTV COUNTING INDRAPURA (ANTRIAN EXIT) B (2B)",
-    total: 0,
-  },
-  {
-    id: 8,
-    location: "CCTV COUNTING INDRAPURA (ANTRIAN EXIT) C (2C)",
-    total: 0,
-  },
-  {
-    id: 9,
-    location: "CCTV COUNTING INDRAPURA (ANTRIAN EXIT) D (2D)",
-    total: 0,
-  },
-];
-
-const datasets = [
-  {
-    label: "CCTV COUNTING TEBING TINGGI (ANTRIAN EXIT) A (1A)",
-    data: [800, 0, 0, 0, 0, 0, 0, 0, 0],
-    backgroundColor: "#FFBD35",
-  },
-  {
-    label: "CCTV COUNTING TEBING TINGGI (ANTRIAN EXIT) B (1B)",
-    data: [0, 3000, 0, 0, 0, 0, 0, 0, 0],
-    backgroundColor: "#6AC36A",
-  },
-  {
-    label: "CCTV COUNTING TEBING TINGGI (ANTRIAN EXIT) C (1C)",
-    data: [0, 0, 3000, 0, 0, 0, 0, 0, 0],
-    backgroundColor: "#FF5C5C",
-  },
-  {
-    label: "CCTV COUNTING TEBING TINGGI (ANTRIAN EXIT) D (1D)",
-    data: [0, 0, 0, 2000, 0, 0, 0, 0, 0],
-    backgroundColor: "#7DA7D9",
-  },
-  {
-    label: "CCTV COUNTING TEBING TINGGI (ANTRIAN EXIT) E (1E)",
-    data: [0, 0, 0, 0, 2500, 0, 0, 0, 0],
-    backgroundColor: "#B566F4",
-  },
-  {
-    label: "CCTV COUNTING INDRAPURA (ANTRIAN EXIT) A (2A)",
-    data: [0, 0, 0, 0, 0, 3000, 0, 0, 0],
-    backgroundColor: "#FFBD35",
-  },
-  {
-    label: "CCTV COUNTING INDRAPURA (ANTRIAN EXIT) B (2B)",
-    data: [0, 0, 0, 0, 0, 0, 2000, 0, 0],
-    backgroundColor: "#567EFF",
-  },
-  {
-    label: "CCTV COUNTING INDRAPURA (ANTRIAN EXIT) C (2C)",
-    data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    backgroundColor: "#AAAAAA",
-  },
-  {
-    label: "CCTV COUNTING INDRAPURA (ANTRIAN EXIT) D (2D)",
-    data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    backgroundColor: "#AAAAAA",
-  },
-];
+  return colors[index % colors.length];
+}
 
 export const Summary: React.FC = () => {
+  const [date, setDate] = useState(new Date("2025-06-26T00:00:00"));
+  const [chartData, setChartData] = useState<{
+    labels: string[];
+    datasets: any[];
+  }>({ labels: [], datasets: [] });
+  const [tableData, setTableData] = useState<
+    { location: string; total: number }[]
+  >([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async (d: number, m: number, y: number) => {
+    setLoading(true);
+    try {
+      const response = await api.get(`/counting/summary/${d}/${m}/${y}`);
+      const data = response.data;
+
+      // const labels = data.map((item: any) => item["Nama Lokasi"]);
+
+      const labels = data.map((item) => {
+        const match = item["Nama Lokasi"].match(
+          /CCTV\s.*?\s([A-E])\s(\(\d[A-Z]\))/
+        );
+        if (match && match.length >= 3) {
+          return `CCTV ${match[1]} ${match[2]}`;
+        }
+        return item["Nama Lokasi"];
+      });
+
+      // console.log(labels);
+
+      const datasets = data.map((item: any, index: number) => ({
+        label: item["Nama Lokasi"],
+        data: labels.map((label: string, i: number) =>
+          i === index ? parseInt(item.Total) : 0
+        ),
+        backgroundColor: generateColor(index),
+      }));
+
+      const table = data.map((item: any) => ({
+        location: item["Nama Lokasi"],
+        total: parseInt(item.Total),
+      }));
+
+      setChartData({ labels, datasets });
+      setTableData(table);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const d = date.getDate();
+    const m = date.getMonth() + 1;
+    const y = date.getFullYear();
+    fetchData(d, m, y);
+  }, [date]);
+
   const grandTotal = tableData.reduce((acc, curr) => acc + curr.total, 0);
 
   return (
     <div className="bg-dashboard-dark max-h-screen p-0 text-white space-y-4">
       <div className="p-1">
-        <BarChart title="Summary" labels={labels} datasets={datasets} />
+        <BarChart
+          title="Summary"
+          labels={chartData.labels}
+          datasets={chartData.datasets}
+          date={date}
+          onDateChange={setDate}
+        />
       </div>
       <div className="bg-dashboard-accent rounded-lg p-2">
         <table className="min-w-full divide-y divide-gray-700">
@@ -131,7 +106,7 @@ export const Summary: React.FC = () => {
           </thead>
           <tbody className="divide-y divide-gray-700">
             {tableData.map((item, index) => (
-              <tr key={item.id}>
+              <tr key={index}>
                 <td className="px-4 py-3 text-sm text-gray-200">
                   {String(index + 1).padStart(2, "0")}
                 </td>
