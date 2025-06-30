@@ -88,7 +88,7 @@ const BarChart: React.FC<BarChartProps> = ({
               maintainAspectRatio: false,
               datasets: {
                 bar: {
-                  barThickness: 120,
+                  barThickness: 50,
                   categoryPercentage: 0.6,
                   barPercentage: 0.9,
                 },
