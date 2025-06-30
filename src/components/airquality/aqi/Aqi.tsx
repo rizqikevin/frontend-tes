@@ -1,54 +1,20 @@
-const AQIData = [
-  {
-    date: "21/02/2023",
-    day: "Monday",
-    level: "Unhealthy for Sensitive Groups",
-    aqi: "120 AQI US",
-    humidity: "65%",
-    wind: "10/km",
-    temp: "25 c",
-    color: "bg-orange-500",
-  },
-  {
-    date: "21/02/2023",
-    day: "Sunday",
-    level: "Unhealthy for Sensitive Groups",
-    aqi: "120 AQI US",
-    humidity: "65%",
-    wind: "10/km",
-    temp: "25 c",
-    color: "bg-purple-500",
-  },
-  {
-    date: "21/02/2023",
-    day: "Saturday",
-    level: "Unhealthy for Sensitive Groups",
-    aqi: "120 AQI US",
-    humidity: "65%",
-    wind: "10/km",
-    temp: "25 c",
-    color: "bg-purple-600",
-  },
-  {
-    date: "21/02/2023",
-    day: "Friday",
-    level: "Unhealthy for Sensitive Groups",
-    aqi: "120 AQI US",
-    humidity: "65%",
-    wind: "10/km",
-    temp: "25 c",
-    color: "bg-red-500",
-  },
-];
+import React, { useEffect, useState } from "react";
+import { useAqiStore } from "@/stores/useAqiStore";
 
 export const Aqi: React.FC = () => {
+  const { data, fetchAQI, page, limit, loading } = useAqiStore();
+
+  useEffect(() => {
+    fetchAQI();
+  }, [page, limit]);
+
   return (
     <div className="min-h-screen text-white p-6 space-y-6 font-sans">
       {/* Header */}
       <div className="bg-dashboard-accent p-4 rounded-xl flex items-center justify-between shadow-md">
         <div className="flex items-center space-x-4">
           <div className="bg-orange-500 text-white px-4 py-2 rounded-lg text-center">
-            <p className="text-2xl font-bold">86</p>
+            <p className="text-2xl font-bold">{data[0].ispu}</p>
             <p className="text-sm">AQI US</p>
           </div>
           <div>
@@ -69,19 +35,19 @@ export const Aqi: React.FC = () => {
           </div>
           <div>
             <p className="text-gray-400">Air Quality Index</p>
-            <p>XXXX</p>
+            <p>{data[0].ispu}</p>
           </div>
           <div>
-            <p className="text-gray-400">Weather</p>
-            <p>XXXX</p>
+            <p className="text-gray-400">Sensor Name</p>
+            <p>{data[0].sensor_name}</p>
           </div>
           <div>
             <p className="text-gray-400">PM10</p>
-            <p>84 hg/m³</p>
+            <p>{data[0].pm10}</p>
           </div>
           <div>
             <p className="text-gray-400">PM2.5</p>
-            <p>56 hg/m³</p>
+            <p>{data[0].pm25}</p>
           </div>
         </div>
 
@@ -110,24 +76,44 @@ export const Aqi: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {AQIData.map((item, idx) => (
-                <tr key={idx} className="border-b border-gray-700">
-                  <td className="p-2">{item.date}</td>
-                  <td className="p-2">{item.day}</td>
-                  <td className="p-2">
-                    <div
-                      className={`flex items-center justify-between px-3 py-1 rounded-md ${item.color}`}
-                    >
-                      <span>{item.level}</span>
-                      <span className="ml-2 text-sm">{item.aqi}</span>
-                      <span className="ml-2">❤️</span>
-                    </div>
+              {loading ? (
+                <tr>
+                  <td colSpan={6} className="text-center text-gray-400 p-4">
+                    Loading data...
                   </td>
-                  <td className="p-2">{item.humidity}</td>
-                  <td className="p-2">{item.wind}</td>
-                  <td className="p-2">{item.temp}</td>
                 </tr>
-              ))}
+              ) : data.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="text-center text-gray-400 p-4">
+                    Tidak ada data AQI
+                  </td>
+                </tr>
+              ) : (
+                data.map((item, idx) => (
+                  <tr key={idx} className="border-b border-gray-700">
+                    <td className="p-2">
+                      {new Date(item.tgl).toLocaleDateString("id-ID")}
+                    </td>
+                    <td className="p-2">
+                      {new Date(item.tgl).toLocaleDateString("en-US", {
+                        weekday: "long",
+                      })}
+                    </td>
+                    <td className="p-2">
+                      <div
+                        className={`flex items-center justify-between px-3 py-1 rounded-md bg-orange-500`}
+                      >
+                        <span>Level</span>
+                        <span className="ml-2 text-sm">{item.ispu} AQI US</span>
+                        <span className="ml-2">❤️</span>
+                      </div>
+                    </td>
+                    <td className="p-2">{item.humidity}%</td>
+                    <td className="p-2">10/km</td>
+                    <td className="p-2">{item.suhu}°C</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -6,13 +6,6 @@ import { Aqi } from "@/components/airquality/aqi/Aqi";
 import { Daily } from "@/components/airquality/daily/Daily";
 import { Monthly } from "@/components/airquality/monthly/Monthly";
 import { Yearly } from "@/components/airquality/yearly/Yearly";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown, LogOut, Search } from "lucide-react";
 import Header from "@/components/Header";
 
 export const AirQuality: React.FC = () => {
