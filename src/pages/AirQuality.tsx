@@ -132,9 +132,9 @@ export const AirQuality: React.FC = () => {
                 Yearly
               </Button> */}
             </div>
-            <div className="bg-dashboard-accent rounded-lg p-1 flex items-center">
+            {/* <div className="bg-dashboard-accent rounded-lg p-1 flex items-center">
               <Button className="bg-dashboard-accent text-white">Search</Button>
-            </div>
+            </div> */}
           </div>
           {renderContent()}
         </main>

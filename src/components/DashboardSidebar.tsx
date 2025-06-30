@@ -244,7 +244,7 @@ export const DashboardSidebar: React.FC = () => {
               />
               <span>Lalin Report</span>
             </NavLink>
-            <NavLink
+            {/* <NavLink
               to="/lalin-portable-report"
               className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
                 theme === "dark"
@@ -258,7 +258,7 @@ export const DashboardSidebar: React.FC = () => {
                 }`}
               />
               <span>Lain Portable Report</span>
-            </NavLink>
+            </NavLink> */}
             <NavLink
               to="/camera"
               className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
