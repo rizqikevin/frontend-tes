@@ -34,6 +34,7 @@ export const Daily: React.FC = () => {
     setLoading(true);
     try {
       const formattedDate = selectedDate.toISOString().split("T")[0];
+      console.log(formattedDate);
       const res = await api.get(`/sensor/pdb`, {
         params: {
           page,

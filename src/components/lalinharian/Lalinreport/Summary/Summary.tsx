@@ -19,7 +19,7 @@ function generateColor(index: number) {
 }
 
 export const Summary: React.FC = () => {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date("2025-06-26"));
   const [chartData, setChartData] = useState<{
     labels: string[];
     datasets: any[];

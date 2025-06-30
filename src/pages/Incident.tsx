@@ -2,44 +2,82 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { Button } from "@/components/ui/button";
-import { Calendar, Image, Video } from "lucide-react";
+import { Calendar, Image, Video, X } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Header from "@/components/Header";
+import api from "@/services/api";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useIncidentStore } from "@/stores/useIncidentStore";
 
-// Mock data for the table
-const MockIcidentData = Array.from({ length: 9 }).map((_, i) => ({
-  id: i + 1,
-  date: "28/02/2025",
-  time: "14:09:35 PM",
-  status: "Open",
-  gate: "Kuala Tanjung",
-  image: "https://via.placeholder.com/80x45.png?text=ANPR",
-}));
+interface IncidentRow {
+  id: string;
+  time_logging: string;
+  date_logging: string;
+  url_image: string;
+  url_video: string;
+  cam_loc: string;
+  description: string;
+  cam_merk: string;
+  name: string;
+}
 
 export const Incident: React.FC = () => {
   const { user, logout } = useAuth();
-  const [startDate, setStartDate] = useState("01 - Januari - 2024");
-  const [endDate, setEndDate] = useState("31 - Desember - 2024");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [data, setData] = useState<IncidentRow[]>([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
+  const [expandedVideo, setExpandedVideo] = useState<string | null>(null);
+  const { selectedDate, setSelectedDate, page, limit, setPage, setLimit } =
+    useIncidentStore();
+
+  const formattedDate = selectedDate.toISOString().split("T")[0];
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      console.log("Fetching for date:", formattedDate);
+      const res = await api.get("/incident", {
+        params: { page, limit, date: formattedDate },
+      });
+
+      console.log(" API Request Params:", {
+        page,
+        limit,
+        date: formattedDate,
+      });
+
+      setData(res.data.data.rows);
+      setTotal(Number(res.data.data.total));
+    } catch (err) {
+      console.error("Gagal mengambil data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const handleSidebarChange = (event: CustomEvent) => {
-      setIsSidebarCollapsed(event.detail.collapsed);
-    };
+    fetchData();
+  }, [page, limit, selectedDate]);
 
+  const totalPages = Math.ceil(total / limit);
+
+  useEffect(() => {
     const checkTheme = () => {
       const savedTheme =
         (localStorage.getItem("theme") as "light" | "dark") || "dark";
       setTheme(savedTheme);
     };
 
-    // Initial theme check
+    const handleSidebarChange = (event: CustomEvent) => {
+      setIsSidebarCollapsed(event.detail.collapsed);
+    };
+
     checkTheme();
-
-    // Listen for theme changes
     const themeInterval = setInterval(checkTheme, 100);
-
     window.addEventListener(
       "sidebarStateChange",
       handleSidebarChange as EventListener
@@ -54,8 +92,6 @@ export const Incident: React.FC = () => {
     };
   }, []);
 
-  const isDark = theme === "dark";
-
   return (
     <div className="flex min-h-screen bg-dashboard-dark text-white">
       <DashboardSidebar />
@@ -66,131 +102,122 @@ export const Incident: React.FC = () => {
         }`}
       >
         <Header
-          isDark={isDark}
-          user={
-            user
-              ? {
-                  name: user.name,
-                  role: String(user.role),
-                }
-              : null
-          }
+          isDark={theme === "dark"}
+          user={user ? { name: user.name, role: String(user.role) } : null}
           logout={logout}
         />
+
         <main className="p-8">
           <div className="flex justify-between mb-8">
-            <div className="flex justify-between items-center px-0">
-              <div>
-                <Button
-                  variant="outline"
-                  className="bg-trasparent text-white border-white rounded-lg hover:bg-gray-700"
-                >
-                  Report Insiden
-                </Button>
-              </div>
-            </div>
+            <Button
+              variant="outline"
+              className="text-white border-white rounded-lg hover:bg-gray-700"
+            >
+              Report Insiden
+            </Button>
 
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <div className="border border-white rounded-lg flex item-center px-4 py-2 bg-dashboard-accent">
-                  <Calendar className="h-5 w-5 mr-2 text-gray-400" />
-                  <span>{startDate}</span>
-                </div>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center border border-gray-400 px-2 py-2 rounded-lg text-white">
+                <Calendar className="h-5 w-5 mr-2" />
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={(formattedDate: Date) =>
+                    setSelectedDate(formattedDate)
+                  }
+                  className="bg-transparent focus:outline-none text-white"
+                />
               </div>
-              <div className="flex items-center">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5 12H19M19 12L12 5M19 12L12 19"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-
-              <div className="relative">
-                <div className="border border-white rounded-lg flex items-center px-4 py-2 bg-dashboard-accent">
-                  <Calendar className="h-5 w-5 mr-2 text-gray-400" />
-                  <span>{endDate}</span>
-                </div>
-              </div>
-              <Button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-700">
-                Search
+              <Button
+                className="bg-white text-black"
+                onClick={() => {
+                  fetchData();
+                }}
+              >
+                Terapkan
               </Button>
             </div>
           </div>
 
           <div className="bg-dashboard-accent rounded-lg p-6 mb-8">
-            <div className="flex justify-between items-center px-0">
-              <div>
-                <h1 className="text-xl font-medium">Log Insiden</h1>
-                <p className="text-gray-400">Jumlah Aktivitas Log Insiden</p>
-              </div>
-            </div>
-            <div className="overflow-x-auto mt-5">
-              <table className="w-full">
+            <h1 className="text-xl font-medium mb-1">Log Insiden</h1>
+            <p className="text-gray-400 mb-4">Jumlah Aktivitas Log Insiden</p>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
                 <thead>
                   <tr>
-                    <th className="pr-2 py-2 flex justify-center items-center">
-                      #
-                    </th>
-                    <th className="pr-48 py-2">Image</th>
-                    <th className="pr-48 py-2">Tanggal</th>
-                    <th className="pr-48 py-2 flex justify-center items-center">
-                      Waktu
-                    </th>
-                    <th className="pr-48 py-2">Keterangan</th>
-                    <th className="pr-48 py-2">Status</th>
+                    <th className="pl-20">#</th>
+                    <th className="px-4">Gambar</th>
+                    <th className="px-4">Tanggal</th>
+                    <th className="px-4">Waktu</th>
+                    <th className="px-4">Nama</th>
+                    <th className="px-4">Merk Kamera</th>
+                    <th className="px-4">Lokasi Kamera</th>
+                    <th className="px-4">Deskripsi</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {MockIcidentData.map((row, index) => (
-                    <tr key={row.id} className="border-b border-gray-700">
-                      <td className="p-2">
-                        <div className="flex items-center gap-2">
-                          <Button
-                            className="text-white hover:bg-gray-700"
-                            variant="ghost"
-                          >
-                            <Image size={16} />
-                          </Button>
-                          <Button
-                            className="text-white hover:bg-gray-700"
-                            variant="ghost"
-                          >
-                            <Video size={16} />
-                          </Button>
-                          <Checkbox type="submit" className="rounded-none" />
-                          <span className="ml-2">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                        </div>
+                  {loading ? (
+                    <tr>
+                      <td
+                        colSpan={14}
+                        className="p-4 text-center text-gray-400"
+                      >
+                        Loading...
                       </td>
-
-                      <td className="p-2">
-                        {index === 0 ? (
+                    </tr>
+                  ) : (
+                    data.map((row, index) => (
+                      <tr key={row.id} className="border-b border-gray-700">
+                        <td className="py-2">
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="ghost"
+                              onClick={() => setExpandedImage(row.url_image)}
+                            >
+                              <Image size={16} />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              onClick={() => setExpandedVideo(row.url_video)}
+                            >
+                              <Video size={16} />
+                            </Button>
+                            <Checkbox className="rounded-none" />
+                            <span className="ml-2">
+                              {index + 1 + (page - 1) * limit}
+                            </span>
+                          </div>
+                        </td>
+                        <td>
                           <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Anjungan_JPO_Karet_Sudirman_Jakarta.jpg"
-                            alt="img"
+                            src={row.url_image}
+                            alt="preview"
                             className="w-20 h-12 object-cover"
                           />
-                        ) : (
-                          <div className="w-20 h-12 bg-gray-600"></div>
-                        )}
-                      </td>
-                      <td className="p-2">{row.date}</td>
-                      <td className="p-2">{row.time}</td>
-                      <td className="pl-10">{row.status}</td>
-                      <td className="p-2">{row.gate}</td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="px-4">
+                          {new Date(row.date_logging).toLocaleDateString(
+                            "id-ID"
+                          )}
+                        </td>
+                        <td className="px-4">
+                          {new Date(row.time_logging).toLocaleTimeString(
+                            "id-ID",
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                            }
+                          )}
+                        </td>
+                        <td className="px-4">{row.name}</td>
+                        <td className="px-4">{row.cam_merk}</td>
+                        <td className="px-4">{row.cam_loc}</td>
+                        <td className="px-4">{row.description}</td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -198,16 +225,32 @@ export const Incident: React.FC = () => {
             <div className="flex justify-end items-center mt-4 text-sm">
               <div>
                 Rows per page:
-                <select className="ml-2 bg-transparent border border-gray-700 px-2 py-1">
-                  <option value="10">09</option>
+                <select
+                  className="ml-2 bg-transparent border border-gray-700 rounded px-2 py-1"
+                  value={limit}
+                  onChange={(e) => {
+                    setPage(1);
+                    setLimit(Number(e.target.value));
+                  }}
+                >
+                  <option value="10">10</option>
                   <option value="20">20</option>
-                  <option value="30">50</option>
+                  <option value="30">30</option>
+                  <option value="100">100</option>
                 </select>
               </div>
+
               <div className="flex items-center ml-5">
-                <span className="mr-4">1-09 of 100</span>
+                <span className="mr-4">
+                  {Math.min((page - 1) * limit + 1, total)}-
+                  {Math.min(page * limit, total)} of {total}
+                </span>
                 <div className="inline-flex">
-                  <button className="px-2 py-1">
+                  <button
+                    className="px-2 py-1"
+                    onClick={() => setPage(Math.max(page - 1, 1))}
+                    disabled={page === 1}
+                  >
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                       <path
                         d="M12.5 15L7.5 10L12.5 5"
@@ -218,7 +261,11 @@ export const Incident: React.FC = () => {
                       />
                     </svg>
                   </button>
-                  <button className="px-2 py-1">
+                  <button
+                    className="px-2 py-1"
+                    onClick={() => setPage(Math.min(page + 1, totalPages))}
+                    disabled={page === totalPages}
+                  >
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                       <path
                         d="M7.5 15L12.5 10L7.5 5"
@@ -235,6 +282,41 @@ export const Incident: React.FC = () => {
           </div>
         </main>
       </div>
+
+      {/* Modal Gambar */}
+      {expandedImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center">
+          <button
+            className="absolute top-4 right-4 text-white"
+            onClick={() => setExpandedImage(null)}
+          >
+            <X size={24} />
+          </button>
+          <img
+            src={expandedImage}
+            alt="Expanded"
+            className="max-h-[80vh] rounded-lg"
+          />
+        </div>
+      )}
+
+      {/* Modal Video */}
+      {expandedVideo && (
+        <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center">
+          <button
+            className="absolute top-4 right-4 text-white"
+            onClick={() => setExpandedVideo(null)}
+          >
+            <X size={24} />
+          </button>
+          <video
+            src={expandedVideo}
+            controls
+            autoPlay
+            className="w-[90%] max-w-4xl rounded-lg"
+          />
+        </div>
+      )}
     </div>
   );
 };
