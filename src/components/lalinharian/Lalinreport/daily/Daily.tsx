@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LineChart from "./Linechart";
-import api from "@/services/api"; // pastikan ini sudah mengarah ke axios instance kamu
+import api from "@/services/api";
 
 const colorPalette = [
   "#FACC15",
