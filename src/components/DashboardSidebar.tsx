@@ -138,7 +138,7 @@ export const DashboardSidebar: React.FC = () => {
 
   return (
     <div
-      className={`fixed left-0 z-10 min-h-screen transition-all duration-500 ease-in-out ${
+      className={`fixed left-0 z-50 min-h-screen transition-all duration-500 ease-in-out md:overflow-auto  md:w-64  ${
         isSidebarCollapsed ? "w-8" : "w-64"
       } ${
         theme === "dark"
@@ -394,52 +394,55 @@ export const DashboardSidebar: React.FC = () => {
         </div>
       </div>
 
-      <div className="px-3 mt-auto absolute bottom-64 w-full">
-        <div
-          className={`text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4 sticky top-0 ${
-            theme === "dark" ? "text-gray-400" : "text-gray-700"
-          }`}
-        >
-          SETTINGS
+      <div className="mt-10 mb-auto px-3 space-y-4">
+        <div>
+          <div
+            className={`text-xs font-semibold uppercase tracking-wider mb-2 px-4 ${
+              theme === "dark" ? "text-gray-400" : "text-gray-700"
+            }`}
+          >
+            SETTINGS
+          </div>
+          <SidebarItem
+            icon={<Bell size={18} />}
+            text="Notification"
+            to="/dashboard/notifications"
+          />
+          <SidebarItem
+            icon={<Settings size={18} />}
+            text="Settings"
+            hasSubmenu
+            expanded={expandedItem === "settings"}
+            onClick={() => toggleExpand("settings")}
+          />
         </div>
-        <SidebarItem
-          icon={<Bell size={18} />}
-          text="Notification"
-          to="/dashboard/notifications"
-        />
-        <SidebarItem
-          icon={<Settings size={18} />}
-          text="Settings"
-          hasSubmenu
-          expanded={expandedItem === "settings"}
-          onClick={() => toggleExpand("settings")}
-        />
       </div>
+      <div className="mt-auto pt-4">
+        <div className="px-3 mt-auto absolute bottom-4 flex justify-between w-full pr-6">
+          <button
+            className={`flex items-center space-x-2 px-4 py-1 text-sm transition-colors ${
+              theme === "light"
+                ? "bg-blue-500 text-white"
+                : "text-gray-300 bg-transparent"
+            } hover:bg-gray-700 rounded`}
+            onClick={() => toggleTheme("light")}
+          >
+            <Sun size={16} />
+            <span className="text-sm">Light</span>
+          </button>
 
-      <div className="px-3 mt-auto absolute bottom-4 flex justify-between w-full pr-6">
-        <button
-          className={`flex items-center space-x-2 px-4 py-1 text-sm transition-colors ${
-            theme === "light"
-              ? "bg-blue-500 text-white"
-              : "text-gray-300 bg-transparent"
-          } hover:bg-gray-700 rounded`}
-          onClick={() => toggleTheme("light")}
-        >
-          <Sun size={16} />
-          <span className="text-sm">Light</span>
-        </button>
-
-        <button
-          className={`flex items-center space-x-2 px-4 py-1 text-sm  transition-colors ${
-            theme === "dark"
-              ? "bg-blue-500 text-white"
-              : "text-gray-600 bg-transparent"
-          } hover:bg-gray-100 rounded`}
-          onClick={() => toggleTheme("dark")}
-        >
-          <Moon size={16} />
-          <span className="text-sm">Dark</span>
-        </button>
+          <button
+            className={`flex items-center space-x-2 px-4 py-1 text-sm transition-colors ${
+              theme === "dark"
+                ? "bg-blue-500 text-white"
+                : "text-gray-600 bg-transparent"
+            } hover:bg-gray-100 rounded`}
+            onClick={() => toggleTheme("dark")}
+          >
+            <Moon size={16} />
+            <span className="text-sm">Dark</span>
+          </button>
+        </div>
       </div>
     </div>
   );

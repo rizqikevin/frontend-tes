@@ -6,20 +6,11 @@ import { Chart } from "@/components/pdb/chart/Chart";
 import { Daily } from "@/components/pdb/daily/Daily";
 import { Monthly } from "@/components/pdb/monthly/Monthly";
 import { Yearly } from "@/components/pdb/yearly/Yearly";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown, LogOut, Search } from "lucide-react";
 import Header from "@/components/Header";
 
 export const Pdb: React.FC = () => {
   const { user, logout } = useAuth();
   const [selectedTab, setSelectedTab] = useState("daily");
-  const [selectedOption, setSelectedOption] = useState("");
-  const [startDate, setStartDate] = useState("27 - February - 2025");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 

@@ -5,19 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Daily } from "@/components/lalinharian/Lalinreport/daily/Daily";
 import { Summary } from "@/components/lalinharian/Lalinreport/Summary/Summary";
 import { Monthly } from "@/components/lalinharian/Lalinreport/Monthly/Monthly";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown, LogOut } from "lucide-react";
 import Header from "@/components/Header";
 
 export const LalinReport: React.FC = () => {
   const { user, logout } = useAuth();
   const [selectedTab, setSelectedTab] = useState("summary");
-  const [startDate, setStartDate] = useState("27 - February - 2025");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
