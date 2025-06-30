@@ -6,7 +6,7 @@ export const Aqi: React.FC = () => {
 
   useEffect(() => {
     fetchAQI();
-  }, [page, limit]);
+  }, []);
 
   return (
     <div className="min-h-screen text-white p-6 space-y-6 font-sans">
