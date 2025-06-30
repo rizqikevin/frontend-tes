@@ -14,7 +14,7 @@ export const Aqi: React.FC = () => {
       <div className="bg-dashboard-accent p-4 rounded-xl flex items-center justify-between shadow-md">
         <div className="flex items-center space-x-4">
           <div className="bg-orange-500 text-white px-4 py-2 rounded-lg text-center">
-            <p className="text-2xl font-bold">{data[0].ispu}</p>
+            <p className="text-2xl font-bold">{data[0]?.ispu}</p>
             <p className="text-sm">AQI US</p>
           </div>
           <div>
@@ -35,19 +35,19 @@ export const Aqi: React.FC = () => {
           </div>
           <div>
             <p className="text-gray-400">Air Quality Index</p>
-            <p>{data[0].ispu}</p>
+            <p>{data[0]?.ispu}</p>
           </div>
           <div>
             <p className="text-gray-400">Sensor Name</p>
-            <p>{data[0].sensor_name}</p>
+            <p>{data[0]?.sensor_name}</p>
           </div>
           <div>
             <p className="text-gray-400">PM10</p>
-            <p>{data[0].pm10}</p>
+            <p>{data[0]?.pm10}</p>
           </div>
           <div>
             <p className="text-gray-400">PM2.5</p>
-            <p>{data[0].pm25}</p>
+            <p>{data[0]?.pm25}</p>
           </div>
         </div>
 
