@@ -109,8 +109,7 @@ const BarChart: React.FC<BarChartProps> = ({
               },
               scales: {
                 x: {
-                  ticks: { color: "white" },
-                  grid: { color: "#444" },
+                  display: false,
                 },
                 y: {
                   beginAtZero: true,

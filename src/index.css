@@ -45,6 +45,29 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  .react-datepicker {
+  background-color: #1e293b !important;
+  border: none;
+  color: white;
+}
+
+.react-datepicker__header {
+  background-color: #334155 !important;
+  border-bottom: none;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__current-month {
+  color: white !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #3b82f6 !important;
+}
+
+
   /* CSS untuk menyembunyikan scrollbar */
 .scrollbar-hidden {
   scrollbar-width: none; /* Firefox */

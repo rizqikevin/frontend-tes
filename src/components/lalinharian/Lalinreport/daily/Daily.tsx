@@ -27,8 +27,8 @@ export const Daily: React.FC = () => {
       const m = targetDate.getMonth() + 1;
       const y = targetDate.getFullYear();
 
-      const res = await api.get(`/counting/daily/${d}/${m}/${y}`);
-      const data = res.data;
+      const response = await api.get(`/counting/daily/${d}/${m}/${y}`);
+      const data = response.data;
 
       const sample = data[0];
       const locationNames = Object.keys(sample).filter(

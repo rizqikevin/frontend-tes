@@ -19,7 +19,7 @@ function generateColor(index: number) {
 }
 
 export const Summary: React.FC = () => {
-  const [date, setDate] = useState(new Date("2025-06-26T00:00:00"));
+  const [date, setDate] = useState(new Date());
   const [chartData, setChartData] = useState<{
     labels: string[];
     datasets: any[];
@@ -27,10 +27,8 @@ export const Summary: React.FC = () => {
   const [tableData, setTableData] = useState<
     { location: string; total: number }[]
   >([]);
-  const [loading, setLoading] = useState(true);
 
   const fetchData = async (d: number, m: number, y: number) => {
-    setLoading(true);
     try {
       const response = await api.get(`/counting/summary/${d}/${m}/${y}`);
       const data = response.data;
@@ -68,8 +66,6 @@ export const Summary: React.FC = () => {
       setTableData(table);
     } catch (error) {
       console.error("Failed to fetch data:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
