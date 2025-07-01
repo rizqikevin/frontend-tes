@@ -41,13 +41,13 @@ export const Incident: React.FC = () => {
     try {
       console.log("Fetching for date:", formattedDate);
       const res = await api.get("/incident", {
-        params: { page, limit, date: formattedDate },
+        params: { page, limit, date_logging: formattedDate },
       });
 
       console.log(" API Request Params:", {
         page,
         limit,
-        date: formattedDate,
+        date_logging: formattedDate,
       });
 
       setData(res.data.data.rows);
@@ -61,7 +61,7 @@ export const Incident: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, [page, limit, selectedDate]);
+  }, [page, limit]);
 
   const totalPages = Math.ceil(total / limit);
 
@@ -121,9 +121,7 @@ export const Incident: React.FC = () => {
                 <Calendar className="h-5 w-5 mr-2" />
                 <DatePicker
                   selected={selectedDate}
-                  onChange={(formattedDate: Date) =>
-                    setSelectedDate(formattedDate)
-                  }
+                  onChange={(date: Date) => setSelectedDate(date)}
                   className="bg-transparent focus:outline-none text-white"
                 />
               </div>
