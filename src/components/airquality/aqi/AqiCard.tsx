@@ -1,0 +1,67 @@
+// src/components/AqiHeader.tsx
+import React from "react";
+
+interface AqiHeaderProps {
+  data: any[];
+}
+
+const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
+  const aqi = data[0];
+
+  const getAqiCategory = (aqi: number): string => {
+    if (aqi <= 50) return "Good";
+    if (aqi <= 100) return "Moderate";
+    if (aqi <= 150) return "Unhealthy for Sensitive Groups";
+    if (aqi <= 200) return "Unhealthy";
+    if (aqi <= 300) return "Very Unhealthy";
+    return "Hazardous";
+  };
+
+  return (
+    <div className="bg-dashboard-accent p-4 rounded-xl flex items-center justify-between shadow-md">
+      <div className="flex items-center space-x-4">
+        <div className="bg-orange-500 text-white px-4 py-2 rounded-lg text-center">
+          <p className="text-2xl font-bold">{aqi?.ispu}</p>
+          <p className="text-sm">AQI US</p>
+        </div>
+        <div>
+          <p className="text-sm">Live Air Quality (AQI)</p>
+          <p className="font-semibold text-lg">
+            {getAqiCategory(aqi?.ispu || 0)}
+          </p>
+        </div>
+      </div>
+
+      <div className="flex items-center text-left gap-32 text-sm">
+        <div>
+          <p className="text-gray-400">Location</p>
+          <p>Kuala Tanjung</p>
+        </div>
+        <div>
+          <p className="text-gray-400">Air Quality Index</p>
+          <p>{aqi?.ispu}</p>
+        </div>
+        <div>
+          <p className="text-gray-400">Sensor Name</p>
+          <p>{aqi?.sensor_name}</p>
+        </div>
+        <div>
+          <p className="text-gray-400">PM10</p>
+          <p>{aqi?.pm10}</p>
+        </div>
+        <div>
+          <p className="text-gray-400">PM2.5</p>
+          <p>{aqi?.pm25}</p>
+        </div>
+      </div>
+
+      <div>
+        <div className="bg-gradient-to-br from-orange-500 to-pink-600 p-3 rounded-full">
+          <span className="text-2xl">❤️</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AqiHeader;
