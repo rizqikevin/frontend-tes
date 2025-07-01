@@ -108,13 +108,13 @@ export const Incident: React.FC = () => {
         />
 
         <main className="p-8">
-          <div className="flex justify-between mb-8">
-            <Button
+          <div className="flex justify-end mb-8">
+            {/* <Button
               variant="outline"
               className="text-white border-white rounded-lg hover:bg-gray-700"
             >
               Report Insiden
-            </Button>
+            </Button> */}
 
             <div className="flex items-center gap-2">
               <div className="flex items-center border border-gray-400 px-2 py-2 rounded-lg text-white">

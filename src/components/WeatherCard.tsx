@@ -27,7 +27,7 @@ const WeatherCard: React.FC = () => {
         );
 
         const data = response.data;
-        console.log(data);
+        // console.log(data);
 
         setWeather({
           location: data.location.name,

@@ -18,7 +18,7 @@ export const login = async (
   credentials: LoginCredentials
 ): Promise<LoginResponse> => {
   try {
-    console.log("Attempting login with:", credentials);
+    // console.log("Attempting login with:", credentials);
     const { data } = await api.post<LoginResponse>("/auth/login", credentials);
 
     if (!data.token) {

@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 // Use relative URL in development to work with Vite proxy
 const API_URL = import.meta.env.VITE_API_URL as string;
-console.log("API URL:", API_URL);
+// console.log("API URL:", API_URL);
 
 // Define error response type
 interface ErrorResponse {
@@ -37,15 +37,7 @@ api.interceptors.request.use(
 
 // Add response interceptor for logging and error handling
 api.interceptors.response.use(
-  (response) => {
-    // Log response details
-    console.log("API Response:", {
-      status: response.status,
-      data: response.data,
-      headers: response.headers,
-    });
-    return response;
-  },
+  (response) => response,
   (error: AxiosError<ErrorResponse>) => {
     console.error("Response error:", error);
 
@@ -90,21 +82,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-// // Test API connection
-// export const testApiConnection = async () => {
-//   try {
-//     console.log("Testing API connection...");
-//     const response = await api.get("/health");
-//     console.log("API connection test successful:", response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("API connection test failed:", error);
-//     throw error;
-//   }
-// };
-
-// // Run API connection test
-// testApiConnection().catch(console.error);
 
 export default api;

@@ -135,7 +135,7 @@ const Vlop: React.FC = () => {
           <div className="flex justify-between mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
-                <Button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200">
+                {/* <Button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200">
                   Report
                 </Button>
                 <Button
@@ -143,7 +143,7 @@ const Vlop: React.FC = () => {
                   variant="outline"
                 >
                   Camera
-                </Button>
+                </Button> */}
               </div>
             </div>
 
