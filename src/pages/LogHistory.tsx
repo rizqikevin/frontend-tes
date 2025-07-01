@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { Button } from "@/components/ui/button";
-import { Calendar, ChevronDown, LogOut } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -172,7 +166,7 @@ const LogHistory: React.FC = () => {
 
         <main className="p-8">
           {/* Date filters */}
-          <div className="flex justify-between mb-8">
+          <div className="flex flex-col lg:flex-row justify-between gap-4 mb-8 flex-wrap">
             <div className="flex justify-between items-center px-0">
               <div className="flex items-center space-x-4">
                 <Input
@@ -180,10 +174,10 @@ const LogHistory: React.FC = () => {
                   placeholder="Search..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-[800px]  bg-dashboard-accent"
+                  className="w-full lg:w-[800px]  bg-dashboard-accent"
                 />
                 <Select value={filterLog} onValueChange={setFilterLog}>
-                  <SelectTrigger className="w-[180px]  bg-dashboard-accent">
+                  <SelectTrigger className="w-full lg:w-[180px]  bg-dashboard-accent">
                     <SelectValue placeholder="ALL" />
                   </SelectTrigger>
                   <SelectContent className="bg-dashboard-accent">
@@ -196,7 +190,7 @@ const LogHistory: React.FC = () => {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-4">
                 <div className="relative">
-                  <div className="border border-gray-700 rounded-lg flex items-center px-4 py-2 bg-dashboard-accent">
+                  <div className="border border-gray-700 rounded-lg flex items-center px-4 py-2 bg-dashboard-accent w-full lg:w-auto">
                     <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                     <span>{startDate}</span>
                   </div>
@@ -241,7 +235,7 @@ const LogHistory: React.FC = () => {
                 <h1 className="text-xl font-medium">Logs Alat</h1>
               </div>
             </div>
-            <div className="overflow-x-auto mt-5">
+            <div className="overflow-x-auto mt-5 w-full">
               <table className="min-w-full text-left text-sm text-white">
                 <thead>
                   <tr className="border-b border-gray-700">
@@ -272,7 +266,7 @@ const LogHistory: React.FC = () => {
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-end items-center mt-4 text-sm">
+            <div className="flex flex-wrap justify-end items-center mt-4 text-sm">
               <div>
                 Rows per page:
                 <select className="ml-2 bg-transparent border border-gray-700 rounded px-2 py-1">

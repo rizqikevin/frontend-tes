@@ -161,7 +161,7 @@ const LogAlat: React.FC = () => {
         />
         <main className="p-8">
           {/* Date filters */}
-          <div className="flex justify-between mb-8">
+          <div className="flex flex-col lg:flex-row justify-between gap-4 flex-wrap mb-8">
             <div className="flex justify-between items-center px-0">
               <div className="flex items-center space-x-4">
                 <Input
@@ -169,10 +169,10 @@ const LogAlat: React.FC = () => {
                   placeholder="Search..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-[800px]  bg-dashboard-accent"
+                  className="w-full lg:w-[800px]  bg-dashboard-accent"
                 />
                 <Select value={filterLog} onValueChange={setFilterLog}>
-                  <SelectTrigger className="w-[180px]  bg-dashboard-accent">
+                  <SelectTrigger className="w-full lg:w-[180px]  bg-dashboard-accent">
                     <SelectValue placeholder="ALL" />
                   </SelectTrigger>
                   <SelectContent className="bg-dashboard-accent">
@@ -182,10 +182,10 @@ const LogAlat: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center space-x-4 fixed right-9">
+            <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-4">
                 <div className="relative">
-                  <div className="border border-gray-700 rounded-lg flex items-center px-4 py-2 bg-dashboard-accent">
+                  <div className="border border-gray-700 rounded-lg flex items-center px-4 py-2 bg-dashboard-accent w-full lg:w-auto">
                     <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                     <span>{startDate}</span>
                   </div>
@@ -230,7 +230,7 @@ const LogAlat: React.FC = () => {
                 <h1 className="text-xl font-medium">Logs Alat</h1>
               </div>
             </div>
-            <div className="overflow-x-auto mt-5">
+            <div className="overflow-x-auto mt-5 w-full">
               <table className="min-w-full text-left text-sm text-white">
                 <thead>
                   <tr className="border-b border-gray-700">
@@ -259,7 +259,7 @@ const LogAlat: React.FC = () => {
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-end items-center mt-4 text-sm">
+            <div className="flex flex-wrap justify-end items-center mt-4 text-sm">
               <div>
                 Rows per page:
                 <select className="ml-2 bg-transparent border border-gray-700 rounded px-2 py-1">

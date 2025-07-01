@@ -45,7 +45,7 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  .react-datepicker {
+  /* .react-datepicker {
   background-color: #1e293b !important;
   border: none;
   color: white;
@@ -65,7 +65,7 @@
 .react-datepicker__day--selected,
 .react-datepicker__day--keyboard-selected {
   background-color: #3b82f6 !important;
-}
+} */
 
 
   /* CSS untuk menyembunyikan scrollbar */
