@@ -18,6 +18,7 @@ interface AQIRow {
   humidity: string;
   ispu: string;
   tgl: string;
+  created_at: string;
 }
 
 interface AqiState {
@@ -25,13 +26,13 @@ interface AqiState {
   total: number;
   page: number;
   limit: number;
-  time: string;
+  time: Date;
   sensor_number: number;
   loading: boolean;
 
   setPage: (page: number) => void;
   setLimit: (limit: number) => void;
-  setTime: (time: string) => void;
+  setTime: (time: Date) => void;
   setSensorNumber: (sensorNumber: number) => void;
   fetchAQI: () => Promise<void>;
 }
@@ -41,13 +42,13 @@ export const useAqiStore = create<AqiState>((set, get) => ({
   total: 0,
   page: 1,
   limit: 10,
-  time: "2025-06-16", // default
-  sensor_number: 1,
+  time: new Date(),
+  sensor_number: 80,
   loading: false,
 
   setPage: (page) => set({ page }),
   setLimit: (limit) => set({ limit, page: 1 }),
-  setTime: (time) => set({ time, page: 1 }),
+  setTime: (time) => set({ time: new Date(time), page: 1 }),
   setSensorNumber: (sensor_number) => set({ sensor_number, page: 1 }),
 
   fetchAQI: async () => {

@@ -22,7 +22,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   children,
   to = "#",
 }) => {
-  const content = (
+  return (
     <div className="mb-1">
       <NavLink
         to={to}
@@ -41,16 +41,6 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         <div className="ml-6 mt-1 space-y-1">{children}</div>
       )}
     </div>
-  );
-
-  if (hasSubmenu) {
-    return content;
-  }
-
-  return (
-    <NavLink to={to} className="block">
-      {content}
-    </NavLink>
   );
 };
 

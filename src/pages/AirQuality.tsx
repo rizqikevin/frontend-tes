@@ -52,7 +52,7 @@ export const AirQuality: React.FC = () => {
 
   const renderContent = () => {
     switch (selectedTab) {
-      case "chart":
+      case "aqi":
         return <Aqi />;
       case "daily":
         return <Daily />;
@@ -92,14 +92,14 @@ export const AirQuality: React.FC = () => {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
               <Button
-                onClick={() => setSelectedTab("chart")}
+                onClick={() => setSelectedTab("aqi")}
                 className={`${
-                  selectedTab === "chart"
+                  selectedTab === "aqi"
                     ? "bg-gray-50 text-gray-900"
                     : "bg-dashboard-accent text-white"
                 }`}
               >
-                Chart
+                AQI
               </Button>
               <Button
                 onClick={() => setSelectedTab("daily")}

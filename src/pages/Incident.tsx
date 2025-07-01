@@ -39,15 +39,8 @@ export const Incident: React.FC = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      console.log("Fetching for date:", formattedDate);
       const res = await api.get("/incident", {
         params: { page, limit, date_logging: formattedDate },
-      });
-
-      console.log(" API Request Params:", {
-        page,
-        limit,
-        date_logging: formattedDate,
       });
 
       setData(res.data.data.rows);

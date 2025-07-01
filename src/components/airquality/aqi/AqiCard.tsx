@@ -1,5 +1,6 @@
 // src/components/AqiHeader.tsx
 import React from "react";
+import { getAqiColor } from "./AqiTable";
 
 interface AqiHeaderProps {
   data: any[];
@@ -11,8 +12,8 @@ const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
   const getAqiCategory = (aqi: number): string => {
     if (aqi <= 50) return "Good";
     if (aqi <= 100) return "Moderate";
-    if (aqi <= 150) return "Unhealthy for Sensitive Groups";
-    if (aqi <= 200) return "Unhealthy";
+    if (aqi <= 150) return "Unhealthy";
+    if (aqi <= 200) return "Unhealthy for Sensitive Groups";
     if (aqi <= 300) return "Very Unhealthy";
     return "Hazardous";
   };
@@ -20,7 +21,11 @@ const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
   return (
     <div className="bg-dashboard-accent p-4 rounded-xl flex items-center justify-between shadow-md">
       <div className="flex items-center space-x-4">
-        <div className="bg-orange-500 text-white px-4 py-2 rounded-lg text-center">
+        <div
+          className={`${getAqiColor(
+            aqi?.ispu || 0
+          )} text-white px-4 py-2 rounded-lg text-center`}
+        >
           <p className="text-2xl font-bold">{aqi?.ispu}</p>
           <p className="text-sm">AQI US</p>
         </div>
@@ -56,7 +61,9 @@ const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
       </div>
 
       <div>
-        <div className="bg-gradient-to-br from-orange-500 to-pink-600 p-3 rounded-full">
+        <div
+          className={`bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 p-3 rounded-full`}
+        >
           <span className="text-2xl">❤️</span>
         </div>
       </div>

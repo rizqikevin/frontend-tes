@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StatsGrid from "./StatsGrid";
 import MapSection from "./MapSection";
 import TrafficChart from "./TrafficChart";
@@ -8,6 +8,8 @@ import EnergyChart from "@/components/rju/EnergiChart";
 import EmergencyCallCard from "./EmergencyCallCard";
 import SosialMediaSentimenCard from "./SosialMediaSentimenCard";
 import CctvCard from "./CctvCard";
+import AqiCard from "@/components/airquality/aqi/AqiCard";
+import { useAqiStore } from "@/stores/useAqiStore";
 
 const statsData = [
   { label: "Active Gate", value: "9", date: "25/02/2025" },
@@ -59,6 +61,12 @@ const sampleBarData = [
 ];
 
 const Dashboard: React.FC = () => {
+  const { data, fetchAQI } = useAqiStore();
+
+  useEffect(() => {
+    fetchAQI();
+  }, []);
+
   return (
     <div className="space-y-6">
       <StatsGrid statsData={statsData} />
@@ -159,52 +167,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-row-3">
-        <div className="bg-dashboard-accent p-4 rounded-xl flex items-center justify-between shadow-md">
-          <div className="flex items-center space-x-4">
-            <div className="bg-orange-500 text-white px-4 py-2 rounded-lg text-center">
-              <p className="text-2xl font-bold">86</p>
-              <p className="text-sm">AQI US</p>
-            </div>
-            <div>
-              <p className="text-sm">Live Air Quality (AQI)</p>
-              <p className="font-semibold text-lg">
-                Unhealthy for Sensitive Groups
-              </p>
-            </div>
-          </div>
-
-          <div
-            className="flex items-center text-left gap-32
-         text-sm"
-          >
-            <div>
-              <p className="text-gray-400">Location</p>
-              <p>Kuala Tanjung</p>
-            </div>
-            <div>
-              <p className="text-gray-400">Air Quality Index</p>
-              <p>XXXX</p>
-            </div>
-            <div>
-              <p className="text-gray-400">Weather</p>
-              <p>XXXX</p>
-            </div>
-            <div>
-              <p className="text-gray-400">PM10</p>
-              <p>84 hg/m³</p>
-            </div>
-            <div>
-              <p className="text-gray-400">PM2.5</p>
-              <p>56 hg/m³</p>
-            </div>
-          </div>
-
-          <div>
-            <div className="bg-gradient-to-br from-orange-500 to-pink-600 p-3 rounded-full">
-              <span className="text-2xl">❤️</span>
-            </div>
-          </div>
-        </div>
+        <AqiCard data={data} />
       </div>
     </div>
   );
