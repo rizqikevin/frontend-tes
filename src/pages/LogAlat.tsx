@@ -182,7 +182,7 @@ const LogAlat: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 fixed right-9">
               <div className="flex items-center space-x-4">
                 <div className="relative">
                   <div className="border border-gray-700 rounded-lg flex items-center px-4 py-2 bg-dashboard-accent">
