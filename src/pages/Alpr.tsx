@@ -71,8 +71,6 @@ const Vlop: React.FC = () => {
     };
   }, []);
 
-  const isDark = theme === "dark";
-
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -81,7 +79,7 @@ const Vlop: React.FC = () => {
       });
       const filtered = response.data.data
         .filter((log: AlprData) => {
-          const created = dayjs(log.tgl);
+          const created = dayjs(log.waktu);
           return (
             created.isAfter(
               dayjs(startDate).startOf("day").subtract(1, "second")
@@ -89,9 +87,12 @@ const Vlop: React.FC = () => {
           );
         })
         .sort((a: AlprData, b: AlprData) =>
-          dayjs(a.tgl).isAfter(dayjs(b.tgl)) ? 1 : -1
+          dayjs(a.waktu).isAfter(dayjs(b.waktu)) ? 1 : -1
         );
       setData(filtered);
+
+      console.log("data sebelum di filter", response.data.data);
+      console.log("filtered data", filtered);
       setTotal(response.data.total);
     } catch (error) {
       toast.error("Gagal memuat data alpr");
@@ -104,6 +105,8 @@ const Vlop: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, [limit, page]);
+
+  const isDark = theme === "dark";
 
   const totalPages = Math.ceil(total / limit);
 
