@@ -54,7 +54,6 @@ const LineChart: React.FC<LineChartProps> = ({
         <h2 className="text-lg font-semibold">{title}</h2>
         <div className="flex items-center gap-2 mt-2 md:mt-0">
           <div className="flex items-center border border-gray-400 px-2 py-2 rounded-lg">
-            <Calendar className="h-5 w-5 mr-2 text-gray-400" />
             <input
               type="date"
               value={formattedDate}

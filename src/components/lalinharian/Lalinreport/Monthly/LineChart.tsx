@@ -60,7 +60,7 @@ const LineChart: React.FC<LineChartProps> = ({
               onChange={(date: Date) => setTempDate(date)}
               dateFormat="MM/yyyy"
               showMonthYearPicker
-              className="bg-transparent text-white outline-none"
+              className="bg-transparent w-16 text-white outline-none cursor-pointer"
               calendarClassName="dark-theme-datepicker"
             />
           </div>
