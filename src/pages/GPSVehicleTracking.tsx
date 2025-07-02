@@ -36,7 +36,6 @@ export const GPSVehicleTracking: React.FC = () => {
     limit,
     setLimit,
     total,
-    setTotal,
   } = useTrackGpsStore();
 
   const totalPages = Math.ceil(total / limit);

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import api from "@/services/api";
 import { VehicleData } from "@/types";
+import { toast } from "sonner";
 
 interface TrackData {
   radio_time: string;
@@ -58,7 +59,7 @@ export const useGpsStore = create<GpsState>((set) => ({
       );
       set({ vehicles: validVehicles });
     } catch (error) {
-      console.error("Failed to fetch vehicles:", error);
+      toast.error("Failed to fetch vehicles", error);
     } finally {
       set({ isVehicleLoading: false });
     }
@@ -88,7 +89,7 @@ export const useTrackGpsStore = create<TrackDataState>((set, get) => ({
       set({ trackData: res.data.data.rows });
       get().setTotal(res.data.data.total);
     } catch (error) {
-      console.error("Failed to fetch track data:", error);
+      toast.error("Failed to fetch track data", error);
     } finally {
       set({ isTrackLoading: false });
     }

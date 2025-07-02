@@ -29,7 +29,7 @@ const AqiTable: React.FC<AqiTableProps> = ({ data, loading }) => {
                 <th className="p-2">Day</th>
                 <th className="p-2">Pollution level</th>
                 <th className="p-2">Humidity</th>
-                <th className="p-2">Wind</th>
+                <th className="p-2">Oksigen</th>
                 <th className="p-2">Temperature</th>
               </tr>
             </thead>
@@ -68,9 +68,9 @@ const AqiTable: React.FC<AqiTableProps> = ({ data, loading }) => {
                         <span className="ml-2">❤️</span>
                       </div>
                     </td>
-                    <td className="p-2">{item.humidity}%</td>
-                    <td className="p-2">10/km</td>
-                    <td className="p-2">{item.suhu}°C</td>
+                    <td className="p-2">{item.humidity.slice(0, 4)}%</td>
+                    <td className="p-2">{item.o2.slice(0, 4)}%</td>
+                    <td className="p-2">{item.suhu.slice(0, 4)}°C</td>
                   </tr>
                 ))
               )}
