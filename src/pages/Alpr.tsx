@@ -91,8 +91,8 @@ const Vlop: React.FC = () => {
         );
       setData(filtered);
 
-      console.log("data sebelum di filter", response.data.data);
-      console.log("filtered data", filtered);
+      // console.log("data sebelum di filter", response.data.data);
+      // console.log("filtered data", filtered);
       setTotal(response.data.total);
     } catch (error) {
       toast.error("Gagal memuat data alpr");

@@ -9,6 +9,8 @@ import api from "@/services/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useIncidentStore } from "@/stores/useIncidentStore";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 interface IncidentRow {
   id: string;
@@ -31,6 +33,9 @@ export const Incident: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
   const [expandedVideo, setExpandedVideo] = useState<string | null>(null);
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [selectAll, setSelectAll] = useState(false);
+
   const { selectedDate, setSelectedDate, page, limit, setPage, setLimit } =
     useIncidentStore();
 
@@ -45,6 +50,8 @@ export const Incident: React.FC = () => {
 
       setData(res.data.data.rows);
       setTotal(Number(res.data.data.total));
+      setSelectedItems(new Set()); // Reset selected items saat data berubah
+      setSelectAll(false);
     } catch (err) {
       console.error("Gagal mengambil data:", err);
     } finally {
@@ -85,15 +92,58 @@ export const Incident: React.FC = () => {
     };
   }, []);
 
+  const toggleItem = (id: string) => {
+    const updated = new Set(selectedItems);
+    if (updated.has(id)) {
+      updated.delete(id);
+    } else {
+      updated.add(id);
+    }
+    setSelectedItems(updated);
+  };
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedItems(new Set());
+    } else {
+      const allIds = data.map((item) => item.id);
+      setSelectedItems(new Set(allIds));
+    }
+    setSelectAll(!selectAll);
+  };
+
+  const handleExport = () => {
+    const selectedData = data.filter((item) => selectedItems.has(item.id));
+    const rows = selectedData.map((item) => ({
+      Tanggal: item.date_logging,
+      Waktu: item.time_logging,
+      Nama: item.name,
+      "Merk Kamera": item.cam_merk,
+      "Lokasi Kamera": item.cam_loc,
+      Deskripsi: item.description,
+      Gambar: item.url_image,
+      Video: item.url_video,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Log Insiden");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const dataBlob = new Blob([excelBuffer], {
+      type: "application/octet-stream",
+    });
+    saveAs(dataBlob, "log_insiden.xlsx");
+  };
+
   return (
     <div className="flex min-h-screen bg-dashboard-dark text-white">
       <DashboardSidebar />
 
-      <div
-        className={`flex-1 bg-dashboard-dark ${
-          isSidebarCollapsed ? "ml-16" : "ml-64"
-        }`}
-      >
+      <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
         <Header
           isDark={theme === "dark"}
           user={user ? { name: user.name, role: String(user.role) } : null}
@@ -101,15 +151,12 @@ export const Incident: React.FC = () => {
         />
 
         <main className="p-8">
-          <div className="flex justify-end mb-8">
-            {/* <Button
-              variant="outline"
-              className="text-white border-white rounded-lg hover:bg-gray-700"
-            >
-              Report Insiden
-            </Button> */}
-
+          <div className="flex justify-between mb-8 items-center">
             <div className="flex items-center gap-2">
+              <Checkbox checked={selectAll} onCheckedChange={handleSelectAll} />
+              <span>Pilih Semua</span>
+            </div>
+            <div className="flex items-center gap-4">
               <div className="flex items-center border border-gray-400 px-2 py-2 rounded-lg text-white">
                 <Calendar className="h-5 w-5 mr-2" />
                 <DatePicker
@@ -118,13 +165,15 @@ export const Incident: React.FC = () => {
                   className="bg-transparent focus:outline-none text-white"
                 />
               </div>
-              <Button
-                className="bg-white text-black"
-                onClick={() => {
-                  fetchData();
-                }}
-              >
+              <Button className="bg-white text-black" onClick={fetchData}>
                 Terapkan
+              </Button>
+              <Button
+                onClick={handleExport}
+                disabled={selectedItems.size === 0}
+                className="bg-green-500 text-white"
+              >
+                Export ke Excel
               </Button>
             </div>
           </div>
@@ -150,10 +199,7 @@ export const Incident: React.FC = () => {
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td
-                        colSpan={14}
-                        className="p-4 text-center text-gray-400"
-                      >
+                      <td colSpan={8} className="p-4 text-center text-gray-400">
                         Loading...
                       </td>
                     </tr>
@@ -174,7 +220,11 @@ export const Incident: React.FC = () => {
                             >
                               <Video size={16} />
                             </Button>
-                            <Checkbox className="rounded-none" />
+                            <Checkbox
+                              checked={selectedItems.has(row.id)}
+                              onCheckedChange={() => toggleItem(row.id)}
+                              className="rounded-none"
+                            />
                             <span className="ml-2">
                               {index + 1 + (page - 1) * limit}
                             </span>
@@ -224,10 +274,11 @@ export const Incident: React.FC = () => {
                     setLimit(Number(e.target.value));
                   }}
                 >
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="30">30</option>
-                  <option value="100">100</option>
+                  {[10, 20, 30, 100].map((num) => (
+                    <option key={num} value={num}>
+                      {num}
+                    </option>
+                  ))}
                 </select>
               </div>
 
