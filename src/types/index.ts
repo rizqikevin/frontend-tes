@@ -10,3 +10,18 @@ export interface User {
   username: string;
   role: UserRole;
 }
+
+export interface VehicleData {
+  radio_id: string;
+  vehicle_number: string;
+  vehicle_name: string;
+  status: string;
+  type: string; // 'car', 'ambulance', etc.
+  radio_time: string;
+  lat: string;
+  lon: string;
+  speed: number;
+  updated: string;
+  created_at: string;
+  tgl: string;
+}

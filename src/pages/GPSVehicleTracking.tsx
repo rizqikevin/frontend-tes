@@ -1,72 +1,55 @@
 import { useEffect, useState } from "react";
-import { Calendar, ChevronDown, LogOut } from "lucide-react";
+import { Calendar } from "lucide-react";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useAuth } from "@/context/AuthContext";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import MapViewGps from "@/components/MapViewGps";
 import Header from "@/components/Header";
-
-export interface VehicleData {
-  id: number;
-  name: string;
-  plateNumber: string;
-  speed: number;
-  ApproximateDistance: number;
-  icon: string;
-}
-
-const dummyVehicles: VehicleData[] = [
-  {
-    id: 1,
-    name: "Ambulance",
-    plateNumber: "B 1285 FIX",
-    speed: 0,
-    ApproximateDistance: 55,
-    icon: "/icons/ambulance.png",
-  },
-  {
-    id: 2,
-    name: "Rescue",
-    plateNumber: "B 1285 FIX",
-    speed: 0,
-    ApproximateDistance: 55,
-    icon: "/icons/rescue-boat.png",
-  },
-  {
-    id: 3,
-    name: "Patroli 210",
-    plateNumber: "B 1285 FIX",
-    speed: 0,
-    ApproximateDistance: 55,
-    icon: "/icons/sport-car.png",
-  },
-  {
-    id: 4,
-    name: "GAJAH 01",
-    plateNumber: "B 1285 FIX",
-    speed: 0,
-    ApproximateDistance: 55,
-    icon: "/icons/tow-truck.png",
-  },
-];
+import { useGpsStore, useTrackGpsStore } from "@/stores/useGpsStore";
+import DatePicker from "react-datepicker";
 
 export const GPSVehicleTracking: React.FC = () => {
   const { user, logout } = useAuth();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [StartDate, setStartDate] = useState("27/07/2025");
-  const [endDate, setEndDate] = useState("27/08/2025");
   const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [selectedVehicle, setSelectedVehicle] = useState<VehicleData | null>(
-    null
-  );
+  const {
+    selectedVehicle,
+    setSelectedVehicle,
+    vehicles,
+    fetchVehicles,
+    isVehicleLoading,
+  } = useGpsStore();
+
+  const {
+    trackData,
+    fetchTrackData,
+    isTrackLoading,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    search,
+    setSearch,
+    page,
+    setPage,
+    limit,
+    setLimit,
+    total,
+    setTotal,
+  } = useTrackGpsStore();
+
+  const totalPages = Math.ceil(total / limit);
+
+  useEffect(() => {
+    fetchVehicles();
+  }, []);
+
+  useEffect(() => {
+    if (selectedVehicle) {
+      fetchTrackData(selectedVehicle.radio_id);
+    }
+  }, [selectedVehicle, page, limit, total]);
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -96,6 +79,7 @@ export const GPSVehicleTracking: React.FC = () => {
   }, []);
 
   const isDark = theme === "dark";
+
   return (
     <div className="flex min-h-screen text-white">
       <DashboardSidebar />
@@ -104,7 +88,6 @@ export const GPSVehicleTracking: React.FC = () => {
           isSidebarCollapsed ? "ml-16" : "ml-64"
         }`}
       >
-        {/* HEADER */}
         <Header
           isDark={isDark}
           user={
@@ -118,11 +101,13 @@ export const GPSVehicleTracking: React.FC = () => {
           logout={logout}
         />
 
-        {/* MAIN */}
         <main className="p-6 space-y-6">
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 h-[100vh]">
-              <MapViewGps />
+              <MapViewGps
+                vehicles={Array.isArray(vehicles) ? vehicles : []}
+                onVehicleClick={setSelectedVehicle}
+              />
             </div>
 
             <div className="rounded-lg border p-4 bg-dashboard-accent max-h-[100vh] overflow-y-auto">
@@ -136,90 +121,195 @@ export const GPSVehicleTracking: React.FC = () => {
                       ← Kembali
                     </button>
                     <h3 className="font-semibold text-lg mb-2">
-                      {selectedVehicle.name} - {selectedVehicle.plateNumber}
+                      {selectedVehicle.vehicle_name} -{" "}
+                      {selectedVehicle.vehicle_number}
                     </h3>
                   </div>
+
                   <div className="flex justify-center items-center gap-8 text-white p-4 rounded">
-                    {/* Distance */}
                     <div className="text-center">
                       <div className="text-sm text-gray-400">
-                        Approximate Distance
+                        Status Kendaraan
                       </div>
                       <div className="text-lg font-semibold">
-                        {selectedVehicle.ApproximateDistance} km
+                        {selectedVehicle.status ?? "-"}
                       </div>
                     </div>
 
-                    {/* Divider */}
                     <div className="h-8 w-px bg-gray-600"></div>
 
-                    {/* Speed */}
                     <div className="text-center">
                       <div className="text-sm text-gray-400">Average Speed</div>
                       <div className="text-lg font-semibold">
-                        {selectedVehicle.speed} Km/h
+                        {selectedVehicle.speed?.toFixed(2) ?? 0} Km/h
                       </div>
                     </div>
                   </div>
 
                   <div className="mb-2 flex gap-2 justify-around">
                     <div className="flex items-center space-x-4">
-                      <div className="relative">
-                        <div className="border border-white rounded-lg flex items-center px-4 py-2 bg-dashboard-accent text-xs">
-                          <Calendar className="h-3 w-3 mr-2 text-gray-400" />
-                          <span>{endDate}</span>
-                        </div>
-                      </div>
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M5 12H19M19 12L12 5M19 12L12 19"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+                      <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
+                        <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
+                        <DatePicker
+                          selected={startDate}
+                          onChange={(date: Date) => setStartDate(date)}
+                          dateFormat="dd/MM/yyyy"
+                          className="bg-transparent w-24 outline-none text-white"
                         />
-                      </svg>
-
-                      <div className="relative">
-                        <div className="border border-white rounded-lg flex items-center px-4 py-2 bg-dashboard-accent text-xs">
-                          <Calendar className="h-3 w-3 mr-2 text-gray-400" />
-                          <span>{endDate}</span>
-                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M5 12H19M19 12L12 5M19 12L12 19"
+                            stroke="white"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                      <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
+                        <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
+                        <DatePicker
+                          selected={endDate}
+                          onChange={(date: Date) => setEndDate(date)}
+                          dateFormat="dd/MM/yyyy"
+                          className="bg-transparent w-24 outline-none text-white"
+                        />
                       </div>
                     </div>
                     <Button
                       variant="outline"
-                      className="bg-white text-black px-5 py-5 rounded"
+                      onClick={() =>
+                        selectedVehicle &&
+                        fetchTrackData(selectedVehicle.radio_id)
+                      }
+                      className="bg-white text-black py-5 rounded"
                     >
                       Find
                     </Button>
                   </div>
+
                   <Input
                     type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                     placeholder="Search..."
                     className="w-full bg-dashboard-accent px-2 py-1 rounded border border-gray-600 mb-4"
                   />
+
                   <div className="grid grid-cols-3 text-xs text-gray-400 border-b pb-2 mb-2">
                     <span>Time</span>
                     <span>Speed</span>
                     <span>Device</span>
                   </div>
-                  {Array.from({ length: 10 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="grid grid-cols-3 text-xs border-b border-gray-600 py-3"
-                    >
-                      <span>2025/06/05 09:14</span>
-                      <span>0.00 Km/h</span>
-                      <span>353201354700020</span>
+
+                  {isTrackLoading ? (
+                    <div className="text-center text-sm text-gray-400 py-4">
+                      Loading track data...
                     </div>
-                  ))}
+                  ) : trackData.length > 0 ? (
+                    <>
+                      {trackData.map((track, i) => (
+                        <div
+                          key={i}
+                          className="grid grid-cols-3 text-xs border-b border-gray-600 py-3"
+                        >
+                          <span>
+                            {new Date(track.updated).toLocaleDateString(
+                              "id-ID",
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )}
+                          </span>
+                          <span>{track.speed.toFixed(2)} Km/h</span>
+                          <span>{selectedVehicle?.radio_id}</span>
+                        </div>
+                      ))}
+                      <div className="flex justify-end items-center mt-4 text-sm">
+                        <div>
+                          Rows per page:
+                          <select
+                            className="ml-2 bg-transparent border border-gray-700 rounded px-2 py-1"
+                            value={limit}
+                            onChange={(e) => {
+                              setPage(1);
+                              setLimit(Number(e.target.value));
+                            }}
+                          >
+                            {[10, 20, 30, 100].map((num) => (
+                              <option key={num} value={num}>
+                                {num}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className="flex items-center ml-5">
+                          <span className="mr-4">
+                            {Math.min((page - 1) * limit + 1, total)}-
+                            {Math.min(page * limit, total)} of {total}
+                          </span>
+                          <div className="inline-flex">
+                            <button
+                              className="px-2 py-1"
+                              onClick={() => setPage(Math.max(page - 1, 1))}
+                              disabled={page === 1}
+                            >
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                              >
+                                <path
+                                  d="M12.5 15L7.5 10L12.5 5"
+                                  stroke="white"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </button>
+                            <button
+                              className="px-2 py-1"
+                              onClick={() =>
+                                setPage(Math.min(page + 1, totalPages))
+                              }
+                              disabled={page === totalPages}
+                            >
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                              >
+                                <path
+                                  d="M7.5 15L12.5 10L7.5 5"
+                                  stroke="white"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-xs text-gray-500 text-center py-4">
+                      No track data available for this range.
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div>
@@ -230,24 +320,38 @@ export const GPSVehicleTracking: React.FC = () => {
                     <span className="text-center">Plat</span>
                     <span className="text-center">Speed</span>
                   </div>
-                  {dummyVehicles.map((vehicle, index) => (
-                    <div
-                      key={index}
-                      onClick={() => setSelectedVehicle(vehicle)}
-                      className="grid grid-cols-4 text-xs border-b border-gray-600 py-2 cursor-pointer hover:bg-gray-800"
-                    >
-                      <img
-                        src={vehicle.icon}
-                        alt={vehicle.name}
-                        className="text-center h-10 w-10 mx-auto"
-                      />
-                      <span className="text-center">{vehicle.name}</span>
-                      <span className="text-center">{vehicle.plateNumber}</span>
-                      <span className="text-center">
-                        {vehicle.speed.toFixed(2)}
-                      </span>
+                  {isVehicleLoading ? (
+                    <div className="text-center text-sm text-gray-400 py-4">
+                      Loading vehicles...
                     </div>
-                  ))}
+                  ) : vehicles.length > 0 ? (
+                    vehicles.map((vehicle, index) => (
+                      <div
+                        key={index}
+                        onClick={() => setSelectedVehicle(vehicle)}
+                        className="grid grid-cols-4 text-xs border-b border-gray-600 py-2 cursor-pointer hover:bg-gray-800"
+                      >
+                        <img
+                          src={`/icons/${vehicle.type}.png`}
+                          alt={vehicle.vehicle_name}
+                          className="text-center h-10 w-10 mx-auto"
+                        />
+                        <span className="text-center">
+                          {vehicle.vehicle_name}
+                        </span>
+                        <span className="text-center">
+                          {vehicle.vehicle_number}
+                        </span>
+                        <span className="text-center">
+                          {vehicle.speed.toFixed(2)}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-xs text-gray-400 text-center py-4">
+                      Tidak ada kendaraan ditemukan.
+                    </div>
+                  )}
                 </div>
               )}
             </div>
