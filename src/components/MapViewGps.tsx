@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L, { Map } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { VehicleData } from "@/types";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export const getVehicleIcon = (type: string) => {
   switch (type) {
@@ -35,8 +35,47 @@ export default function MapViewGps({
   onVehicleClick,
 }: MapViewGpsProps) {
   const mapRef = useRef<Map | null>(null);
+  const [locationDetails, setLocationDetails] = useState<
+    Record<string, string>
+  >({});
 
-  // Rata-rata posisi sebagai fallback center
+  // Fetch addresses once for all vehicles
+  useEffect(() => {
+    const fetchAllAddresses = async () => {
+      const pending = vehicles.filter((v) => !locationDetails[v.radio_id]);
+
+      for (const vehicle of pending) {
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${vehicle.lat}&lon=${vehicle.lon}&zoom=18&addressdetails=1`,
+            {
+              headers: {
+                "User-Agent": "Dashboard/1.0 (kevin.octavian@delameta.com)",
+              },
+            }
+          );
+          const data = await res.json();
+          const address = data.display_name || "Alamat tidak ditemukan";
+          setLocationDetails((prev) => ({
+            ...prev,
+            [vehicle.radio_id]: address,
+          }));
+        } catch (error) {
+          console.error("Gagal ambil alamat:", error);
+          setLocationDetails((prev) => ({
+            ...prev,
+            [vehicle.radio_id]: "Gagal mengambil alamat",
+          }));
+        }
+      }
+    };
+
+    if (vehicles.length > 0) {
+      fetchAllAddresses();
+    }
+  }, [vehicles]);
+
+  // Hitung posisi rata-rata sebagai fallback center
   const center = useMemo<[number, number]>(() => {
     if (!vehicles.length) return [3.226, 99.227];
     const total = vehicles.reduce(
@@ -50,7 +89,7 @@ export default function MapViewGps({
     return [total.lat / vehicles.length, total.lon / vehicles.length];
   }, [vehicles]);
 
-  // Fit bounds ketika kendaraan berubah
+  // Zoom otomatis ke semua marker
   useEffect(() => {
     if (!mapRef.current || vehicles.length === 0) return;
 
@@ -80,7 +119,6 @@ export default function MapViewGps({
       {vehicles.map((vehicle) => {
         const lat = parseFloat(vehicle.lat);
         const lon = parseFloat(vehicle.lon);
-        // console.log(lat, lon);
 
         if (isNaN(lat) || isNaN(lon)) return null;
 
@@ -96,9 +134,18 @@ export default function MapViewGps({
                 <h4 className="font-bold text-md">{vehicle.vehicle_name}</h4>
                 <p className="text-sm">Plat: {vehicle.vehicle_number}</p>
                 <p className="text-sm">Kecepatan: {vehicle.speed} Km/h</p>
-                <p className="text-sm">
-                  Terakhir: {new Date(vehicle.updated).toLocaleString()}
+                <p className="text-sm">Lokasi:</p>
+                <p className="text-sm italic">
+                  {locationDetails[vehicle.radio_id] || "Memuat alamat..."}
                 </p>
+                <a
+                  href={`https://www.google.com/maps?q=${vehicle.lat},${vehicle.lon}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline text-sm mt-2 inline-block"
+                >
+                  View on Google Maps
+                </a>
               </div>
             </Popup>
           </Marker>
