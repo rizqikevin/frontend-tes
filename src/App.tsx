@@ -28,7 +28,7 @@ import { LalinPortableReport } from "./pages/LalinPortableReport";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import SosialMedia from "./pages/SosialMedia";
 import { Floods } from "./pages/Floods";
-import Rju from "./pages/Rju";
+import { Pju } from "./pages/Pju";
 import { Pdb } from "./pages/Pdb";
 import { Ups } from "./pages/Ups";
 import { AirQuality } from "./pages/AirQuality";
@@ -191,10 +191,10 @@ const App = () => (
               }
             />
             <Route
-              path="/rju"
+              path="/pju"
               element={
                 <ProtectedRoute>
-                  <Rju />
+                  <Pju />
                 </ProtectedRoute>
               }
             />

@@ -344,7 +344,7 @@ export const DashboardSidebar: React.FC = () => {
           />
           {expandedItem === "streetLight" && (
             <div className="ml-6 mt-1 space-y-1">
-              <SidebarItem icon={<Cast size={18} />} text="RJU" to="/rju" />
+              <SidebarItem icon={<Cast size={18} />} text="PJU" to="/pju" />
             </div>
           )}
         </div>

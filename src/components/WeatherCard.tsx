@@ -41,7 +41,7 @@ const WeatherCard: React.FC = () => {
           rainfall: `${data.current.precip_mm} mm`,
         });
       } catch (error) {
-        console.error("Gagal fetch data cuaca:", error);
+        // console.error("Gagal fetch data cuaca:", error);
       }
     };
 

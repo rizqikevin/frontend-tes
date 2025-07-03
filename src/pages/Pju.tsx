@@ -49,7 +49,7 @@ const dummyVehicles: VehicleData[] = [
   },
 ];
 
-export const Rju: React.FC = () => {
+export const Pju: React.FC = () => {
   const { user, logout } = useAuth();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [StartDate, setStartDate] = useState("27/07/2025");
@@ -191,4 +191,4 @@ export const Rju: React.FC = () => {
   );
 };
 
-export default Rju;
+export default Pju;

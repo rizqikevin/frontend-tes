@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const Weather: React.FC = () => {
   const { user, logout } = useAuth();
@@ -55,7 +56,7 @@ const Weather: React.FC = () => {
       const paginated = transformed.slice((page - 1) * limit, page * limit);
       setTableData(paginated);
     } catch (err) {
-      console.error("Gagal fetch data cuaca:", err);
+      toast.error("Gagal fetch data cuaca:", err);
     }
   };
 
