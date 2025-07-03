@@ -8,7 +8,7 @@ import EnergyChart from "@/components/rju/EnergiChart";
 import EmergencyCallCard from "./EmergencyCallCard";
 import SosialMediaSentimenCard from "./SosialMediaSentimenCard";
 import CctvCard from "./CctvCard";
-import AqiCard from "@/components/airquality/aqi/AqiCard";
+import AqiCard from "@/components/airquality/aqi/AqiHeader";
 import { useAqiStore } from "@/stores/useAqiStore";
 
 const statsData = [
@@ -78,7 +78,7 @@ const Dashboard: React.FC = () => {
           <TrafficChart />
         </div>
         <div className="flex justify-end min-w-0">
-          <div className="overflow-y-auto h-full max-h-[70vh] pr-1 scrollbar-hidden">
+          <div className="overflow-y-auto h-full max-h-[73.5vh] pr-1 scrollbar-hidden rounded-lg">
             <div className="rounded-lg border p-2 w-full h-auto bg-[#082d72] items-center mb-4">
               <WeatherCard />
             </div>

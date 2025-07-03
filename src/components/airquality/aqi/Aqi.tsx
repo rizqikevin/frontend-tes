@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useAqiStore } from "@/stores/useAqiStore";
-import AqiCard from "./AqiCard";
+import AqiCard from "./AqiHeader";
 import AqiTable from "./AqiTable";
 
 export const Aqi: React.FC = () => {

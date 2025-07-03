@@ -1,4 +1,5 @@
 import api from "@/services/api";
+import { toast } from "sonner";
 import { create } from "zustand";
 
 interface AQIRow {
@@ -62,10 +63,10 @@ export const useAqiStore = create<AqiState>((set, get) => ({
 
       set({
         data: response.data.data.rows,
-        total: Number(response.data.data.total),
+        total: response.data.data.total,
       });
     } catch (error) {
-      console.error("❌ Gagal mengambil data AQI:", error);
+      toast.error("❌ Gagal mengambil data AQI:", error);
     } finally {
       set({ loading: false });
     }

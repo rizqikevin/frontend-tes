@@ -39,24 +39,24 @@ const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
 
       <div className="flex items-center text-left gap-32 text-sm">
         <div>
-          <p className="text-gray-400">Location</p>
-          <p>Kuala Tanjung</p>
+          <p className="text-gray-400">O2</p>
+          <p>{aqi?.o2.slice(0, 4)}</p>
         </div>
         <div>
           <p className="text-gray-400">Air Quality Index</p>
-          <p>{aqi?.ispu}</p>
+          <p>{aqi?.ispu.slice(0, 4)}</p>
         </div>
         <div>
           <p className="text-gray-400">Sensor Name</p>
-          <p>{aqi?.sensor_name}</p>
+          <p>{aqi?.sensor_name.slice(0, 4)}</p>
         </div>
         <div>
           <p className="text-gray-400">PM10</p>
-          <p>{aqi?.pm10}</p>
+          <p>{aqi?.pm10.slice(0, 5)}</p>
         </div>
         <div>
           <p className="text-gray-400">PM2.5</p>
-          <p>{aqi?.pm25}</p>
+          <p>{aqi?.pm25.slice(0, 5)}</p>
         </div>
       </div>
 

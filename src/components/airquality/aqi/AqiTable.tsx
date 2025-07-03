@@ -52,6 +52,7 @@ const AqiTable: React.FC<AqiTableProps> = ({ data, loading }) => {
                     <td className="p-2">
                       {new Date(item.created_at).toLocaleDateString("id-ID")}
                     </td>
+
                     <td className="p-2">
                       {new Date(item.created_at).toLocaleDateString("id-ID", {
                         weekday: "long",
