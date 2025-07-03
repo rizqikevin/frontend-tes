@@ -80,6 +80,7 @@ export default function MapViewGps({
       {vehicles.map((vehicle) => {
         const lat = parseFloat(vehicle.lat);
         const lon = parseFloat(vehicle.lon);
+        // console.log(lat, lon);
 
         if (isNaN(lat) || isNaN(lon)) return null;
 

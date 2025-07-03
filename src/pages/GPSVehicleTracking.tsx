@@ -42,7 +42,12 @@ export const GPSVehicleTracking: React.FC = () => {
 
   useEffect(() => {
     fetchVehicles();
-  }, []);
+    const interval = setInterval(() => {
+      fetchVehicles();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [selectedVehicle]);
 
   useEffect(() => {
     if (selectedVehicle) {
@@ -104,7 +109,7 @@ export const GPSVehicleTracking: React.FC = () => {
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 h-[100vh]">
               <MapViewGps
-                vehicles={Array.isArray(vehicles) ? vehicles : []}
+                vehicles={vehicles}
                 onVehicleClick={setSelectedVehicle}
               />
             </div>
@@ -306,18 +311,19 @@ export const GPSVehicleTracking: React.FC = () => {
                     </>
                   ) : (
                     <div className="text-xs text-gray-500 text-center py-4">
-                      No track data available for this range.
+                      tidak ada data
                     </div>
                   )}
                 </div>
               ) : (
                 <div>
                   <h3 className="font-semibold mb-4 text-lg">List Vehicle</h3>
-                  <div className="grid grid-cols-4 text-xs font-semibold mb-2 border-b pb-2">
+                  <div className="grid grid-cols-5 text-xs font-semibold mb-2 border-b pb-2">
                     <span className="text-center">#</span>
                     <span className="text-center">Nama</span>
                     <span className="text-center">Plat</span>
                     <span className="text-center">Speed</span>
+                    <span className="text-center">Last Update</span>
                   </div>
                   {isVehicleLoading ? (
                     <div className="text-center text-sm text-gray-400 py-4">
@@ -328,7 +334,7 @@ export const GPSVehicleTracking: React.FC = () => {
                       <div
                         key={index}
                         onClick={() => setSelectedVehicle(vehicle)}
-                        className="grid grid-cols-4 text-xs border-b border-gray-600 py-2 cursor-pointer hover:bg-gray-800"
+                        className="grid grid-cols-5 text-xs border-b border-gray-600 py-2 cursor-pointer hover:bg-gray-800"
                       >
                         <img
                           src={`/icons/${vehicle.type}.png`}
@@ -343,6 +349,15 @@ export const GPSVehicleTracking: React.FC = () => {
                         </span>
                         <span className="text-center">
                           {vehicle.speed.toFixed(2)}
+                        </span>
+                        <span className="text-center">
+                          {new Date(vehicle.updated).toLocaleDateString(
+                            "id-ID",
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )}
                         </span>
                       </div>
                     ))

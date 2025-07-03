@@ -31,7 +31,7 @@ export const login = async (
 
     return data;
   } catch (error) {
-    console.error("Login error:", error);
+    // console.error("Login error:", error);
     throw error;
   }
 };

@@ -38,7 +38,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError<ErrorResponse>) => {
-    console.error("Response error:", error);
+    // console.error("Response error:", error);
 
     // Handle different error types
     if (error.response) {
