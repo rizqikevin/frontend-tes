@@ -1,18 +1,9 @@
 import { useEffect, useState } from "react";
-import { Calendar, ChevronDown, LogOut } from "lucide-react";
 import DashboardSidebar from "@/components/DashboardSidebar";
-import MapSection from "@/components/dashboard/GeographicInfoSystem/MapSection";
 import { useAuth } from "@/context/AuthContext";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import MapViewGps from "@/components/MapViewGps";
 import EnergyChart from "@/components/rju/EnergiChart";
 import Header from "@/components/Header";
+import MapView from "@/components/rju/MapView";
 
 export interface VehicleData {
   id: number;
@@ -122,7 +113,7 @@ export const Rju: React.FC = () => {
         <main className="p-6 space-y-6">
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 h-[100vh]">
-              <MapViewGps />
+              <MapView />
             </div>
 
             <div className="rounded-lg border p-4 bg-dashboard-accent max-h-[100vh] overflow-y-auto">

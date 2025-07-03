@@ -78,7 +78,7 @@ const Dashboard: React.FC = () => {
           <TrafficChart />
         </div>
         <div className="flex justify-end min-w-0">
-          <div className="overflow-y-auto h-full max-h-[73.5vh] pr-1 scrollbar-hidden rounded-lg">
+          <div className="overflow-y-auto h-full max-h-[71vh] pr-1 scrollbar-hidden rounded-lg">
             <div className="rounded-lg border p-2 w-full h-auto bg-[#082d72] items-center mb-4">
               <WeatherCard />
             </div>
