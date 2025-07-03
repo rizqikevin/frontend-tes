@@ -154,7 +154,7 @@ const Vlop: React.FC = () => {
                   selected={startDate}
                   onChange={(date: Date) => setStartDate(date)}
                   dateFormat="dd/MM/yyyy"
-                  className="bg-transparent outline-none text-white"
+                  className="bg-transparent w-24 outline-none text-white"
                 />
               </div>
               <div className="flex items-center">
@@ -180,7 +180,7 @@ const Vlop: React.FC = () => {
                   selected={endDate}
                   onChange={(date: Date) => setEndDate(date)}
                   dateFormat="dd/MM/yyyy"
-                  className="bg-transparent outline-none text-white"
+                  className="bg-transparent w-24 outline-none text-white"
                 />
               </div>
               <Button

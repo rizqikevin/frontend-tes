@@ -4,60 +4,12 @@ import { useAuth } from "@/context/AuthContext";
 import EnergyChart from "@/components/rju/EnergiChart";
 import Header from "@/components/Header";
 import MapView from "@/components/rju/MapView";
-
-export interface VehicleData {
-  id: number;
-  name: string;
-  plateNumber: string;
-  speed: number;
-  ApproximateDistance: number;
-  icon: string;
-}
-
-const dummyVehicles: VehicleData[] = [
-  {
-    id: 1,
-    name: "Ambulance",
-    plateNumber: "B 1285 FIX",
-    speed: 0,
-    ApproximateDistance: 55,
-    icon: "/icons/ambulance.png",
-  },
-  {
-    id: 2,
-    name: "Rescue",
-    plateNumber: "B 1285 FIX",
-    speed: 0,
-    ApproximateDistance: 55,
-    icon: "/icons/rescue-boat.png",
-  },
-  {
-    id: 3,
-    name: "Patroli 210",
-    plateNumber: "B 1285 FIX",
-    speed: 0,
-    ApproximateDistance: 55,
-    icon: "/icons/sport-car.png",
-  },
-  {
-    id: 4,
-    name: "GAJAH 01",
-    plateNumber: "B 1285 FIX",
-    speed: 0,
-    ApproximateDistance: 55,
-    icon: "/icons/tow-truck.png",
-  },
-];
+import StreetlightTable from "@/components/streetlights/StreetlightTable";
 
 export const Pju: React.FC = () => {
   const { user, logout } = useAuth();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [StartDate, setStartDate] = useState("27/07/2025");
-  const [endDate, setEndDate] = useState("27/08/2025");
   const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [selectedVehicle, setSelectedVehicle] = useState<VehicleData | null>(
-    null
-  );
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -116,16 +68,19 @@ export const Pju: React.FC = () => {
               <MapView />
             </div>
 
-            <div className="rounded-lg border p-4 bg-dashboard-accent max-h-[100vh] overflow-y-auto">
+            <div className="border p-4 bg-dashboard-accent h-full max-h-[100vh] overflow-y-auto scrollbar-hidden rounded-lg">
               <div className="space-y-4">
                 <div>
+                  <StreetlightTable />
+                </div>
+                {/* <div>
                   <h2 className="text-lg font-semibold">Energy (kWh)</h2>
                   <EnergyChart />
-                </div>
+                </div> */}
 
                 <hr className="my-3 border-gray-600" />
 
-                <div>
+                {/* <div>
                   <h3 className="text-md font-semibold mt-5 mb-2">
                     Energy Summary
                   </h3>
@@ -147,9 +102,9 @@ export const Pju: React.FC = () => {
                       Bill Estimate: <strong>Rp 5.047.033</strong>
                     </p>
                   </div>
-                </div>
+                </div> */}
 
-                <div>
+                {/* <div>
                   <h3 className="text-md font-semibold mt-4 mb-2">
                     Streetlight
                   </h3>
@@ -181,7 +136,7 @@ export const Pju: React.FC = () => {
                       ))}
                     </tbody>
                   </table>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

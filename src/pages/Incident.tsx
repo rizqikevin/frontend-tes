@@ -162,7 +162,7 @@ export const Incident: React.FC = () => {
                 <DatePicker
                   selected={selectedDate}
                   onChange={(date: Date) => setSelectedDate(date)}
-                  className="bg-transparent focus:outline-none text-white"
+                  className="bg-transparent w-24 focus:outline-none text-white"
                 />
               </div>
               <Button className="bg-white text-black" onClick={fetchData}>
