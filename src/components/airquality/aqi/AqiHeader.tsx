@@ -8,8 +8,10 @@ interface AqiHeaderProps {
 
 const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
   const aqi = data[0];
+  console.log(aqi);
 
   const getAqiCategory = (aqi: number): string => {
+    if (aqi == undefined) return "--";
     if (aqi <= 50) return "Good";
     if (aqi <= 100) return "Moderate";
     if (aqi <= 150) return "Unhealthy";
@@ -23,7 +25,7 @@ const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
       <div className="flex items-center space-x-4">
         <div
           className={`${getAqiColor(
-            aqi?.ispu || 0
+            aqi?.ispu || undefined
           )} text-white px-4 py-2 rounded-lg text-center`}
         >
           <p className="text-2xl font-bold">{aqi?.ispu}</p>
@@ -32,7 +34,7 @@ const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
         <div>
           <p className="text-sm">Live Air Quality (AQI)</p>
           <p className="font-semibold text-lg">
-            {getAqiCategory(aqi?.ispu || 0)}
+            {getAqiCategory(aqi?.ispu || undefined)}
           </p>
         </div>
       </div>
@@ -40,23 +42,23 @@ const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
       <div className="flex items-center text-left gap-32 text-sm">
         <div>
           <p className="text-gray-400">O2</p>
-          <p>{aqi?.o2.slice(0, 4)}</p>
+          <p>{aqi?.o2.slice(0, 4) || "--"}</p>
         </div>
         <div>
           <p className="text-gray-400">Air Quality Index</p>
-          <p>{aqi?.ispu.slice(0, 4)}</p>
+          <p>{aqi?.ispu.slice(0, 4) || "--"}</p>
         </div>
         <div>
           <p className="text-gray-400">Sensor Name</p>
-          <p>{aqi?.sensor_name.slice(0, 4)}</p>
+          <p>{aqi?.sensor_name || "--"}</p>
         </div>
         <div>
           <p className="text-gray-400">PM10</p>
-          <p>{aqi?.pm10.slice(0, 5)}</p>
+          <p>{aqi?.pm10.slice(0, 5) || "--"}</p>
         </div>
         <div>
           <p className="text-gray-400">PM2.5</p>
-          <p>{aqi?.pm25.slice(0, 5)}</p>
+          <p>{aqi?.pm25.slice(0, 5) || "--"}</p>
         </div>
       </div>
 

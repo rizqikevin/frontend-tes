@@ -6,6 +6,7 @@ interface AqiTableProps {
 }
 
 export const getAqiColor = (aqi: number): string => {
+  if (aqi == undefined) return "bg-transparent";
   if (aqi <= 50) return "bg-green-500";
   if (aqi <= 100) return "bg-yellow-500";
   if (aqi <= 150) return "bg-orange-500";
@@ -60,9 +61,9 @@ const AqiTable: React.FC<AqiTableProps> = ({ data, loading }) => {
                     </td>
                     <td className="p-2">
                       <div
-                        className={`flex items-center justify-between px-3 py-1 rounded-md ${getAqiColor(
-                          item.ispu
-                        )}`}
+                        className={`flex items-center justify-between px-3 py-1 rounded-md ${
+                          getAqiColor(item.ispu) || undefined
+                        }`}
                       >
                         <span>Level</span>
                         <span className="ml-2 text-sm">{item.ispu} AQI US</span>

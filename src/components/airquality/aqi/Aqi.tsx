@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useAqiStore } from "@/stores/useAqiStore";
-import AqiCard from "./AqiHeader";
+import AqiHeader from "./AqiHeader";
 import AqiTable from "./AqiTable";
 
 export const Aqi: React.FC = () => {
@@ -12,7 +12,7 @@ export const Aqi: React.FC = () => {
 
   return (
     <div className="min-h-screen text-white p-6 space-y-6 font-sans">
-      <AqiCard data={data} />
+      <AqiHeader data={data} />
       <AqiTable data={data} loading={loading} />
     </div>
   );
