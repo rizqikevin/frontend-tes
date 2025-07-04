@@ -8,7 +8,7 @@ interface AqiHeaderProps {
 
 const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
   const aqi = data[0];
-  console.log(aqi);
+  // console.log(aqi);
 
   const getAqiCategory = (aqi: number): string => {
     if (aqi == undefined) return "--";

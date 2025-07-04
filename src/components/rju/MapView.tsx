@@ -22,7 +22,7 @@ const center: [number, number] = [3.373, 99.166];
 
 export default function MapView() {
   const { lights } = useStreetLightStore();
-  console.log(lights);
+  // console.log(lights);
 
   return (
     <MapContainer

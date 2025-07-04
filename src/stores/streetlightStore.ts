@@ -54,7 +54,7 @@ export const useStreetLightStore = create<StreetLightState>((set, get) => ({
       `/sensor/pju?page=1&limit=100&gatewayId=${get().selectedGateway}`
     );
     const data = res.data.data.rows;
-    console.log(data);
+    // console.log(data);
     set({ lights: data });
   },
 

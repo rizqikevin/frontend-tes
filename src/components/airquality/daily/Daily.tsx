@@ -41,7 +41,7 @@ export const Daily: React.FC = () => {
               <DatePicker
                 selected={time}
                 onChange={(date: Date) => setTime(date)}
-                className="bg-transparent w-20 focus:outline-none text-white"
+                className="bg-transparent w-24 focus:outline-none text-white"
               />
             </div>
             <Button

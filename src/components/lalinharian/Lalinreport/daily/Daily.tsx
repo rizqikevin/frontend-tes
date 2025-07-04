@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import LineChart from "./Linechart";
 import api from "@/services/api";
+import { toast } from "sonner";
 
 const colorPalette = [
   "#FACC15",
@@ -41,7 +42,7 @@ export const Daily: React.FC = () => {
         const parts = label.split("-");
         return parts[1];
       });
-      console.log(desiredLabels);
+      // console.log(desiredLabels);
 
       const generatedDatasets = locationNames.map((name, idx) => ({
         label: name,
@@ -62,7 +63,7 @@ export const Daily: React.FC = () => {
 
       setTableData(generatedTableData);
     } catch (error) {
-      console.error("Gagal ambil data daily:", error);
+      toast.error("Gagal ambil data daily:", error);
     }
   };
 
