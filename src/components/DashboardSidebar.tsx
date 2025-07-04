@@ -28,6 +28,8 @@ import {
   AlertCircle,
   Timer,
   ChevronLeft,
+  User,
+  AlertCircleIcon,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 
@@ -357,9 +359,9 @@ export const DashboardSidebar: React.FC = () => {
           />
         </div>
 
-        <div className="px-3 mb-2">
+        {/* <div className="px-3 mb-2">
           <SidebarItem icon={<ZapIcon size={18} />} text="UPS" to="/ups" />
-        </div>
+        </div> */}
 
         <div className="px-3 mb-2">
           <SidebarItem
@@ -369,13 +371,13 @@ export const DashboardSidebar: React.FC = () => {
           />
         </div>
 
-        <div className="px-3 mb-2">
+        {/* <div className="px-3 mb-2">
           <SidebarItem
             icon={<AlertCircle size={18} />}
             text="Genset"
             to="/genset"
           />
-        </div>
+        </div> */}
 
         <div className="px-3 mb-2">
           <SidebarItem
@@ -415,6 +417,15 @@ export const DashboardSidebar: React.FC = () => {
             expanded={expandedItem === "settings"}
             onClick={() => toggleExpand("settings")}
           />
+          {expandedItem === "settings" && (
+            <div className="ml-6 mt-1 space-y-1">
+              <SidebarItem
+                icon={<Video size={18} />}
+                text="Incident Notif"
+                to="/incident-notification"
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="mt-auto pt-4">

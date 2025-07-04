@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Image, Video, X } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Header from "@/components/Header";
-import api from "@/services/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useIncidentStore } from "@/stores/useIncidentStore";
@@ -28,36 +27,27 @@ export const Incident: React.FC = () => {
   const { user, logout } = useAuth();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [data, setData] = useState<IncidentRow[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [expandedImage, setExpandedImage] = useState<string | null>(null);
-  const [expandedVideo, setExpandedVideo] = useState<string | null>(null);
-  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
-  const [selectAll, setSelectAll] = useState(false);
-
-  const { selectedDate, setSelectedDate, page, limit, setPage, setLimit } =
-    useIncidentStore();
-
-  const formattedDate = selectedDate.toISOString().split("T")[0];
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get("/incident", {
-        params: { page, limit, date_logging: formattedDate },
-      });
-
-      setData(res.data.data.rows);
-      setTotal(Number(res.data.data.total));
-      setSelectedItems(new Set()); // Reset selected items saat data berubah
-      setSelectAll(false);
-    } catch (err) {
-      console.error("Gagal mengambil data:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    selectedDate,
+    setSelectedDate,
+    page,
+    limit,
+    setPage,
+    setLimit,
+    data,
+    total,
+    loading,
+    expandedImage,
+    setExpandedImage,
+    expandedVideo,
+    setExpandedVideo,
+    selectedItems,
+    setSelectedItems,
+    selectAll,
+    setSelectAll,
+    toggleItem,
+    fetchData,
+  } = useIncidentStore();
 
   useEffect(() => {
     fetchData();
@@ -91,16 +81,6 @@ export const Incident: React.FC = () => {
       clearInterval(themeInterval);
     };
   }, []);
-
-  const toggleItem = (id: string) => {
-    const updated = new Set(selectedItems);
-    if (updated.has(id)) {
-      updated.delete(id);
-    } else {
-      updated.add(id);
-    }
-    setSelectedItems(updated);
-  };
 
   const handleSelectAll = () => {
     if (selectAll) {
