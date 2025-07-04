@@ -33,36 +33,28 @@ export const Summary: React.FC = () => {
       const response = await api.get(`/counting/summary/${d}/${m}/${y}`);
       const data = response.data;
 
-      // const labels = data.map((item: any) => item["Nama Lokasi"]);
+      const labels: string[] = data.map((item: any) => item["Nama Lokasi"]);
 
-      const labels = data.map((item: string) => {
-        const match = item["Nama Lokasi"].match(
-          /CCTV\s.*?\s([A-E])\s(\(\d[A-Z]\))/
-        );
-        if (match && match.length >= 3) {
-          const group = match[1].replace(" ", " ");
-          // return `CCTV ${match[1]} ${match[2]}`;
-          return group;
-        }
-        return item["Nama Lokasi"];
-      });
+      const values: number[] = data.map((item: any) => parseInt(item.Total));
 
-      // console.log(labels);
+      const backgroundColors: string[] = data.map((_: any, index: number) =>
+        generateColor(index)
+      );
 
-      const datasets = data.map((item: any, index: number) => ({
-        label: item["Nama Lokasi"],
-        data: labels.map((label: string, i: number) =>
-          i === index ? parseInt(item.Total) : 0
-        ),
-        backgroundColor: generateColor(index),
-      }));
+      const dataset = [
+        {
+          label: "Jumlah Kendaraan",
+          data: values,
+          backgroundColor: backgroundColors,
+        },
+      ];
 
       const table = data.map((item: any) => ({
         location: item["Nama Lokasi"],
         total: parseInt(item.Total),
       }));
 
-      setChartData({ labels, datasets });
+      setChartData({ labels, datasets: dataset });
       setTableData(table);
     } catch (error) {
       console.error("Failed to fetch data:", error);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -40,12 +40,29 @@ const LineChart: React.FC<LineChartProps> = ({
   onDateChange,
   onApply,
 }) => {
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = new Date(e.target.value);
-    onDateChange(selected); // Trigger temp state update
-  };
+  const [localDate, setLocalDate] = useState<string>(
+    date.toISOString().split("T")[0]
+  );
 
-  const formattedDate = date.toISOString().split("T")[0];
+  // Sync jika parent date berubah
+  useEffect(() => {
+    setLocalDate(date.toISOString().split("T")[0]);
+  }, [date]);
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (!value) {
+      const today = new Date();
+      setLocalDate(today.toISOString().split("T")[0]);
+      onDateChange(today);
+    } else {
+      setLocalDate(value);
+      const selected = new Date(value);
+      if (!isNaN(selected.getTime())) {
+        onDateChange(selected);
+      }
+    }
+  };
 
   return (
     <div className="w-full bg-dashboard-accent text-white rounded-xl px-6 py-4">
@@ -56,7 +73,7 @@ const LineChart: React.FC<LineChartProps> = ({
           <div className="flex items-center border border-gray-400 px-2 py-2 rounded-lg">
             <input
               type="date"
-              value={formattedDate}
+              value={localDate}
               onChange={handleDateChange}
               className="bg-transparent outline-none text-white"
             />

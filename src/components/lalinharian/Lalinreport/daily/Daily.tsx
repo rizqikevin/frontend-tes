@@ -17,7 +17,7 @@ const colorPalette = [
 
 export const Daily: React.FC = () => {
   const [date, setDate] = useState(new Date());
-  const [tempDate, setTempDate] = useState(new Date());
+  const [tempDate, setTempDate] = useState<Date | null>(new Date());
   const [datasets, setDatasets] = useState<any[]>([]);
   const [labels, setLabels] = useState<string[]>([]);
   const [tableData, setTableData] = useState<any[]>([]);

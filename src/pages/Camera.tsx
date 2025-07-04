@@ -66,6 +66,11 @@ const DroppableGridSlot = ({
   const SERVER_CAMERA = import.meta.env.VITE_CAMERA_SERVER;
   const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div
       ref={setNodeRef}
@@ -89,6 +94,7 @@ const DroppableGridSlot = ({
             onDoubleClick={() => videoFullScreen(index)}
           >
             <ReactPlayer
+              key={camera.id}
               src={`${SERVER_CAMERA}/camera/bearer/jlp/${camera.group_id}/${camera.id}/index.m3u8`}
               playing
               muted

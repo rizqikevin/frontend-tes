@@ -46,7 +46,15 @@ const BarChart: React.FC<BarChartProps> = ({
   }, [date]);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLocalDate(e.target.value);
+    const value = e.target.value;
+    if (!value) {
+      // Jika diklik tombol clear, fallback ke hari ini
+      const today = new Date();
+      setLocalDate(today.toISOString().split("T")[0]);
+      onDateChange(today);
+    } else {
+      setLocalDate(value);
+    }
   };
 
   const handleApply = () => {
@@ -87,14 +95,14 @@ const BarChart: React.FC<BarChartProps> = ({
               maintainAspectRatio: false,
               datasets: {
                 bar: {
-                  barThickness: 50,
+                  barThickness: 95,
                   categoryPercentage: 0.6,
                   barPercentage: 0.9,
                 },
               },
               plugins: {
                 legend: {
-                  display: true,
+                  display: false,
                   position: "bottom",
                   labels: {
                     color: "white",
@@ -119,6 +127,18 @@ const BarChart: React.FC<BarChartProps> = ({
             }}
           />
         </div>
+      </div>
+      {/* Custom Legend */}
+      <div className="flex flex-wrap gap-4 mt-4 justify-center">
+        {labels.map((label, i) => (
+          <div key={i} className="flex items-center space-x-2">
+            <div
+              className="w-4 h-4 rounded"
+              style={{ backgroundColor: datasets[0].backgroundColor[i] }}
+            />
+            <span className="text-sm text-white">{label}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
