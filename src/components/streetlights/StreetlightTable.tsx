@@ -3,25 +3,9 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import api from "@/services/api";
-
-interface Light {
-  id: number;
-  gateway_id: string;
-  sensor_name: string;
-  status: number;
-  updated_at: string;
-}
-
-interface Gateway {
-  id: string;
-  name: string;
-}
+import { useStreetLightStore } from "@/stores/streetlightStore";
 
 const StreetLightManager = () => {
-  const [lights, setLights] = useState<Light[]>([]);
-  const [gateways, setGateways] = useState<Gateway[]>([]);
-  const [selectedGateway, setSelectedGateway] = useState<string>("HMW-101");
   const [showModal, setShowModal] = useState(false);
   const [newLight, setNewLight] = useState({
     name: "",
@@ -29,34 +13,25 @@ const StreetLightManager = () => {
     longitude: "",
     gatewayId: "HMW-101",
   });
-
-  const fetchLights = async () => {
-    const res = await api.get(
-      `/sensor/pju?page=1&limit=100&gatewayId=${selectedGateway}`
-    );
-    setLights(res.data.data.rows);
-  };
-
-  const fetchGateways = async () => {
-    const res = await api.get("/sensor/pju-gateway");
-    setGateways(res.data.data.rows);
-  };
-
-  const toggleLight = async (id: number, status: number) => {
-    await api.patch(`/sensor/pju/${id}`, {
-      gatewayId: selectedGateway,
-      status: status ? 0 : 1,
-    });
-    fetchLights();
-  };
+  const {
+    lights,
+    gateways,
+    selectedGateway,
+    setSelectedGateway,
+    fetchGateways,
+    fetchLights,
+    toggleLights,
+    addLight,
+  } = useStreetLightStore();
 
   const handleAddLight = async () => {
-    await api.post("/sensor/pju", {
-      gatewayId: newLight.gatewayId,
+    await addLight({
       name: newLight.name,
-      latitude: parseFloat(newLight.latitude),
-      longitude: parseFloat(newLight.longitude),
+      latitude: newLight.latitude,
+      longitude: newLight.longitude,
+      gatewayId: newLight.gatewayId,
     });
+
     setShowModal(false);
     setNewLight({
       name: "",
@@ -64,7 +39,6 @@ const StreetLightManager = () => {
       longitude: "",
       gatewayId: "HMW-101",
     });
-    fetchLights();
   };
 
   useEffect(() => {
@@ -117,7 +91,7 @@ const StreetLightManager = () => {
                 <td className="px-4 py-2">
                   <Switch
                     checked={light.status === 1}
-                    onCheckedChange={() => toggleLight(light.id, light.status)}
+                    onCheckedChange={() => toggleLights(light.id, light.status)}
                   />
                 </td>
               </tr>

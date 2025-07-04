@@ -1,25 +1,19 @@
 import { api } from "@/services/api";
-import { toast } from "sonner";
 import { create } from "zustand";
 
 interface Light {
   id: number;
   gateway_id: string;
   sensor_name: string;
+  latitude: number | null;
+  longitude: number | null;
   status: number;
-  update_at: string;
+  updated_at: string;
 }
 
 interface Gateway {
   id: string;
   name: string;
-  latitude: number | null;
-  longitude: number | null;
-  interval_per_second: number;
-  start_time: number | null;
-  end_time: number | null;
-  status: boolean;
-  update_at: string;
 }
 
 interface StreetLightState {
@@ -32,8 +26,8 @@ interface StreetLightState {
   toggleLights: (id: number, status: number) => Promise<void>;
   addLight: (data: {
     name: string;
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
     gatewayId: string;
   }) => Promise<void>;
 }
@@ -51,14 +45,16 @@ export const useStreetLightStore = create<StreetLightState>((set, get) => ({
   fetchGateways: async () => {
     const res = await api.get("/sensor/pju-gateway");
     const data = res.data.data.rows;
-    set({ gateways: data });
+    set({ gateways: data, selectedGateway: data[0]?.id || "" });
+    get().fetchLights();
   },
 
   fetchLights: async () => {
     const res = await api.get(
-      "/sensor/pju?page=1&limit=100&gatewayId=${selectedGateway}"
+      `/sensor/pju?page=1&limit=100&gatewayId=${get().selectedGateway}`
     );
     const data = res.data.data.rows;
+    console.log(data);
     set({ lights: data });
   },
 
