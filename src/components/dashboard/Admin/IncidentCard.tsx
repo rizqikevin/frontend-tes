@@ -1,72 +1,63 @@
-// components/IncidentCard.tsx
-import React from "react";
-
-const incidents = [
-  {
-    id: 1,
-    time: "09:14",
-    location: "KM 25",
-    vehicle: "PJR, Ambulance",
-  },
-  {
-    id: 2,
-    time: "09:14",
-    location: "KM 25",
-    vehicle: "PJR, Ambulance",
-  },
-  {
-    id: 3,
-    time: "09:14",
-    location: "KM 25",
-    vehicle: "PJR, Ambulance",
-  },
-];
+import React, { useEffect } from "react";
+import { useIncidentStore } from "@/stores/useIncidentStore";
 
 const IncidentCard: React.FC = () => {
+  const { data, fetchData, total } = useIncidentStore();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
-    <div className="bg-dashboard-accent text-white p-4 rounded-xl w-full h-96 max-w-sm">
+    <div className="bg-dashboard-accent text-white p-4 rounded-xl w-full max-w-sm h-auto">
       {/* Header */}
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h2 className="text-sm font-semibold">Incident</h2>
-          <p className="text-xs text-gray-400">Monitoring Incident</p>
+          <h2 className="text-sm font-semibold">Insiden Terbaru</h2>
+          <p className="text-xs text-gray-400">Monitoring Insiden</p>
         </div>
         <div className="text-right">
-          <p className="text-xs text-gray-400">27/02/2025</p>
-          <p className="text-2xl font-bold text-red-500 leading-none">321</p>
+          <p className="text-xs text-gray-400">
+            {new Date().toLocaleDateString("id-ID")}
+          </p>
+          <p className="text-2xl font-bold text-red-500 leading-none">
+            {total}
+          </p>
         </div>
       </div>
 
-      {/* Status Bar */}
-      <div className="flex items-center gap-1 text-xs mb-2">
-        <span className="text-green-400">Normal</span>
-        <span className="flex-1 h-2 bg-green-600 rounded-full"></span>
-        <span className="text-red-400 ml-2">Tindak Lanjut</span>
-        <span className="flex-[2] h-2 bg-red-600 rounded-full relative">
-          <span className="absolute right-0 top-0 h-2 w-[40%] bg-blue-400 rounded-r-full"></span>
-        </span>
-      </div>
-
-      {/* Incident List */}
       <div className="space-y-3">
-        {incidents.map((incident) => (
+        {data.slice(0, 4).map((incident) => (
           <div
             key={incident.id}
-            className="bg-[#3A3A3C] p-2 rounded-lg flex justify-between items-center"
+            className="bg-[#3A3A3C] p-3 rounded-lg flex justify-between items-start"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gray-400 rounded"></div>
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 bg-gray-500 rounded-md flex-shrink-0">
+                <img
+                  src={incident.url_image}
+                  alt="preview"
+                  className="w-20 h-10 object-cover rounded-lg"
+                />
+              </div>
               <div className="text-xs">
-                <p className="font-semibold">Incident</p>
-                <p>{incident.location}</p>
-                <p className="text-gray-300 text-[11px]">
-                  Kendaraan terdekat: {incident.vehicle}
-                </p>
+                <p className="font-semibold mb-0.5">{incident.description}</p>
+                <p className="text-gray-400">{incident.cam_loc}</p>
               </div>
             </div>
-            <p className="text-xs text-gray-400">{incident.time}</p>
+            <span className="text-xs text-gray-400 mt-1 whitespace-nowrap">
+              {new Date(incident.time_logging).toLocaleTimeString("id-ID", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
           </div>
         ))}
+        {data.length === 0 && (
+          <p className="text-xs text-gray-400 text-center py-4">
+            Tidak ada insiden hari ini.
+          </p>
+        )}
       </div>
     </div>
   );
