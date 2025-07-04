@@ -129,14 +129,14 @@ const BarChart: React.FC<BarChartProps> = ({
         </div>
       </div>
       {/* Custom Legend */}
-      <div className="flex flex-wrap gap-4 mt-4 justify-center">
+      <div className="flex flex-wrap gap-2 mt-1 justify-center">
         {labels.map((label, i) => (
           <div key={i} className="flex items-center space-x-2">
             <div
               className="w-4 h-4 rounded"
               style={{ backgroundColor: datasets[0].backgroundColor[i] }}
             />
-            <span className="text-sm text-white">{label}</span>
+            <span className="text-xs text-white">{label}</span>
           </div>
         ))}
       </div>
