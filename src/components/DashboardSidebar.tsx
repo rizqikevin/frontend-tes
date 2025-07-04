@@ -430,7 +430,7 @@ export const DashboardSidebar: React.FC = () => {
       </div>
       <div className="mt-auto pt-4">
         <div className="px-3 mt-auto absolute bottom-4 flex justify-between w-full pr-6">
-          <button
+          {/* <button
             className={`flex items-center space-x-2 px-4 py-1 text-sm transition-colors ${
               theme === "light"
                 ? "bg-blue-500 text-white"
@@ -440,9 +440,9 @@ export const DashboardSidebar: React.FC = () => {
           >
             <Sun size={16} />
             <span className="text-sm">Light</span>
-          </button>
+          </button> */}
 
-          <button
+          {/* <button
             className={`flex items-center space-x-2 px-4 py-1 text-sm transition-colors ${
               theme === "dark"
                 ? "bg-blue-500 text-white"
@@ -452,7 +452,7 @@ export const DashboardSidebar: React.FC = () => {
           >
             <Moon size={16} />
             <span className="text-sm">Dark</span>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

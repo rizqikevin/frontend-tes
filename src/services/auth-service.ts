@@ -6,7 +6,7 @@ const TOKEN_CCTV = "token_cctv";
 
 interface LoginResponse {
   token: string;
-  tokencctv?: string;
+  tokenCctv?: string;
 }
 
 interface LoginCredentials {
@@ -27,7 +27,9 @@ export const login = async (
 
     // Save token and user data
     localStorage.setItem(TOKEN_KEY, data.token);
-    localStorage.setItem(TOKEN_CCTV, data.tokencctv);
+    localStorage.setItem(TOKEN_CCTV, data.tokenCctv);
+    console.log("Token saved:", data.token);
+    console.log("Token cctv saved:", data.tokenCctv);
 
     return data;
   } catch (error) {

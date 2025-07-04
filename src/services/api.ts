@@ -26,9 +26,21 @@ export const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("auth_token");
+    const cctvToken = localStorage.getItem("token_cctv");
+
     if (token && config.headers) {
       config.headers["X-Auth"] = token;
     }
+
+    if (
+      cctvToken &&
+      config.url &&
+      config.url.includes("/cctv") &&
+      config.headers
+    ) {
+      config.headers["X-Auth"] = cctvToken;
+    }
+
     return config;
   },
   (error) => Promise.reject(error)
