@@ -10,6 +10,7 @@ import SosialMediaSentimenCard from "./SosialMediaSentimenCard";
 import CctvCard from "./CctvCard";
 import AqiCard from "@/components/airquality/aqi/AqiHeader";
 import { useAqiStore } from "@/stores/useAqiStore";
+import { useTransactionStore } from "@/stores/useTransactionCardStore";
 
 const statsData = [
   { label: "Active Gate", value: "9", date: "25/02/2025" },
@@ -62,14 +63,21 @@ const sampleBarData = [
 
 const Dashboard: React.FC = () => {
   const { data, fetchAQI } = useAqiStore();
+  const { TransactionDataAdmin, fetchTransactionData } = useTransactionStore();
 
   useEffect(() => {
     fetchAQI();
   }, []);
 
+  useEffect(() => {
+    fetchTransactionData();
+  }, []);
+
+  console.log(TransactionDataAdmin);
+
   return (
     <div className="space-y-6">
-      <StatsGrid statsData={statsData} />
+      <StatsGrid statsData={TransactionDataAdmin} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <MapSection />

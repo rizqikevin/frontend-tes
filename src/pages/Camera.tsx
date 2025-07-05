@@ -66,11 +66,6 @@ const DroppableGridSlot = ({
   const SERVER_CAMERA = import.meta.env.VITE_CAMERA_SERVER;
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 300);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <div
       ref={setNodeRef}

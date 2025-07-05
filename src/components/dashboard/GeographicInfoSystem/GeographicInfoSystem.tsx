@@ -1,15 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StatsGrid from "./StatsGrid";
 import Filters from "./Filters";
 import MapSection from "./MapSection";
 import ErrorLog from "./ErrorLog";
 import { ErrorItem } from "./ErrorLog";
-
+import { useTransactionStore } from "@/stores/useTransactionCardStore";
 const GeographicInfoSystem: React.FC = () => {
   const [selectedRoute, setSelectedRoute] = useState("");
   const [selectedDeviceType, setSelectedDeviceType] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedCondition, setSelectedCondition] = useState("");
+  const { transactionData, fetchTransactionData } = useTransactionStore();
+
+  useEffect(() => {
+    fetchTransactionData();
+  }, []);
 
   const statsData = [
     {
@@ -62,7 +67,7 @@ const GeographicInfoSystem: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <StatsGrid statsData={statsData} />
+      <StatsGrid statsData={transactionData} />
 
       <Filters
         selectedRoute={selectedRoute}

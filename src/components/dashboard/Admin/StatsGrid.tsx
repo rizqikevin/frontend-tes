@@ -1,5 +1,4 @@
-import WeatherCard from "@/components/WeatherCard";
-import { ChartBarIcon, MoveUpRightIcon } from "lucide-react";
+import { MoveUpRightIcon } from "lucide-react";
 
 interface Stat {
   label: string;
