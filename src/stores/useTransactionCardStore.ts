@@ -39,7 +39,7 @@ interface TransacionDataState {
 export const useTransactionStore = create<TransacionDataState>((set) => ({
   transactionData: [],
   TransactionDataAdmin: [],
-  isDataLoading: false,
+  isDataLoading: true,
   error: null,
 
   fetchTransactionData: async () => {
@@ -112,6 +112,8 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
       }
     } catch (err: any) {
       set({ error: err.message || "unexcepted error ", isDataLoading: false });
+    } finally {
+      set({ isDataLoading: false });
     }
   },
 }));
