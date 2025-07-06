@@ -70,12 +70,12 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
       },
       {
         label: "Total Beban Ruas",
-        value: data.data.lhr.value.toString(),
+        value: data.data.avg_segment_load.value.toString(),
         date: data.data.lhr.date,
       },
       {
         label: "Total LHR",
-        value: data.data.avg_segment_load.value.toString(),
+        value: data.data.lhr.value.toString(),
         date: today,
       },
     ];
@@ -103,6 +103,8 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
       },
     ];
 
+    // console.log(data.code);
+
     try {
       if (data.code == 200) {
         set({ TransactionDataAdmin: mappedAdmin, isDataLoading: false });
@@ -113,7 +115,7 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
     } catch (err: any) {
       set({ error: err.message || "unexcepted error ", isDataLoading: false });
     } finally {
-      set({ isDataLoading: false });
+      set({ isDataLoading: false, error: null });
     }
   },
 }));

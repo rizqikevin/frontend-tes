@@ -5,11 +5,12 @@ import Dashboard from "@/components/dashboard/Admin/Dashboard";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import Header from "@/components/Header";
+import DatePicker from "react-datepicker";
 
 const DashboardAdmin: React.FC = () => {
   const { user, logout } = useAuth();
-  const [startDate, setStartDate] = useState("27 - February - 2025");
-  const [endDate, setEndDate] = useState("27 - February - 2025");
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
@@ -98,8 +99,13 @@ const DashboardAdmin: React.FC = () => {
                         : "bg-gray-50 text-gray-900"
                     } `}
                   >
-                    <Calendar className="h-5 w-5 mr-2 text-gray-400" />
-                    <span>{startDate}</span>
+                    <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
+                    <DatePicker
+                      selected={startDate}
+                      onChange={(date: Date) => setStartDate(date)}
+                      dateFormat="dd/MM/yyyy"
+                      className="bg-transparent w-24 outline-none text-white"
+                    />
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -127,8 +133,13 @@ const DashboardAdmin: React.FC = () => {
                         : "bg-gray-50 text-gray-900"
                     } `}
                   >
-                    <Calendar className="h-5 w-5 mr-2 text-gray-400" />
-                    <span>{endDate}</span>
+                    <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
+                    <DatePicker
+                      selected={endDate}
+                      onChange={(date: Date) => setEndDate(date)}
+                      dateFormat="dd/MM/yyyy"
+                      className="bg-transparent w-24 outline-none text-white"
+                    />
                   </div>
                 </div>
               </div>

@@ -62,7 +62,7 @@ const Weather: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, [startDate, endDate, page, limit]);
+  }, [page, limit]);
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -111,11 +111,11 @@ const Weather: React.FC = () => {
 
         <main className="p-8">
           {/* Filter */}
-          <div className="flex items-center justify-center gap-4 mb-6">
+          <div className="flex items-center justify-start gap-4 mb-0">
             <div className="rounded-lg border p-2 w-[350px] h-[230px] bg-[#082d72] items-center mb-4">
               <WeatherCard />
             </div>
-            <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
+            {/* <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
               <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
               <DatePicker
                 selected={startDate}
@@ -158,12 +158,63 @@ const Weather: React.FC = () => {
               className="bg-white text-black rounded hover:bg-gray-200"
             >
               Search
-            </Button>
+            </Button> */}
           </div>
 
           {/* Weather Table */}
           <div className="bg-dashboard-accent rounded-lg p-6">
-            <h2 className="text-xl font-medium mb-4">Logs</h2>
+            <div className="flex items-center justify-between ">
+              <div>
+                <h2 className="text-xl font-medium mb-4">Logs</h2>
+              </div>
+
+              <div className="flex items-center gap-2 mt-2 p-3 md:mt-0">
+                <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
+                  <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date: Date) => setStartDate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    className="bg-transparent w-24 outline-none text-white"
+                  />
+                </div>
+                <div className="flex items-center">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12H19M19 12L12 5M19 12L12 19"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
+                  <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date: Date) => setEndDate(date)}
+                    dateFormat="dd/MM/yyyy"
+                    className="bg-transparent  w-24 outline-none text-white"
+                  />
+                </div>
+                <Button
+                  onClick={() => {
+                    setPage(1);
+                    fetchData();
+                  }}
+                  className="bg-white text-black rounded hover:bg-gray-200"
+                >
+                  Search
+                </Button>
+              </div>
+            </div>
             <div className="overflow-x-auto">
               <table className="min-w-full text-left text-sm text-white">
                 <thead>

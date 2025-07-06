@@ -74,7 +74,7 @@ const Dashboard: React.FC = () => {
     fetchTransactionData();
   }, []);
 
-  console.log(TransactionDataAdmin);
+  // console.log(TransactionDataAdmin);
 
   return (
     <div className="space-y-6">

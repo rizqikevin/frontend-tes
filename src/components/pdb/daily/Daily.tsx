@@ -72,7 +72,7 @@ export const Daily: React.FC = () => {
                 selected={selectedDate}
                 onChange={(date: Date) => setSelectedDate(date)}
                 dateFormat="dd - MMMM - yyyy"
-                className="bg-transparent focus:outline-none text-white "
+                className="bg-transparent w-28 focus:outline-none text-white "
               />
             </div>
             <Button
