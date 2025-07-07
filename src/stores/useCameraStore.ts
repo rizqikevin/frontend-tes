@@ -11,7 +11,6 @@ type Camera = {
 
 type CameraStore = {
   cameraList: Camera[];
-  filteredCameras: Camera[];
   grid: (Camera | null)[];
   fetchCameras: () => Promise<void>;
   setGrid: (grid: (Camera | null)[]) => void;
@@ -22,11 +21,14 @@ type CameraStore = {
 export const useCameraStore = create<CameraStore>((set, get) => ({
   cameraList: [],
   filteredCameras: [],
+  cameraVMS: [],
   grid: new Array(16).fill(null),
   fetchCameras: async () => {
     try {
       const res = await api.get("/cctv/all");
-      set({ cameraList: res.data, filteredCameras: res.data });
+      set({
+        cameraList: res.data,
+      });
     } catch (err) {
       console.error("Failed to fetch cameras:", err);
     }
@@ -44,9 +46,4 @@ export const useCameraStore = create<CameraStore>((set, get) => ({
       updated[index] = null;
       return { grid: updated };
     }),
-  filterByGroup: (groupId) => {
-    const all = get().cameraList;
-    const filtered = all.filter((cctv) => cctv.group_id === groupId);
-    set({ filteredCameras: filtered });
-  },
 }));

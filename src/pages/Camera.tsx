@@ -177,9 +177,12 @@ const Camera = () => {
     }
   };
 
-  const filteredCameras = cameraList.filter((cam) =>
-    cam.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredCameras = cameraList.filter((cam) => {
+    const matchGroup = Number(cam.group_id) === 2;
+    const matchSearch = cam.name.toLowerCase().includes(search.toLowerCase());
+
+    return matchGroup && matchSearch;
+  });
 
   const onRemoveCamera = (index: number) => {
     const updated = [...grid];
