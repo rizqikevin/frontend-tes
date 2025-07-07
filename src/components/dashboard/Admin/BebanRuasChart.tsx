@@ -18,6 +18,13 @@ ChartJS.register(
   Legend
 );
 
+const tanggal = [];
+for (let i = 1; i <= 7; i++) {
+  tanggal.push(i);
+}
+
+console.log(tanggal);
+
 const BebanRuasChart = () => {
   const data = {
     labels: ["01/07", "02/07", "03/07", "04/07", "05/07", "06/07"],
