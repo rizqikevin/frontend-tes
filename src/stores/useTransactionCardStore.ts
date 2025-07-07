@@ -71,12 +71,12 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
       {
         label: "Total Beban Ruas",
         value: data.data.avg_segment_load.value.toString(),
-        date: data.data.lhr.date,
+        date: today,
       },
       {
         label: "Total LHR",
         value: data.data.lhr.value.toString(),
-        date: today,
+        date: data.data.lhr.date,
       },
     ];
 
@@ -93,8 +93,8 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
       },
       {
         label: "Total Lalin Harian Rata-Rata",
-        value: data.data.total_transactions.value.toString(),
-        date: today,
+        value: data.data.lhr.value.toString(),
+        date: data.data.lhr.date,
       },
       {
         label: "Beban Ruas",
