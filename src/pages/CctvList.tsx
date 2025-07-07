@@ -9,10 +9,29 @@ import {
 } from "@/components/ui/select";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useEffect, useState } from "react";
+import api from "@/services/api";
+
+interface CameraGroup {
+  id: string;
+  name: string;
+  description: string;
+}
 
 const CCTVList = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+  const fetchData = async () => {
+    const res = await api.get("/cctv/all");
+    const data = res.data;
+
+    try {
+      if (data.status === "success") {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Listen for theme changes and sidebar state changes
   useEffect(() => {

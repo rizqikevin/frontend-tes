@@ -29,7 +29,11 @@ const Header: React.FC<HeaderProps> = ({ isDark, user, logout }) => {
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center space-x-2 cursor-pointer outline-none">
                 <div className="mr-2">
-                  <img src={user.role} className="h-8 w-8 rounded-full" />
+                  <img
+                    src={`/icons/${user.role}.png`}
+                    alt={user.role}
+                    className="my-1 h-5 w-5 rounded-full"
+                  />
                 </div>
                 <div className="text-sm">Hi, {user.name}</div>
                 <ChevronDown className="h-4 w-4" />

@@ -46,36 +46,43 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
     const res = await api2.get("/tracomm/dashboard/card");
     const data = res.data;
 
+    console.log(data);
+
     const today = format(new Date(), "yyyy-MM-dd");
+    const idNumberFormatter = new Intl.NumberFormat("id-ID");
     const mappedDireksi: Stat[] = [
       {
         label: "Revenue",
-        value: data.data.revenue.value,
-        date: today,
+        value: "Rp" + idNumberFormatter.format(Number(data.data.revenue.value)),
+        date: data.data.revenue.date,
       },
       {
         label: "Total Transaction",
-        value: data.data.total_transactions.value,
-        date: today,
+        value: idNumberFormatter.format(
+          Number(data.data.total_transactions.value)
+        ),
+        date: data.data.total_transactions.date,
       },
       {
         label: "Active Gate",
-        value: 0,
+        value: "0",
         date: today,
       },
       {
         label: "Inactive Gate",
-        value: 0,
+        value: "0",
         date: today,
       },
       {
         label: "Total Beban Ruas",
-        value: data.data.avg_segment_load.value.toString(),
-        date: today,
+        value: idNumberFormatter.format(
+          Number(data.data.avg_segment_load.value)
+        ),
+        date: data.data.avg_segment_load.date,
       },
       {
         label: "Total LHR",
-        value: data.data.lhr.value.toString(),
+        value: idNumberFormatter.format(Number(data.data.lhr.value)),
         date: data.data.lhr.date,
       },
     ];
@@ -83,22 +90,24 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
     const mappedAdmin: Stat[] = [
       {
         label: "Active Gate",
-        value: 0,
+        value: "0",
         date: today,
       },
       {
         label: "Inactive Gate",
-        value: 0,
+        value: "0",
         date: today,
       },
       {
         label: "Total Lalin Harian Rata-Rata",
-        value: data.data.lhr.value.toString(),
+        value: idNumberFormatter.format(Number(data.data.lhr.value)),
         date: data.data.lhr.date,
       },
       {
         label: "Beban Ruas",
-        value: data.data.avg_segment_load.value.toString(),
+        value: idNumberFormatter.format(
+          Number(data.data.avg_segment_load.value)
+        ),
         date: today,
       },
     ];

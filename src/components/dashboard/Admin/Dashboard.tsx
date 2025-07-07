@@ -11,6 +11,7 @@ import CctvCard from "./CctvCard";
 import AqiCard from "@/components/airquality/aqi/AqiHeader";
 import { useAqiStore } from "@/stores/useAqiStore";
 import { useTransactionStore } from "@/stores/useTransactionCardStore";
+import BebanRuasChart from "./BebanRuasChart";
 
 const statsData = [
   { label: "Active Gate", value: "9", date: "25/02/2025" },
@@ -110,7 +111,7 @@ const Dashboard: React.FC = () => {
         <MapSection />
         <div className="flex flex-col gap-4">
           <TrafficChart />
-          <TrafficChart />
+          <BebanRuasChart />
         </div>
         <div className="flex justify-end min-w-0">
           <div className="overflow-y-auto h-full max-h-[71vh] pr-1 scrollbar-hidden rounded-lg">

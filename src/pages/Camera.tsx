@@ -129,6 +129,7 @@ const Camera = () => {
     const fetchCameras = async () => {
       const res = await api.get("/cctv/all");
       setCameraList(res.data);
+      console.log(res.data);
     };
     fetchCameras();
   }, []);
