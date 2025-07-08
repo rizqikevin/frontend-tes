@@ -30,6 +30,7 @@ import {
   ChevronLeft,
   User,
   AlertCircleIcon,
+  UserCircle,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 
@@ -408,10 +409,21 @@ export const DashboardSidebar: React.FC = () => {
                 SETTINGS
               </div>
               <SidebarItem
-                icon={<Bell size={18} />}
-                text="Notification"
-                to="/dashboard/notifications"
+                icon={<UserCircle size={18} />}
+                text="Account"
+                hasSubmenu
+                expanded={expandedItem === "account"}
+                onClick={() => toggleExpand("account")}
               />
+              {expandedItem === "account" && (
+                <div className="ml-6 mt-1 space-y-1">
+                  <SidebarItem
+                    icon={<User size={18} />}
+                    text="Data Users"
+                    to="/data-users"
+                  />
+                </div>
+              )}
               <SidebarItem
                 icon={<Settings size={18} />}
                 text="Settings"

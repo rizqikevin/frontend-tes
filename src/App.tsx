@@ -38,6 +38,7 @@ import { AirQuality } from "./pages/AirQuality";
 import { Genset } from "./pages/Genset";
 import { InputPrognosa } from "./pages/InputPrognosa";
 import NotifSetting from "./pages/NotifSettings";
+import DataUsers from "./pages/DataUsers";
 
 const queryClient = new QueryClient();
 
@@ -243,6 +244,14 @@ const App = () => {
                 element={
                   <ProtectedRoute requiredRole={UserRole.ADMIN}>
                     <NotifSetting />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/data-users"
+                element={
+                  <ProtectedRoute requiredRole={UserRole.ADMIN}>
+                    <DataUsers />
                   </ProtectedRoute>
                 }
               />
