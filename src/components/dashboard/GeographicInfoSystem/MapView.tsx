@@ -7,6 +7,8 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "react-leaflet-fullscreen/styles.css";
+import { FullscreenControl } from "react-leaflet-fullscreen";
 
 const marker = new L.Icon({
   iconUrl: "/marker/tollstation.png",
@@ -39,6 +41,7 @@ export default function MapView() {
       zoom={11}
       style={{ height: "70vh", width: "100%" }}
     >
+      <FullscreenControl />
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
       {/* <Polyline positions={positions} color="blue" weight={5} /> */}

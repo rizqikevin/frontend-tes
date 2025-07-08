@@ -3,6 +3,7 @@ import L, { Map } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { VehicleData } from "@/types";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { FullscreenControl } from "react-leaflet-fullscreen";
 
 export const getVehicleIcon = (type: string) => {
   switch (type) {
@@ -114,6 +115,7 @@ export default function MapViewGps({
         }
       }}
     >
+      <FullscreenControl />
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
       {vehicles.map((vehicle) => {

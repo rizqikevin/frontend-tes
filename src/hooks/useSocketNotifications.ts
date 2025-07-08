@@ -18,7 +18,6 @@ export const useSocketNotifications = () => {
       addIncident(data);
       console.log(data);
 
-      // Opsional: trigger popup sonner atau modal
       toast(`Insiden baru: ${data.description}`, {
         description: data.cam_loc,
       });
@@ -33,7 +32,7 @@ export const useSocketNotifications = () => {
 
       console.log(shouldNotify);
 
-      if (shouldNotify) {
+      if (!shouldNotify) {
         setPopupIncident({ description, videoUrl: url_video });
       }
     });

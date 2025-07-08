@@ -1,6 +1,8 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { FullscreenControl } from "react-leaflet-fullscreen";
+import "react-leaflet-fullscreen/styles.css";
 import { useStreetLightStore } from "@/stores/streetlightStore";
 
 // ICONS
@@ -30,6 +32,7 @@ export default function MapView() {
       zoom={16}
       style={{ height: "100%", width: "100%" }}
     >
+      <FullscreenControl />
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
       {/* Render lampu berdasarkan data */}

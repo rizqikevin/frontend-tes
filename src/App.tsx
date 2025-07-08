@@ -9,6 +9,7 @@ import { UserRole } from "./types";
 import IncidentNotification from "./components/IncidentNotification";
 import { useSocketNotifications } from "./hooks/useSocketNotifications";
 
+import "react-leaflet-fullscreen/styles.css";
 import "leaflet/dist/leaflet.css";
 
 // Pages
