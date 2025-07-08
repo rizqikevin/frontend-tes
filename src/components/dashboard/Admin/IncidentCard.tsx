@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import { useIncidentStore } from "@/stores/useIncidentStore";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const IncidentCard: React.FC = () => {
-  const { data, fetchData, total } = useIncidentStore();
+  const { data, fetchData, total, expandedVideo, setExpandedVideo } =
+    useIncidentStore();
 
   useEffect(() => {
     fetchData();
@@ -33,13 +36,17 @@ const IncidentCard: React.FC = () => {
             className="bg-[#3A3A3C] p-3 rounded-lg flex justify-between items-start"
           >
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 bg-gray-500 rounded-md flex-shrink-0">
+              <Button
+                variant="ghost"
+                onClick={() => setExpandedVideo(incident.url_video)}
+              >
                 <img
                   src={incident.url_image}
                   alt="preview"
-                  className="w-20 h-10 object-cover rounded-lg"
+                  className="w-12 h-12 object-cover rounded-lg"
                 />
-              </div>
+              </Button>
+
               <div className="text-xs">
                 <p className="font-semibold mb-0.5">{incident.description}</p>
                 <p className="text-gray-400">{incident.cam_loc}</p>
@@ -59,6 +66,24 @@ const IncidentCard: React.FC = () => {
           </p>
         )}
       </div>
+
+      {/* Modal Video */}
+      {expandedVideo && (
+        <div className="fixed inset-0 bg-black bg-opacity-80 z-[9999] flex items-center justify-center">
+          <button
+            className="absolute top-4 right-4 text-white"
+            onClick={() => setExpandedVideo(null)}
+          >
+            <X size={24} />
+          </button>
+          <video
+            src={expandedVideo}
+            controls
+            autoPlay
+            className="max-h-[80vh] rounded-lg"
+          />
+        </div>
+      )}
     </div>
   );
 };
