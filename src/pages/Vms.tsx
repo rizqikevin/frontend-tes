@@ -136,8 +136,8 @@ const VMS = () => {
   const filteredCameras = cameraList.filter((cam) => {
     const matchGroup = Number(cam.group_id) === 5;
     const matchSearch = cam.name.toLowerCase().includes(search.toLowerCase());
-
-    return matchGroup && matchSearch;
+    const isUsed = grid.some((item) => item?.id === cam.id);
+    return matchGroup && matchSearch && !isUsed;
   });
 
   useEffect(() => {

@@ -180,8 +180,9 @@ const Camera = () => {
   const filteredCameras = cameraList.filter((cam) => {
     const matchGroup = Number(cam.group_id) === 2;
     const matchSearch = cam.name.toLowerCase().includes(search.toLowerCase());
+    const isUsed = grid.some((item) => item?.id === cam.id);
 
-    return matchGroup && matchSearch;
+    return matchGroup && matchSearch && !isUsed;
   });
 
   const onRemoveCamera = (index: number) => {

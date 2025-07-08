@@ -159,8 +159,9 @@ const CCTVList = () => {
           const matchSearch = cam.name
             .toLowerCase()
             .includes(search.toLowerCase());
+          const isUsed = grid.some((item) => item?.id === cam.id);
 
-          return matchGroup && matchSearch;
+          return matchGroup && matchSearch && !isUsed;
         });
 
   const handleDragEnd = (event: DragEndEvent) => {
