@@ -10,7 +10,8 @@ import {
   Title,
 } from "chart.js";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "lucide-react";
+import api from "@/services/api";
+import { toast } from "sonner";
 
 ChartJS.register(
   CategoryScale,
@@ -62,6 +63,33 @@ const BarChart: React.FC<BarChartProps> = ({
     onDateChange(selected);
   };
 
+  const handleDownload = async () => {
+    try {
+      const selected = new Date(localDate);
+      const d = selected.getDate().toString().padStart(2, "0");
+      const m = (selected.getMonth() + 1).toString().padStart(2, "0");
+      const y = selected.getFullYear();
+
+      const response = await api.get(
+        `/counting/export-excel/monthly/${d}/${m}/${y}`,
+        {
+          responseType: "blob",
+        }
+      );
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `monthly_${d}_${m}_${y}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      toast.success("Download Berhasil");
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Failed to download Excel:", error);
+    }
+  };
+
   return (
     <div className="w-full bg-dashboard-accent text-white rounded-xl px-6 py-4">
       {/* Header */}
@@ -81,6 +109,12 @@ const BarChart: React.FC<BarChartProps> = ({
             className="bg-white text-black px-3 py-1 rounded text-sm"
           >
             Terapkan
+          </Button>
+          <Button
+            onClick={handleDownload}
+            className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm"
+          >
+            Download Excel
           </Button>
         </div>
       </div>

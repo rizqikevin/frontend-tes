@@ -11,7 +11,8 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "lucide-react";
+import api from "@/services/api";
+import { toast } from "sonner";
 
 ChartJS.register(
   CategoryScale,
@@ -49,6 +50,33 @@ const LineChart: React.FC<LineChartProps> = ({
     setLocalDate(date.toISOString().split("T")[0]);
   }, [date]);
 
+  const handleDownload = async () => {
+    try {
+      const selected = new Date(localDate);
+      const d = selected.getDate().toString().padStart(2, "0");
+      const m = (selected.getMonth() + 1).toString().padStart(2, "0");
+      const y = selected.getFullYear();
+
+      const response = await api.get(
+        `/counting/export-excel/daily/${d}/${m}/${y}`,
+        {
+          responseType: "blob",
+        }
+      );
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `daily_${d}_${m}_${y}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      toast.success("Download Berhasil");
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Failed to download Excel:", error);
+    }
+  };
+
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (!value) {
@@ -83,6 +111,12 @@ const LineChart: React.FC<LineChartProps> = ({
             className="bg-white text-black px-3 py-1 rounded text-sm"
           >
             Terapkan
+          </Button>
+          <Button
+            onClick={handleDownload}
+            className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm"
+          >
+            Download Excel
           </Button>
         </div>
       </div>
