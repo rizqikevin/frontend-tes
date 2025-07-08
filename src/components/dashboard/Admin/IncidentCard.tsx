@@ -43,7 +43,7 @@ const IncidentCard: React.FC = () => {
                 <img
                   src={incident.url_image}
                   alt="preview"
-                  className="w-12 h-12 object-cover rounded-lg"
+                  className="w-14 h-14 rounded-sm"
                 />
               </Button>
 
