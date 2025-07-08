@@ -16,9 +16,8 @@ export const useSocketNotifications = () => {
   useEffect(() => {
     socket.on("incident:data", (data) => {
       addIncident(data);
-      console.log(data);
 
-      toast(`Insiden baru: ${data.description}`, {
+      console.log(`Insiden baru: ${data.description}`, {
         description: data.cam_loc,
       });
 
@@ -32,7 +31,7 @@ export const useSocketNotifications = () => {
 
       console.log(shouldNotify);
 
-      if (!shouldNotify) {
+      if (shouldNotify) {
         setPopupIncident({ description, videoUrl: url_video });
       }
     });

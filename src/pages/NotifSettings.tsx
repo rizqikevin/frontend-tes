@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/Header";
-import IncidentNotificationSettings from "./IncidentNotificationSettings";
+import IncidentNotificationSettings from "../components/IncidentNotificationSettings";
 
 export const NotifSetting: React.FC = () => {
   const { user, logout } = useAuth();
