@@ -1,13 +1,40 @@
 // src/hooks/useSocketNotifications.ts
 import { useEffect } from "react";
 import { io } from "socket.io-client";
-import { useNotificationStore } from "@/stores/useNotificationStore";
+import {
+  useNotificationStore,
+  useIncidentSocketStore,
+} from "@/stores/useNotificationStore";
+import { toast } from "sonner";
 
 const socket = io(import.meta.env.VITE_SOCKET_URL, {
-  transports: ["polling"],
+  transports: ["websocket"],
 });
 export const useSocketNotifications = () => {
   const { settings, setPopupIncident } = useNotificationStore();
+  const { addIncident } = useIncidentSocketStore();
+
+  useEffect(() => {
+    socket.on("incident:data", (data) => {
+      addIncident(data);
+
+      // Opsional: trigger popup sonner atau modal
+      toast(`Insiden baru: ${data.description}`, {
+        description: data.cam_loc,
+      });
+    });
+
+    socket.on("flood:data", (data) => {
+      toast("Peringatan banjir", {
+        description: data.location || "Lokasi tidak diketahui",
+      });
+    });
+
+    return () => {
+      socket.off("incident:data");
+      socket.off("flood:data");
+    };
+  }, []);
 
   useEffect(() => {
     socket.on("incident_event", (data) => {

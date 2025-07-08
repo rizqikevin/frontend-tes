@@ -239,7 +239,15 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/incident-notification" element={<NotifSetting />} />
+              <Route
+                path="/incident-notification"
+                element={
+                  <ProtectedRoute requiredRole={UserRole.ADMIN}>
+                    <NotifSetting />
+                  </ProtectedRoute>
+                }
+              />
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
