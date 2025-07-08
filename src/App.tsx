@@ -37,7 +37,6 @@ import { Ups } from "./pages/Ups";
 import { AirQuality } from "./pages/AirQuality";
 import { Genset } from "./pages/Genset";
 import { InputPrognosa } from "./pages/InputPrognosa";
-import IncidentNotificationSettings from "./pages/IncidentNotificationSettings";
 import NotifSetting from "./pages/NotifSettings";
 
 const queryClient = new QueryClient();

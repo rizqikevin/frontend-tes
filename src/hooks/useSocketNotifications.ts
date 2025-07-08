@@ -1,4 +1,3 @@
-// src/hooks/useSocketNotifications.ts
 import { useEffect } from "react";
 import { io } from "socket.io-client";
 import {
@@ -17,11 +16,26 @@ export const useSocketNotifications = () => {
   useEffect(() => {
     socket.on("incident:data", (data) => {
       addIncident(data);
+      console.log(data);
 
       // Opsional: trigger popup sonner atau modal
       toast(`Insiden baru: ${data.description}`, {
         description: data.cam_loc,
       });
+
+      const { description, url_video } = data;
+      const shouldNotify =
+        (description.includes("WrongWay") && settings.wrongWay) ||
+        (description.includes("StopVeh") && settings.stopInCongested) ||
+        (description.includes("SlowVeh") && settings.slowDown) ||
+        (description.includes("Stop Vehicle in Fluid Traffic") &&
+          settings.stopInFluid);
+
+      console.log(shouldNotify);
+
+      if (shouldNotify) {
+        setPopupIncident({ description, videoUrl: url_video });
+      }
     });
 
     socket.on("flood:data", (data) => {
@@ -33,29 +47,6 @@ export const useSocketNotifications = () => {
     return () => {
       socket.off("incident:data");
       socket.off("flood:data");
-    };
-  }, []);
-
-  useEffect(() => {
-    socket.on("incident_event", (data) => {
-      const { description, url_video } = data;
-      console.log("📥 Received incident-notif:", data);
-      console.log("✅ Connected to Socket.IO server");
-      const shouldNotify =
-        (description.includes("Wrong Way") && settings.wrongWay) ||
-        (description.includes("Stop Vehicle in Congested Traffic") &&
-          settings.stopInCongested) ||
-        (description.includes("Slow Down") && settings.slowDown) ||
-        (description.includes("Stop Vehicle in Fluid Traffic") &&
-          settings.stopInFluid);
-
-      if (shouldNotify) {
-        setPopupIncident({ description, videoUrl: url_video });
-      }
-    });
-
-    return () => {
-      socket.off("incident_event");
     };
   }, [settings]);
 };
