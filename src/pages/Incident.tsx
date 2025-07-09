@@ -254,7 +254,7 @@ export const Incident: React.FC = () => {
                     setLimit(Number(e.target.value));
                   }}
                 >
-                  {[10, 20, 30, 100].map((num) => (
+                  {[10, 20, 30, 100, 200].map((num) => (
                     <option key={num} value={num}>
                       {num}
                     </option>

@@ -5,6 +5,7 @@ import {
   useIncidentSocketStore,
 } from "@/stores/useNotificationStore";
 import { toast } from "sonner";
+import { camLocationMap } from "@/components/dashboard/Admin/dummydata/camLocations";
 
 const socket = io(import.meta.env.VITE_SOCKET_URL, {
   transports: ["websocket"],
@@ -15,7 +16,13 @@ export const useSocketNotifications = () => {
 
   useEffect(() => {
     socket.on("incident:data", (data) => {
-      addIncident(data);
+      const coords = camLocationMap[data.cam_loc] ?? [3.22477, 99.22196];
+      const incident = {
+        ...data,
+        lat: coords[0],
+        lng: coords[1],
+      };
+      addIncident(incident);
 
       console.log(`Insiden baru: ${data.description}`, {
         description: data.cam_loc,

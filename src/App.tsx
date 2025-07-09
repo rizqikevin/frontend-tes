@@ -53,7 +53,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
-            <IncidentNotification />
+            {/* <IncidentNotification /> */}
             <Routes>
               <Route path="/" element={<Login />} />
               <Route
