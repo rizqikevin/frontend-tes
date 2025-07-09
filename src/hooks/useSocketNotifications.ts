@@ -11,24 +11,13 @@ const socket = io(import.meta.env.VITE_SOCKET_URL, {
   transports: ["websocket"],
 });
 export const useSocketNotifications = () => {
-  const { settings, setPopupIncident } = useNotificationStore();
+  const { settings } = useNotificationStore();
   const { addIncident } = useIncidentSocketStore();
 
   useEffect(() => {
     socket.on("incident:data", (data) => {
       const coords = camLocationMap[data.cam_loc] ?? [3.22477, 99.22196];
-      const incident = {
-        ...data,
-        lat: coords[0],
-        lng: coords[1],
-      };
-      addIncident(incident);
-
-      console.log(`Insiden baru: ${data.description}`, {
-        description: data.cam_loc,
-      });
-
-      const { description, url_video } = data;
+      const { description } = data;
       const shouldNotify =
         (description.includes("WrongWay") && settings.wrongWay) ||
         (description.includes("StopVeh") && settings.stopInCongested) ||
@@ -36,11 +25,21 @@ export const useSocketNotifications = () => {
         (description.includes("Stop Vehicle in Fluid Traffic") &&
           settings.stopInFluid);
 
-      console.log(shouldNotify);
-
       if (shouldNotify) {
-        setPopupIncident({ description, videoUrl: url_video });
+        const incident = {
+          ...data,
+          lat: coords[0],
+          lng: coords[1],
+        };
+        console.log(shouldNotify);
+        addIncident(incident);
       }
+      console.log(
+        `Insiden baru from Socket Notification : ${data.description}`,
+        {
+          description: data.cam_loc,
+        }
+      );
     });
 
     socket.on("flood:data", (data) => {

@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import "react-leaflet-fullscreen/styles.css";
 import { useIncidentSocketStore } from "@/stores/useNotificationStore";
 import { Link } from "react-router-dom";
-import "../../../../public/marker/incident-marker.css";
+import "../../../incident-marker.css";
 
 const incidentIcon = new L.DivIcon({
   className: "incident-pulse-icon",
@@ -39,7 +39,7 @@ const center: [number, number] = [3.22628, 99.22696];
 
 export default function MapView() {
   const { incidents, clearIncidents } = useIncidentSocketStore();
-  console.log("incidents from map : ", incidents);
+  // console.log("incidents from map : ", incidents);
 
   return (
     <MapContainer
@@ -72,7 +72,7 @@ export default function MapView() {
                 onClick={clearIncidents}
                 className="mt-3 w-full bg-red-600 text-white py-1.5 rounded hover:bg-red-700"
               >
-                Tutup Semua
+                Clear
               </button>
               <Link to={`/incident`}>
                 <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">

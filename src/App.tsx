@@ -40,11 +40,13 @@ import { Genset } from "./pages/Genset";
 import { InputPrognosa } from "./pages/InputPrognosa";
 import NotifSetting from "./pages/NotifSettings";
 import DataUsers from "./pages/DataUsers";
+import useIncidentSpeech from "./hooks/useIncidentSpeech";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   useSocketNotifications();
+  useIncidentSpeech();
 
   return (
     <QueryClientProvider client={queryClient}>

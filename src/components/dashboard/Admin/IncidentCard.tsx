@@ -9,12 +9,14 @@ const IncidentCard: React.FC = () => {
     useIncidentStore();
   const { incidents } = useIncidentSocketStore();
 
+  console.log(incidents);
+
   useEffect(() => {
-    if (incidents.length > 0) {
+    if (incidents && incidents.length > 0) {
       fetchData();
     }
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   return (
     <div className="bg-dashboard-accent text-white p-4 rounded-xl w-full max-w-sm h-auto">

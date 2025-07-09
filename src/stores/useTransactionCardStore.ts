@@ -46,7 +46,7 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
     const res = await api2.get("/tracomm/dashboard/card");
     const data = res.data;
 
-    console.log(data);
+    // console.log(data);
 
     const today = format(new Date(), "yyyy-MM-dd");
     const idNumberFormatter = new Intl.NumberFormat("id-ID");
