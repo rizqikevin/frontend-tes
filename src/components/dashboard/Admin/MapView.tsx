@@ -10,13 +10,13 @@ import "../../../../public/marker/incident-marker.css";
 const incidentIcon = new L.DivIcon({
   className: "incident-pulse-icon",
   html: `
-    <div class="pulse-wrapper">
-      <img src="/marker/incident.png" alt="incident" class="incident-icon-img" />
+    <div class="blink-container">
+      <img src="/marker/pulse.png" class="blink-icon-img" />
       <div class="pulse-circle"></div>
     </div>
   `,
   iconUrl: "/marker/pulse.png",
-  iconSize: [32, 32],
+  iconSize: [100, 100],
   iconAnchor: [16, 16],
   popupAnchor: [0, -16],
 });
@@ -83,7 +83,7 @@ export default function MapView() {
           </Popup>
         </Marker>
       ))}
-      <Marker position={[3.025, 99.07]} icon={marker}>
+      <Marker position={[3.025, 99.07]} icon={incidentIcon}>
         <Popup>
           <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
             <img
@@ -338,7 +338,7 @@ export default function MapView() {
           </div>
         </Popup>
       </Marker>
-      <Marker position={[3.134, 99.384]} icon={marker}>
+      <Marker position={[3.1, 99.384]} icon={marker}>
         <Popup>
           <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
             <img

@@ -2,12 +2,17 @@ import React, { useEffect } from "react";
 import { useIncidentStore } from "@/stores/useIncidentStore";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useIncidentSocketStore } from "@/stores/useNotificationStore";
 
 const IncidentCard: React.FC = () => {
   const { data, fetchData, total, expandedVideo, setExpandedVideo } =
     useIncidentStore();
+  const { incidents } = useIncidentSocketStore();
 
   useEffect(() => {
+    if (incidents.length > 0) {
+      fetchData();
+    }
     fetchData();
   }, []);
 

@@ -31,6 +31,10 @@ import {
   User,
   AlertCircleIcon,
   UserCircle,
+  User2,
+  UserCircle2,
+  UserX2Icon,
+  UsersRoundIcon,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 
@@ -421,6 +425,15 @@ export const DashboardSidebar: React.FC = () => {
                     icon={<User size={18} />}
                     text="Data Users"
                     to="/data-users"
+                  />
+                </div>
+              )}
+              {expandedItem === "account" && (
+                <div className="ml-6 mt-1 space-y-1">
+                  <SidebarItem
+                    icon={<UsersRoundIcon size={18} />}
+                    text="User Level"
+                    to="/user-level"
                   />
                 </div>
               )}
