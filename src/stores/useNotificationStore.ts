@@ -23,7 +23,15 @@ interface IncidentSocketState {
 }
 
 interface NotificationState {
+  popupIncident: {
+    description: string;
+    url_video: string;
+    cam_loc?: string;
+  } | null;
   settings: NotificationSettings;
+  setPopupIncident: (
+    data: { description: string; url_video: string; cam_loc?: string } | null
+  ) => void;
   fetchSettings: () => Promise<void>;
   updateSettings: (updates: Partial<NotificationSettings>) => Promise<void>;
 }
@@ -44,14 +52,16 @@ export const useNotificationStore = create<NotificationState>((set) => ({
     stopInFluid: true,
   },
 
+  setPopupIncident: (data) => set({ popupIncident: data }),
+
   fetchSettings: async () => {
     const res = await api.get("/incident/notif");
     const result = res.data.data.reduce(
       (acc, cur) => {
-        if (cur.description === "Wrong Way") acc.wrongWay = cur.status;
-        else if (cur.description === "Stop Vehicle in Congested Traffic")
+        if (cur.description === "WrongWay") acc.wrongWay = cur.status;
+        else if (cur.description === "StopVeh")
           acc.stopInCongested = cur.status;
-        else if (cur.description === "Slow Down") acc.slowDown = cur.status;
+        else if (cur.description === "SlowDown") acc.slowDown = cur.status;
         else if (cur.description === "Stop Vehicle in Fluid Traffic")
           acc.stopInFluid = cur.status;
         return acc;

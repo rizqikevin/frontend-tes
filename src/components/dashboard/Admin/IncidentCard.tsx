@@ -12,11 +12,8 @@ const IncidentCard: React.FC = () => {
   console.log(incidents);
 
   useEffect(() => {
-    if (incidents && incidents.length > 0) {
-      fetchData();
-    }
     fetchData();
-  }, [fetchData]);
+  }, [incidents]);
 
   return (
     <div className="bg-dashboard-accent text-white p-4 rounded-xl w-full max-w-sm h-auto">

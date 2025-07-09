@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/Header";
-import UserTable from "@/components/users/UserTable";
+import UserTable from "@/components/users/usersdata/UserTable";
 
 export const DataUsers: React.FC = () => {
   const { user, logout } = useAuth();

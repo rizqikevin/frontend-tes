@@ -41,7 +41,6 @@ import { InputPrognosa } from "./pages/InputPrognosa";
 import NotifSetting from "./pages/NotifSettings";
 import DataUsers from "./pages/DataUsers";
 import useIncidentSpeech from "./hooks/useIncidentSpeech";
-
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -55,7 +54,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
-            {/* <IncidentNotification /> */}
+            <IncidentNotification />
             <Routes>
               <Route path="/" element={<Login />} />
               <Route
