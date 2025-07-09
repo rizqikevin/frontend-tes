@@ -23,14 +23,7 @@ interface IncidentSocketState {
 }
 
 interface NotificationState {
-  popupIncident: {
-    description: string;
-    videoUrl: string;
-  } | null;
   settings: NotificationSettings;
-  setPopupIncident: (
-    data: { description: string; videoUrl: string } | null
-  ) => void;
   fetchSettings: () => Promise<void>;
   updateSettings: (updates: Partial<NotificationSettings>) => Promise<void>;
 }
@@ -50,8 +43,6 @@ export const useNotificationStore = create<NotificationState>((set) => ({
     slowDown: true,
     stopInFluid: true,
   },
-
-  setPopupIncident: (data) => set({ popupIncident: data }),
 
   fetchSettings: async () => {
     const res = await api.get("/incident/notif");
