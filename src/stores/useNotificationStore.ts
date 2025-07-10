@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import api from "@/services/api";
+import { persist } from "zustand/middleware";
+import exp from "constants";
 
 interface NotificationSettings {
   wrongWay: boolean;
@@ -36,12 +38,19 @@ interface NotificationState {
   updateSettings: (updates: Partial<NotificationSettings>) => Promise<void>;
 }
 
-export const useIncidentSocketStore = create<IncidentSocketState>((set) => ({
-  incidents: [],
-  addIncident: (incident) =>
-    set((state) => ({ incidents: [...state.incidents, incident] })),
-  clearIncidents: () => set({ incidents: [] }),
-}));
+export const useIncidentSocketStore = create<IncidentSocketState>()(
+  persist(
+    (set) => ({
+      incidents: [],
+      addIncident: (incident) =>
+        set((state) => ({ incidents: [...state.incidents, incident] })),
+      clearIncidents: () => set({ incidents: [] }),
+    }),
+    {
+      name: "incident-socket-storage",
+    }
+  )
+);
 
 export const useNotificationStore = create<NotificationState>((set) => ({
   popupIncident: null,

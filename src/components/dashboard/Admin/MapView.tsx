@@ -66,6 +66,7 @@ export default function MapView() {
                 src={incident.url_video}
                 autoPlay
                 controls
+                loop
                 className="w-full rounded"
               />
               <button
@@ -83,7 +84,7 @@ export default function MapView() {
           </Popup>
         </Marker>
       ))}
-      <Marker position={[3.025, 99.07]} icon={incidentIcon}>
+      <Marker position={[3.025, 99.07]} icon={marker}>
         <Popup>
           <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
             <img
@@ -194,7 +195,7 @@ export default function MapView() {
           </div>
         </Popup>
       </Marker>
-      <Marker position={[3.152, 99.08]} icon={marker2}>
+      <Marker position={[3.112, 99.08]} icon={marker2}>
         <Popup>
           <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
             <img
@@ -230,7 +231,7 @@ export default function MapView() {
           </div>
         </Popup>
       </Marker>
-      <Marker position={[3.324, 99.175]} icon={marker}>
+      <Marker position={[3.289, 99.175]} icon={marker}>
         <Popup>
           <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
             <img
@@ -302,7 +303,7 @@ export default function MapView() {
           </div>
         </Popup>
       </Marker>
-      <Marker position={[3.134, 99.152]} icon={marker}>
+      <Marker position={[3.114, 99.182]} icon={marker}>
         <Popup>
           <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
             <img

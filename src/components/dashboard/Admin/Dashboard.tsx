@@ -124,8 +124,10 @@ const Dashboard: React.FC = () => {
             <div className="rounded-lg border p-2 w-full h-auto bg-[#082d72] items-center mb-4">
               <WeatherCard />
             </div>
+            <div className="mt-4">
+              <IncidentCard />
+            </div>
 
-            <IncidentCard />
             <div className="mt-4">
               <CctvCard date="25/02/2025" active={100} nonActive={10} />
             </div>

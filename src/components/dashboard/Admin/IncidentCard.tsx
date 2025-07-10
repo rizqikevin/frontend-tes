@@ -16,7 +16,7 @@ const IncidentCard: React.FC = () => {
   }, [incidents]);
 
   return (
-    <div className="bg-dashboard-accent text-white p-4 rounded-xl w-full max-w-sm h-auto">
+    <div className="bg-dashboard-accent text-white p-5 rounded-xl w-full max-w-sm h-auto">
       {/* Header */}
       <div className="flex justify-between items-start mb-4">
         <div>
