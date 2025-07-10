@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import api from "@/services/api";
 import { persist } from "zustand/middleware";
-import exp from "constants";
 
 interface NotificationSettings {
   wrongWay: boolean;

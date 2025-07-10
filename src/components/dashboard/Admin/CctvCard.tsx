@@ -8,7 +8,7 @@ interface CctvCardProps {
 
 const CctvCard: React.FC<CctvCardProps> = ({ date, active, nonActive }) => {
   return (
-    <div className="bg-dashboard-accent text-white rounded-lg p-4 w-full max-w-lg shadow-md">
+    <div className="bg-dashboard-accent text-white rounded-lg p-4 w-full  shadow-md">
       {/* Header */}
       <div className="flex justify-between items-center mb-1">
         <div>

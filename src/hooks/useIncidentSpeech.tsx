@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useIncidentSocketStore } from "@/stores/useNotificationStore";
 
-const useIncidentSpeech = () => {
+export const useIncidentSpeech = () => {
   const { incidents } = useIncidentSocketStore();
 
   useEffect(() => {
@@ -25,5 +25,3 @@ const useIncidentSpeech = () => {
     }
   }, [incidents]);
 };
-
-export default useIncidentSpeech;

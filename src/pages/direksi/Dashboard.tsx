@@ -17,7 +17,7 @@ import {
 import Header from "@/components/Header";
 import DatePicker from "react-datepicker";
 
-const Dashboard: React.FC = () => {
+export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -233,5 +233,3 @@ const Dashboard: React.FC = () => {
     </div>
   );
 };
-
-export default Dashboard;

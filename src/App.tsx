@@ -13,8 +13,8 @@ import "react-leaflet-fullscreen/styles.css";
 import "leaflet/dist/leaflet.css";
 
 // Pages
-import Login from "./pages/Login";
-import Dashboard from "./pages/direksi/Dashboard";
+import { Login } from "./pages/Login";
+import { Dashboard } from "./pages/direksi/Dashboard";
 import NotFound from "./pages/NotFound";
 import Voip from "./pages/Voip";
 import InputBusiness from "./pages/InputBusiness";
@@ -40,7 +40,7 @@ import { Genset } from "./pages/Genset";
 import { InputPrognosa } from "./pages/InputPrognosa";
 import NotifSetting from "./pages/NotifSettings";
 import DataUsers from "./pages/DataUsers";
-import useIncidentSpeech from "./hooks/useIncidentSpeech";
+import { useIncidentSpeech } from "./hooks/useIncidentSpeech";
 const queryClient = new QueryClient();
 
 const App = () => {

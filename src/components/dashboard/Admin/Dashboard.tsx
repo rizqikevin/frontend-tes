@@ -109,14 +109,10 @@ const Dashboard: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <MapSection />
-        <div className="flex flex-col gap-4">
-          <div className="overflow-y-auto h-full max-h-[70vh] pr-1 scrollbar-hidden rounded-lg">
-            <div className="mt-3">
-              <TrafficChart />
-            </div>
-            <div className="mt-3">
-              <BebanRuasChart />
-            </div>
+        <div className=" overflow-y-auto  max-h-[70vh] scrollbar-hidden rounded-lg p-2 w-full h-auto items-center mb-4">
+          <TrafficChart />
+          <div className="mt-4">
+            <BebanRuasChart />
           </div>
         </div>
         <div className="flex justify-end min-w-0">

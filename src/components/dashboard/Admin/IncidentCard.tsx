@@ -9,14 +9,14 @@ const IncidentCard: React.FC = () => {
     useIncidentStore();
   const { incidents } = useIncidentSocketStore();
 
-  console.log(incidents);
+  // console.log(incidents);
 
   useEffect(() => {
     fetchData();
   }, [incidents]);
 
   return (
-    <div className="bg-dashboard-accent text-white p-5 rounded-xl w-full max-w-sm h-auto">
+    <div className="bg-dashboard-accent text-white p-5 rounded-xl w-full h-auto">
       {/* Header */}
       <div className="flex justify-between items-start mb-4">
         <div>

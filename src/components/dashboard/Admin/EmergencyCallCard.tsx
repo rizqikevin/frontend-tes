@@ -46,7 +46,7 @@ const EmergencyCallCard: React.FC = () => {
   };
 
   return (
-    <div className="bg-dashboard-accent rounded-xl p-4 w-full max-w-sm text-white shadow">
+    <div className="bg-dashboard-accent rounded-xl p-4 w-full text-white shadow">
       <div className="flex justify-between items-start mb-4">
         <div>
           <h2 className="font-semibold text-sm">Emergency Call</h2>

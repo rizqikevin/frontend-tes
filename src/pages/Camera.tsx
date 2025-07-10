@@ -53,7 +53,6 @@ const videoFullScreen = (index: number) => {
 const DroppableGridSlot = ({
   id,
   camera,
-  onDropCamera,
   onRemoveCamera,
 }: {
   id: string;

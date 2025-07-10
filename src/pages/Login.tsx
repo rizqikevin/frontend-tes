@@ -14,7 +14,7 @@ interface ErrorResponse {
   error?: string;
 }
 
-const Login = () => {
+export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -211,5 +211,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;

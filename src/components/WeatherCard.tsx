@@ -47,7 +47,7 @@ const WeatherCard: React.FC = () => {
     };
 
     fetchWeather();
-  }, []);
+  }, [weather]);
 
   if (!weather) return null;
 

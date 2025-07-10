@@ -133,6 +133,34 @@ const VMS = () => {
     fetchCameras();
   }, []);
 
+  useEffect(() => {
+    const handleSidebarChange = (event: CustomEvent) => {
+      setIsSidebarCollapsed(event.detail.collapsed);
+    };
+
+    const checkTheme = () => {
+      const savedTheme =
+        (localStorage.getItem("theme") as "light" | "dark") || "dark";
+      setTheme(savedTheme);
+    };
+
+    checkTheme();
+    const themeInterval = setInterval(checkTheme, 100);
+
+    window.addEventListener(
+      "sidebarStateChange",
+      handleSidebarChange as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        "sidebarStateChange",
+        handleSidebarChange as EventListener
+      );
+      clearInterval(themeInterval);
+    };
+  }, []);
+
   const filteredCameras = cameraList.filter((cam) => {
     const matchGroup = Number(cam.group_id) === 5;
     const matchSearch = cam.name.toLowerCase().includes(search.toLowerCase());

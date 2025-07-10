@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useStreetLightStore } from "@/stores/streetlightStore";
+import { useStreetLightStore } from "@/stores/useStreetlightStore";
 
 const StreetLightManager = () => {
   const [showModal, setShowModal] = useState(false);

@@ -3,7 +3,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { FullscreenControl } from "react-leaflet-fullscreen";
 import "react-leaflet-fullscreen/styles.css";
-import { useStreetLightStore } from "@/stores/streetlightStore";
+import { useStreetLightStore } from "@/stores/useStreetlightStore";
 
 // ICONS
 const iconOn = new L.Icon({
