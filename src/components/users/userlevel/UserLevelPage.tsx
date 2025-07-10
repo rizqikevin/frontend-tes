@@ -10,10 +10,11 @@ const UserLevelPage = () => {
   const { fetchLevels, addLevel, updateLevel, deleteLevel } =
     useUserLevelStore();
 
-  const [form, setForm] = useState<{ id: number | null; name: string }>({
-    id: null,
+  const [form, setForm] = useState<{ id: number | ""; name: string }>({
+    id: "",
     name: "",
   });
+
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
@@ -21,20 +22,19 @@ const UserLevelPage = () => {
   }, []);
 
   const handleSubmit = () => {
-    if (!form.name.trim()) {
-      toast.error("Level name is required");
-      return;
+    if (form.id === "" || !form.name.trim()) {
+      return toast.error("ID and Name are required");
     }
 
     if (isEdit) {
-      updateLevel(form.id, form.name);
+      updateLevel(form.id, { name: form.name });
       toast.success("Level updated!");
     } else {
-      addLevel(form.id, form.name);
+      addLevel({ id: form.id, name: form.name });
       toast.success("Level added!");
     }
 
-    setForm({ id: 0, name: "" });
+    setForm({ id: "", name: "" });
     setIsEdit(false);
   };
 
@@ -65,17 +65,25 @@ const UserLevelPage = () => {
       <h2 className="text-xl font-bold">Manage User Levels</h2>
       <div className="flex gap-2">
         <Input
-          placeholder="Enter user level"
+          type="number"
           value={form.id}
-          className="bg-dashboard-accent"
-          onChange={(e) => setForm({ ...form, id: Number(e.target.value) })}
+          className="w-32 bg-dashboard-accent text-white"
+          onChange={(e) => {
+            const value = parseInt(e.target.value);
+            if (value >= 0 || isNaN(value)) {
+              setForm({ ...form, id: value || "" });
+            }
+          }}
+          disabled={isEdit}
         />
+
         <Input
-          placeholder="Enter level name"
           value={form.name}
-          className="bg-dashboard-accent"
           onChange={(e) => setForm({ ...form, name: e.target.value })}
+          placeholder="Enter level name"
+          className="flex-1 bg-dashboard-accent text-white"
         />
+
         <Button className="bg-blue-500" onClick={handleSubmit}>
           {isEdit ? "Update" : "Add"}
         </Button>

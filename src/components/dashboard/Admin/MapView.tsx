@@ -84,7 +84,7 @@ export default function MapView() {
           </Popup>
         </Marker>
       ))}
-      <Marker position={[3.025, 99.07]} icon={marker}>
+      <Marker position={[3.025, 99.27]} icon={marker}>
         <Popup>
           <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
             <img
@@ -159,7 +159,7 @@ export default function MapView() {
           </div>
         </Popup>
       </Marker>
-      <Marker position={[3.152, 99.097]} icon={marker}>
+      <Marker position={[3.192, 99.097]} icon={marker}>
         <Popup>
           <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
             <img

@@ -11,8 +11,8 @@ interface UserLevelStore {
   levels: UserLevel[];
   loading: boolean;
   fetchLevels: () => void;
-  addLevel: (id: number, name: string) => void;
-  updateLevel: (id: number, name: string) => void;
+  addLevel: (data: UserLevel) => void;
+  updateLevel: (id: number, data: { name: string }) => void;
   deleteLevel: (id: number) => void;
 }
 
@@ -30,9 +30,9 @@ export const useUserLevelStore = create<UserLevelStore>((set) => ({
     }
   },
 
-  addLevel: async (id, name) => {
+  addLevel: async (data) => {
     try {
-      await api.post("/users/level", { id, name });
+      await api.post("/users/level", data);
       toast.success("Level Added");
       const res = await api.get("/users/level");
       set({ levels: res.data });
@@ -41,9 +41,9 @@ export const useUserLevelStore = create<UserLevelStore>((set) => ({
     }
   },
 
-  updateLevel: async (id, name) => {
+  updateLevel: async (id, data) => {
     try {
-      await api.put(`/users/level/${id}`, { name });
+      await api.put(`/users/level/${id}`, data);
       toast.success("level update");
       const res = await api.get("/users/level");
       set({ levels: res.data });

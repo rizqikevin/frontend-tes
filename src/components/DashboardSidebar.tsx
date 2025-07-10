@@ -211,7 +211,7 @@ export const DashboardSidebar: React.FC = () => {
             )}
           </div>
 
-          <div className="px-3 mb-2">
+          {/* <div className="px-3 mb-2">
             <SidebarItem
               icon={<PencilLine size={18} />}
               text="Input Business Plan"
@@ -227,7 +227,7 @@ export const DashboardSidebar: React.FC = () => {
                 to="/input-prognosa"
               />
             </div>
-          )}
+          )} */}
 
           <div className="px-3 mb-2">
             <SidebarItem
