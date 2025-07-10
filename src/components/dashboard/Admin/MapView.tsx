@@ -38,7 +38,8 @@ const marker2 = new L.Icon({
 const center: [number, number] = [3.22628, 99.22696];
 
 export default function MapView() {
-  const { incidents, clearIncidents } = useIncidentSocketStore();
+  const { incidents, clearIncidents, removeIncident } =
+    useIncidentSocketStore();
   // console.log("incidents from map : ", incidents);
 
   return (
@@ -70,7 +71,7 @@ export default function MapView() {
                 className="w-full rounded"
               />
               <button
-                onClick={clearIncidents}
+                onClick={() => removeIncident(incident.id)}
                 className="mt-3 w-full bg-red-600 text-white py-1.5 rounded hover:bg-red-700"
               >
                 Clear

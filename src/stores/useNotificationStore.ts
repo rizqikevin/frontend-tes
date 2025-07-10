@@ -10,6 +10,7 @@ interface NotificationSettings {
 }
 
 interface Incident {
+  id: string;
   description: string;
   url_video: string;
   cam_loc?: string;
@@ -21,6 +22,7 @@ interface IncidentSocketState {
   incidents: Incident[];
   addIncident: (incident: Incident) => void;
   clearIncidents: () => void;
+  removeIncident: (id: string) => void;
 }
 
 interface NotificationState {
@@ -44,6 +46,10 @@ export const useIncidentSocketStore = create<IncidentSocketState>()(
       addIncident: (incident) =>
         set((state) => ({ incidents: [...state.incidents, incident] })),
       clearIncidents: () => set({ incidents: [] }),
+      removeIncident: (id) =>
+        set((state) => ({
+          incidents: state.incidents.filter((incident) => incident.id !== id),
+        })),
     }),
     {
       name: "incident-socket-storage",
