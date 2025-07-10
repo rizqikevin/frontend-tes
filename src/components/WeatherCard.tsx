@@ -13,6 +13,7 @@ interface WeatherData {
   humidity: string;
   pressure: string;
   rainfall: string;
+  icon: string;
 }
 
 const WeatherCard: React.FC = () => {
@@ -24,13 +25,14 @@ const WeatherCard: React.FC = () => {
         const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
         const location = "Kuala Tanjung";
         const response = await axios.get(
-          `https://api.weatherapi.com/v1/current.json?q=${location}&lang=id&key=${apiKey}`
+          `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`
         );
 
         const data = response.data;
         // console.log(data);
 
         setWeather({
+          icon: data.current.condition.icon,
           location: data.location.name,
           localTime: data.location.localtime,
           temperature: data.current.temp_c + "°C",
@@ -62,7 +64,7 @@ const WeatherCard: React.FC = () => {
             <p className="text-sm text-gray-400">{weather.localTime || "-"}</p>
           </div>
           <div className="flex items-center justify-center space-x-3">
-            <Cloud className="text-yellow-400 text-4xl" />
+            <img src={weather.icon} alt="Icon Weather" />
             <div>
               <p className="text-3xl font-bold">{weather.temperature || "-"}</p>
               <p className="text-sm text-gray-400">
