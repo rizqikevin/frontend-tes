@@ -11,7 +11,8 @@ const socket = io(import.meta.env.VITE_SOCKET_URL, {
   transports: ["websocket"],
 });
 export const useSocketNotifications = () => {
-  const { settings, setPopupIncident } = useNotificationStore();
+  const { settings, setPopupIncident, addPopupIncident } =
+    useNotificationStore();
   const { addIncident } = useIncidentSocketStore();
 
   useEffect(() => {
@@ -31,6 +32,15 @@ export const useSocketNotifications = () => {
           settings.stopInFluid);
 
       if (!shouldNotify) return;
+
+      addPopupIncident({
+        id: data.id,
+        description,
+        url_video,
+        cam_loc: data.cam_loc,
+        lat: data.lat,
+        lng: data.lng,
+      });
 
       setPopupIncident({
         description: description,

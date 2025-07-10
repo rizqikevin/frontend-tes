@@ -26,6 +26,9 @@ interface IncidentSocketState {
 }
 
 interface NotificationState {
+  popupQueue: Incident[] | null;
+  addPopupIncident: (data: Incident) => void;
+  dismissPopupIncident: () => void;
   popupIncident: {
     description: string;
     url_video: string;
@@ -58,6 +61,7 @@ export const useIncidentSocketStore = create<IncidentSocketState>()(
 );
 
 export const useNotificationStore = create<NotificationState>((set) => ({
+  popupQueue: [],
   popupIncident: null,
   settings: {
     wrongWay: true,
@@ -67,6 +71,15 @@ export const useNotificationStore = create<NotificationState>((set) => ({
   },
 
   setPopupIncident: (data) => set({ popupIncident: data }),
+  addPopupIncident: (incident) =>
+    set((state) => ({
+      popupQueue: [...state.popupQueue, incident],
+    })),
+
+  dismissPopupIncident: () =>
+    set((state) => ({
+      popupQueue: state.popupQueue.slice(1),
+    })),
 
   fetchSettings: async () => {
     const res = await api.get("/incident/notif");

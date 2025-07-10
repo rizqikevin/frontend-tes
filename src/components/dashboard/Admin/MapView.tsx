@@ -60,9 +60,16 @@ export default function MapView() {
           <Popup>
             <div className="w-[250px] text-gray-900">
               <h2 className="text-base font-semibold mb-2">
-                🚨 Notifikasi Insiden
+                🚨 Notifikasi Insiden - {incident.id}
               </h2>
-              <p className="mb-2">{incident.description}</p>
+              <p className="mb-1">
+                <span className="font-semibold ">Lokasi:</span>{" "}
+                {incident.cam_loc}
+              </p>
+              <p className="mb-1">
+                <span className="font-semibold ">Jenis Insiden:</span>{" "}
+                {incident.description}
+              </p>
               <video
                 src={incident.url_video}
                 autoPlay
