@@ -51,7 +51,7 @@ const WeatherCard: React.FC = () => {
     };
 
     fetchWeather();
-  }, [weather]);
+  }, []);
 
   if (!weather) return null;
 
@@ -94,9 +94,6 @@ const WeatherCard: React.FC = () => {
             <p>
               Rainfall:{" "}
               <span className="text-white">{weather.rainfall || "-"}</span>
-            </p>
-            <p>
-              UV: <span className="text-white">{weather.uv || "-"}</span>
             </p>
           </div>
         </div>
