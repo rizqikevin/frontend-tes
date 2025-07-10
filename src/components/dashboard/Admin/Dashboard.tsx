@@ -110,11 +110,17 @@ const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <MapSection />
         <div className="flex flex-col gap-4">
-          <TrafficChart />
-          <BebanRuasChart />
+          <div className="overflow-y-auto h-full max-h-[70vh] pr-1 scrollbar-hidden rounded-lg">
+            <div className="mt-3">
+              <TrafficChart />
+            </div>
+            <div className="mt-3">
+              <BebanRuasChart />
+            </div>
+          </div>
         </div>
         <div className="flex justify-end min-w-0">
-          <div className="overflow-y-auto h-full max-h-[71vh] pr-1 scrollbar-hidden rounded-lg">
+          <div className="overflow-y-auto h-full max-h-[70vh] pr-1 scrollbar-hidden rounded-lg">
             <div className="rounded-lg border p-2 w-full h-auto bg-[#082d72] items-center mb-4">
               <WeatherCard />
             </div>

@@ -47,7 +47,7 @@ const BebanRuasChart = () => {
   return (
     <div className="bg-dashboard-accent rounded-lg p-4 text-white">
       <h2 className="text-lg font-semibold mb-4">Beban Ruas Harian</h2>
-      <div className="w-full h-[270px]">
+      <div className="w-full h-[265px]">
         <Line data={data} options={options} />
       </div>
     </div>

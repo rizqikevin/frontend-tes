@@ -12,10 +12,13 @@ const IncidentNotification = () => {
         <p>{popupIncident.cam_loc}</p>
         <video
           src={popupIncident.url_video}
-          controls
+          autoPlay
           className="mt-2 max-w-xs"
         />
-        <button className="mt-2 text-sm" onClick={() => setPopupIncident(null)}>
+        <button
+          className="mt-2 text-sm bg-blue-500 px-2 py-1"
+          onClick={() => setPopupIncident(null)}
+        >
           Tutup
         </button>
       </div>
