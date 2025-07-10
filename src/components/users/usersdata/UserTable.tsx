@@ -48,7 +48,7 @@ const UserTable: React.FC = () => {
       <div className="overflow-auto rounded-lg border border-gray-700">
         <table className="min-w-full divide-y divide-gray-700 text-sm">
           <thead>
-            <tr className=" text-left text-base">
+            <tr className=" text-left bg-[#0d2e52] text-base">
               <th className="px-4 py-3">#</th>
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Level</th>

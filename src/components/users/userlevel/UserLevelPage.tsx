@@ -65,9 +65,10 @@ const UserLevelPage = () => {
       <h2 className="text-xl font-bold">Manage User Levels</h2>
       <div className="flex gap-2">
         <Input
-          type="number"
+          type="text"
+          placeholder="ID"
           value={form.id}
-          className="w-32 bg-dashboard-accent text-white"
+          className="w-14 bg-dashboard-accent text-white"
           onChange={(e) => {
             const value = parseInt(e.target.value);
             if (value >= 0 || isNaN(value)) {

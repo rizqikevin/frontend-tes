@@ -14,7 +14,7 @@ const UserLevelTable: React.FC<Props> = ({ onEdit, onDelete }) => {
     return <p className="text-center">No user levels found.</p>;
 
   return (
-    <table className="w-full text-left text-sm">
+    <table className="w-full text-left text-lg">
       <thead>
         <tr className="bg-[#0d2e52] text-white">
           <th className="py-2 px-4 border">ID</th>
