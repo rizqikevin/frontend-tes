@@ -41,6 +41,7 @@ import { InputPrognosa } from "./pages/InputPrognosa";
 import NotifSetting from "./pages/NotifSettings";
 import DataUsers from "./pages/DataUsers";
 import { useIncidentSpeech } from "./hooks/useIncidentSpeech";
+import UsersLevel from "./pages/UsersLevel";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -254,6 +255,14 @@ const App = () => {
                 element={
                   <ProtectedRoute requiredRole={UserRole.ADMIN}>
                     <DataUsers />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/user-level"
+                element={
+                  <ProtectedRoute requiredRole={UserRole.ADMIN}>
+                    <UsersLevel />
                   </ProtectedRoute>
                 }
               />
