@@ -13,6 +13,7 @@ interface WeatherData {
   humidity: string;
   pressure: string;
   rainfall: string;
+  uv: string;
   icon: string;
 }
 
@@ -25,7 +26,7 @@ const WeatherCard: React.FC = () => {
         const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
         const location = "Kuala Tanjung";
         const response = await axios.get(
-          `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`
+          `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=yes`
         );
 
         const data = response.data;
@@ -42,6 +43,7 @@ const WeatherCard: React.FC = () => {
           humidity: `${data.current.humidity}%`,
           pressure: `${data.current.pressure_mb} hPa`,
           rainfall: `${data.current.precip_mm} mm`,
+          uv: `${data.current.uv}`,
         });
       } catch (error) {
         toast.error("Gagal fetch data cuaca:", error);
@@ -92,6 +94,9 @@ const WeatherCard: React.FC = () => {
             <p>
               Rainfall:{" "}
               <span className="text-white">{weather.rainfall || "-"}</span>
+            </p>
+            <p>
+              UV: <span className="text-white">{weather.uv || "-"}</span>
             </p>
           </div>
         </div>
