@@ -23,7 +23,7 @@ export const useSocketNotifications = () => {
         lat: coords[0],
         lng: coords[1],
       };
-      const { description, url_video, cam_loc } = data;
+      const { description, url_video, cam_loc, ...rest } = data;
       const shouldNotify =
         (description.includes("WrongWay") && settings.wrongWay) ||
         (description.includes("StopVeh") && settings.stopInCongested) ||
@@ -38,6 +38,8 @@ export const useSocketNotifications = () => {
         description,
         url_video,
         cam_loc: data.cam_loc,
+        time_logging: data.time_logging,
+        date_logging: data.date_logging,
         lat: data.lat,
         lng: data.lng,
       });
@@ -46,6 +48,7 @@ export const useSocketNotifications = () => {
         description: description,
         url_video: url_video,
         cam_loc: cam_loc,
+        ...rest,
       });
       addIncident(incident);
 

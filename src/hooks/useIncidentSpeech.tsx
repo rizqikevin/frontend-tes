@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { useIncidentSocketStore } from "@/stores/useNotificationStore";
+import { useNotificationStore } from "@/stores/useNotificationStore";
 
 export const useIncidentSpeech = () => {
-  const { incidents } = useIncidentSocketStore();
+  const { popupQueue } = useNotificationStore();
+  // console.log(popupQueue);
 
   useEffect(() => {
-    if (incidents && incidents.length > 0) {
+    if (popupQueue && popupQueue.length > 0) {
       const utterance = new SpeechSynthesisUtterance("New incident");
       utterance.lang = "en-US";
       utterance.pitch = 1.2;
@@ -23,5 +24,5 @@ export const useIncidentSpeech = () => {
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utterance);
     }
-  }, [incidents]);
+  }, [popupQueue]);
 };

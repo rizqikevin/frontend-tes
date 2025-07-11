@@ -15,6 +15,7 @@ interface Incident {
   url_video: string;
   cam_loc?: string;
   time_logging?: string;
+  date_logging: string;
   lat: number;
   lng: number;
 }

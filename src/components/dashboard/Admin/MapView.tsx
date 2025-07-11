@@ -79,9 +79,15 @@ export default function MapView() {
               />
               <button
                 onClick={() => removeIncident(incident.id)}
-                className="mt-3 w-full bg-red-600 text-white py-1.5 rounded hover:bg-red-700"
+                className="mt-3 w-full bg-green-600 text-white py-1.5 rounded hover:bg-red-700"
               >
                 Clear
+              </button>
+              <button
+                onClick={clearIncidents}
+                className="mt-3 w-full bg-red-600 text-white py-1.5 rounded hover:bg-red-700"
+              >
+                Clear All
               </button>
               <Link to={`/incident`}>
                 <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
