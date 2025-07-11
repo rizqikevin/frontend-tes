@@ -7,6 +7,14 @@ interface Stat {
 }
 
 const StatsGrid = ({ statsData }: { statsData: Stat[] }) => {
+  if (!statsData || statsData.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-32 text-gray-400">
+        <p>Tidak ada data statistik yang tersedia.</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Cloud } from "lucide-react";
+import { Cloud } from "lucide-react"; // Assuming Cloud is used elsewhere or for a generic icon
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -19,9 +19,13 @@ interface WeatherData {
 
 const WeatherCard: React.FC = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchWeather = async () => {
+      setLoading(true);
+      setError(false);
       try {
         const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
         const location = "Kuala Tanjung";
@@ -30,7 +34,6 @@ const WeatherCard: React.FC = () => {
         );
 
         const data = response.data;
-        // console.log(data);
 
         setWeather({
           icon: data.current.condition.icon,
@@ -45,18 +48,63 @@ const WeatherCard: React.FC = () => {
           rainfall: `${data.current.precip_mm} mm`,
           uv: `${data.current.uv}`,
         });
-      } catch (error) {
-        toast.error("Gagal fetch data cuaca:", error);
+      } catch (err) {
+        console.error("Failed to fetch weather data:", err); // Log the actual error
+        toast.error("Gagal memuat data cuaca. Silakan coba lagi nanti."); // User-friendly error message
+        setError(true); // Set error to true
+      } finally {
+        setLoading(false); // Set loading to false when fetching completes
       }
     };
 
     fetchWeather();
   }, []);
 
-  if (!weather) return null;
+  if (loading) {
+    return (
+      <div className="flex justify-between mb-4">
+        <div className="flex justify-between items-center px-0">
+          <div className="rounded-lg p-4 w-full h-full text-center text-gray-400">
+            Memuat data cuaca...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-between mb-4">
+        <div className="flex justify-between items-center px-0">
+          <div className="rounded-lg p-4 w-full h-full text-center text-red-400">
+            <Cloud className="mx-auto h-12 w-12 text-red-500 mb-2" />
+            <p className="font-semibold">Data cuaca tidak tersedia.</p>
+            <p className="text-sm">
+              Kami tidak dapat mengambil data cuaca saat ini.
+            </p>
+            <p className="text-sm">
+              Silakan periksa koneksi internet Anda atau coba lagi nanti.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!weather) {
+    return (
+      <div className="flex justify-between mb-4">
+        <div className="flex justify-between items-center px-0">
+          <div className="rounded-lg p-4 w-full h-full text-center text-gray-400">
+            Tidak ada data cuaca yang tersedia.
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex justify-between mb-4">
+    <div className="flex justify-center mb-4 ">
       <div className="flex justify-between items-center px-0">
         <div className="rounded-lg p-4 w-full h-full">
           <div className="flex justify-between items-center mb-4">
@@ -94,6 +142,9 @@ const WeatherCard: React.FC = () => {
             <p>
               Rainfall:{" "}
               <span className="text-white">{weather.rainfall || "-"}</span>
+            </p>
+            <p>
+              UV: <span className="text-white">{weather.uv || "-"}</span>
             </p>
           </div>
         </div>

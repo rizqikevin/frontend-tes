@@ -7,32 +7,40 @@ import Header from "@/components/Header";
 import api from "@/services/api";
 import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
-interface VoipLog {
-  linkedid: string;
-  timedialbegin: string;
-  timebridgeenter: string;
-  timehangup: string;
-  calleridname: string;
-  calleridnum: string;
-  destcalleridname: string;
-  destcalleridnum: string;
-  dialstatus: string;
-  created_at: string;
+interface AlprData {
+  jentrn: string;
+  srlnum: string;
+  resi: string;
+  gerbang: string;
+  gardu: string;
+  gol: string;
+  waktu: string;
+  tgl: string;
+  id_kartu: string;
+  plat_number: string;
+  status: string;
+  pict_url: string;
+  gerbang_masuk: string;
 }
 
-const Voip: React.FC = () => {
+const Odol: React.FC = () => {
   const { user, logout } = useAuth();
-  const [data, setData] = useState<VoipLog[]>([]);
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
-  const [loading, setLoading] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [data, setData] = useState<AlprData[]>([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [loading, setLoading] = useState(false);
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
 
+  // Listen for theme changes and sidebar state changes
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
       setIsSidebarCollapsed(event.detail.collapsed);
@@ -44,8 +52,12 @@ const Voip: React.FC = () => {
       setTheme(savedTheme);
     };
 
+    // Initial theme check
     checkTheme();
+
+    // Listen for theme changes
     const themeInterval = setInterval(checkTheme, 100);
+
     window.addEventListener(
       "sidebarStateChange",
       handleSidebarChange as EventListener
@@ -63,26 +75,29 @@ const Voip: React.FC = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await api.get("/voip/all", {
+      const response = await api.get("/alpr", {
         params: { limit, page },
       });
       const filtered = response.data.data
-        .filter((log: VoipLog) => {
-          const created = dayjs(log.created_at);
+        .filter((log: AlprData) => {
+          const created = dayjs(log.waktu);
           return (
             created.isAfter(
               dayjs(startDate).startOf("day").subtract(1, "second")
             ) && created.isBefore(dayjs(endDate).endOf("day").add(1, "second"))
           );
         })
-        .sort((a: VoipLog, b: VoipLog) =>
-          dayjs(a.created_at).isAfter(dayjs(b.created_at)) ? 1 : -1
+        .sort((a: AlprData, b: AlprData) =>
+          dayjs(a.waktu).isAfter(dayjs(b.waktu)) ? 1 : -1
         );
-
       setData(filtered);
+
+      // console.log("data sebelum di filter", response.data.data);
+      // console.log("filtered data", filtered);
       setTotal(response.data.total);
     } catch (error) {
-      console.error("Failed to fetch VOIP logs:", error);
+      toast.error("Gagal memuat data alpr");
+      console.error("Failed to fetch data:", error);
     } finally {
       setLoading(false);
     }
@@ -90,40 +105,49 @@ const Voip: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, [page, limit]);
+  }, [limit, page]);
 
   const isDark = theme === "dark";
 
   const totalPages = Math.ceil(total / limit);
 
-  const getDuration = (start: string, end: string) => {
-    const startTime = dayjs(start);
-    const endTime = dayjs(end);
-    const duration = endTime.diff(startTime, "second");
-    const mins = Math.floor(duration / 60)
-      .toString()
-      .padStart(2, "0");
-    const secs = (duration % 60).toString().padStart(2, "0");
-    return `00:${mins}:${secs}`;
-  };
-
   return (
     <div className="flex min-h-screen bg-dashboard-dark text-white">
+      {/* Sidebar */}
       <DashboardSidebar />
-      <div
-        className={`flex-1 ${
-          isSidebarCollapsed ? "ml-16" : "ml-64"
-        } transition-all duration-300`}
-      >
+
+      {/* Main Content */}
+      <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
         <Header
           isDark={isDark}
-          user={user ? { name: user.name, role: String(user.role) } : null}
+          user={
+            user
+              ? {
+                  name: user.name,
+                  role: String(user.role),
+                }
+              : null
+          }
           logout={logout}
         />
 
         <main className="p-8">
-          {/* Filter */}
-          <div className="flex justify-end mb-8">
+          {/* Date filters */}
+          <div className="flex justify-between mb-8">
+            <div className="flex justify-between items-center px-0">
+              <div>
+                {/* <Button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200">
+                  Report
+                </Button>
+                <Button
+                  className="bg-transparent border-white rounded-lg px-4 py-2 text-white hover:bg-gray-700 ml-2"
+                  variant="outline"
+                >
+                  Camera
+                </Button> */}
+              </div>
+            </div>
+
             <div className="flex justify-center items-center space-x-4">
               <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
                 <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
@@ -169,67 +193,107 @@ const Voip: React.FC = () => {
             </div>
           </div>
 
-          {/* Table */}
+          {/* Call Logs Section */}
           <div className="bg-dashboard-accent rounded-lg p-6 mb-8">
-            <h1 className="text-xl font-medium mb-2">Call Logs</h1>
-            <p className="text-gray-300">Jumlah Aktifitas Log Vlop</p>
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-left text-sm text-white">
-                <thead>
-                  <tr className="border-b border-gray-700">
-                    <th className="px-4 py-3">#</th>
-                    <th className="px-4 py-3">Tanggal</th>
-                    <th className="px-4 py-3">Nama Penelepon</th>
-                    <th className="px-4 py-3">Nomor Penelepon</th>
-                    <th className="px-4 py-3">Nama Penerima</th>
-                    <th className="px-4 py-3">Nomor Penerima</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Dial</th>
-                    <th className="px-4 py-3">Bridge</th>
-                    <th className="px-4 py-3">Hangup</th>
-                    <th className="px-4 py-3">Durasi</th>
+            <div className="flex justify-between items-center px-0">
+              <div>
+                <h1 className="text-xl font-semibold">Riwayat ODOL</h1>
+                <p className="text-gray-400">Jumlah Aktifitas ODOL</p>
+              </div>
+            </div>
+            <div className="overflow-x-auto mt-5">
+              <table className="w-full table-auto text-sm text-left">
+                <thead className="bg-dashboard-accent text-white">
+                  <tr>
+                    <th className="p-2">#</th>
+                    <th className="p-2">Image</th>
+                    <th className="p-2">Gerbang</th>
+                    <th className="p-2">Gardu</th>
+                    <th className="p-2">Resi</th>
+                    <th className="p-2">Nomor Plat</th>
+                    <th className="p-2">Tanggal Transaksi</th>
+                    <th className="p-2">Waktu Transaksi</th>
+                    <th className="p-2">Nomor Kartu</th>
+                    <th className="p-2">Golongan</th>
+                    <th className="p-2">Data Overload</th>
+                    <th className="p-2">Data Overdimention</th>
+
+                    <th className="p-2">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td
-                        colSpan={14}
-                        className="p-4 text-center text-gray-400"
-                      >
+                      <td colSpan={13} className="p-2 text-center">
                         Loading...
                       </td>
                     </tr>
                   ) : (
-                    data.map((item, i) => (
-                      <tr
-                        key={item.linkedid}
-                        className="border-b border-gray-700 hover:bg-gray-800 transition"
-                      >
-                        <td className="px-5 py-3">
-                          {(page - 1) * limit + i + 1}
-                        </td>
-                        <td className="px-5 py-3">
-                          {dayjs(item.created_at).format("DD/MM/YYYY")}
-                        </td>
-                        <td className="px-5 py-3">{item.calleridname}</td>
-                        <td className="px-5 py-3">{item.calleridnum}</td>
-                        <td className="px-5 py-3">{item.destcalleridname}</td>
-                        <td className="px-5 py-3">{item.destcalleridnum}</td>
-                        <td className="px-5 py-3">{item.dialstatus}</td>
-                        <td className="px-5 py-3">
-                          {dayjs(item.timedialbegin).format("HH:mm:ss")}
-                        </td>
-                        <td className="px-5 py-3">
-                          {dayjs(item.timebridgeenter).format("HH:mm:ss")}
-                        </td>
-                        <td className="px-5 py-3">
-                          {dayjs(item.timehangup).format("HH:mm:ss")}
-                        </td>
-                        <td className="px-3 py-2">
-                          {getDuration(item.timedialbegin, item.timehangup)}
-                        </td>
-                      </tr>
+                    data.map((item, index) => (
+                      <React.Fragment key={item.resi}>
+                        <tr className="border-b border-gray-700">
+                          <td className="p-2">
+                            {String((page - 1) * limit + index + 1).padStart(
+                              2,
+                              "0"
+                            )}
+                          </td>
+                          <td className="p-2">
+                            <img
+                              src={item.pict_url
+                                .replace("(", "")
+                                .replace(")", "")}
+                              alt="snapshot"
+                              className="w-20 h-12 object-cover cursor-pointer"
+                              onClick={() =>
+                                setExpandedImage((prev) =>
+                                  prev === item.pict_url ? null : item.pict_url
+                                )
+                              }
+                            />
+                          </td>
+                          <td className="p-2">{item.gerbang}</td>
+                          <td className="p-2">{item.gardu}</td>
+                          <td className="p-2">{item.resi}</td>
+                          <td className="p-2">{item.plat_number}</td>
+                          <td className="p-2">
+                            {dayjs(item.tgl).format("DD/MM/YYYY")}
+                          </td>
+                          <td className="p-2">
+                            {dayjs(item.waktu).format("HH:mm:ss A")}
+                          </td>
+                          <td className="p-2">{item.id_kartu}</td>
+                          <td className="p-2">{`Gol-${item.gol}`}</td>
+
+                          <td className="p-2">-</td>
+
+                          <td className="p-2">-</td>
+                          <td className="p-2">
+                            <Link to={"/detail-odol"}>
+                              <Button
+                                variant="default"
+                                className="bg-yellow-500 border-white text-white hover:bg-gray-700"
+                              >
+                                Detail
+                              </Button>
+                            </Link>
+                          </td>
+                        </tr>
+                        {expandedImage === item.pict_url && (
+                          <tr className="bg-black/30">
+                            <td colSpan={13} className="p-0">
+                              <img
+                                src={item.pict_url
+                                  .replace("(", "")
+                                  .replace(")", "")}
+                                alt="expanded"
+                                className="w-full max-h-[500px]  object-contain rounded-lg"
+                                onClick={() => setExpandedImage(null)}
+                              />
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
                     ))
                   )}
                 </tbody>
@@ -303,4 +367,4 @@ const Voip: React.FC = () => {
   );
 };
 
-export default Voip;
+export default Odol;

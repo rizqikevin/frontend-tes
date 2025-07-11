@@ -42,6 +42,8 @@ import NotifSetting from "./pages/NotifSettings";
 import DataUsers from "./pages/DataUsers";
 import { useIncidentSpeech } from "./hooks/useIncidentSpeech";
 import UsersLevel from "./pages/UsersLevel";
+import Odol from "./pages/Odol";
+import DetailOdol from "./components/DetailOdol";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -263,6 +265,22 @@ const App = () => {
                 element={
                   <ProtectedRoute requiredRole={UserRole.ADMIN}>
                     <UsersLevel />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/odol"
+                element={
+                  <ProtectedRoute>
+                    <Odol />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/detail-odol"
+                element={
+                  <ProtectedRoute>
+                    <DetailOdol />
                   </ProtectedRoute>
                 }
               />

@@ -115,6 +115,7 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
     // console.log(data.code);
 
     try {
+      set({ isDataLoading: false });
       if (data.code == 200) {
         set({ TransactionDataAdmin: mappedAdmin, isDataLoading: false });
         set({ transactionData: mappedDireksi, isDataLoading: false });

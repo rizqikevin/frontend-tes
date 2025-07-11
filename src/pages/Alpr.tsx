@@ -26,7 +26,7 @@ interface AlprData {
   gerbang_masuk: string;
 }
 
-const Vlop: React.FC = () => {
+const Alpr: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -356,4 +356,4 @@ const Vlop: React.FC = () => {
   );
 };
 
-export default Vlop;
+export default Alpr;

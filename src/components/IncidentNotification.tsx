@@ -21,16 +21,16 @@ const IncidentNotification = () => {
           className="mt-2 max-w-xs"
         />
         <button
-          className="mt-2 text-sm bg-blue-500 text-white rounded-md hover:bg-gray-500 px-2 py-2 w-full"
-          onClick={() => setPopupIncident(null)}
-        >
-          Tutup Semua
-        </button>
-        <button
           className="mt-2 text-sm bg-yellow-500 text-white rounded-md hover:bg-gray-500 px-2 py-2 w-full"
           onClick={dismissPopupIncident}
         >
-          Tutup
+          Clear All
+        </button>
+        <button
+          className="mt-2 text-sm bg-blue-500 text-white rounded-md hover:bg-gray-500 px-2 py-2 w-full"
+          onClick={() => setPopupIncident(null)}
+        >
+          Clear
         </button>
       </div>
     </div>
