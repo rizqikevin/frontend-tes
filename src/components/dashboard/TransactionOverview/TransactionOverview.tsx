@@ -1,7 +1,6 @@
 import { CardPanel } from "./CardPanel";
 import BarChart from "./BarChart";
 import { DoughnutChart } from "./DoughnutChart";
-import { SummaryPanel } from "./SummaryPanel";
 import { AchievementRing } from "./AchievementRing";
 import { SimplePanel } from "./SimplePanel";
 import { OtherRevenueList } from "./OtherRevenueList";
@@ -46,7 +45,7 @@ export const TransactionOverview = () => {
       {/* ROW 1 */}
       <div className="grid grid-cols-12 gap-4 items-start">
         {/* Doughnut Chart */}
-        <div className="col-span-2">
+        <div className="col-span-12 sm:col-span-4 lg:col-span-2 min-w-0 h-full">
           <DoughnutChart
             title="Akumulasi Pendapatan HMW"
             total="Rp 555.000.000.000"
@@ -73,7 +72,7 @@ export const TransactionOverview = () => {
         </div>
 
         {/* Achievement Ring */}
-        <div className="col-span-1">
+        <div className="col-span-12 sm:col-span-4 lg:col-span-1 min-w-0 h-full">
           <AchievementRing
             percentage={77}
             revenue="Rp 770.000.000"
@@ -82,7 +81,7 @@ export const TransactionOverview = () => {
         </div>
 
         {/* 3 Chart */}
-        <div className="col-span-9 grid grid-cols-3 gap-4">
+        <div className="col-span-12 lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-w-0">
           <BarChart
             title="PERBANDINGAN LHR TERHADAP PROGNOSA"
             labels={months}

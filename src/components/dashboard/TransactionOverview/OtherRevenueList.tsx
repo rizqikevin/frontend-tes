@@ -11,7 +11,7 @@ interface OtherRevenueListProps {
 
 export const OtherRevenueList: React.FC<OtherRevenueListProps> = ({ data }) => {
   return (
-    <div className="bg-[#2b2b2b] p-4 rounded-lg h-full">
+    <div className="bg-dashboard-accent p-4 rounded-lg h-full w-full text-white shadow-sm flex flex-col justify-between">
       <h3 className="text-sm font-semibold mb-2">
         Pendapatan HMW di ruas lain
       </h3>

@@ -1,4 +1,3 @@
-// components/BarChart.tsx
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import {
@@ -17,24 +16,25 @@ interface BarChartProps {
   datasets: any[];
   labels: string[];
   legend?: boolean;
+  height?: number;
 }
+
 const BarChart: React.FC<BarChartProps> = ({
   title,
   datasets,
   labels,
   legend = true,
+  height = 300,
 }) => {
   return (
-    <div className=" bg-dashboard-accent rounded-lg h-full">
-      <div className=" p-4 rounded-lg text-white w-[100%] h-[330px]">
-        <h4 className="text-xs font-semibold mb-2">{title}</h4>
+    <div className="bg-dashboard-accent rounded-lg p-4 w-full h-full text-white shadow">
+      <h4 className="text-xs font-semibold mb-2">{title}</h4>
+      <div style={{ height }}>
         <Bar
-          data={{
-            datasets,
-            labels,
-          }}
+          data={{ datasets, labels }}
           options={{
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
               legend: {
                 display: legend,
@@ -46,10 +46,15 @@ const BarChart: React.FC<BarChartProps> = ({
               },
             },
             scales: {
-              x: { ticks: { color: "white" } },
-              y: { ticks: { color: "white" } },
+              x: {
+                ticks: { color: "white" },
+                grid: { color: "#444" },
+              },
+              y: {
+                ticks: { color: "white" },
+                grid: { color: "#444" },
+              },
             },
-            maintainAspectRatio: false,
           }}
         />
       </div>

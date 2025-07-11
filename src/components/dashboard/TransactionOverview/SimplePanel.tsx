@@ -12,10 +12,12 @@ export const SimplePanel: React.FC<SimplePanelProps> = ({
   dateRange,
 }) => {
   return (
-    <div className="bg-[#2b2b2b] p-4 rounded-lg h-full">
-      <h3 className="text-sm font-semibold mb-1">{title}</h3>
-      <p className="text-xs text-gray-400 mb-2">Tanggal: {dateRange}</p>
-      <p className="text-xl font-bold text-white">{value}</p>
+    <div className="bg-dashboard-accent p-4 rounded-lg h-full w-full text-white shadow-sm flex flex-col justify-between">
+      <div>
+        <h3 className="text-sm font-semibold">{title}</h3>
+        <p className="text-xs text-gray-400 mt-1">Tanggal: {dateRange}</p>
+      </div>
+      <p className="text-xl font-bold mt-4">{value}</p>
     </div>
   );
 };

@@ -44,36 +44,38 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
       },
     },
     responsive: true,
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
   };
 
   return (
-    <div className="bg-dashboard-accent p-4 rounded-lg flex flex-col justify-center items-centergap-2 w-full h-full max-w-sm">
-      <h2 className="text-xs  uppercase">Achievement ATP</h2>
+    <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full h-full flex flex-col justify-between">
+      <h2 className="text-xs uppercase mb-1">Achievement ATP</h2>
 
       {/* Ring Chart */}
-      <div className="relative w-[117px] h-[90px] aspect-square ">
+      <div className="relative w-full max-w-[100px] aspect-square self-center">
         <Doughnut data={data} options={options} />
-        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-[#cddc39]">
+        <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-[#cddc39]">
           {percentage}%
         </div>
       </div>
 
-      {/* Persentase Info */}
-      <div className="inline-flex gap-2 text-xs text-gray-400">
-        <p>Revenue</p>
-        <p>{percentage}%</p>
-      </div>
-      <div className="inline-flex gap-2 text-xs text-gray-400 mb-7">
-        <p>Business Plan</p>
-        <p>{100 - percentage}%</p>
+      {/* Percentage Info */}
+      <div className="mt-4 space-y-1 text-xs text-gray-400">
+        <div className="flex justify-between">
+          <span>Revenue</span>
+          <span>{percentage}%</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Business Plan</span>
+          <span>{100 - percentage}%</span>
+        </div>
       </div>
 
       {/* Nilai */}
-      <div className="text-xs text-gray-100">
-        <p>Revenue</p>
+      <div className="mt-2 text-xs text-white space-y-1">
+        <p className="text-gray-400">Revenue</p>
         <p className="font-semibold">{revenue}</p>
-        <p className="mt-1">Business Plan</p>
+        <p className="text-gray-400 mt-1">Business Plan</p>
         <p className="font-semibold">{businessPlan}</p>
       </div>
     </div>

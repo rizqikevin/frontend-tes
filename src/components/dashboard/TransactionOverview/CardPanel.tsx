@@ -25,7 +25,6 @@ export const CardPanel: React.FC<CardPanelProps> = ({
         data: [percentage, 100 - percentage],
         backgroundColor: ["#34D399", "#322932"], // Green and Gray
         borderWidth: 0,
-        cutout: "75%",
       },
     ],
   };
@@ -37,6 +36,9 @@ export const CardPanel: React.FC<CardPanelProps> = ({
       legend: {
         display: false,
       },
+      datalabels: {
+        display: false,
+      },
       tooltip: {
         enabled: false,
       },
@@ -44,7 +46,7 @@ export const CardPanel: React.FC<CardPanelProps> = ({
   };
 
   return (
-    <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full max-w-xs">
+    <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full h-full flex flex-col justify-between">
       <div className="flex items-center gap-4">
         {/* Circular Progress */}
         <div className="relative w-14 h-14">
@@ -54,17 +56,15 @@ export const CardPanel: React.FC<CardPanelProps> = ({
           </div>
         </div>
 
-        {/* Title & Date */}
-        <div>
-          <div className="font-semibold text-sm">{location}</div>
+        <div className="flex-1">
+          <div className="font-semibold text-sm truncate">{location}</div>
           <div className="text-xs text-gray-400">{dateRange}</div>
         </div>
       </div>
 
-      {/* Value */}
-      <div className="text-sm mt-4 text-gray-400">Pendapatan</div>
-      <div className="text-xl font-bold text-white">
-        Rp {value.toLocaleString("id-ID")}
+      <div className="mt-4">
+        <p className="text-sm text-gray-400">Pendapatan</p>
+        <p className="text-xl font-bold">Rp {value.toLocaleString("id-ID")}</p>
       </div>
     </div>
   );
