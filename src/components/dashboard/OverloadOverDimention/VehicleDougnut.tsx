@@ -1,58 +1,76 @@
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  ChartOptions,
+} from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 export const VehichleDougnut = () => {
-  const total = 1338;
-  const patuh = 1248;
-  const tidakPatuh = 500;
+  const patuh = 3543;
+  const tidakPatuh = 1543;
+  const total = patuh + tidakPatuh;
+
+  const data = {
+    labels: ["Patuh", "Tidak Patuh"],
+    datasets: [
+      {
+        data: [patuh, tidakPatuh],
+        backgroundColor: ["#4caf50", "#d32f2f"],
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  const options: ChartOptions<"doughnut"> = {
+    plugins: {
+      legend: {
+        display: false,
+      },
+      datalabels: {
+        display: true,
+        color: "#fff",
+        formatter: (value: number) => {
+          const percentage = ((value / total) * 100).toFixed(1);
+          return `${value.toLocaleString()} (${percentage}%)`;
+        },
+        anchor: "end",
+        align: "start",
+        offset: 20,
+        clamp: true,
+        borderColor: "#fff",
+        borderWidth: 1,
+        backgroundColor: "transparent",
+        font: {
+          weight: "bold",
+          size: 30,
+        },
+      },
+    },
+    cutout: "60%",
+    maintainAspectRatio: false,
+  };
 
   return (
-    <div className="bg-[#2b2b2b] rounded-lg p-4 shadow-sm text-white flex flex-col justify-between">
+    <div className="bg-[#2b2b2b] rounded-lg p-4 shadow-sm text-white w-auto flex flex-col justify-between">
       <div className="flex justify-between mb-4 text-sm font-semibold">
         <span>Semua Golongan</span>
-        <span>Hari Ini</span>
+        <span>08 July 2025</span>
       </div>
-      <div className="relative w-[350px] h-[350px] mx-auto">
-        <Doughnut
-          data={{
-            labels: ["Patuh", "Tidak Patuh"],
-            datasets: [
-              {
-                data: [patuh, tidakPatuh],
-                backgroundColor: ["#4caf50", "#f44336"],
-                borderWidth: 0,
-              },
-            ],
-          }}
-          options={{
-            plugins: {
-              legend: { display: false },
-            },
-            cutout: "70%",
-            maintainAspectRatio: false,
-          }}
-        />
+      <div className="relative w-[550px] h-[550px] mx-auto">
+        <Doughnut data={data} options={options} />
       </div>
-      <div className="absolute text-center text-white text-xl font-bold mt-96 left-3/4 m-4 pl-80 -translate-x-1/2 -translate-y-[140%] z-[9999]">
-        <p>{total}</p>
-        <p className="text-sm">Total Kendaraan</p>
-      </div>
-      <div className="flex justify-between flex-col text-sm mt-4 gap-2">
-        <div className="flex justify-between">
-          <span className="flex items-center gap-1 text-white">
-            <span className="text-lg leading-3 text-green-500">●</span> Patuh
-          </span>
-          <span className="text-green-500">{patuh}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="flex items-center gap-1 text-white">
-            <span className="text-lg leading-3 text-red-500">●</span> Tidak
-            Patuh
-          </span>
-          <span className="text-red-500">{tidakPatuh}</span>
-        </div>
+      <div className="flex flex-row  text-sm mt-4 gap-2 justify-center">
+        <span className="flex items-center gap-1 text-white">
+          <span className="text-lg leading-3 text-green-500">●</span> Patuh
+        </span>
+        <span className="flex items-center gap-1 text-white">
+          <span className="text-lg leading-3 text-red-500">●</span> Tidak Patuh
+        </span>
       </div>
     </div>
   );

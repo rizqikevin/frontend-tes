@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Cloud } from "lucide-react"; // Assuming Cloud is used elsewhere or for a generic icon
+import { Cloud } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -49,11 +49,11 @@ const WeatherCard: React.FC = () => {
           uv: `${data.current.uv}`,
         });
       } catch (err) {
-        console.error("Failed to fetch weather data:", err); // Log the actual error
-        toast.error("Gagal memuat data cuaca. Silakan coba lagi nanti."); // User-friendly error message
-        setError(true); // Set error to true
+        console.error("Failed to fetch weather data:", err);
+        toast.error("Gagal memuat data cuaca. Silakan coba lagi nanti.");
+        setError(true);
       } finally {
-        setLoading(false); // Set loading to false when fetching completes
+        setLoading(false);
       }
     };
 
