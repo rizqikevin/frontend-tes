@@ -66,28 +66,6 @@ export const CardPanel: React.FC<CardPanelProps> = ({
       <div className="text-xl font-bold text-white">
         Rp {value.toLocaleString("id-ID")}
       </div>
-
-      {/* Indicators */}
-      <div className="mt-4 text-sm space-y-1">
-        <div className="flex justify-between">
-          <span className="flex items-center gap-1 text-green-400">
-            <span className="text-lg leading-3">✓</span> RKAP
-          </span>
-          <span className="text-white">100%</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="flex items-center gap-1 text-green-400">
-            <span className="text-lg leading-3">✓</span> Prognosa
-          </span>
-          <span className="text-white">100%</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="flex items-center gap-1 text-red-500">
-            <span className="text-lg leading-3">✗</span> Business Plan
-          </span>
-          <span className="text-white">21%</span>
-        </div>
-      </div>
     </div>
   );
 };

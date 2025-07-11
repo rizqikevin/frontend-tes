@@ -19,7 +19,7 @@ export const DoughnutChart = ({
   backgroundColors,
 }: DoughnutChartProps) => {
   return (
-    <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-64 h-full">
+    <div className="bg-dashboard-accent p-2 rounded-lg text-white shadow-md w-full h-full">
       <h4 className="text-base font-semibold mb-2">{title}</h4>
       <p className="text-center mt-4 font-semibold py-2">{total}</p>
       <Doughnut
@@ -38,6 +38,9 @@ export const DoughnutChart = ({
             legend: {
               position: "bottom",
               labels: { color: "white" },
+            },
+            datalabels: {
+              display: false,
             },
           },
         }}

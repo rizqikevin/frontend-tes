@@ -184,7 +184,7 @@ export const DashboardSidebar: React.FC = () => {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="overflow-y-auto max-h-[50vh] pr-1 scrollbar-hidden"
+          className="overflow-y-auto max-h-[53vh] pr-1 scrollbar-hidden"
         >
           <div className="px-3 mb-3">
             <div
@@ -211,13 +211,13 @@ export const DashboardSidebar: React.FC = () => {
             )}
           </div>
 
-          <div className="px-3 mb-2">
+          {/* <div className="px-3 mb-2">
             <SidebarItem
               icon={<PencilLine size={18} />}
               text="Input Business Plan"
               to="/input-business"
             />
-          </div>
+          </div> */}
 
           {/* {isAdmin && (
             <div className="px-3 mb-2">
@@ -228,14 +228,6 @@ export const DashboardSidebar: React.FC = () => {
               />
             </div>
           )} */}
-
-          <div className="px-3 mb-2">
-            <SidebarItem
-              icon={<PencilLine size={18} />}
-              text="ODOL"
-              to="/odol"
-            />
-          </div>
 
           <div className="px-3 mb-2">
             <SidebarItem
@@ -322,6 +314,13 @@ export const DashboardSidebar: React.FC = () => {
               icon={<CloudDownloadIcon size={18} />}
               text="Voip"
               to="/voip"
+            />
+          </div>
+          <div className="px-3 mb-2">
+            <SidebarItem
+              icon={<PencilLine size={18} />}
+              text="ODOL"
+              to="/odol"
             />
           </div>
           <div className="px-3 mb-2">
