@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { api3 } from "@/services/api";
+import { toast } from "sonner";
 
 interface TargetData {
   target_name: string;
@@ -11,6 +12,7 @@ interface TargetData {
 interface TransactionStoreState {
   start_date: string;
   end_date: string;
+  isloading: boolean;
 
   revenueAchievement: string;
   rkapTarget: string;
@@ -31,6 +33,7 @@ export const useTransactionStore = create<TransactionStoreState>(
     revenueAchievement: "0",
     rkapTarget: "0",
     rkapPercent: 0,
+    isloading: false,
     otherTargets: [],
 
     setStartDate: (date) => set({ start_date: date }),
@@ -43,6 +46,7 @@ export const useTransactionStore = create<TransactionStoreState>(
     },
 
     fetchAchievement: async () => {
+      set({ isloading: false });
       const { start_date, end_date } = get();
       try {
         const res = await api3.get("/tracomm/transaction/achievement", {
@@ -76,9 +80,10 @@ export const useTransactionStore = create<TransactionStoreState>(
           rkapTarget: rkap?.revenue_target || "0",
           rkapPercent: parseFloat(rkap?.percent || "0"),
           otherTargets: others,
+          isloading: false,
         });
       } catch (err) {
-        console.error("Failed to fetch achievement data:", err);
+        toast.error("Failed to fetch achievement data:", err);
       }
     },
   })

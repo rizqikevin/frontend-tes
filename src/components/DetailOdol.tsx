@@ -1,17 +1,34 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import api from "@/services/api"; // Pastikan API ini sudah sesuai
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/Header";
-import UserTable from "@/components/users/usersdata/UserTable";
-import { OverloadOverDimention } from "./dashboard/OverloadOverDimention/OverloadOverDimention";
 import { ImageCard } from "./dashboard/OverloadOverDimention/ImageCard";
 import { VehicleInfo } from "./dashboard/OverloadOverDimention/VehicleInfo";
-import { VehichleDougnut } from "./dashboard/OverloadOverDimention/VehicleDougnut";
+
+interface OdolDetail {
+  id: string;
+  gerbang: string;
+  gardu: string;
+  noresi: number;
+  platnomor: string;
+  tanggal: string;
+  jam: string;
+  kartu: string;
+  golongan: string;
+  berat: string;
+  dimensi: string;
+  url1: string;
+  url2: string;
+}
 
 export const DetailOdol: React.FC = () => {
   const { user, logout } = useAuth();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const { id } = useParams();
+  const [data, setData] = useState<OdolDetail | null>(null);
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -40,6 +57,19 @@ export const DetailOdol: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchDetail = async () => {
+      try {
+        const res = await api.get(`/odol/${id}`);
+        setData(res.data.data);
+      } catch (err) {
+        console.error("Gagal fetch detail:", err);
+      }
+    };
+
+    if (id) fetchDetail();
+  }, [id]);
+
   const isDark = theme === "dark";
 
   return (
@@ -50,44 +80,46 @@ export const DetailOdol: React.FC = () => {
           isSidebarCollapsed ? "ml-16" : "ml-64"
         }`}
       >
-        {/* HEADER */}
         <Header
           isDark={isDark}
-          user={
-            user
-              ? {
-                  name: user.name,
-                  role: String(user.role),
-                }
-              : null
-          }
+          user={user ? { name: user.name, role: String(user.role) } : null}
           logout={logout}
         />
-        {/* MAIN */}
+
         <main className="p-6 space-y-6">
           <div className="flex justify-between items-center px-0">
             <div>
-              <h1 className="text-2xl font-medium">Overload Over Dimention</h1>
+              <h1 className="text-2xl font-medium">
+                Detail Overload & Over Dimension
+              </h1>
               <p className="text-gray-400">Pantau setiap detail</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {/* Kolom gambar */}
-            <div className="space-y-4 max-w-xl">
-              <ImageCard
-                title="Gambar Transaksi"
-                imageUrl="https://imgx.gridoto.com/crop/3x34:891x460/750x500/photo/2018/12/29/129762105.jpg"
-              />
-              <ImageCard
-                title="Gambar Plat Nomor (ANPR)"
-                imageUrl="https://imgx.gridoto.com/crop/0x0:700x393/700x465/photo/gridoto/2018/05/21/2594849356.jpg"
-              />
+          {data ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="space-y-4 max-w-xl">
+                <ImageCard title="Gambar Transaksi" imageUrl={data.url1} />
+                <ImageCard title="Plat Nomor (ANPR)" imageUrl={data.url2} />
+              </div>
+              <div className="space-y-4">
+                <VehicleInfo
+                  platnomor={data.platnomor}
+                  gerbang={data.gerbang}
+                  gardu={data.gardu}
+                  noresi={data.noresi}
+                  kartu={data.kartu}
+                  tanggal={data.tanggal}
+                  jam={data.jam}
+                  golongan={data.golongan}
+                  berat={data.berat}
+                  dimensi={data.dimensi}
+                />
+              </div>
             </div>
-            <div className="space-y-4">
-              <VehicleInfo />
-            </div>
-          </div>
+          ) : (
+            <p className="text-gray-300">Memuat data detail...</p>
+          )}
         </main>
       </div>
     </div>

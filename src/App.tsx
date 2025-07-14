@@ -58,6 +58,7 @@ const App = () => {
         <BrowserRouter>
           <AuthProvider>
             <IncidentNotification />
+
             <Routes>
               <Route path="/" element={<Login />} />
               <Route
@@ -277,7 +278,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/detail-odol"
+                path="/detail-odol/:id"
                 element={
                   <ProtectedRoute>
                     <DetailOdol />

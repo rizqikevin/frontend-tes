@@ -11,20 +11,20 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
-interface AlprData {
-  jentrn: string;
-  srlnum: string;
-  resi: string;
+interface OdolData {
+  id: string;
   gerbang: string;
   gardu: string;
-  gol: string;
-  waktu: string;
-  tgl: string;
-  id_kartu: string;
-  plat_number: string;
-  status: string;
-  pict_url: string;
-  gerbang_masuk: string;
+  noresi: number;
+  platnomor: string;
+  tanggal: string; // ISO string
+  jam: string;
+  kartu: string;
+  golongan: string;
+  berat: string;
+  dimensi: string;
+  url1: string;
+  url2: string;
 }
 
 const Odol: React.FC = () => {
@@ -33,7 +33,7 @@ const Odol: React.FC = () => {
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [data, setData] = useState<AlprData[]>([]);
+  const [data, setData] = useState<OdolData[]>([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
@@ -75,29 +75,23 @@ const Odol: React.FC = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await api.get("/alpr", {
-        params: { limit, page },
+      const response = await api.get("/odol", {
+        params: {
+          start_time: dayjs(startDate).format("YYYY-MM-DD"),
+          end_time: dayjs(endDate).format("YYYY-MM-DD"),
+        },
       });
-      const filtered = response.data.data
-        .filter((log: AlprData) => {
-          const created = dayjs(log.waktu);
-          return (
-            created.isAfter(
-              dayjs(startDate).startOf("day").subtract(1, "second")
-            ) && created.isBefore(dayjs(endDate).endOf("day").add(1, "second"))
-          );
-        })
-        .sort((a: AlprData, b: AlprData) =>
-          dayjs(a.waktu).isAfter(dayjs(b.waktu)) ? 1 : -1
-        );
-      setData(filtered);
 
-      // console.log("data sebelum di filter", response.data.data);
-      // console.log("filtered data", filtered);
-      setTotal(response.data.total);
+      const result: OdolData[] = response.data.data;
+
+      // Pagination manual (karena API tidak mendukung langsung)
+      const paginated = result.slice((page - 1) * limit, page * limit);
+
+      setData(paginated);
+      setTotal(result.length);
     } catch (error) {
-      toast.error("Gagal memuat data alpr");
-      console.error("Failed to fetch data:", error);
+      toast.error("Gagal memuat data ODOL");
+      console.error("Fetch ODOL error:", error);
     } finally {
       setLoading(false);
     }
@@ -230,7 +224,7 @@ const Odol: React.FC = () => {
                     </tr>
                   ) : (
                     data.map((item, index) => (
-                      <React.Fragment key={item.resi}>
+                      <React.Fragment key={index}>
                         <tr className="border-b border-gray-700">
                           <td className="p-2">
                             {String((page - 1) * limit + index + 1).padStart(
@@ -240,36 +234,32 @@ const Odol: React.FC = () => {
                           </td>
                           <td className="p-2">
                             <img
-                              src={item.pict_url
-                                .replace("(", "")
-                                .replace(")", "")}
+                              src={item.url1.replace("(", "").replace(")", "")}
                               alt="snapshot"
                               className="w-20 h-12 object-cover cursor-pointer"
                               onClick={() =>
                                 setExpandedImage((prev) =>
-                                  prev === item.pict_url ? null : item.pict_url
+                                  prev === item.url1 ? null : item.url1
                                 )
                               }
                             />
                           </td>
                           <td className="p-2">{item.gerbang}</td>
                           <td className="p-2">{item.gardu}</td>
-                          <td className="p-2">{item.resi}</td>
-                          <td className="p-2">{item.plat_number}</td>
+                          <td className="p-2">{item.noresi}</td>
+                          <td className="p-2">{item.platnomor}</td>
                           <td className="p-2">
-                            {dayjs(item.tgl).format("DD/MM/YYYY")}
+                            {dayjs(item.tanggal).format("DD/MM/YYYY")}
                           </td>
-                          <td className="p-2">
-                            {dayjs(item.waktu).format("HH:mm:ss A")}
-                          </td>
-                          <td className="p-2">{item.id_kartu}</td>
-                          <td className="p-2">{`Gol-${item.gol}`}</td>
+                          <td className="p-2">{item.jam}</td>
+                          <td className="p-2">{item.kartu}</td>
+                          <td className="p-2">{`Gol-${item.golongan}`}</td>
 
-                          <td className="p-2">-</td>
+                          <td className="p-2">{item.berat}</td>
 
-                          <td className="p-2">-</td>
+                          <td className="p-2">{item.dimensi}</td>
                           <td className="p-2">
-                            <Link to={"/detail-odol"}>
+                            <Link to={`/detail-odol/${item.id}`}>
                               <Button
                                 variant="default"
                                 className="bg-yellow-500 border-white text-white hover:bg-gray-700"
@@ -279,11 +269,11 @@ const Odol: React.FC = () => {
                             </Link>
                           </td>
                         </tr>
-                        {expandedImage === item.pict_url && (
+                        {expandedImage === item.url1 && (
                           <tr className="bg-black/30">
                             <td colSpan={13} className="p-0">
                               <img
-                                src={item.pict_url
+                                src={item.url1
                                   .replace("(", "")
                                   .replace(")", "")}
                                 alt="expanded"

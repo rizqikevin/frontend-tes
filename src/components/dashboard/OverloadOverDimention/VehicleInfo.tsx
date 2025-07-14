@@ -1,28 +1,52 @@
-export const VehicleInfo: React.FC = () => {
+interface VehicleInfoProps {
+  gerbang: string;
+  gardu: string;
+  noresi: number;
+  platnomor: string;
+  tanggal: string;
+  jam: string;
+  kartu: string;
+  golongan: string;
+  berat: string;
+  dimensi: string;
+}
+
+export const VehicleInfo: React.FC<VehicleInfoProps> = ({
+  gerbang,
+  gardu,
+  noresi,
+  platnomor,
+  tanggal,
+  jam,
+  kartu,
+  golongan,
+  berat,
+  dimensi,
+}) => {
   return (
     <div className="bg-dashboard-accent rounded-lg p-4 shadow-sm text-sm max-w-xl space-y-9">
       <h4 className="text-base font-semibold mb-8">Informasi Data Kendaraan</h4>
-      <div className="grid grid-cols-2 gap-y-10">
+      <div className="grid grid-cols-2 gap-y-7">
         <span>Gerbang :</span>
-        <span className="font-semibold">Tebing Tinggi</span>
+        <span className="font-semibold">{gerbang}</span>
         <span>Gardu :</span>
-        <span>05</span>
+        <span>{gardu}</span>
         <span>Nomor Resi :</span>
-        <span>244673</span>
+        <span>{noresi}</span>
         <span>Plat Nomor :</span>
-        <span>BK8907GK</span>
+        <span>{platnomor}</span>
         <span>Tanggal Transaksi :</span>
-        <span>20/04/2025</span>
+        <span>{new Date(tanggal).toLocaleDateString("id-ID")}</span>
         <span>Waktu Transaksi :</span>
-        <span>06:06:30</span>
+        <span>{jam}</span>
         <span>Nomor Kartu :</span>
-        <span>6013500615176501</span>
+        <span>{kartu}</span>
         <span>Golongan :</span>
-        <span>5</span>
+        <span>{golongan}</span>
         <span>Data Over Load :</span>
-        <span>30 Ton</span>
+        <span>{berat}</span>
         <span>Data Over Dimension :</span>
-        <span>15x5x3 Meter</span>
+        <span>{dimensi}</span>
       </div>
       <div className="text-center mt-5">
         <button className="bg-yellow-400 text-black font-semibold px-52 py-2 mt-24 rounded-md">
