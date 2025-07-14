@@ -8,7 +8,7 @@ interface Stat {
 
 const StatsGrid = ({ statsData }: { statsData: Stat[] }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
       {statsData.map((stat, index) => (
         <div key={index} className="p-2 rounded-lg border bg-dashboard-accent">
           <div className="flex justify-between items-start mb-2">

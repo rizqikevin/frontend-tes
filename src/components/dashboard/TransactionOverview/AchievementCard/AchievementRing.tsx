@@ -54,7 +54,7 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
       <h2 className="text-sm font-semibold uppercase mb-1">Achievement RKAP</h2>
 
       {/* Ring Chart */}
-      <div className="relative w-full max-w-[200px] aspect-square self-center">
+      <div className="relative w-full max-w-[170px] aspect-square self-center">
         <Doughnut data={chartData} options={options} />
         <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-[#cddc39]">
           {displayPercent ?? 0}%
@@ -73,14 +73,18 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
 
       {/* Nilai */}
       <div className="mt-2 text-xs text-white space-y-1">
-        <p className="mt-1">RKAP Target</p>
-        <p className="font-semibold">{target}</p>
+        <div className="flex justify-between">
+          <p className="mt-1">RKAP Target</p>
+          <p className="font-semibold">{target}</p>
+        </div>
         {otherTargets.map((target, index) => (
           <div key={index}>
-            <p className="mt-1">{target.target_name} Target</p>
-            <p className="font-semibold">
-              {`Rp ${Number(target.revenue_target).toLocaleString("id-ID")}`}
-            </p>
+            <div className="flex justify-between">
+              <p className="mt-1">{target.target_name} Target</p>
+              <p className="font-semibold">
+                {`Rp ${Number(target.revenue_target).toLocaleString("id-ID")}`}
+              </p>
+            </div>
           </div>
         ))}
       </div>

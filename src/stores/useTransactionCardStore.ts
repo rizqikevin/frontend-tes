@@ -73,13 +73,13 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
         value: "0",
         date: today,
       },
-      {
-        label: "Total Beban Ruas",
-        value: idNumberFormatter.format(
-          Number(data.data.avg_segment_load.value)
-        ),
-        date: data.data.avg_segment_load.date,
-      },
+      // {
+      //   label: "Total Beban Ruas",
+      //   value: idNumberFormatter.format(
+      //     Number(data.data.avg_segment_load.value)
+      //   ),
+      //   date: data.data.avg_segment_load.date,
+      // },
       {
         label: "Total LHR",
         value: idNumberFormatter.format(Number(data.data.lhr.value)),
