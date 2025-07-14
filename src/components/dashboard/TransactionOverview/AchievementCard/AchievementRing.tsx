@@ -75,13 +75,13 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
       <div className="mt-2 text-xs text-white space-y-1">
         <div className="flex justify-between">
           <p className="mt-1">RKAP Target</p>
-          <p className="font-semibold">{target}</p>
+          <p className="font-semibold text-[10px]">{target}</p>
         </div>
         {otherTargets.map((target, index) => (
           <div key={index}>
             <div className="flex justify-between">
               <p className="mt-1">{target.target_name} Target</p>
-              <p className="font-semibold">
+              <p className="font-semibold text-[10px]">
                 {`Rp ${Number(target.revenue_target).toLocaleString("id-ID")}`}
               </p>
             </div>

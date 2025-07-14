@@ -4,6 +4,8 @@ import { DoughnutChart } from "./DoughnutChart";
 import { SimplePanel } from "./SimplePanel";
 import { OtherRevenueList } from "./OtherRevenueList";
 import { AchievementRingContainer } from "./AchievementCard/AchievementRingContainer";
+import { useRevenueStore } from "@/stores/useRevenueStore";
+import { useEffect } from "react";
 
 const months = [
   "Jan",
@@ -21,6 +23,35 @@ const months = [
 ];
 
 export const TransactionOverview = () => {
+  const {
+    items,
+    startDate,
+    endDate,
+    fetchRevenue,
+    externalRevenueTotal,
+    internalRevenue,
+    externalItems,
+  } = useRevenueStore();
+
+  console.log(externalItems);
+
+  useEffect(() => {
+    fetchRevenue();
+  }, []);
+
+  const formatCurrency = (value: number) =>
+    `Rp ${value.toLocaleString("id-ID", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+
+  const dateRange = `${startDate} / ${endDate}`;
+
+  const otherRevenueData = externalItems.map((item) => ({
+    name: item.branch_name,
+    value: `Rp ${item.revenue.toLocaleString("id-ID")}`,
+  }));
+
   const sampleBarData = [
     {
       label: "LHR",
@@ -102,26 +133,18 @@ export const TransactionOverview = () => {
         <div className="col-span-2 flex flex-col">
           <SimplePanel
             title="Keluar Toll HMW"
-            dateRange="01 Jan 2024 - 31 Des 2024"
-            value="Rp 75,500,000.00"
+            dateRange={dateRange}
+            value={formatCurrency(internalRevenue)}
           />
           <hr className=" border-white" />
           <SimplePanel
             title="Keluar selain tol HMW"
-            dateRange="01 Jan 2024 - 31 Des 2024"
-            value="Rp 75,500,000.00"
+            dateRange={dateRange}
+            value={formatCurrency(externalRevenueTotal)}
           />
         </div>
         <div className="col-span-3 h-full bg-dashboard-accent p-1 rounded-lg">
-          <OtherRevenueList
-            data={[
-              { name: "BINSA", value: "100%" },
-              { name: "MBT", value: "100%" },
-              { name: "BELMERA", value: "21%" },
-              { name: "MKTT", value: "21%" },
-              { name: "INKIS", value: "21%" },
-            ]}
-          />
+          <OtherRevenueList data={otherRevenueData} />
         </div>
 
         {/* 3 Chart */}
@@ -146,21 +169,14 @@ export const TransactionOverview = () => {
 
       {/* ROW 3 - Card Panel */}
       <div className="grid grid-cols-6 gap-4">
-        {[
-          "Kuala Tanjung",
-          "Indrapura",
-          "Tebing Tinggi",
-          "Dolok Merawan",
-          "Sinaksak",
-          "Simpang Panei",
-        ].map((location) => (
+        {items.map((item) => (
           <CardPanel
-            key={location}
-            title={location}
-            value={location.includes("Tebing") ? 100_500_000 : 75_500_000}
-            percentage={16.6}
-            location={location}
-            dateRange="01 Jan 2024 - 31 Des 2024"
+            key={item.branch_name}
+            title={item.branch_name}
+            value={item.revenue}
+            percentage={0}
+            location={item.branch_name}
+            dateRange={`${startDate} / ${endDate}`}
           />
         ))}
       </div>
