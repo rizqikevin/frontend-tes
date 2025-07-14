@@ -1,9 +1,9 @@
 import { CardPanel } from "./CardPanel";
 import BarChart from "./BarChart";
 import { DoughnutChart } from "./DoughnutChart";
-import { AchievementRing } from "./AchievementRing";
 import { SimplePanel } from "./SimplePanel";
 import { OtherRevenueList } from "./OtherRevenueList";
+import { AchievementRingContainer } from "./AchievementCard/AchievementRingContainer";
 
 const months = [
   "Jan",
@@ -41,11 +41,11 @@ export const TransactionOverview = () => {
   ];
 
   return (
-    <div className="bg-dashboard-dark min-h-screen p-4 text-white space-y-6">
+    <div className="bg-dashboard-dark min-h-screen p-4 text-white space-y-4">
       {/* ROW 1 */}
       <div className="grid grid-cols-12 gap-4 items-start">
         {/* Doughnut Chart */}
-        <div className="col-span-12 sm:col-span-4 lg:col-span-2 min-w-0 h-full">
+        <div className="col-span-12 sm:col-span-1 lg:col-span-3 min-w-0 h-full">
           <DoughnutChart
             title="Akumulasi Pendapatan HMW"
             total="Rp 555.000.000.000"
@@ -72,16 +72,12 @@ export const TransactionOverview = () => {
         </div>
 
         {/* Achievement Ring */}
-        <div className="col-span-12 sm:col-span-4 lg:col-span-1 min-w-0 h-full">
-          <AchievementRing
-            percentage={77}
-            revenue="Rp 770.000.000"
-            businessPlan="Rp 1.000.000.000"
-          />
+        <div className="col-span-12 sm:col-span-4 lg:col-span-2 min-w-0 h-full">
+          <AchievementRingContainer />
         </div>
 
         {/* 3 Chart */}
-        <div className="col-span-12 lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-w-0">
+        <div className="col-span-12 lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-w-0 h-full">
           <BarChart
             title="PERBANDINGAN LHR TERHADAP PROGNOSA"
             labels={months}
@@ -103,19 +99,20 @@ export const TransactionOverview = () => {
       {/* ROW 2 */}
       <div className="grid grid-cols-12 gap-4">
         {/* Info Panels */}
-        <div className="col-span-2 flex flex-col gap-4">
+        <div className="col-span-2 flex flex-col">
           <SimplePanel
-            title="Melintas"
+            title="Keluar Toll HMW"
             dateRange="01 Jan 2024 - 31 Des 2024"
             value="Rp 75,500,000.00"
           />
+          <hr className=" border-white" />
           <SimplePanel
             title="Keluar selain tol HMW"
             dateRange="01 Jan 2024 - 31 Des 2024"
             value="Rp 75,500,000.00"
           />
         </div>
-        <div className="col-span-1">
+        <div className="col-span-3 h-full bg-dashboard-accent p-1 rounded-lg">
           <OtherRevenueList
             data={[
               { name: "BINSA", value: "100%" },
@@ -128,7 +125,7 @@ export const TransactionOverview = () => {
         </div>
 
         {/* 3 Chart */}
-        <div className="col-span-9 grid grid-cols-3 gap-4">
+        <div className="col-span-7 grid grid-cols-3 gap-4">
           <BarChart
             title="PERBANDINGAN PENDAPATAN TERHADAP PROGNOSA"
             labels={months}

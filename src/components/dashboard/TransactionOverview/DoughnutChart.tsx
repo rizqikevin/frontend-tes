@@ -38,19 +38,20 @@ export const DoughnutChart = ({
         labels: {
           color: "white",
         },
-        datalabels: {
-          display: false,
-        },
+      },
+      datalabels: {
+        display: false,
       },
     },
+    cutout: "70%",
   };
 
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full h-full">
       <h4 className="text-base font-semibold mb-2">{title}</h4>
-      <p className="text-center mt-2 font-semibold">{total}</p>
+      <p className="text-center mt-2 font-semibold p-1 mb-1">{total}</p>
 
-      <div className="relative w-full h-[250px] sm:h-[233px]">
+      <div className="relative w-full h-[300px] sm:h-[300px]">
         <Doughnut data={chartData} options={chartOptions} />
       </div>
     </div>

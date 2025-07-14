@@ -6,6 +6,7 @@ import TransactionOverview from "@/components/dashboard/TransactionOverview/Tran
 import { OverloadOverDimention } from "@/components/dashboard/OverloadOverDimention/OverloadOverDimention";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
+import { useTransactionStore } from "@/stores/useTransactionStore";
 
 import {
   Select,
@@ -24,6 +25,13 @@ export const Dashboard: React.FC = () => {
   const [selectedView, setSelectedView] = useState("geographic");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+  const { setDateRange, fetchAchievement } = useTransactionStore();
+
+  const handleSearch = () => {
+    setDateRange(startDate, endDate);
+    fetchAchievement();
+  };
 
   // Listen for theme changes and sidebar state changes
   useEffect(() => {
@@ -105,7 +113,7 @@ export const Dashboard: React.FC = () => {
       } transition-all duration-300`}
     >
       <DashboardSidebar />
-      <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
+      <div className={`flex-1 ${isSidebarCollapsed ? "ml-0" : "ml-64"}`}>
         <Header
           isDark={isDark}
           user={
@@ -221,7 +229,10 @@ export const Dashboard: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <Button className="px-4 py-2 bg-white border text-black rounded hover:bg-gray-200">
+              <Button
+                onClick={handleSearch}
+                className="px-4 py-2 bg-white border text-black rounded hover:bg-gray-200"
+              >
                 Search
               </Button>
             </div>
