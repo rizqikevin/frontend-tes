@@ -6,6 +6,8 @@ import { OtherRevenueList } from "./OtherRevenueList";
 import { AchievementRingContainer } from "./AchievementCard/AchievementRingContainer";
 import { useRevenueStore } from "@/stores/useRevenueStore";
 import { useEffect } from "react";
+import { useTransactionChartStore } from "@/stores/useTransactionChartStore ";
+import { formatRevenue } from "@/utils/formatRevenue";
 
 const months = [
   "Jan",
@@ -31,19 +33,28 @@ export const TransactionOverview = () => {
     externalRevenueTotal,
     internalRevenue,
     externalItems,
+    totalRevenue,
   } = useRevenueStore();
+  const { chartData, fetchChartData } = useTransactionChartStore();
 
-  console.log(externalItems);
+  // console.log(totalRevenue);
+
+  useEffect(() => {
+    fetchChartData("lhr", "1"); // LHR vs Prognosa
+    fetchChartData("lhr", "2"); // LHR vs Business Plan
+    fetchChartData("lhr", "3"); // LHR vs RKAP
+
+    fetchChartData("revenue", "1"); // Revenue vs Prognosa
+    fetchChartData("revenue", "2"); // Revenue vs Business Plan
+    fetchChartData("revenue", "3"); // Revenue vs RKAP
+  }, []);
 
   useEffect(() => {
     fetchRevenue();
   }, []);
 
   const formatCurrency = (value: number) =>
-    `Rp ${value.toLocaleString("id-ID", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
+    `Rp ${value.toLocaleString("id-ID")}`;
 
   const dateRange = `${startDate} / ${endDate}`;
 
@@ -76,31 +87,32 @@ export const TransactionOverview = () => {
       {/* ROW 1 */}
       <div className="grid grid-cols-12 gap-4 items-start">
         {/* Doughnut Chart */}
-        <div className="col-span-12 sm:col-span-1 lg:col-span-3 min-w-0 h-full">
-          <DoughnutChart
-            title="Akumulasi Pendapatan HMW"
-            total="Rp 555.000.000.000"
-            labels={[
-              "Kuala Tanjung",
-              "Indrapura",
-              "Tebing Tinggi",
-              "Dolok Merawan",
-              "Sinaksak",
-              "Simpang Panei",
-            ]}
-            data={[
-              75500000, 75500000, 100500000, 100500000, 100500000, 100500000,
-            ]}
-            backgroundColors={[
-              "#f9a825",
-              "#00bcd4",
-              "#7c4dff",
-              "#607d8b",
-              "#4caf50",
-              "#9c27b0",
-            ]}
-          />
-        </div>
+        {items.length > 0 ? (
+          <div className="col-span-12 sm:col-span-1 lg:col-span-3 min-w-0 h-full">
+            <DoughnutChart
+              title="Akumulasi Pendapatan HMW"
+              total={`Rp ${totalRevenue.toLocaleString("id-ID")}`}
+              labels={items.map((item) => item.branch_name)}
+              data={items.map((item) => item.revenue)}
+              backgroundColors={[
+                "#f9a825",
+                "#00bcd4",
+                "#7c4dff",
+                "#607d8b",
+                "#4caf50",
+                "#9c27b0",
+                "#795548",
+                "#ff5722",
+                "#8bc34a",
+                "#3f51b5",
+              ].slice(0, items.length)}
+            />
+          </div>
+        ) : (
+          <div className="col-span-12 sm:col-span-1 lg:col-span-3 flex items-center justify-center h-full text-gray-400">
+            Tidak ada data revenue
+          </div>
+        )}
 
         {/* Achievement Ring */}
         <div className="col-span-12 sm:col-span-4 lg:col-span-2 min-w-0 h-full">
@@ -110,19 +122,19 @@ export const TransactionOverview = () => {
         {/* 3 Chart */}
         <div className="col-span-12 lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-w-0 h-full">
           <BarChart
-            title="PERBANDINGAN LHR TERHADAP PROGNOSA"
-            labels={months}
-            datasets={sampleBarData}
+            title="LHR vs Prognosa"
+            labels={chartData.lhr["1"].labels}
+            datasets={chartData.lhr["1"].series}
           />
           <BarChart
-            title="PERBANDINGAN LHR TERHADAP BUSINESS PLAN"
-            labels={months}
-            datasets={sampleBarData}
+            title="LHR vs Business Plan"
+            labels={chartData.lhr["2"].labels}
+            datasets={chartData.lhr["2"].series}
           />
           <BarChart
-            title="PERBANDINGAN LHR TERHADAP RKAP"
-            labels={months}
-            datasets={sampleBarData}
+            title="LHR vs RKAP"
+            labels={chartData.lhr["3"].labels}
+            datasets={chartData.lhr["3"].series}
           />
         </div>
       </div>
@@ -132,13 +144,13 @@ export const TransactionOverview = () => {
         {/* Info Panels */}
         <div className="col-span-2 flex flex-col">
           <SimplePanel
-            title="Keluar Toll HMW"
+            title="Total Pendapatan Toll HMW (Internal)"
             dateRange={dateRange}
             value={formatCurrency(internalRevenue)}
           />
           <hr className=" border-white" />
           <SimplePanel
-            title="Keluar selain tol HMW"
+            title="Total Pendapatan Toll HMW (Integrasi"
             dateRange={dateRange}
             value={formatCurrency(externalRevenueTotal)}
           />
@@ -150,35 +162,41 @@ export const TransactionOverview = () => {
         {/* 3 Chart */}
         <div className="col-span-7 grid grid-cols-3 gap-4">
           <BarChart
-            title="PERBANDINGAN PENDAPATAN TERHADAP PROGNOSA"
-            labels={months}
-            datasets={sampleBarData}
+            title="Pendapatan vs Prognosa"
+            labels={chartData.revenue["1"].labels}
+            datasets={chartData.revenue["1"].series}
           />
           <BarChart
-            title="PERBANDINGAN PENDAPATAN TERHADAP BUSINESS PLAN"
-            labels={months}
-            datasets={sampleBarData}
+            title="Pendapatan vs Business Plan"
+            labels={chartData.revenue["2"].labels}
+            datasets={chartData.revenue["2"].series}
           />
           <BarChart
-            title="PERBANDINGAN PENDAPATAN TERHADAP RKAP"
-            labels={months}
-            datasets={sampleBarData}
+            title="Pendapatan vs RKAP"
+            labels={chartData.revenue["3"].labels}
+            datasets={chartData.revenue["3"].series}
           />
         </div>
       </div>
 
       {/* ROW 3 - Card Panel */}
       <div className="grid grid-cols-6 gap-4">
-        {items.map((item) => (
-          <CardPanel
-            key={item.branch_name}
-            title={item.branch_name}
-            value={item.revenue}
-            percentage={0}
-            location={item.branch_name}
-            dateRange={`${startDate} / ${endDate}`}
-          />
-        ))}
+        {items && items.length > 0 ? (
+          items.map((item) => (
+            <CardPanel
+              key={item.branch_name}
+              title={item.branch_name}
+              value={item.revenue}
+              percentage={0}
+              location={item.branch_name}
+              dateRange={`${startDate} / ${endDate}`}
+            />
+          ))
+        ) : (
+          <div className="col-span-6 text-center text-sm text-gray-400">
+            Tidak ada data revenue yang tersedia.
+          </div>
+        )}
       </div>
     </div>
   );

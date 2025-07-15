@@ -50,16 +50,59 @@ export const useTransactionChartStore = create<TransactionChartState>(
           params: { start_date: start, end_date: end, type, target_type },
         });
 
-        const data = res.data?.data;
-        if (!data || !Array.isArray(data.series)) return;
-        console.log("Fetched data", data);
+        const raw = res.data?.data;
+        if (!raw || !Array.isArray(raw.series)) return;
+
+        const colorPalette = [
+          "#42A5F5",
+          "#FFEB3B",
+          "#4CAF50",
+          "#E91E63",
+          "#9C27B0",
+          "#00BCD4",
+          "#FF9800",
+          "#8BC34A",
+          "#795548",
+          "#607D8B",
+        ];
+
+        const monthShortMap: Record<string, string> = {
+          January: "Jan",
+          February: "Feb",
+          March: "Mar",
+          April: "Apr",
+          May: "May",
+          June: "Jun",
+          July: "Jul",
+          August: "Aug",
+          September: "Sep",
+          October: "Oct",
+          November: "Nov",
+          December: "Dec",
+        };
+
+        const shortLabels = raw.label.map(
+          (month: string) => monthShortMap[month] || month
+        );
+
+        const mappedSeries = raw.series.map((item: any, index: number) => ({
+          label: item.title || `Series ${index + 1}`,
+          backgroundColor: colorPalette[index % colorPalette.length],
+          data: item.data ?? [],
+        }));
+
+        const mappedData: ChartResponse = {
+          title: raw.title || "",
+          labels: shortLabels,
+          series: mappedSeries,
+        };
 
         set((state) => ({
           chartData: {
             ...state.chartData,
             [type]: {
               ...state.chartData[type],
-              [target_type]: data,
+              [target_type]: mappedData,
             },
           },
         }));

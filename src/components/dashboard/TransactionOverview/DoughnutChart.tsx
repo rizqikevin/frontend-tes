@@ -18,11 +18,12 @@ export const DoughnutChart = ({
   data,
   backgroundColors,
 }: DoughnutChartProps) => {
+  const adjustedData = data.map((val) => (val === 0 ? 0.0001 : val));
   const chartData = {
     labels,
     datasets: [
       {
-        data,
+        data: adjustedData,
         backgroundColor: backgroundColors,
         borderWidth: 0,
       },

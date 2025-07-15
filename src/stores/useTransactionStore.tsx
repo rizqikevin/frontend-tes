@@ -56,7 +56,7 @@ export const useTransactionStore = create<TransactionStoreState>(
           },
         });
 
-        const data = res.data?.data;
+        const data = res.data.data;
 
         if (!data || !Array.isArray(data.target)) {
           set({
