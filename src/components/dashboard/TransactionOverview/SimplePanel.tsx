@@ -17,7 +17,7 @@ export const SimplePanel: React.FC<SimplePanelProps> = ({
         <h3 className="text-sm font-semibold">{title}</h3>
         <p className="text-xs text-gray-400 mt-1">Tanggal: {dateRange}</p>
       </div>
-      <p className="text-xl font-bold mt-4">{value}</p>
+      <p className="text-2xl font-bold mt-4">{value}</p>
     </div>
   );
 };

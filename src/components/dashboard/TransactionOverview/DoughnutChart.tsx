@@ -50,7 +50,7 @@ export const DoughnutChart = ({
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full h-full">
       <h4 className="text-base font-semibold mb-2">{title}</h4>
-      <p className="text-center mt-2 font-semibold p-1 mb-1">{total}</p>
+      <p className="text-center mt-2 font-bold text-2xl p-1 mb-1">{total}</p>
 
       <div className="relative w-full h-[350px] sm:h-[350px]">
         <Doughnut data={chartData} options={chartOptions} />

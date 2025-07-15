@@ -14,7 +14,7 @@ export const AchievementRingContainer: React.FC = () => {
 
   return (
     <AchievementRing
-      percent={rkapPercent}
+      percent={Number(rkapPercent)}
       revenue={`Rp ${Number(revenueAchievement).toLocaleString("id-ID")}`}
       target={`Rp ${Number(rkapTarget).toLocaleString("id-ID")}`}
     />
