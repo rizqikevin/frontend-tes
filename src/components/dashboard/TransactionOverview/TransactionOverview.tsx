@@ -63,25 +63,6 @@ export const TransactionOverview = () => {
     value: `Rp ${item.revenue.toLocaleString("id-ID")}`,
   }));
 
-  const sampleBarData = [
-    {
-      label: "LHR",
-      backgroundColor: "#42A5F5",
-      data: [
-        90000, 85000, 80000, 70000, 60000, 55000, 50000, 48000, 45000, 44000,
-        42000, 40000,
-      ],
-    },
-    {
-      label: "Prognosa",
-      backgroundColor: "#FFEB3B",
-      data: [
-        100000, 95000, 90000, 88000, 85000, 80000, 75000, 72000, 70000, 68000,
-        65000, 62000,
-      ],
-    },
-  ];
-
   return (
     <div className="bg-dashboard-dark min-h-screen p-4 text-white space-y-4">
       {/* ROW 1 */}
@@ -115,52 +96,35 @@ export const TransactionOverview = () => {
         )}
 
         {/* Achievement Ring */}
-        <div className="col-span-12 sm:col-span-4 lg:col-span-2 min-w-0 h-full">
-          <AchievementRingContainer />
+        <div className="col-span-12 sm:col-span-4 lg:col-span-3 min-w-0 h-full">
+          <div className="col-span-2 flex flex-col h-full">
+            <SimplePanel
+              title="Total Pendapatan Toll HMW (Internal)"
+              dateRange={dateRange}
+              value={formatCurrency(internalRevenue)}
+            />
+            <hr className=" border-white" />
+            <SimplePanel
+              title="Total Pendapatan Toll HMW (Integrasi"
+              dateRange={dateRange}
+              value={formatCurrency(externalRevenueTotal)}
+            />
+          </div>
         </div>
 
         {/* 3 Chart */}
-        <div className="col-span-12 lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-w-0 h-full">
-          <BarChart
-            title="LHR vs Prognosa"
-            labels={chartData.lhr["1"].labels}
-            datasets={chartData.lhr["1"].series}
-          />
-          <BarChart
-            title="LHR vs Business Plan"
-            labels={chartData.lhr["2"].labels}
-            datasets={chartData.lhr["2"].series}
-          />
-          <BarChart
-            title="LHR vs RKAP"
-            labels={chartData.lhr["3"].labels}
-            datasets={chartData.lhr["3"].series}
-          />
+        <div className="col-span-12 lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 min-w-0 h-full">
+          <div className="h-full bg-dashboard-accent p-1 rounded-lg">
+            <OtherRevenueList data={otherRevenueData} />
+          </div>
+          <AchievementRingContainer />
         </div>
       </div>
 
       {/* ROW 2 */}
       <div className="grid grid-cols-12 gap-4">
-        {/* Info Panels */}
-        <div className="col-span-2 flex flex-col">
-          <SimplePanel
-            title="Total Pendapatan Toll HMW (Internal)"
-            dateRange={dateRange}
-            value={formatCurrency(internalRevenue)}
-          />
-          <hr className=" border-white" />
-          <SimplePanel
-            title="Total Pendapatan Toll HMW (Integrasi"
-            dateRange={dateRange}
-            value={formatCurrency(externalRevenueTotal)}
-          />
-        </div>
-        <div className="col-span-3 h-full bg-dashboard-accent p-1 rounded-lg">
-          <OtherRevenueList data={otherRevenueData} />
-        </div>
-
         {/* 3 Chart */}
-        <div className="col-span-7 grid grid-cols-3 gap-4">
+        <div className="col-span-12 grid grid-cols-3 gap-4">
           <BarChart
             title="Pendapatan vs Prognosa"
             labels={chartData.revenue["1"].labels}
@@ -177,6 +141,24 @@ export const TransactionOverview = () => {
             datasets={chartData.revenue["3"].series}
           />
         </div>
+      </div>
+
+      <div className="col-span-12 grid grid-cols-3 gap-4">
+        <BarChart
+          title="LHR vs Prognosa"
+          labels={chartData.lhr["1"].labels}
+          datasets={chartData.lhr["1"].series}
+        />
+        <BarChart
+          title="LHR vs Business Plan"
+          labels={chartData.lhr["2"].labels}
+          datasets={chartData.lhr["2"].series}
+        />
+        <BarChart
+          title="LHR vs RKAP"
+          labels={chartData.lhr["3"].labels}
+          datasets={chartData.lhr["3"].series}
+        />
       </div>
 
       {/* ROW 3 - Card Panel */}
