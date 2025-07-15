@@ -36,7 +36,7 @@ export const VehichleDougnut = () => {
         color: "#fff",
         formatter: (value: number) => {
           const percentage = ((value / total) * 100).toFixed(1);
-          return `${value.toLocaleString()} (${percentage}%)`;
+          return `${value.toLocaleString()}\n(${percentage}%)`;
         },
         anchor: "end",
         align: "start",

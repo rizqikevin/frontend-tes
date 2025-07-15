@@ -6,7 +6,7 @@ import TransactionOverview from "@/components/dashboard/TransactionOverview/Tran
 import { OverloadOverDimention } from "@/components/dashboard/OverloadOverDimention/OverloadOverDimention";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
-import { useTransactionStore } from "@/stores/useTransactionStore";
+import { subDays } from "date-fns";
 
 import {
   Select,
@@ -21,8 +21,8 @@ import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [startDate, setStartDate] = useState<Date>(subDays(new Date(), 1));
+  const [endDate, setEndDate] = useState<Date>(subDays(new Date(), 1));
   const [selectedView, setSelectedView] = useState("geographic");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");

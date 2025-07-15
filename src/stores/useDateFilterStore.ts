@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { subDays } from "date-fns";
 
 interface DateFilterState {
   start_date: string;
@@ -9,8 +10,8 @@ interface DateFilterState {
 }
 
 export const useDateFilterStore = create<DateFilterState>((set) => ({
-  start_date: new Date().toISOString().split("T")[0],
-  end_date: new Date().toISOString().split("T")[0],
+  start_date: subDays(new Date(), 1).toISOString().split("T")[0], // new Date().toISOString().split("T")[0],
+  end_date: subDays(new Date(), 1).toISOString().split("T")[0], //new Date().toISOString().split("T")[0],
   setStartDate: (date) => set({ start_date: date }),
   setEndDate: (date) => set({ end_date: date }),
   setDateRange: (start, end) => {
