@@ -177,7 +177,7 @@ const Camera = () => {
   };
 
   const filteredCameras = cameraList.filter((cam) => {
-    const matchGroup = Number(cam.group_id) === 2;
+    const matchGroup = Number(cam.group_id) === 1;
     const matchSearch = cam.name.toLowerCase().includes(search.toLowerCase());
     const isUsed = grid.some((item) => item?.id === cam.id);
 
@@ -196,8 +196,8 @@ const Camera = () => {
 
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <div
-          className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px flex-1 mb-21 p-5 ${
-            isSidebarCollapsed ? "ml-16" : "ml-64"
+          className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1 flex-1 p-0 ${
+            isSidebarCollapsed ? "ml-6" : "ml-64"
           } transition-all duration-300`}
         >
           {grid.map((camera, i) => (
