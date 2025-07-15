@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import Header from "@/components/Header";
 import DatePicker from "react-datepicker";
+import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
@@ -26,11 +27,10 @@ export const Dashboard: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
-  const { setDateRange, fetchAchievement } = useTransactionStore();
+  const { setDateRange } = useDateFilterStore();
 
   const handleSearch = () => {
     setDateRange(startDate, endDate);
-    fetchAchievement();
   };
 
   // Listen for theme changes and sidebar state changes

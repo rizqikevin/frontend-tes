@@ -1,6 +1,7 @@
 import { api2 } from "@/services/api";
 import { format } from "date-fns";
 import { create } from "zustand";
+import { useDateFilterStore } from "./useDateFilterStore";
 
 interface TransacionData {
   revenue: {
@@ -43,7 +44,13 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
   error: null,
 
   fetchTransactionData: async () => {
-    const res = await api2.get("/tracomm/dashboard/card");
+    const { start_date, end_date } = useDateFilterStore.getState();
+    const res = await api2.get("/tracomm/dashboard/card", {
+      params: {
+        start_date,
+        end_date,
+      },
+    });
     const data = res.data;
 
     // console.log(data);
@@ -81,7 +88,7 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
       //   date: data.data.avg_segment_load.date,
       // },
       {
-        label: "Total LHR",
+        label: "LHR Tertimbang",
         value: idNumberFormatter.format(Number(data.data.lhr.value)),
         date: data.data.lhr.date,
       },

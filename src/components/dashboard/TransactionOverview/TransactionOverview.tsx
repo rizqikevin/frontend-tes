@@ -8,6 +8,7 @@ import { useRevenueStore } from "@/stores/useRevenueStore";
 import { useEffect } from "react";
 import { useTransactionChartStore } from "@/stores/useTransactionChartStore ";
 import { formatRevenue } from "@/utils/formatRevenue";
+import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
 const months = [
   "Jan",
@@ -27,14 +28,13 @@ const months = [
 export const TransactionOverview = () => {
   const {
     items,
-    startDate,
-    endDate,
     fetchRevenue,
     externalRevenueTotal,
     internalRevenue,
     externalItems,
     totalRevenue,
   } = useRevenueStore();
+  const { start_date, end_date } = useDateFilterStore();
   const { chartData, fetchChartData } = useTransactionChartStore();
 
   // console.log(totalRevenue);
@@ -47,16 +47,16 @@ export const TransactionOverview = () => {
     fetchChartData("revenue", "1"); // Revenue vs Prognosa
     fetchChartData("revenue", "2"); // Revenue vs Business Plan
     fetchChartData("revenue", "3"); // Revenue vs RKAP
-  }, []);
+  }, [start_date, end_date]);
 
   useEffect(() => {
     fetchRevenue();
-  }, []);
+  }, [start_date, end_date]);
 
   const formatCurrency = (value: number) =>
     `Rp ${value.toLocaleString("id-ID")}`;
 
-  const dateRange = `${startDate} / ${endDate}`;
+  const dateRange = `${start_date} / ${end_date}`;
 
   const otherRevenueData = externalItems.map((item) => ({
     name: item.branch_name,
@@ -71,7 +71,7 @@ export const TransactionOverview = () => {
         {items.length > 0 ? (
           <div className="col-span-12 sm:col-span-1 lg:col-span-3 min-w-0 h-full">
             <DoughnutChart
-              title="Akumulasi Pendapatan HMW"
+              title="Total Pendapatan Toll HMW"
               total={`Rp ${totalRevenue.toLocaleString("id-ID")}`}
               labels={items.map((item) => item.branch_name)}
               data={items.map((item) => item.revenue)}
@@ -171,7 +171,7 @@ export const TransactionOverview = () => {
               value={item.revenue}
               percentage={0}
               location={item.branch_name}
-              dateRange={`${startDate} / ${endDate}`}
+              dateRange={`${start_date} / ${end_date}`}
             />
           ))
         ) : (

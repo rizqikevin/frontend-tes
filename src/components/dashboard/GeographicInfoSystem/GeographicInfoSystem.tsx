@@ -5,6 +5,7 @@ import MapSection from "./MapSection";
 import ErrorLog from "./ErrorLog";
 import { ErrorItem } from "./ErrorLog";
 import { useTransactionStore } from "@/stores/useTransactionCardStore";
+import { useDateFilterStore } from "@/stores/useDateFilterStore";
 const GeographicInfoSystem: React.FC = () => {
   const [selectedRoute, setSelectedRoute] = useState("");
   const [selectedDeviceType, setSelectedDeviceType] = useState("");
@@ -12,10 +13,11 @@ const GeographicInfoSystem: React.FC = () => {
   const [selectedCondition, setSelectedCondition] = useState("");
   const { transactionData, fetchTransactionData, isDataLoading } =
     useTransactionStore();
+  const { start_date, end_date } = useDateFilterStore();
 
   useEffect(() => {
     fetchTransactionData();
-  }, []);
+  }, [start_date, end_date]);
 
   const statsData = [
     {

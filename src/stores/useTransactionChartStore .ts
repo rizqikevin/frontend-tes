@@ -36,18 +36,11 @@ export const useTransactionChartStore = create<TransactionChartState>(
     },
 
     fetchChartData: async (type, target_type) => {
-      const start = useDateFilterStore
-        .getState()
-        .startDate.toISOString()
-        .split("T")[0];
-      const end = useDateFilterStore
-        .getState()
-        .endDate.toISOString()
-        .split("T")[0];
+      const { start_date, end_date } = useDateFilterStore.getState();
 
       try {
         const res = await api3.get("/tracomm/transaction/graph/compare", {
-          params: { start_date: start, end_date: end, type, target_type },
+          params: { start_date, end_date, type, target_type },
         });
 
         const raw = res.data?.data;

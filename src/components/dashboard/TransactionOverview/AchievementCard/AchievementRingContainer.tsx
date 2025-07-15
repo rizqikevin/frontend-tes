@@ -1,16 +1,12 @@
 import React, { useEffect } from "react";
 import { useTransactionStore } from "@/stores/useTransactionStore";
 import { AchievementRing } from "./AchievementRing";
+import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
 export const AchievementRingContainer: React.FC = () => {
-  const {
-    start_date,
-    end_date,
-    fetchAchievement,
-    revenueAchievement,
-    rkapPercent,
-    rkapTarget,
-  } = useTransactionStore();
+  const { fetchAchievement, revenueAchievement, rkapPercent, rkapTarget } =
+    useTransactionStore();
+  const { start_date, end_date } = useDateFilterStore();
 
   useEffect(() => {
     fetchAchievement();

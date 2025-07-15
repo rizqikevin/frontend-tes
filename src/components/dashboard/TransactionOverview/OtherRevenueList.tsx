@@ -13,7 +13,7 @@ export const OtherRevenueList: React.FC<OtherRevenueListProps> = ({ data }) => {
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg h-[240px] w-full text-white shadow-sm flex flex-col justify-between">
       <h3 className="text-sm font-semibold mb-2">
-        Pendapatan HMW di ruas lain
+        Pendapatan Toll HMW (Integrasi)
       </h3>
       <ul className="text-sm space-y-3">
         {data.map((item, index) => (
