@@ -5,7 +5,7 @@ import { useDateFilterStore } from "@/stores/useDateFilterStore";
 interface TransacionData {
   gate_code: string;
   name: string;
-  pendapatan: string;
+  pendapatan: number;
 }
 
 interface TransactionOverviewState {
