@@ -81,8 +81,8 @@ export const TransactionOverview = () => {
             <DoughnutChart
               title="Total Pendapatan Toll HMW"
               total={`Rp ${totalRevenue.toLocaleString("id-ID")}`}
-              labels={items.map((item) => item.branch_name)}
-              data={items.map((item) => item.revenue)}
+              labels={transactionOverview.map((item) => item.name)}
+              data={transactionOverview.map((item) => item.pendapatan)}
               backgroundColors={[
                 "#f9a825",
                 "#00bcd4",
