@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,8 +14,10 @@ import {
   ChartOptions,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
+import { useMonthlyOdolChartStore } from "@/stores/useMonthlyOdolChartStore";
+import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
-// Register necessary components
+// Register components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -29,55 +31,57 @@ ChartJS.register(
 );
 
 export const ComparisonChart2: React.FC = () => {
-  const data: ChartData<"bar" | "line", number[], string> = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    datasets: [
-      {
-        type: "bar",
-        label: "Normal",
-        data: [
-          30000, 21000, 28000, 24000, 25000, 27000, 40000, 38000, 26000, 31000,
-          23000, 29000,
-        ],
-        backgroundColor: "#4caf50",
-        borderRadius: 4,
-      },
-      {
-        type: "bar",
-        label: "ODOL",
-        data: [
-          12000, 8000, 9000, 10000, 11000, 13000, 15000, 16000, 9000, 10000,
-          7000, 9000,
-        ],
-        backgroundColor: "#d32f2f",
-        borderRadius: 4,
-      },
-      {
-        type: "line",
-        label: "Total",
-        data: [
-          42000, 29000, 37000, 34000, 36000, 40000, 55000, 54000, 35000, 41000,
-          30000, 38000,
-        ],
-        borderColor: "#ffb300",
-        borderWidth: 2,
-        pointRadius: 0,
-        tension: 0.4,
-      },
-    ],
+  const { labels, datasets, fetchMonthlyChartData } =
+    useMonthlyOdolChartStore();
+  const { start_date, end_date } = useDateFilterStore.getState();
+
+  useEffect(() => {
+    fetchMonthlyChartData();
+  }, [start_date, end_date]);
+
+  const defaultLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const chartData: ChartData<"bar" | "line", number[], string> = {
+    labels: labels.length ? labels : defaultLabels,
+    datasets: datasets.length
+      ? datasets.map((ds) => {
+          const baseStyle = {
+            label: ds.label,
+            data: ds.data,
+          };
+
+          if (ds.type === "bar") {
+            return {
+              ...baseStyle,
+              type: "bar" as const,
+              backgroundColor: ds.label === "ODOL" ? "#d32f2f" : "#4caf50",
+              borderRadius: 4,
+            };
+          } else {
+            return {
+              ...baseStyle,
+              type: "line" as const,
+              borderColor: "#ffb300",
+              borderWidth: 2,
+              pointRadius: 0,
+              tension: 0.4,
+            };
+          }
+        })
+      : [],
   };
 
   const options: ChartOptions<"bar" | "line"> = {
@@ -118,9 +122,9 @@ export const ComparisonChart2: React.FC = () => {
   return (
     <div className="bg-[#2b2b2b] p-4 rounded-lg h-auto">
       <h2 className="text-sm mb-2 font-semibold uppercase">
-        PERBANDINGAN KEPATUHAN DALAM HARI BULAN JULY 2025
+        PERBANDINGAN KEPATUHAN BULANAN
       </h2>
-      <Chart type="bar" data={data} options={options} />
+      <Chart type="bar" data={chartData} options={options} />
     </div>
   );
 };

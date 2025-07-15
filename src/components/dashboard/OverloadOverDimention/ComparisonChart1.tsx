@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,6 +14,8 @@ import {
   ChartOptions,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
+import { useOdolComparisonStore } from "@/stores/useOdolComparisonStore";
+import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
 // Register chart components
 ChartJS.register(
@@ -29,21 +31,30 @@ ChartJS.register(
 );
 
 export const ComparisonChart1: React.FC = () => {
-  const odolData = [32, 18, 28, 29, 20];
+  const { labels, odolData, fetchOdolData } = useOdolComparisonStore();
+  const { start_date, end_date } = useDateFilterStore();
+
+  useEffect(() => {
+    fetchOdolData();
+  }, [start_date, end_date]);
+
+  const defaultLabels = ["Gol 1", "Gol 2", "Gol 3", "Gol 4", "Gol 5"];
+  const displayLabels = labels.length ? labels : defaultLabels;
+  const displayData = odolData.length ? odolData : [0, 0, 0, 0, 0];
 
   const data: ChartData<"bar" | "line", number[], string> = {
-    labels: ["Gol 1", "Gol 2", "Gol 3", "Gol 4", "Gol 5"],
+    labels: displayLabels,
     datasets: [
       {
         type: "bar",
         label: "ODOL",
-        data: odolData,
+        data: displayData,
         backgroundColor: [
-          "#f44336", // Gol 1
-          "#e91e63", // Gol 2
-          "#9c27b0", // Gol 3
-          "#2196f3", // Gol 4
-          "#4caf50", // Gol 5
+          "#f44336",
+          "#e91e63",
+          "#9c27b0",
+          "#2196f3",
+          "#4caf50",
         ],
         borderSkipped: false,
         borderRadius: 10,
@@ -62,9 +73,6 @@ export const ComparisonChart1: React.FC = () => {
         labels: {
           color: "#fff",
         },
-      },
-      datalabels: {
-        display: false,
       },
     },
     scales: {
