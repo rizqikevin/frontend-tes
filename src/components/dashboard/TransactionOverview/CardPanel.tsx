@@ -13,6 +13,11 @@ export const CardPanel: React.FC<CardPanelProps> = ({
   location,
   dateRange,
 }) => {
+  const formatCurrency = (value: number) =>
+    `Rp ${value
+      .toLocaleString("id-ID")
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}`;
+
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full h-full flex flex-col justify-between">
       <div className="flex items-center gap-4">
@@ -29,7 +34,7 @@ export const CardPanel: React.FC<CardPanelProps> = ({
 
       <div className="mt-4">
         <p className="text-sm text-gray-400">Pendapatan</p>
-        <p className="text-xl font-bold">Rp {value.toLocaleString("id-ID")}</p>
+        <p className="text-xl font-bold">{formatCurrency(value)}</p>
       </div>
     </div>
   );

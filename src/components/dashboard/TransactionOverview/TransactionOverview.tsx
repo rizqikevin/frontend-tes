@@ -7,7 +7,7 @@ import { AchievementRingContainer } from "./AchievementCard/AchievementRingConta
 import { useRevenueStore } from "@/stores/useRevenueStore";
 import { useEffect } from "react";
 import { useTransactionChartStore } from "@/stores/useTransactionChartStore ";
-import { formatRevenue } from "@/utils/formatRevenue";
+import { useTransactionOverviewStore } from "@/stores/useTransactionOverviewStore";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
 const months = [
@@ -34,6 +34,8 @@ export const TransactionOverview = () => {
     externalItems,
     totalRevenue,
   } = useRevenueStore();
+  const { transactionOverview, fetchTransactionOverview, isDataLoading } =
+    useTransactionOverviewStore();
   const { start_date, end_date } = useDateFilterStore();
   const { chartData, fetchChartData } = useTransactionChartStore();
 
@@ -48,6 +50,12 @@ export const TransactionOverview = () => {
     fetchChartData("revenue", "2"); // Revenue vs Business Plan
     fetchChartData("revenue", "3"); // Revenue vs RKAP
   }, [start_date, end_date]);
+
+  useEffect(() => {
+    fetchTransactionOverview();
+  }, [start_date, end_date]);
+
+  console.log(transactionOverview);
 
   useEffect(() => {
     fetchRevenue();
@@ -163,14 +171,14 @@ export const TransactionOverview = () => {
 
       {/* ROW 3 - Card Panel */}
       <div className="grid grid-cols-6 gap-4">
-        {items && items.length > 0 ? (
-          items.map((item) => (
+        {transactionOverview && transactionOverview.length > 0 ? (
+          transactionOverview.map((item) => (
             <CardPanel
-              key={item.branch_name}
-              title={item.branch_name}
-              value={item.revenue}
+              key={item.gate_code}
+              title={item.name}
+              value={item.pendapatan}
               percentage={0}
-              location={item.branch_name}
+              location={item.name}
               dateRange={`${start_date} / ${end_date}`}
             />
           ))

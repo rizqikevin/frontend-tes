@@ -19,31 +19,6 @@ const GeographicInfoSystem: React.FC = () => {
     fetchTransactionData();
   }, [start_date, end_date]);
 
-  const statsData = [
-    {
-      label: "Total Revenue",
-      value: "Rp 59,492.10",
-      date: "25/02/2025",
-    },
-    {
-      label: "Total Transaction",
-      value: "2101",
-      date: "25/02/2025",
-    },
-    { label: "Active Gate", value: "9", date: "25/02/2025" },
-    { label: "Inactive Gate", value: "1", date: "25/02/2025" },
-    {
-      label: "Total Beban Ruas",
-      value: "1.000",
-      date: "25/02/2025",
-    },
-    {
-      label: "Total LHR",
-      value: "500",
-      date: "01/02/2025 - 25/02/2025",
-    },
-  ];
-
   const errorLogData: ErrorItem[] = [
     {
       jenisAlat: "CCTV",

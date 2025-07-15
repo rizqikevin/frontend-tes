@@ -3,7 +3,7 @@ import { toast } from "sonner";
 
 // Use relative URL in development to work with Vite proxy
 const API_URL = import.meta.env.VITE_API_URL as string;
-const API_URL2 = import.meta.env.VITE_API_URL7 as string;
+const API_URL2 = import.meta.env.VITE_API_URL2 as string;
 const API_URL3 = import.meta.env.VITE_API_URL3 as string;
 // console.log("API URL:", API_URL);
 
