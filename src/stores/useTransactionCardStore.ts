@@ -51,7 +51,7 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
       if (data.code == 200) {
         const mappedDireksi: Stat[] = [
           {
-            label: "Revenue",
+            label: "Pendapatan Toll HMW",
             value:
               "Rp" + idNumberFormatter.format(Number(data.data.revenue.value)),
             date: data.data.revenue.date,
@@ -75,7 +75,9 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
           },
           {
             label: "LHR Tertimbang",
-            value: idNumberFormatter.format(Number(data.data.lhr.value)),
+            value: idNumberFormatter.format(
+              Math.floor(Number(data.data.lhr.value))
+            ),
             date: data.data.lhr.date,
           },
         ];
