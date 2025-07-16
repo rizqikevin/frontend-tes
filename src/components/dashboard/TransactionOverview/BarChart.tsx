@@ -8,6 +8,7 @@ import {
   Legend,
   Tooltip,
 } from "chart.js";
+import { formatRevenue } from "@/utils/formatRevenue";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Legend, Tooltip);
 
@@ -44,6 +45,15 @@ const BarChart: React.FC<BarChartProps> = ({
               datalabels: {
                 display: false,
               },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    const label = context.dataset.label || "";
+                    const value = context.raw as number;
+                    return `${label}: ${value.toLocaleString("id-ID")}`;
+                  },
+                },
+              },
             },
             scales: {
               x: {
@@ -51,7 +61,12 @@ const BarChart: React.FC<BarChartProps> = ({
                 grid: { color: "#444" },
               },
               y: {
-                ticks: { color: "white" },
+                ticks: {
+                  color: "white",
+                  callback: function (value) {
+                    return formatRevenue(Number(value));
+                  },
+                },
                 grid: { color: "#444" },
               },
             },

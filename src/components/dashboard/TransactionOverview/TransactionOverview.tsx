@@ -55,7 +55,7 @@ export const TransactionOverview = () => {
     fetchTransactionOverview();
   }, [start_date, end_date]);
 
-  console.log(transactionOverview);
+  // console.log(transactionOverview);
 
   useEffect(() => {
     fetchRevenue();
