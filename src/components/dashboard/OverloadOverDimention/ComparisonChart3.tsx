@@ -31,7 +31,8 @@ ChartJS.register(
 );
 
 export const ComparisonChart3: React.FC = () => {
-  const { labels, datasets, fetchYearlyChartData } = useYearlyOdolChartStore();
+  const { labels, datasets, fetchYearlyChartData, title } =
+    useYearlyOdolChartStore();
   const { start_date, end_date } = useDateFilterStore();
 
   useEffect(() => {
@@ -105,9 +106,7 @@ export const ComparisonChart3: React.FC = () => {
 
   return (
     <div className="bg-[#2b2b2b] p-4 rounded-lg h-[300px]">
-      <h2 className="text-sm mb-2 font-semibold uppercase">
-        PERBANDINGAN KEPATUHAN 2021 - 2025
-      </h2>
+      <h2 className="text-sm mb-2 font-semibold uppercase">{title}</h2>
       <Chart type="bar" data={chartData} options={options} />
     </div>
   );

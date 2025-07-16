@@ -31,10 +31,10 @@ ChartJS.register(
 );
 
 export const ComparisonChart2: React.FC = () => {
-  const { labels, datasets, fetchMonthlyChartData } =
+  const { labels, datasets, fetchMonthlyChartData, title } =
     useMonthlyOdolChartStore();
   const { start_date, end_date } = useDateFilterStore.getState();
-
+  console.log(title);
   useEffect(() => {
     fetchMonthlyChartData();
   }, [start_date, end_date]);
@@ -121,9 +121,7 @@ export const ComparisonChart2: React.FC = () => {
 
   return (
     <div className="bg-[#2b2b2b] p-4 rounded-lg h-auto">
-      <h2 className="text-sm mb-2 font-semibold uppercase">
-        PERBANDINGAN KEPATUHAN BULANAN
-      </h2>
+      <h2 className="text-sm mb-2 font-semibold uppercase">{title}</h2>
       <Chart type="bar" data={chartData} options={options} />
     </div>
   );

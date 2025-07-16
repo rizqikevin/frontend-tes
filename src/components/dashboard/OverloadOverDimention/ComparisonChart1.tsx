@@ -31,8 +31,12 @@ ChartJS.register(
 );
 
 export const ComparisonChart1: React.FC = () => {
-  const { labels, odolData, fetchOdolData } = useOdolComparisonStore();
+  const { labels, odolData, fetchOdolData, title } = useOdolComparisonStore();
   const { start_date, end_date } = useDateFilterStore();
+
+  console.log("labels:", labels);
+  console.log("odolData:", odolData);
+  console.log("title:", title);
 
   useEffect(() => {
     fetchOdolData();
@@ -90,9 +94,7 @@ export const ComparisonChart1: React.FC = () => {
 
   return (
     <div className="bg-[#2b2b2b] p-4 rounded-lg h-auto">
-      <h2 className="text-sm mb-2 font-semibold uppercase">
-        PERBANDINGAN KEPATUHAN DALAM HARI BULAN JULY 2025
-      </h2>
+      <h2 className="text-sm mb-2 font-semibold uppercase">{title}</h2>
       <Chart type="bar" data={data} options={options} />
     </div>
   );

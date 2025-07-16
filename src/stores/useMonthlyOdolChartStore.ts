@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { useDateFilterStore } from "./useDateFilterStore";
 
 interface MonthlyOdolChartStore {
+  title: string;
   labels: string[];
   datasets: {
     type: "bar" | "line";
@@ -15,6 +16,7 @@ interface MonthlyOdolChartStore {
 
 export const useMonthlyOdolChartStore = create<MonthlyOdolChartStore>(
   (set) => ({
+    title: "",
     labels: [],
     datasets: [],
 
@@ -28,6 +30,7 @@ export const useMonthlyOdolChartStore = create<MonthlyOdolChartStore>(
           },
         });
 
+        const title = res.data?.data?.metadata.title;
         const chartData = res.data?.data?.chartData;
         if (!chartData) throw new Error("Invalid chart data");
 
@@ -40,6 +43,7 @@ export const useMonthlyOdolChartStore = create<MonthlyOdolChartStore>(
         set({
           labels: chartData.labels,
           datasets: parsedDatasets,
+          title,
         });
       } catch (err) {
         console.error("Gagal mengambil data chart bulanan:", err);

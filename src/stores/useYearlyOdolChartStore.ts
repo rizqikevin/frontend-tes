@@ -10,12 +10,14 @@ interface Dataset {
 }
 
 interface YearlyOdolChartStore {
+  title: string;
   labels: string[];
   datasets: Dataset[];
   fetchYearlyChartData: () => Promise<void>;
 }
 
 export const useYearlyOdolChartStore = create<YearlyOdolChartStore>((set) => ({
+  title: "",
   labels: [],
   datasets: [],
 
@@ -28,7 +30,7 @@ export const useYearlyOdolChartStore = create<YearlyOdolChartStore>((set) => ({
           end_time: end_date,
         },
       });
-
+      const title = res.data?.data?.metadata.title;
       const chartData = res.data?.data?.chartData;
       if (!chartData) throw new Error("Invalid chart data");
 
@@ -41,6 +43,7 @@ export const useYearlyOdolChartStore = create<YearlyOdolChartStore>((set) => ({
       set({
         labels: chartData.labels,
         datasets: parsedDatasets,
+        title,
       });
     } catch (err) {
       console.error("Gagal mengambil data yearly:", err);

@@ -4,12 +4,14 @@ import { useDateFilterStore } from "./useDateFilterStore";
 import { toast } from "sonner";
 
 interface OdolComparisonStore {
+  title: string;
   labels: string[];
   odolData: number[];
   fetchOdolData: () => Promise<void>;
 }
 
 export const useOdolComparisonStore = create<OdolComparisonStore>((set) => ({
+  title: "",
   labels: [],
   odolData: [],
 
@@ -30,11 +32,12 @@ export const useOdolComparisonStore = create<OdolComparisonStore>((set) => ({
         throw new Error("Invalid chart data");
       }
 
+      const title = result.metadata.title;
       const labels = result.chartData.labels ?? [];
       const rawData = result.chartData.datasets?.[0]?.data ?? [];
       const odolData = rawData.map((v: string | number) => Number(v));
 
-      set({ labels, odolData });
+      set({ labels, odolData, title });
     } catch (err) {
       console.error("Gagal mengambil data ODOL golongan:", err);
       toast.error("Gagal mengambil data ODOL golongan");
