@@ -1,4 +1,4 @@
-import { ChartBarIcon, MoveUpRightIcon } from "lucide-react";
+import { MoveUpRightIcon } from "lucide-react";
 
 interface Stat {
   label: string;
@@ -15,7 +15,7 @@ const StatsGrid = ({ statsData }: { statsData: Stat[] }) => {
             <span className="text-sm font-medium">{stat.label}</span>
             <MoveUpRightIcon className="h-7 w-7 text-black bg-white rounded-sm" />
           </div>
-          <p className="text-lg font-semibold">{stat.value}</p>
+          <p className="text-2xl font-semibold">{stat.value}</p>
           <p className="text-xs">{stat.date}</p>
         </div>
       ))}

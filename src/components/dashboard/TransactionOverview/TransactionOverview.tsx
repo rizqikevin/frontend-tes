@@ -113,7 +113,7 @@ export const TransactionOverview = () => {
             />
             <hr className=" border-white" />
             <SimplePanel
-              title="Total Pendapatan Toll HMW (Integrasi"
+              title="Total Pendapatan Toll HMW (Integrasi)"
               dateRange={dateRange}
               value={formatCurrency(externalRevenueTotal)}
             />

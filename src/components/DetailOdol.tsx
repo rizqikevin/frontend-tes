@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import { ImageCard } from "./dashboard/OverloadOverDimention/ImageCard";
 import { VehicleInfo } from "./dashboard/OverloadOverDimention/VehicleInfo";
+import gardanImage from "../../public/gardan/Green/22.svg";
 
 interface OdolDetail {
   id: string;
@@ -99,8 +100,8 @@ export const DetailOdol: React.FC = () => {
           {data ? (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div className="space-y-4 max-w-xl">
-                <ImageCard title="Gambar Transaksi" imageUrl={data.url1} />
-                <ImageCard title="Plat Nomor (ANPR)" imageUrl={data.url2} />
+                <ImageCard title="Gambar Transaksi" imageUrl={data.url2} />
+                <ImageCard title="Gardan" imageUrl={gardanImage} />
               </div>
               <div className="space-y-4">
                 <VehicleInfo

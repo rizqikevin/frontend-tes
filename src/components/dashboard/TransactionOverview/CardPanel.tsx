@@ -16,7 +16,8 @@ export const CardPanel: React.FC<CardPanelProps> = ({
   const formatCurrency = (value: number) =>
     `Rp ${value
       .toLocaleString("id-ID")
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}`;
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+      .replace(/\.00$/, "")}`;
 
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full h-full flex flex-col justify-between">
