@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { api2 } from "@/services/api";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
+import { useRevenueStore } from "@/stores/useRevenueStore";
 
 interface TransacionData {
   gate_code: string;
@@ -22,14 +23,23 @@ export const useTransactionOverviewStore = create<TransactionOverviewState>(
     error: null,
     fetchTransactionOverview: async () => {
       const { start_date, end_date } = useDateFilterStore.getState();
+      const { externalRevenueTotal } = useRevenueStore.getState();
       const res = await api2.get("/tracomm/transaction/card", {
         params: {
           start_date,
           end_date,
         },
       });
-      const data = res.data;
-      set({ transactionOverview: data.data, isDataLoading: false });
+      const data = res.data.data;
+
+      const externalItem = {
+        gate_code: "99",
+        name: "INTEGRASI",
+        pendapatan: externalRevenueTotal,
+      };
+      const combined = [...data, externalItem];
+      console.log(combined);
+      set({ transactionOverview: combined, isDataLoading: false });
     },
   })
 );

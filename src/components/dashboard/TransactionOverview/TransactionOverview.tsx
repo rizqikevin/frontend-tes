@@ -94,7 +94,10 @@ export const TransactionOverview = () => {
                 "#ff5722",
                 "#8bc34a",
                 "#3f51b5",
-              ].slice(0, items.length)}
+                "#ffeb3b",
+                "#f44336",
+                "#c2185b",
+              ].slice(0, transactionOverview.length)}
             />
           </div>
         ) : (
@@ -170,7 +173,7 @@ export const TransactionOverview = () => {
       </div>
 
       {/* ROW 3 - Card Panel */}
-      <div className="grid grid-cols-6 gap-4">
+      <div className="grid grid-cols-7 gap-4">
         {transactionOverview && transactionOverview.length > 0 ? (
           transactionOverview.map((item) => (
             <CardPanel
