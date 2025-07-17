@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { decodeJWT } from "../utils/decodeJWT";
 import { UserRole } from "@/types";
+import { TransitionOverlay } from "@/components/TransitionOverlay";
 
 interface ErrorResponse {
   message: string;
@@ -20,6 +21,7 @@ export const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [showTransition, setShowTransition] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,17 +53,17 @@ export const Login = () => {
 
       if (response) {
         toast.success("Login berhasil");
+        setShowTransition(true);
         setTimeout(() => {
           if (role === UserRole.ADMIN) {
             navigate("/dashboard/admin", { replace: true });
-            window.location.reload();
           } else if (role === UserRole.DIREKSI) {
             navigate("/dashboard/direksi", { replace: true });
-            window.location.reload();
           } else {
             toast.error("Role tidak dikenali");
           }
-        }, 2000);
+          window.location.assign(window.location.href);
+        }, 1500);
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -82,6 +84,7 @@ export const Login = () => {
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: "url('/img/tol.jpg')" }}
     >
+      {showTransition && <TransitionOverlay />}
       <div className="absolute inset-0 bg-black/50 z-0"></div>
       <div className="bg-white/10 backdrop-blur-sm shadow-xl rounded-xl px-10 py-8 w-full max-w-md">
         {/* Logo */}

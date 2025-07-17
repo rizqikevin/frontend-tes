@@ -289,7 +289,7 @@ const CCTVList = () => {
             </div>
           </div>
 
-          <div className="text-sm text-zinc-400 mt-6">Gate KM 78</div>
+          {/* <div className="text-sm text-zinc-400 mt-6">Gate KM 78</div> */}
         </div>
       </DndContext>
     </div>
