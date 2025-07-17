@@ -172,7 +172,8 @@ const CCTVList = () => {
     const fetchGroups = async () => {
       const res = await api.get("/cctvgroup");
       if (res.data?.status === "success") {
-        setCameraGroups(res.data.data);
+        const filteredGroups = res.data.data.filter((group) => group.id !== 5);
+        setCameraGroups(filteredGroups);
       }
     };
     fetchGroups();

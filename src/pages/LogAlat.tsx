@@ -74,8 +74,8 @@ const LogAlat: React.FC = () => {
         />
         <main className="p-8">
           {/* Filter */}
-          <div className="flex flex-col lg:flex-row justify-between gap-4 flex-wrap mb-8">
-            <div className="flex items-center space-x-4 w-full lg:w-auto">
+          <div className="flex flex-col lg:flex-row justify-end gap-4 flex-wrap mb-8">
+            {/* <div className="flex items-center space-x-4 w-full lg:w-auto">
               <Input
                 type="text"
                 placeholder="Search..."
@@ -91,7 +91,7 @@ const LogAlat: React.FC = () => {
                   <SelectItem value="all">ALL</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
             <div className="flex items-center space-x-4">
               <div className="border border-gray-700 rounded-lg px-4 py-2 bg-dashboard-accent flex items-center">
                 <Calendar className="h-5 w-5 mr-2 text-gray-400" />
