@@ -38,23 +38,44 @@ function parseCustomRaw(raw: string | null | undefined): any {
 
   try {
     const obj: any = {};
-    raw
-      .replace(/^{|}$/g, "")
-      .split(",")
-      .forEach((entry) => {
-        const [key, value] = entry.split(":");
-        if (!key || value === undefined) return;
+    const cleaned = raw.replace(/^{|}$/g, ""); // hapus kurung kurawal pembuka dan penutup
 
-        const trimmedValue = value.trim();
-        obj[key.trim()] =
-          trimmedValue === "true"
+    const entries = cleaned.split(/,(?=\w+:)/); // pisahkan berdasarkan koma, tapi hanya yang bukan bagian dari array
+
+    entries.forEach((entry) => {
+      const [keyRaw, ...rest] = entry.split(":");
+      const key = keyRaw.trim();
+      const valueRaw = rest.join(":").trim();
+
+      if (!key || valueRaw === undefined) return;
+
+      // Deteksi array manual
+      if (valueRaw.startsWith("[[") || valueRaw.startsWith("[")) {
+        try {
+          // Tambahkan tanda kutip agar bisa diparsing sebagai JSON
+          const fixedArray = valueRaw
+            .replace(/\[/g, "[")
+            .replace(/\]/g, "]")
+            .replace(/(\d+)(\s*,\s*)(\d+)/g, "$1,$3");
+
+          obj[key] = JSON.parse(fixedArray);
+        } catch (e) {
+          console.warn("Gagal parsing array:", key, valueRaw);
+          obj[key] = valueRaw;
+        }
+      } else {
+        const trimmed = valueRaw.trim();
+
+        obj[key] =
+          trimmed === "true"
             ? true
-            : trimmedValue === "false"
+            : trimmed === "false"
             ? false
-            : isNaN(Number(trimmedValue))
-            ? trimmedValue
-            : Number(trimmedValue);
-      });
+            : isNaN(Number(trimmed))
+            ? trimmed
+            : Number(trimmed);
+      }
+    });
 
     return obj;
   } catch (error) {
@@ -147,8 +168,58 @@ export const DetailOdol: React.FC = () => {
             <div className="grid grid-cols-2 md:grid-cols-2 w-full gap-5">
               <div className="space-y-4 max-w-4xl w-full">
                 <ImageCard title="Gambar Transaksi" imageUrl={data.url2} />
-                <ImageCard title="Gardan" imageUrl={gardanImageUrl} />
+
+                <div className="overflow-auto mt-4 bg-dashboard-accent rounded-sm p-5">
+                  <ImageCard title="Gardan" imageUrl={gardanImageUrl} />
+
+                  <table className="min-w-full table-auto text-sm text-left text-gray-300 border border-gray-600">
+                    <thead className="bg-gray-800 text-white">
+                      <tr>
+                        <th className="px-4 py-2 border border-gray-600">
+                          Posisi Roda
+                        </th>
+                        {(Array.isArray(parsedRaw?.LeftRightWeight) &&
+                        parsedRaw.LeftRightWeight.length > 0
+                          ? parsedRaw.LeftRightWeight
+                          : [[], [], []]
+                        ).map((_, index: number) => (
+                          <th
+                            key={index}
+                            className="px-4 py-2 border border-gray-600"
+                          >
+                            {index === 0 ? "Depan" : `Belakang ${index}`}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {["Kanan", "Kiri"].map((posisi, rowIndex) => (
+                        <tr key={posisi} className="bg-dashboard-accent">
+                          <td className="px-4 py-2 border border-gray-600 font-medium">
+                            {posisi}
+                          </td>
+                          {(Array.isArray(parsedRaw?.LeftRightWeight) &&
+                          parsedRaw.LeftRightWeight.length > 0
+                            ? parsedRaw.LeftRightWeight
+                            : [[], [], []]
+                          ) // fallback kosong
+                            .map((axle: number[], colIndex: number) => (
+                              <td
+                                key={`${rowIndex}-${colIndex}`}
+                                className="px-4 py-2 border border-gray-600"
+                              >
+                                {typeof axle?.[rowIndex] === "number"
+                                  ? `${axle[rowIndex]} kg`
+                                  : "--"}
+                              </td>
+                            ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
+
               <div className="space-y-4">
                 <VehicleInfo
                   platnomor={data.platnomor}

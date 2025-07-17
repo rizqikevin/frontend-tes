@@ -9,6 +9,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import { useOdolStore } from "@/stores/useOdolStore";
+import api from "@/services/api";
 
 interface OdolData {
   id: string;
@@ -31,6 +32,13 @@ const Odol: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
+  const [gateOptions, setGateOptions] = useState<Gate[]>([]);
+
+  type Gate = {
+    id_gerbang: string;
+    nama_gerbang: string;
+  };
+
   const {
     data,
     total,
@@ -44,6 +52,8 @@ const Odol: React.FC = () => {
     setStartDate,
     setEndDate,
     fetchData,
+    gateId,
+    setGateId,
   } = useOdolStore();
 
   // Listen for theme changes and sidebar state changes
@@ -79,8 +89,24 @@ const Odol: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const fetchGerbang = async () => {
+      try {
+        const res = await api.get("/transaction/gerbang");
+        const filtered = res.data.filter(
+          (item: any) => item.id_cabang === "48"
+        );
+        setGateOptions(filtered);
+      } catch (err) {
+        console.error("Gagal fetch gerbang:", err);
+      }
+    };
+
+    fetchGerbang();
+  }, []);
+
+  useEffect(() => {
     fetchData();
-  }, [limit, page]);
+  }, [gateId, startDate, endDate]);
 
   const isDark = theme === "dark";
 
@@ -124,6 +150,20 @@ const Odol: React.FC = () => {
             </div>
 
             <div className="flex justify-center items-center space-x-4">
+              <div className="bg-dashboard-accent border border-white flex rounded text-white">
+                <select
+                  onChange={(e) => setGateId(e.target.value)}
+                  className="text-white bg-dashboard-accent p-3 rounded-lg outline-none"
+                >
+                  <option value="">Semua Gerbang</option>
+                  {gateOptions.map((g) => (
+                    <option key={g.id_gerbang} value={g.id_gerbang}>
+                      {g.nama_gerbang}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
                 <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
                 <DatePicker
@@ -201,6 +241,15 @@ const Odol: React.FC = () => {
                     <tr>
                       <td colSpan={13} className="p-2 text-center">
                         Loading...
+                      </td>
+                    </tr>
+                  ) : data.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={13}
+                        className="p-4 text-center text-gray-400"
+                      >
+                        Data tidak ditemukan
                       </td>
                     </tr>
                   ) : (

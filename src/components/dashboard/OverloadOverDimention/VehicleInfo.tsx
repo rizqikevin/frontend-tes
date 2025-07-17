@@ -26,8 +26,8 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
 }) => {
   return (
     <div className="bg-dashboard-accent rounded-lg p-4 shadow-sm text-xl h-full space-y-9">
-      <h4 className="text-xl font-bold mb-8">Informasi Data Kendaraan</h4>
-      <div className="grid grid-cols-2 gap-y-7">
+      <h4 className="text-lg font-bold mb-8">Informasi Data Kendaraan</h4>
+      <div className="grid grid-cols-2 gap-y-7 text-lg">
         <span>Gerbang</span>
         <span className="font-semibold">: {gerbang}</span>
         <span>Gardu</span>
@@ -50,7 +50,7 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
         <span>: {dimensi}</span>
       </div>
       <div className="text-center mt-5">
-        <button className="bg-yellow-400 text-black font-semibold w-full py-2 mt-24 rounded-md">
+        <button className="bg-yellow-400 text-black font-semibold w-full py-2 mt-60 rounded-md">
           Export
         </button>
       </div>

@@ -28,10 +28,13 @@ interface OdolStore {
   limit: number;
   startDate: Date;
   endDate: Date;
+  gateId: string;
+
   setPage: (page: number) => void;
   setLimit: (limit: number) => void;
   setStartDate: (date: Date) => void;
   setEndDate: (date: Date) => void;
+  setGateId: (id: string) => void;
   fetchData: () => void;
 }
 
@@ -43,20 +46,23 @@ export const useOdolStore = create<OdolStore>((set, get) => ({
   limit: 10,
   startDate: new Date(),
   endDate: new Date(),
+  gateId: "",
 
   setPage: (page) => set({ page }),
   setLimit: (limit) => set({ limit }),
   setStartDate: (date) => set({ startDate: date }),
   setEndDate: (date) => set({ endDate: date }),
+  setGateId: (id) => set({ gateId: id }),
 
   fetchData: async () => {
     set({ loading: true });
-    const { startDate, endDate, page, limit } = get();
+    const { startDate, endDate, page, limit, gateId } = get();
     try {
       const res = await api.get("/odol", {
         params: {
           start_time: dayjs(startDate).format("YYYY-MM-DD"),
           end_time: dayjs(endDate).format("YYYY-MM-DD"),
+          ...(gateId ? { gate: gateId } : {}),
         },
       });
 
