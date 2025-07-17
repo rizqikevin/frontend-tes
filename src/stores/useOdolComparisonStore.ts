@@ -39,7 +39,6 @@ export const useOdolComparisonStore = create<OdolComparisonStore>((set) => ({
 
       set({ labels, odolData, title });
     } catch (err) {
-      console.error("Gagal mengambil data ODOL golongan:", err);
       toast.error("Gagal mengambil data ODOL golongan");
     }
   },

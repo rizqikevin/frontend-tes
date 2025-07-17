@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import api from "@/services/api";
+import { toast } from "sonner";
 
 type Camera = {
   status_id?: number;
@@ -30,7 +31,7 @@ export const useCameraStore = create<CameraStore>((set, get) => ({
         cameraList: res.data,
       });
     } catch (err) {
-      console.error("Failed to fetch cameras:", err);
+      toast.error("Failed to fetch cameras:", err);
     }
   },
   setGrid: (grid) => set({ grid }),

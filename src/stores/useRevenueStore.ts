@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { api3 } from "@/services/api";
 import { useDateFilterStore } from "./useDateFilterStore";
+import { toast } from "sonner";
 
 interface RevenueItem {
   revenue: number;
@@ -58,7 +59,7 @@ export const useRevenueStore = create<RevenueStore>(() => ({
         items: allItems,
       });
     } catch (error) {
-      console.error("Failed to fetch revenue data:", error);
+      toast.error("Failed to fetch revenue data:", error);
     }
   },
 }));

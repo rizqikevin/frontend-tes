@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
 
 export interface DecodedToken {
   user: {
@@ -19,7 +20,7 @@ export const decodeJWT = (): DecodedToken | null => {
   try {
     return jwtDecode<DecodedToken>(token);
   } catch (err) {
-    console.error("JWT decode failed:", err);
+    toast.error("JWT decode failed:", err);
     return null;
   }
 };

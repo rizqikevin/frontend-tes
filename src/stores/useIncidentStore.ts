@@ -1,5 +1,6 @@
 // src/stores/useIncidentStore.ts
 import api from "@/services/api";
+import { toast } from "sonner";
 import { create } from "zustand";
 
 interface Incident {
@@ -67,7 +68,7 @@ export const useIncidentStore = create<IncidentState>((set, get) => ({
         selectAll: false,
       });
     } catch (err) {
-      console.error("Gagal mengambil data:", err);
+      toast.error("Gagal mengambil data:", err);
     } finally {
       set({ loading: false });
     }

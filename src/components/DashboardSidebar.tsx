@@ -184,7 +184,7 @@ export const DashboardSidebar: React.FC = () => {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="overflow-y-auto max-h-[53vh] pr-1 scrollbar-hidden"
+          className="overflow-y-auto max-h-[56vh] pr-1 scrollbar-hidden"
         >
           <div className="px-3 mb-3">
             <div

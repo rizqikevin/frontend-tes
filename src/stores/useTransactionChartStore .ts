@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { api3 } from "@/services/api";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
+import { toast } from "sonner";
 
 interface ChartResponse {
   title: string;
@@ -100,7 +101,7 @@ export const useTransactionChartStore = create<TransactionChartState>(
           },
         }));
       } catch (err) {
-        console.error(
+        toast.error(
           `Error fetching chart data for ${type}-${target_type}`,
           err
         );

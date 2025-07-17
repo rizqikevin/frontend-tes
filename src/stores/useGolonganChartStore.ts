@@ -36,7 +36,7 @@ export const useGolonganChartStore = create<GolonganChartStore>((set) => ({
       });
 
       const res = response.data.data;
-      console.log(res);
+      // console.log(res);
 
       if (!res || !res.chartData || !Array.isArray(res.chartData.datasets)) {
         throw new Error("Invalid or missing chart data");
@@ -59,7 +59,7 @@ export const useGolonganChartStore = create<GolonganChartStore>((set) => ({
         chartDate: res.metadata?.date ?? "-",
       });
     } catch (error) {
-      console.error("Gagal mengambil data grafik golongan:", error);
+      // console.error("Gagal mengambil data grafik golongan:", error);
       toast.error("Gagal mengambil data grafik golongan");
     }
   },

@@ -46,8 +46,7 @@ export const useYearlyOdolChartStore = create<YearlyOdolChartStore>((set) => ({
         title,
       });
     } catch (err) {
-      console.error("Gagal mengambil data yearly:", err);
-      toast.error("Gagal mengambil data chart tahunan");
+      toast.error("Gagal mengambil data chart tahunan", err);
     }
   },
 }));

@@ -46,7 +46,6 @@ export const useMonthlyOdolChartStore = create<MonthlyOdolChartStore>(
           title,
         });
       } catch (err) {
-        console.error("Gagal mengambil data chart bulanan:", err);
         toast.error("Gagal mengambil data chart bulanan");
       }
     },

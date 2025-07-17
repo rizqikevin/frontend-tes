@@ -34,7 +34,7 @@ export const ComparisonChart2: React.FC = () => {
   const { labels, datasets, fetchMonthlyChartData, title } =
     useMonthlyOdolChartStore();
   const { start_date, end_date } = useDateFilterStore.getState();
-  console.log(title);
+  // console.log(title);
   useEffect(() => {
     fetchMonthlyChartData();
   }, [start_date, end_date]);

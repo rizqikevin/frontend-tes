@@ -33,7 +33,7 @@ export const useCctvStore = create<CctvState>((set) => ({
       const response = await api.get("/cctv");
       set({ cctv: response.data, isCctvLoading: false });
     } catch (error) {
-      console.error(error);
+      toast.error(error);
       set({ isCctvLoading: false });
     }
   },
@@ -43,7 +43,7 @@ export const useCctvStore = create<CctvState>((set) => ({
       toast.success("CCTV created successfully");
       await useCctvStore.getState().fetchCctv();
     } catch (error) {
-      console.error(error);
+      toast.error(error);
     }
   },
   deleteCctv: async (id: number) => {
@@ -52,7 +52,7 @@ export const useCctvStore = create<CctvState>((set) => ({
       toast.success("CCTV deleted successfully");
       await useCctvStore.getState().fetchCctv();
     } catch (error) {
-      console.error(error);
+      toast.error(error);
     }
   },
   updateCctv: async (id: number, data: DataCctv) => {
@@ -61,7 +61,7 @@ export const useCctvStore = create<CctvState>((set) => ({
       toast.success("CCTV updated successfully");
       await useCctvStore.getState().fetchCctv();
     } catch (error) {
-      console.error(error);
+      toast.error(error);
     }
   },
   selectedCctv: null,
@@ -97,7 +97,7 @@ export const useStatusCctvStore = create<StatusCctvState>((set) => ({
       const response = await api.get("/cctv/status");
       set({ statusCctv: response.data, isStatusCctvLoading: false });
     } catch (error) {
-      console.error(error);
+      toast.error(error);
       set({ isStatusCctvLoading: false });
     }
   },
@@ -107,7 +107,7 @@ export const useStatusCctvStore = create<StatusCctvState>((set) => ({
       toast.success("Status CCTV created successfully");
       await useStatusCctvStore.getState().fetchStatusCctv();
     } catch (error) {
-      console.error(error);
+      toast.error(error);
     } finally {
       set({ isStatusCctvLoading: false });
     }
@@ -118,7 +118,7 @@ export const useStatusCctvStore = create<StatusCctvState>((set) => ({
       toast.success("Status CCTV deleted successfully");
       await useStatusCctvStore.getState().fetchStatusCctv();
     } catch (error) {
-      console.error(error);
+      toast.error(error);
     }
   },
   updateStatusCctv: async (id: number, data: StatusCctv) => {
@@ -127,7 +127,7 @@ export const useStatusCctvStore = create<StatusCctvState>((set) => ({
       toast.success("Status CCTV updated successfully");
       await useStatusCctvStore.getState().fetchStatusCctv();
     } catch (error) {
-      console.error(error);
+      toast.error(error);
     }
   },
   selectedStatusCctv: null,

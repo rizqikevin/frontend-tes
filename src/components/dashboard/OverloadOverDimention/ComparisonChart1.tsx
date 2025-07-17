@@ -34,9 +34,9 @@ export const ComparisonChart1: React.FC = () => {
   const { labels, odolData, fetchOdolData, title } = useOdolComparisonStore();
   const { start_date, end_date } = useDateFilterStore();
 
-  console.log("labels:", labels);
-  console.log("odolData:", odolData);
-  console.log("title:", title);
+  // console.log("labels:", labels);
+  // console.log("odolData:", odolData);
+  // console.log("title:", title);
 
   useEffect(() => {
     fetchOdolData();

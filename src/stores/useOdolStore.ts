@@ -2,6 +2,7 @@
 import { create } from "zustand";
 import api from "@/services/api";
 import dayjs from "dayjs";
+import { toast } from "sonner";
 
 interface OdolData {
   id: string;
@@ -64,7 +65,7 @@ export const useOdolStore = create<OdolStore>((set, get) => ({
 
       set({ data: paginated, total: result.length });
     } catch (error) {
-      console.error("Gagal memuat data ODOL", error);
+      toast.error("Gagal memuat data ODOL", error);
     } finally {
       set({ loading: false });
     }
