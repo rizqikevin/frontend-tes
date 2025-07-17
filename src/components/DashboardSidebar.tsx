@@ -35,6 +35,7 @@ import {
   UserCircle2,
   UserX2Icon,
   UsersRoundIcon,
+  DotIcon,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 
@@ -237,21 +238,15 @@ export const DashboardSidebar: React.FC = () => {
               expanded={expandedItem === "LalinHarian"}
               onClick={() => toggleExpand("LalinHarian")}
             >
-              <NavLink
-                to="/lalin-report"
-                className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
-                  theme === "dark"
-                    ? "text-gray-300 hover:bg-gray-700 hover:text-white"
-                    : "text-gray-800 hover:bg-gray-100 hover:text-gray-900"
-                }`}
-              >
-                <span
-                  className={`mr-3 w-2 h-2 rounded-full ${
-                    theme === "dark" ? "bg-gray-400" : "bg-gray-600"
-                  }`}
-                />
-                <span>Lalin Report</span>
-              </NavLink>
+              {expandedItem === "LalinHarian" && (
+                <div className="ml-6 mt-1 space-y-1">
+                  <SidebarItem
+                    icon={<DotIcon size={18} />}
+                    text="Lalin Harian"
+                    to="/lalin-report"
+                  />
+                </div>
+              )}
               {/* <NavLink
       to="/lalin-portable-report"
       className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
@@ -267,21 +262,15 @@ export const DashboardSidebar: React.FC = () => {
       />
       <span>Lain Portable Report</span>
     </NavLink> */}
-              <NavLink
-                to="/camera"
-                className={`flex items-center px-4 py-2 text-sm rounded-md cursor-pointer ${
-                  theme === "dark"
-                    ? "text-gray-300 hover:bg-gray-700 hover:text-white"
-                    : "text-gray-800 hover:bg-gray-100 hover:text-gray-900"
-                }`}
-              >
-                <span
-                  className={`mr-3 w-2 h-2 rounded-full ${
-                    theme === "dark" ? "bg-gray-400" : "bg-gray-600"
-                  }`}
-                />
-                <span>Camera</span>
-              </NavLink>
+              {expandedItem === "LalinHarian" && (
+                <div className="ml-6 mt-1 space-y-1">
+                  <SidebarItem
+                    icon={<DotIcon size={18} />}
+                    text="Camera"
+                    to="/camera"
+                  />
+                </div>
+              )}
             </SidebarItem>
           </div>
 
@@ -419,47 +408,41 @@ export const DashboardSidebar: React.FC = () => {
               >
                 SETTINGS
               </div>
+
+              {/* Account Menu */}
               <SidebarItem
                 icon={<UserCircle size={18} />}
                 text="Account"
                 hasSubmenu
                 expanded={expandedItem === "account"}
                 onClick={() => toggleExpand("account")}
-              />
-              {expandedItem === "account" && (
-                <div className="ml-6 mt-1 space-y-1">
-                  <SidebarItem
-                    icon={<User size={18} />}
-                    text="Data Users"
-                    to="/data-users"
-                  />
-                </div>
-              )}
-              {expandedItem === "account" && (
-                <div className="ml-6 mt-1 space-y-1">
-                  <SidebarItem
-                    icon={<UsersRoundIcon size={18} />}
-                    text="User Level"
-                    to="/user-level"
-                  />
-                </div>
-              )}
+              >
+                <SidebarItem
+                  icon={<User size={18} />}
+                  text="Data Users"
+                  to="/data-users"
+                />
+                <SidebarItem
+                  icon={<UsersRoundIcon size={18} />}
+                  text="User Level"
+                  to="/user-level"
+                />
+              </SidebarItem>
+
+              {/* Settings Menu */}
               <SidebarItem
                 icon={<Settings size={18} />}
                 text="Settings"
                 hasSubmenu
                 expanded={expandedItem === "settings"}
                 onClick={() => toggleExpand("settings")}
-              />
-              {expandedItem === "settings" && (
-                <div className="ml-6 mt-1 space-y-1">
-                  <SidebarItem
-                    icon={<Video size={18} />}
-                    text="Incident Notif"
-                    to="/incident-notification"
-                  />
-                </div>
-              )}
+              >
+                <SidebarItem
+                  icon={<Video size={18} />}
+                  text="Incident Notif"
+                  to="/incident-notification"
+                />
+              </SidebarItem>
             </div>
           </div>
         )}
