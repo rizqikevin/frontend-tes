@@ -1,12 +1,12 @@
+// ... [Import yang sudah ada]
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import api from "@/services/api"; // Pastikan API ini sudah sesuai
+import api from "@/services/api";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import { ImageCard } from "./dashboard/OverloadOverDimention/ImageCard";
 import { VehicleInfo } from "./dashboard/OverloadOverDimention/VehicleInfo";
-import gardanImage from "../../public/gardan/Green/22.svg";
 
 interface OdolDetail {
   id: string;
@@ -22,6 +22,46 @@ interface OdolDetail {
   dimensi: string;
   url1: string;
   url2: string;
+  raw: string;
+}
+
+const gardanImageMap: Record<string, string> = {
+  "2-1-false": "/gardan/Green/4.svg",
+  "2-1-true": "/gardan/Red/2.svg",
+  "2-2-false": "/gardan/Green/6.svg",
+  "2-2-true": "/gardan/Red/6.svg",
+  "3-3-false": "/gardan/Green/9.svg",
+  "3-3-true": "/gardan/Red/9.svg",
+};
+
+function parseCustomRaw(raw: string | null | undefined): any {
+  if (!raw) return null;
+
+  try {
+    const obj: any = {};
+    raw
+      .replace(/^{|}$/g, "")
+      .split(",")
+      .forEach((entry) => {
+        const [key, value] = entry.split(":");
+        if (!key || value === undefined) return;
+
+        const trimmedValue = value.trim();
+        obj[key.trim()] =
+          trimmedValue === "true"
+            ? true
+            : trimmedValue === "false"
+            ? false
+            : isNaN(Number(trimmedValue))
+            ? trimmedValue
+            : Number(trimmedValue);
+      });
+
+    return obj;
+  } catch (error) {
+    console.error("Parsing raw string error:", error);
+    return null;
+  }
 }
 
 export const DetailOdol: React.FC = () => {
@@ -63,6 +103,7 @@ export const DetailOdol: React.FC = () => {
       try {
         const res = await api.get(`/odol/${id}`);
         setData(res.data.data);
+        console.log(res.data.data);
       } catch (err) {
         console.error("Gagal fetch detail:", err);
       }
@@ -72,6 +113,12 @@ export const DetailOdol: React.FC = () => {
   }, [id]);
 
   const isDark = theme === "dark";
+
+  const parsedRaw = parseCustomRaw(data?.raw);
+  const gardanKey = parsedRaw
+    ? `${parsedRaw.AxlesCount}-${parsedRaw.Golongan}-${parsedRaw.Overload}`
+    : "";
+  const gardanImageUrl = gardanImageMap[gardanKey] || "/gardan/Normal/4.svg";
 
   return (
     <div className="flex min-h-screen text-white">
@@ -98,10 +145,10 @@ export const DetailOdol: React.FC = () => {
           </div>
 
           {data ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div className="space-y-4 max-w-xl">
+            <div className="grid grid-cols-2 md:grid-cols-2 w-full gap-5">
+              <div className="space-y-4 max-w-4xl w-full">
                 <ImageCard title="Gambar Transaksi" imageUrl={data.url2} />
-                <ImageCard title="Gardan" imageUrl={gardanImage} />
+                <ImageCard title="Gardan" imageUrl={gardanImageUrl} />
               </div>
               <div className="space-y-4">
                 <VehicleInfo
@@ -115,6 +162,7 @@ export const DetailOdol: React.FC = () => {
                   golongan={data.golongan}
                   berat={data.berat}
                   dimensi={data.dimensi}
+                  raw={data.raw}
                 />
               </div>
             </div>

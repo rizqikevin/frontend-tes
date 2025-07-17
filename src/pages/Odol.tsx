@@ -4,12 +4,11 @@ import DashboardSidebar from "@/components/DashboardSidebar";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import Header from "@/components/Header";
-import api from "@/services/api";
 import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { useOdolStore } from "@/stores/useOdolStore";
 
 interface OdolData {
   id: string;
@@ -17,7 +16,7 @@ interface OdolData {
   gardu: string;
   noresi: number;
   platnomor: string;
-  tanggal: string; // ISO string
+  tanggal: string;
   jam: string;
   kartu: string;
   golongan: string;
@@ -29,16 +28,23 @@ interface OdolData {
 
 const Odol: React.FC = () => {
   const { user, logout } = useAuth();
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [data, setData] = useState<OdolData[]>([]);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
+  const {
+    data,
+    total,
+    loading,
+    page,
+    limit,
+    startDate,
+    endDate,
+    setPage,
+    setLimit,
+    setStartDate,
+    setEndDate,
+    fetchData,
+  } = useOdolStore();
 
   // Listen for theme changes and sidebar state changes
   useEffect(() => {
@@ -71,31 +77,6 @@ const Odol: React.FC = () => {
       clearInterval(themeInterval);
     };
   }, []);
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const response = await api.get("/odol", {
-        params: {
-          start_time: dayjs(startDate).format("YYYY-MM-DD"),
-          end_time: dayjs(endDate).format("YYYY-MM-DD"),
-        },
-      });
-
-      const result: OdolData[] = response.data.data;
-
-      // Pagination manual (karena API tidak mendukung langsung)
-      const paginated = result.slice((page - 1) * limit, page * limit);
-
-      setData(paginated);
-      setTotal(result.length);
-    } catch (error) {
-      toast.error("Gagal memuat data ODOL");
-      console.error("Fetch ODOL error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     fetchData();
@@ -317,7 +298,7 @@ const Odol: React.FC = () => {
                 <div className="inline-flex">
                   <button
                     className="px-2 py-1"
-                    onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                    onClick={() => setPage(Math.max(page - 1, 1))}
                     disabled={page === 1}
                   >
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -332,9 +313,7 @@ const Odol: React.FC = () => {
                   </button>
                   <button
                     className="px-2 py-1"
-                    onClick={() =>
-                      setPage((prev) => Math.min(prev + 1, totalPages))
-                    }
+                    onClick={() => setPage(Math.min(page + 1, totalPages))}
                     disabled={page === totalPages}
                   >
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
