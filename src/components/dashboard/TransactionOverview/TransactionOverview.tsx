@@ -41,24 +41,21 @@ export const TransactionOverview = () => {
 
   // console.log(totalRevenue);
 
-  useEffect(() => {
-    fetchChartData("lhr", "1"); // LHR vs Prognosa
-    fetchChartData("lhr", "2"); // LHR vs Business Plan
-    fetchChartData("lhr", "3"); // LHR vs RKAP
-
-    fetchChartData("revenue", "1"); // Revenue vs Prognosa
-    fetchChartData("revenue", "2"); // Revenue vs Business Plan
-    fetchChartData("revenue", "3"); // Revenue vs RKAP
-  }, [start_date, end_date]);
-
-  useEffect(() => {
-    fetchTransactionOverview();
-  }, [start_date, end_date]);
-
   // console.log(transactionOverview);
 
   useEffect(() => {
-    fetchRevenue();
+    const fetchAll = async () => {
+      await fetchRevenue();
+      fetchTransactionOverview();
+      fetchChartData("lhr", "1");
+      fetchChartData("lhr", "2");
+      fetchChartData("lhr", "3");
+      fetchChartData("revenue", "1");
+      fetchChartData("revenue", "2");
+      fetchChartData("revenue", "3");
+    };
+
+    fetchAll();
   }, [start_date, end_date]);
 
   const formatCurrency = (value: number) =>

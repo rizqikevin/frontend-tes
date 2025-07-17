@@ -1,26 +1,68 @@
 .blink-container {
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: 60px; 
+  height: 60px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
 }
 
 .blink-icon-img {
-  width: 32px;
-  height: 32px;
-  animation: blink 1s infinite;
+  width: 40px; 
+  height: 40px; 
+  animation: emergencyBlink 0.8s infinite alternate forwards; 
+  transform-origin: center; 
 }
 
-@keyframes blink {
+@keyframes emergencyBlink {
   0% {
     opacity: 1;
-    filter: drop-shadow(0 0 2px #ff0000) drop-shadow(0 0 6px #ff0000);
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 5px #ff0000) drop-shadow(0 0 15px #ff0000) drop-shadow(0 0 25px #ff0000); 
+  }
+  25% {
+    opacity: 0.8;
+    transform: scale(1.05) rotate(5deg); 
+    filter: drop-shadow(0 0 8px #ff4d4d) drop-shadow(0 0 20px #ff4d4d) drop-shadow(0 0 30px #ff4d4d); 
   }
   50% {
     opacity: 0.3;
-    filter: drop-shadow(0 0 4px #ff4d4d) drop-shadow(0 0 10px #ff4d4d);
+    transform: scale(0.95) rotate(-5deg); 
+    filter: drop-shadow(0 0 10px #ff9999) drop-shadow(0 0 25px #ff9999) drop-shadow(0 0 40px #ff9999); 
+  }
+  75% {
+    opacity: 0.8;
+    transform: scale(1.05) rotate(5deg);
+    filter: drop-shadow(0 0 8px #ff4d4d) drop-shadow(0 0 20px #ff4d4d) drop-shadow(0 0 30px #ff4d4d);
   }
   100% {
     opacity: 1;
-    filter: drop-shadow(0 0 2px #ff0000) drop-shadow(0 0 6px #ff0000);
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 5px #ff0000) drop-shadow(0 0 15px #ff0000) drop-shadow(0 0 25px #ff0000);
+  }
+}
+
+
+.blink-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%; 
+  background: radial-gradient(circle, rgba(255,0,0,0.5) 0%, rgba(255,0,0,0) 70%); 
+  animation: pulseBackground 1.6s infinite alternate; 
+  z-index: -1; 
+}
+
+@keyframes pulseBackground {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0.8;
   }
 }

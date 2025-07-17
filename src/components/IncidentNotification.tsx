@@ -7,7 +7,9 @@ const IncidentNotification = () => {
   const isAuth = isAuthenticated();
   const current = popupQueue[0];
 
-  if (!isAuth || !popupIncident || !current) return null;
+  if (!isAuth) return null;
+
+  if (!popupIncident || !current) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 z-[9999] flex items-center justify-center">
