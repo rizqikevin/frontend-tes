@@ -37,6 +37,7 @@ const BebanRuasChart = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
+      datalabels: { display: false },
     },
     scales: {
       y: { ticks: { color: "#cbd5e1" } },

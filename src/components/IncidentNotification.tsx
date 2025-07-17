@@ -1,12 +1,13 @@
 import { useNotificationStore } from "@/stores/useNotificationStore";
+import { isAuthenticated } from "@/services/auth-service";
 
 const IncidentNotification = () => {
   const { popupIncident, setPopupIncident } = useNotificationStore();
   const { popupQueue, dismissPopupIncident } = useNotificationStore();
+  const isAuth = isAuthenticated();
   const current = popupQueue[0];
 
-  if (!current) return null;
-  if (!popupIncident) return null;
+  if (!isAuth || !popupIncident || !current) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 z-[9999] flex items-center justify-center">

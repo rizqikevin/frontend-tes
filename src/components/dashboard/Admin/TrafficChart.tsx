@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -8,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import api from "@/services/api";
 
 ChartJS.register(
   LineElement,
@@ -19,12 +21,30 @@ ChartJS.register(
 );
 
 const TrafficChart = () => {
+  const [chartLabels, setChartLabels] = useState<string[]>([]);
+  const [chartData, setChartData] = useState<number[]>([]);
+
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        const res = await api.get("/cctv/chart");
+        const result = res.data?.result?.data;
+        setChartLabels(result.labels || []);
+        setChartData(result.data || []);
+      } catch (error) {
+        console.error("Failed to fetch chart data:", error);
+      }
+    };
+
+    fetchChartData();
+  }, []);
+
   const data = {
-    labels: ["01/07", "02/07", "03/07", "04/07", "05/07", "06/07"],
+    labels: chartLabels,
     datasets: [
       {
         label: "Traffic",
-        data: [4000, 4200, 3800, 4500, 5000, 4900, 5100],
+        data: chartData,
         borderColor: "#38bdf8",
         backgroundColor: "rgba(56,189,248,0.2)",
         tension: 0.3,
@@ -37,6 +57,7 @@ const TrafficChart = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
+      datalabels: { display: false },
     },
     scales: {
       y: { ticks: { color: "#cbd5e1" } },
@@ -45,7 +66,7 @@ const TrafficChart = () => {
   };
 
   return (
-    <div className="bg-dashboard-accent rounded-lg p-4 text-white ">
+    <div className="bg-dashboard-accent rounded-lg p-4 text-white">
       <h2 className="text-lg font-semibold mb-4">Traffic Harian</h2>
       <div className="w-full h-[252px]">
         <Line data={data} options={options} />
