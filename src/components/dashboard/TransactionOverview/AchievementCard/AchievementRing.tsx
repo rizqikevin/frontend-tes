@@ -23,7 +23,7 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
   revenue,
   target,
 }) => {
-  const percentValue = Number(percent / 10000);
+  const percentValue = Number(percent);
   const displayPercent = percentValue.toFixed(1);
   const chartPercent = percentValue > 100 ? 100 : percentValue;
   const { otherTargets } = useTransactionStore();
