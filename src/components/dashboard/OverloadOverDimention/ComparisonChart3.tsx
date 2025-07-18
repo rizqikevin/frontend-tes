@@ -105,9 +105,9 @@ export const ComparisonChart3: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#2b2b2b] p-4 rounded-lg h-[300px]">
+    <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
       <h2 className="text-sm mb-2 font-semibold uppercase">{title}</h2>
-      <Chart type="bar" data={chartData} options={options} />
+      <Chart type="bar" data={chartData} options={options} height={300} />
     </div>
   );
 };

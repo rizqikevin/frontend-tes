@@ -63,7 +63,7 @@ export const ComparisonChart1: React.FC = () => {
         borderSkipped: false,
         borderRadius: 10,
         order: 0,
-        barThickness: 80,
+        barThickness: 50,
       },
     ],
   };
@@ -93,9 +93,9 @@ export const ComparisonChart1: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#2b2b2b] p-4 rounded-lg h-auto">
+    <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
       <h2 className="text-sm mb-2 font-semibold uppercase">{title}</h2>
-      <Chart type="bar" data={data} options={options} />
+      <Chart type="bar" data={data} options={options} height={300} />
     </div>
   );
 };

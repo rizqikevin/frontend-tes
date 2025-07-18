@@ -14,10 +14,10 @@ import {
   ChartOptions,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import { useMonthlyOdolChartStore } from "@/stores/useMonthlyOdolChartStore";
+import { useGerbangOdolChartStore } from "@/stores/useGerbangOdolChartStore";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
-// Register components
+// Register Chart.js modules
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,50 +30,35 @@ ChartJS.register(
   Legend
 );
 
-export const ComparisonChart2: React.FC = () => {
-  const { labels, datasets, fetchMonthlyChartData, title } =
-    useMonthlyOdolChartStore();
-  const { start_date, end_date } = useDateFilterStore.getState();
-  // console.log(title);
+export const ComparisonChart4: React.FC = () => {
+  const { labels, datasets, fetchGerbangOdolChartData, title } =
+    useGerbangOdolChartStore();
+  const { start_date, end_date } = useDateFilterStore();
+
   useEffect(() => {
-    fetchMonthlyChartData();
+    fetchGerbangOdolChartData();
   }, [start_date, end_date]);
 
-  const defaultLabels = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
   const chartData: ChartData<"bar" | "line", number[], string> = {
-    labels: labels.length ? labels : defaultLabels,
+    labels: labels.length ? labels : ["2021", "2022", "2023", "2024", "2025"],
     datasets: datasets.length
       ? datasets.map((ds) => {
-          const baseStyle = {
+          const base = {
             label: ds.label,
             data: ds.data,
           };
 
           if (ds.type === "bar") {
             return {
-              ...baseStyle,
+              ...base,
               type: "bar" as const,
               backgroundColor: ds.label === "ODOL" ? "#d32f2f" : "#4caf50",
               borderRadius: 4,
-              barThickness: 15,
+              barThickness: 30,
             };
           } else {
             return {
-              ...baseStyle,
+              ...base,
               type: "line" as const,
               borderColor: "#ffb300",
               borderWidth: 2,
