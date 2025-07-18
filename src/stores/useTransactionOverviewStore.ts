@@ -38,7 +38,7 @@ export const useTransactionOverviewStore = create<TransactionOverviewState>(
         pendapatan: externalRevenueTotal,
       };
       const combined = [...data, externalItem];
-      console.log(combined);
+      // console.log(combined);
       set({ transactionOverview: combined, isDataLoading: false });
     },
   })

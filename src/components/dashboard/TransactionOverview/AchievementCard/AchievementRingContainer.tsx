@@ -12,7 +12,7 @@ export const AchievementRingContainer: React.FC = () => {
     fetchAchievement();
   }, [start_date, end_date]);
 
-  console.log(rkapPercent);
+  // console.log(rkapPercent);
 
   return (
     <AchievementRing

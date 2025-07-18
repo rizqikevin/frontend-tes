@@ -8,8 +8,8 @@
 }
 
 .blink-icon-img {
-  width: 40px; 
-  height: 40px; 
+  width: 32px; 
+  height: 32px; 
   animation: emergencyBlink 0.8s infinite alternate forwards; 
   transform-origin: center; 
 }

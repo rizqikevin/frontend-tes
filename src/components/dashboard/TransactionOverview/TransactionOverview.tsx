@@ -46,13 +46,13 @@ export const TransactionOverview = () => {
   useEffect(() => {
     const fetchAll = async () => {
       await fetchRevenue();
-      fetchTransactionOverview();
-      fetchChartData("lhr", "1");
-      fetchChartData("lhr", "2");
-      fetchChartData("lhr", "3");
-      fetchChartData("revenue", "1");
-      fetchChartData("revenue", "2");
-      fetchChartData("revenue", "3");
+      await fetchTransactionOverview();
+      await fetchChartData("lhr", "1");
+      await fetchChartData("lhr", "2");
+      await fetchChartData("lhr", "3");
+      await fetchChartData("revenue", "1");
+      await fetchChartData("revenue", "2");
+      await fetchChartData("revenue", "3");
     };
 
     fetchAll();
