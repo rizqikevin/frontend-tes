@@ -1,4 +1,3 @@
-// src/stores/useIncidentStore.ts
 import api from "@/services/api";
 import { toast } from "sonner";
 import { create } from "zustand";

@@ -2,18 +2,18 @@ import React, { useEffect } from "react";
 import { useIncidentStore } from "@/stores/useIncidentStore";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useIncidentSocketStore } from "@/stores/useNotificationStore";
+import { useNotificationStore } from "@/stores/useNotificationStore";
 
 const IncidentCard: React.FC = () => {
   const { data, fetchData, total, expandedVideo, setExpandedVideo } =
     useIncidentStore();
-  const { incidents } = useIncidentSocketStore();
+  const { popupQueue } = useNotificationStore();
 
   // console.log(incidents);
 
   useEffect(() => {
     fetchData();
-  }, [incidents]);
+  }, [popupQueue]);
 
   return (
     <div className="bg-dashboard-accent text-white p-5 rounded-xl w-full h-auto">

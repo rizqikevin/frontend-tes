@@ -3,16 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import Header from "@/components/Header";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useLogAlatStore } from "@/stores/useLogAlatStore";
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
@@ -22,12 +14,11 @@ const LogAlat: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterLog, setFilterLog] = useState("");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
-  const { logs, isLoading, fetchLogs } = useLogAlatStore();
+  const { logs, isLoading, fetchLogs, page, setPage, limit, setLimit } =
+    useLogAlatStore();
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -59,6 +50,12 @@ const LogAlat: React.FC = () => {
     fetchLogs(start, end);
   };
 
+  // Paginated data
+  const startIndex = (page - 1) * limit;
+  const paginatedLogs = logs.slice(startIndex, startIndex + limit);
+  const totalItems = logs.length;
+  const totalPages = Math.ceil(totalItems / limit);
+
   return (
     <div className="flex min-h-screen bg-dashboard-dark text-white">
       <DashboardSidebar />
@@ -75,23 +72,6 @@ const LogAlat: React.FC = () => {
         <main className="p-8">
           {/* Filter */}
           <div className="flex flex-col lg:flex-row justify-end gap-4 flex-wrap mb-8">
-            {/* <div className="flex items-center space-x-4 w-full lg:w-auto">
-              <Input
-                type="text"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-dashboard-accent w-full lg:w-[500px]"
-              />
-              <Select value={filterLog} onValueChange={setFilterLog}>
-                <SelectTrigger className="bg-dashboard-accent w-full lg:w-[180px]">
-                  <SelectValue placeholder="ALL" />
-                </SelectTrigger>
-                <SelectContent className="bg-dashboard-accent">
-                  <SelectItem value="all">ALL</SelectItem>
-                </SelectContent>
-              </Select>
-            </div> */}
             <div className="flex items-center space-x-4">
               <div className="border border-gray-700 rounded-lg px-4 py-2 bg-dashboard-accent flex items-center">
                 <Calendar className="h-5 w-5 mr-2 text-gray-400" />
@@ -142,19 +122,19 @@ const LogAlat: React.FC = () => {
                         Loading...
                       </td>
                     </tr>
-                  ) : logs.length === 0 ? (
+                  ) : paginatedLogs.length === 0 ? (
                     <tr>
                       <td colSpan={5} className="text-center py-4">
                         Tidak ada data.
                       </td>
                     </tr>
                   ) : (
-                    logs.map((item, index) => (
+                    paginatedLogs.map((item, index) => (
                       <tr
                         key={index}
                         className="border-b border-gray-700 hover:bg-gray-800 transition"
                       >
-                        <td className="px-5 py-5">{index + 1}</td>
+                        <td className="px-5 py-5">{startIndex + index + 1}</td>
                         <td className="px-5 py-5">
                           {format(new Date(item.insert_at), "dd/MM/yyyy HH:mm")}
                         </td>
@@ -179,6 +159,70 @@ const LogAlat: React.FC = () => {
                   )}
                 </tbody>
               </table>
+            </div>
+
+            <div className="flex justify-end items-center mt-4 text-sm">
+              <div>
+                Rows per page:
+                <select
+                  className="bg-transparent ml-2"
+                  value={limit}
+                  onChange={(e) => {
+                    setPage(1);
+                    setLimit(Number(e.target.value));
+                  }}
+                >
+                  {[10, 20, 30, 100, 200].map((num) => (
+                    <option key={num} value={num}>
+                      {num}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-center ml-5">
+                <span className="mr-4">
+                  {totalItems === 0
+                    ? `0`
+                    : `${startIndex + 1}-${Math.min(
+                        startIndex + paginatedLogs.length,
+                        totalItems
+                      )}`}{" "}
+                  of {totalItems}
+                </span>
+                <div className="inline-flex">
+                  <button
+                    className="px-2 py-1"
+                    onClick={() => setPage(Math.max(page - 1, 1))}
+                    disabled={page === 1}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M12.5 15L7.5 10L12.5 5"
+                        stroke="white"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    className="px-2 py-1"
+                    onClick={() => setPage(Math.min(page + 1, totalPages))}
+                    disabled={page === totalPages}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M7.5 15L12.5 10L7.5 5"
+                        stroke="white"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </main>

@@ -410,7 +410,7 @@ export const DashboardSidebar: React.FC = () => {
               </div>
 
               {/* Account Menu */}
-              <div className="px-3 mb-2">
+              <div className=" mb-2">
                 <SidebarItem
                   icon={<UserCircle size={18} />}
                   text="Account"
@@ -440,19 +440,25 @@ export const DashboardSidebar: React.FC = () => {
               </div>
 
               {/* Settings Menu */}
-              <SidebarItem
-                icon={<Settings size={18} />}
-                text="Settings"
-                hasSubmenu
-                expanded={expandedItem === "settings"}
-                onClick={() => toggleExpand("settings")}
-              >
+              <div className=" mb-2">
                 <SidebarItem
-                  icon={<Video size={18} />}
-                  text="Incident Notif"
-                  to="/incident-notification"
-                />
-              </SidebarItem>
+                  icon={<Settings size={18} />}
+                  text="Settings"
+                  hasSubmenu
+                  expanded={expandedItem === "settings"}
+                  onClick={() => toggleExpand("settings")}
+                >
+                  {expandedItem === "settings" && (
+                    <div className="m-1 space-y-1">
+                      <SidebarItem
+                        icon={<User size={18} />}
+                        text="Incident Notif"
+                        to="/incident-notification"
+                      />
+                    </div>
+                  )}
+                </SidebarItem>
+              </div>
             </div>
           </div>
         )}

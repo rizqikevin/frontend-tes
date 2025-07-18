@@ -247,8 +247,7 @@ export const Incident: React.FC = () => {
               <div>
                 Rows per page:
                 <select
-                  className="ml-2 bg-transparent border border-gray-700 rounded px-2 py-1"
-                  value={limit}
+                  className="bg-transparent ml-2"
                   onChange={(e) => {
                     setPage(1);
                     setLimit(Number(e.target.value));

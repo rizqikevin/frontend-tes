@@ -1,6 +1,6 @@
 import { useNotificationStore } from "@/stores/useNotificationStore";
 import { isAuthenticated } from "@/services/auth-service";
-import { XCircle } from "lucide-react"; // Ikon dari lucide-react
+import { XCircle } from "lucide-react";
 
 const IncidentNotification = () => {
   const { popupIncident, setPopupIncident, popupQueue, dismissPopupIncident } =

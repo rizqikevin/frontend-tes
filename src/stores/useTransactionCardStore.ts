@@ -1,4 +1,4 @@
-import { api2 } from "@/services/api";
+import { api, api2 } from "@/services/api";
 import { format } from "date-fns";
 import { create } from "zustand";
 import { useDateFilterStore } from "./useDateFilterStore";
@@ -39,7 +39,7 @@ export const useTransactionStore = create<TransacionDataState>((set) => ({
       const data = res.data;
 
       // Ambil status heartbeat
-      const statusRes = await api2.get("/heartbeat/status");
+      const statusRes = await api.get("/heartbeat/status");
       const statusData = statusRes.data?.data?.[0] || {
         total_active: "0",
         total_inactive: "0",
