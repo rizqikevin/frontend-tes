@@ -142,6 +142,9 @@ const LineChart: React.FC<LineChartProps> = ({
                   padding: 16,
                 },
               },
+              datalabels: {
+                display: false,
+              },
               tooltip: {
                 mode: "index",
                 intersect: false,

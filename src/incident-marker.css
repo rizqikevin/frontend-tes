@@ -1,7 +1,7 @@
 .blink-container {
   position: relative;
-  width: 40px; 
-  height: 40px; 
+  width: 30px; 
+  height: 30px;
   display: flex; 
   justify-content: center; 
   align-items: center; 
@@ -10,8 +10,8 @@
 .blink-icon-img {
   width: 32px; 
   height: 32px; 
-  animation: emergencyBlink 0.8s infinite alternate forwards; 
-  transform-origin: center; 
+  animation: emergencyBlink 0.8s infinite alternate forwards;
+  transform-origin: center;
 }
 
 @keyframes emergencyBlink {
@@ -27,12 +27,12 @@
   }
   50% {
     opacity: 0.3;
-    transform: scale(0.95) rotate(-5deg); 
+    transform: scale(0.95) rotate(-5deg);
     filter: drop-shadow(0 0 10px #ff9999) drop-shadow(0 0 25px #ff9999) drop-shadow(0 0 40px #ff9999); 
   }
   75% {
     opacity: 0.8;
-    transform: scale(1.05) rotate(5deg);
+    transform: scale(1.05) rotate(5deg); 
     filter: drop-shadow(0 0 8px #ff4d4d) drop-shadow(0 0 20px #ff4d4d) drop-shadow(0 0 30px #ff4d4d);
   }
   100% {
@@ -53,7 +53,7 @@
   border-radius: 50%; 
   background: radial-gradient(circle, rgba(255,0,0,0.5) 0%, rgba(255,0,0,0) 70%); 
   animation: pulseBackground 1.6s infinite alternate; 
-  z-index: -1; 
+  z-index: -1;
 }
 
 @keyframes pulseBackground {

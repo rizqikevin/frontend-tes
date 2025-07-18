@@ -1,9 +1,13 @@
 import { useEffect } from "react";
 import { useNotificationStore } from "@/stores/useNotificationStore";
+import { isAuthenticated } from "@/services/auth-service";
 
 export const useIncidentSpeech = () => {
+  const isAuth = isAuthenticated();
   const { popupQueue } = useNotificationStore();
   // console.log(popupQueue);
+
+  if (!isAuth) return null;
 
   useEffect(() => {
     if (popupQueue && popupQueue.length > 0) {

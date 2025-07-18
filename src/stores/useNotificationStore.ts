@@ -45,10 +45,19 @@ interface NotificationState {
 
 export const useIncidentSocketStore = create<IncidentSocketState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       incidents: [],
-      addIncident: (incident) =>
-        set((state) => ({ incidents: [...state.incidents, incident] })),
+      addIncident: (incident) => {
+        const existing = get().incidents.some(
+          (i) => i.lat === incident.lat && i.lng === incident.lng
+        );
+
+        if (!existing) {
+          set((state) => ({
+            incidents: [...state.incidents, incident],
+          }));
+        }
+      },
       clearIncidents: () => set({ incidents: [] }),
       removeIncident: (id) =>
         set((state) => ({

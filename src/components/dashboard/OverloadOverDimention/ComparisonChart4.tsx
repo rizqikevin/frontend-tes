@@ -40,7 +40,7 @@ export const ComparisonChart4: React.FC = () => {
   }, [start_date, end_date]);
 
   const chartData: ChartData<"bar" | "line", number[], string> = {
-    labels: labels.length ? labels : ["2021", "2022", "2023", "2024", "2025"],
+    labels: labels.length ? labels : ["Gerbang 1", "Gerbang 2", "Gerbang 3"],
     datasets: datasets.length
       ? datasets.map((ds) => {
           const base = {

@@ -239,10 +239,10 @@ export const DashboardSidebar: React.FC = () => {
               onClick={() => toggleExpand("LalinHarian")}
             >
               {expandedItem === "LalinHarian" && (
-                <div className="ml-6 mt-1 space-y-1">
+                <div className=" mt-1 space-y-1">
                   <SidebarItem
                     icon={<DotIcon size={18} />}
-                    text="Lalin Harian"
+                    text="Lalin Report"
                     to="/lalin-report"
                   />
                 </div>
@@ -263,7 +263,7 @@ export const DashboardSidebar: React.FC = () => {
       <span>Lain Portable Report</span>
     </NavLink> */}
               {expandedItem === "LalinHarian" && (
-                <div className="ml-6 mt-1 space-y-1">
+                <div className=" mt-1 space-y-1">
                   <SidebarItem
                     icon={<DotIcon size={18} />}
                     text="Camera"
@@ -410,24 +410,34 @@ export const DashboardSidebar: React.FC = () => {
               </div>
 
               {/* Account Menu */}
-              <SidebarItem
-                icon={<UserCircle size={18} />}
-                text="Account"
-                hasSubmenu
-                expanded={expandedItem === "account"}
-                onClick={() => toggleExpand("account")}
-              >
+              <div className="px-3 mb-2">
                 <SidebarItem
-                  icon={<User size={18} />}
-                  text="Data Users"
-                  to="/data-users"
-                />
-                <SidebarItem
-                  icon={<UsersRoundIcon size={18} />}
-                  text="User Level"
-                  to="/user-level"
-                />
-              </SidebarItem>
+                  icon={<UserCircle size={18} />}
+                  text="Account"
+                  hasSubmenu
+                  expanded={expandedItem === "account"}
+                  onClick={() => toggleExpand("account")}
+                >
+                  {expandedItem === "account" && (
+                    <div className="m-1 space-y-1">
+                      <SidebarItem
+                        icon={<User size={18} />}
+                        text="Data Users"
+                        to="/data-users"
+                      />
+                    </div>
+                  )}
+                  {expandedItem === "account" && (
+                    <div className="m-1 space-y-1">
+                      <SidebarItem
+                        icon={<UsersRoundIcon size={18} />}
+                        text="User Level"
+                        to="/user-level"
+                      />
+                    </div>
+                  )}
+                </SidebarItem>
+              </div>
 
               {/* Settings Menu */}
               <SidebarItem
