@@ -70,54 +70,61 @@ export const useIncidentSocketStore = create<IncidentSocketState>()(
   )
 );
 
-export const useNotificationStore = create<NotificationState>((set) => ({
-  popupQueue: [],
-  popupIncident: null,
-  settings: {
-    wrongWay: true,
-    stopInCongested: true,
-    slowDown: true,
-    stopInFluid: true,
-  },
-
-  setPopupIncident: (data) => set({ popupIncident: data }),
-  addPopupIncident: (incident) =>
-    set((state) => ({
-      popupQueue: [...state.popupQueue, incident],
-    })),
-
-  dismissPopupIncident: () =>
-    set((state) => ({
-      popupQueue: state.popupQueue.slice(1),
-    })),
-
-  fetchSettings: async () => {
-    const res = await api.get("/incident/notif");
-    const result = res.data.data.reduce(
-      (acc, cur) => {
-        if (cur.description === "WrongWay") acc.wrongWay = cur.status;
-        else if (cur.description === "StopVeh")
-          acc.stopInCongested = cur.status;
-        else if (cur.description === "SlowDown") acc.slowDown = cur.status;
-        else if (cur.description === "Stop Vehicle in Fluid Traffic")
-          acc.stopInFluid = cur.status;
-        return acc;
-      },
-      {
+export const useNotificationStore = create<NotificationState>()(
+  persist(
+    (set) => ({
+      popupQueue: [],
+      popupIncident: null,
+      settings: {
         wrongWay: true,
         stopInCongested: true,
         slowDown: true,
         stopInFluid: true,
-      }
-    );
+      },
 
-    set({ settings: result });
-  },
+      setPopupIncident: (data) => set({ popupIncident: data }),
+      addPopupIncident: (incident) =>
+        set((state) => ({
+          popupQueue: [...(state.popupQueue || []), incident],
+        })),
 
-  updateSettings: async (updates) => {
-    await api.put("/incident/notif", updates);
-    set((state) => ({
-      settings: { ...state.settings, ...updates },
-    }));
-  },
-}));
+      dismissPopupIncident: () =>
+        set((state) => ({
+          popupQueue: (state.popupQueue || []).slice(1),
+        })),
+
+      fetchSettings: async () => {
+        const res = await api.get("/incident/notif");
+        const result = res.data.data.reduce(
+          (acc, cur) => {
+            if (cur.description === "WrongWay") acc.wrongWay = cur.status;
+            else if (cur.description === "StopVeh")
+              acc.stopInCongested = cur.status;
+            else if (cur.description === "SlowDown") acc.slowDown = cur.status;
+            else if (cur.description === "Stop Vehicle in Fluid Traffic")
+              acc.stopInFluid = cur.status;
+            return acc;
+          },
+          {
+            wrongWay: true,
+            stopInCongested: true,
+            slowDown: true,
+            stopInFluid: true,
+          }
+        );
+
+        set({ settings: result });
+      },
+
+      updateSettings: async (updates) => {
+        await api.put("/incident/notif", updates);
+        set((state) => ({
+          settings: { ...state.settings, ...updates },
+        }));
+      },
+    }),
+    {
+      name: "notification-settings-storage",
+    }
+  )
+);

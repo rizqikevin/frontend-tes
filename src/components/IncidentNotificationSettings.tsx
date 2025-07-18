@@ -14,7 +14,14 @@ function IncidentNotificationSettings() {
   const { settings, fetchSettings, updateSettings } = useNotificationStore();
 
   useEffect(() => {
-    fetchSettings();
+    if (
+      settings.wrongWay === true &&
+      settings.slowDown === true &&
+      settings.stopInFluid === true &&
+      settings.stopInCongested === true
+    ) {
+      fetchSettings();
+    }
   }, []);
 
   const handleToggle = (label: keyof typeof labelToKeyMap) => {
