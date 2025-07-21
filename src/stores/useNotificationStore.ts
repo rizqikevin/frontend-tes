@@ -19,6 +19,7 @@ interface Incident {
   lat: number;
   lng: number;
 }
+
 interface IncidentSocketState {
   incidents: Incident[];
   addIncident: (incident: Incident) => void;

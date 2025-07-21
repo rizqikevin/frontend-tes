@@ -325,47 +325,34 @@ export const GPSVehicleTracking: React.FC = () => {
                     <span className="text-center">Speed</span>
                     <span className="text-center">Last Update</span>
                   </div>
-                  {isVehicleLoading ? (
-                    <div className="text-center text-sm text-gray-400 py-4">
-                      Loading vehicles...
+                  {vehicles.map((vehicle, index) => (
+                    <div
+                      key={index}
+                      onClick={() => setSelectedVehicle(vehicle)}
+                      className="grid grid-cols-5 text-xs border-b border-gray-600 py-2 cursor-pointer hover:bg-gray-800"
+                    >
+                      <img
+                        src={`/icons/${vehicle.type}.png`}
+                        alt={vehicle.vehicle_name}
+                        className="text-center h-10 w-10 mx-auto"
+                      />
+                      <span className="text-center">
+                        {vehicle.vehicle_name}
+                      </span>
+                      <span className="text-center">
+                        {vehicle.vehicle_number}
+                      </span>
+                      <span className="text-center">
+                        {vehicle.speed.toFixed(2)}
+                      </span>
+                      <span className="text-center">
+                        {new Date(vehicle.updated).toLocaleDateString("id-ID", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
                     </div>
-                  ) : vehicles.length > 0 ? (
-                    vehicles.map((vehicle, index) => (
-                      <div
-                        key={index}
-                        onClick={() => setSelectedVehicle(vehicle)}
-                        className="grid grid-cols-5 text-xs border-b border-gray-600 py-2 cursor-pointer hover:bg-gray-800"
-                      >
-                        <img
-                          src={`/icons/${vehicle.type}.png`}
-                          alt={vehicle.vehicle_name}
-                          className="text-center h-10 w-10 mx-auto"
-                        />
-                        <span className="text-center">
-                          {vehicle.vehicle_name}
-                        </span>
-                        <span className="text-center">
-                          {vehicle.vehicle_number}
-                        </span>
-                        <span className="text-center">
-                          {vehicle.speed.toFixed(2)}
-                        </span>
-                        <span className="text-center">
-                          {new Date(vehicle.updated).toLocaleDateString(
-                            "id-ID",
-                            {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }
-                          )}
-                        </span>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-xs text-gray-400 text-center py-4">
-                      Tidak ada kendaraan ditemukan.
-                    </div>
-                  )}
+                  ))}
                 </div>
               )}
             </div>

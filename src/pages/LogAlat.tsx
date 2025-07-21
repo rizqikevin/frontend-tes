@@ -82,7 +82,21 @@ const LogAlat: React.FC = () => {
                   className="bg-transparent text-white outline-none"
                 />
               </div>
-              <div className="text-white px-2">to</div>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5 12H19M19 12L12 5M19 12L12 19"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
               <div className="border border-gray-700 rounded-lg px-4 py-2 bg-dashboard-accent flex items-center">
                 <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                 <DatePicker
