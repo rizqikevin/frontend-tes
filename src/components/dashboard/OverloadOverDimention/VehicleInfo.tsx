@@ -1,3 +1,6 @@
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
 interface VehicleInfoProps {
   gerbang: string;
   gardu: string;
@@ -25,6 +28,40 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
   dimensi,
   status,
 }) => {
+  const handleExport = () => {
+    const data = [
+      {
+        Gerbang: gerbang,
+        Gardu: gardu,
+        "Nomor Resi": noresi,
+        "Plat Nomor": platnomor,
+        "Tanggal Transaksi": new Date(tanggal).toLocaleDateString("id-ID"),
+        "Waktu Transaksi": jam,
+        "Nomor Kartu": kartu,
+        Golongan: golongan,
+        "Data Over Load": berat,
+        "Data Over Dimension": dimensi,
+        Status: status,
+      },
+    ];
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Kendaraan");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+
+    const file = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    saveAs(file, `data_kendaraan_${platnomor}.xlsx`);
+  };
+
   return (
     <div className="bg-dashboard-accent rounded-lg p-4 shadow-sm text-xl h-full space-y-9">
       <h4 className="text-lg font-bold mb-8">Informasi Data Kendaraan</h4>
@@ -55,7 +92,10 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
         {status}
       </div>
       <div className="text-center grid grid-cols-1 mt-5">
-        <button className="bg-yellow-400 text-black font-semibold w-full py-2 mt-16 rounded-md">
+        <button
+          className="bg-yellow-400 text-black font-semibold w-full py-2 mt-16 rounded-md"
+          onClick={handleExport}
+        >
           Export
         </button>
       </div>
