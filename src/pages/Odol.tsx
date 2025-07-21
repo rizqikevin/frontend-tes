@@ -102,11 +102,11 @@ const Odol: React.FC = () => {
     };
 
     fetchGerbang();
-  }, []);
+  }, [gateId, startDate, endDate, page, limit]);
 
   useEffect(() => {
     fetchData();
-  }, [gateId, startDate, endDate]);
+  }, [gateId, startDate, endDate, page, limit]);
 
   const isDark = theme === "dark";
 

@@ -9,7 +9,6 @@ interface VehicleInfoProps {
   golongan: string;
   berat: string;
   dimensi: string;
-  raw: string;
 }
 
 export const VehicleInfo: React.FC<VehicleInfoProps> = ({
