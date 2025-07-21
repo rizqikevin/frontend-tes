@@ -39,6 +39,13 @@ const marker2 = new L.Icon({
   popupAnchor: [0, -16],
 });
 
+const car = new L.Icon({
+  iconUrl: "/icons/car.png",
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
+  popupAnchor: [0, -16],
+});
+
 const center: [number, number] = [3.35094, 99.25094];
 
 function MapAutoCenter({ lat, lng }: { lat: number; lng: number }) {
@@ -122,6 +129,10 @@ export default function MapView() {
                 <span className="font-semibold ">Jenis Insiden:</span>{" "}
                 {incident.description}
               </p>
+              <p className="mb-1">
+                <span className="font-semibold ">Lokasi:</span> {incident.lat} -{" "}
+                {incident.lng}
+              </p>
               <video
                 src={incident.url_video}
                 autoPlay
@@ -178,6 +189,9 @@ export default function MapView() {
               : gismap.longitude;
 
           if (isNaN(lat) || isNaN(lng)) return null;
+          // if (!isNaN(lat) && !isNaN(lng)) {
+          //   console.log(`Rendering vehicle marker at ${lat}, ${lng}`);
+          // }
 
           return (
             <Marker key={index} position={[lat, lng]} icon={marker}>
@@ -200,35 +214,40 @@ export default function MapView() {
           );
         })}
       </MarkerClusterGroup>
-      {vehicles.map((vehicle, index) => {
-        const lat = parseFloat(vehicle.lat);
-        const lon = parseFloat(vehicle.lon);
+      {vehicles
+        .filter((vehicle) => {
+          const lat = parseFloat(vehicle.lat);
+          const lon = parseFloat(vehicle.lon);
 
-        const isNearby = incidents.some((incident) => {
-          const distance = haversineDistance(
-            incident.lat,
-            incident.lng,
-            lat,
-            lon
+          if (isNaN(lat) || isNaN(lon)) return false;
+
+          return incidents.some((incident) => {
+            const distance = haversineDistance(
+              incident.lat,
+              incident.lng,
+              lat,
+              lon
+            );
+            return distance <= 2;
+          });
+        })
+        .map((vehicle, index) => {
+          const lat = parseFloat(vehicle.lat);
+          const lon = parseFloat(vehicle.lon);
+
+          return (
+            <Marker key={`vehicle-${index}`} position={[lat, lon]} icon={car}>
+              <Popup>
+                <div className="text-gray-900">
+                  <h2 className="text-base font-semibold mb-2">🚗 Kendaraan</h2>
+                  <p>
+                    <span className="font-semibold">Posisi:</span> {lat}, {lon}
+                  </p>
+                </div>
+              </Popup>
+            </Marker>
           );
-          return distance <= 5;
-        });
-
-        if (!isNearby || isNaN(lat) || isNaN(lon)) return null;
-
-        return (
-          <Marker key={`vehicle-${index}`} position={[lat, lon]} icon={marker2}>
-            <Popup>
-              <div className="text-gray-900">
-                <h2 className="text-base font-semibold mb-2">🚗 Kendaraan</h2>
-                <p>
-                  <span className="font-semibold">Posisi:</span> {lat}, {lon}
-                </p>
-              </div>
-            </Popup>
-          </Marker>
-        );
-      })}
+        })}
     </MapContainer>
   );
 }
