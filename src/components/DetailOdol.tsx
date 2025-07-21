@@ -45,11 +45,13 @@ interface OdolDetail {
 
 const gardanImageMap: Record<string, string> = {
   "2-1-false": "/gardan/Green/4.svg",
-  "2-1-true": "/gardan/Red/2.svg",
+  "2-1-true": "/gardan/Red/4.svg",
   "2-2-false": "/gardan/Green/6.svg",
   "2-2-true": "/gardan/Red/6.svg",
-  "3-3-false": "/gardan/Green/9.svg",
-  "3-3-true": "/gardan/Red/9.svg",
+  "3-2-false": "/gardan/Green/9.svg",
+  "3-2-true": "/gardan/Red/9.svg",
+  "3-3-false": "/gardan/Green/10.svg",
+  "3-3-true": "/gardan/Red/10.svg",
 };
 
 export const DetailOdol: React.FC = () => {
@@ -216,6 +218,7 @@ export const DetailOdol: React.FC = () => {
                   golongan={data.golongan}
                   berat={data.berat}
                   dimensi={data.dimensi}
+                  status={data.status}
                 />
               </div>
             </div>
