@@ -85,7 +85,7 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
         <span>Data Over Load</span>
         <span>: {berat}</span>
         <span>Data Over Dimension </span>
-        <span>: {dimensi}</span>
+        <span>: {dimensi.slice(5)}</span>
         <span>Status :</span>
       </div>
       <div className="bg-red-900 w-full h-20 flex items-center justify-center text-6xl font-bold rounded-lg">

@@ -41,7 +41,7 @@ const marker2 = new L.Icon({
 
 const car = new L.Icon({
   iconUrl: "/icons/car.png",
-  iconSize: [32, 32],
+  iconSize: [40, 40],
   iconAnchor: [16, 16],
   popupAnchor: [0, -16],
 });
@@ -238,11 +238,11 @@ export default function MapView() {
           return (
             <Marker key={`vehicle-${index}`} position={[lat, lon]} icon={car}>
               <Popup>
-                <div className="text-gray-900">
-                  <h2 className="text-base font-semibold mb-2">🚗 Kendaraan</h2>
-                  <p>
-                    <span className="font-semibold">Posisi:</span> {lat}, {lon}
-                  </p>
+                <div className="w-[250px] text-black">
+                  <h4 className="font-bold text-md">{vehicle.vehicle_name}</h4>
+                  <p className="text-sm">Plat: {vehicle.vehicle_number}</p>
+                  <p className="text-sm">Kecepatan: {vehicle.speed} Km/h</p>
+                  <p className="text-sm">Status: {vehicle.status}</p>
                 </div>
               </Popup>
             </Marker>

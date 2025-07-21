@@ -287,7 +287,7 @@ const Odol: React.FC = () => {
 
                           <td className="p-2">{item.berat}</td>
 
-                          <td className="p-2">{item.dimensi}</td>
+                          <td className="p-2">{item.dimensi.slice(5)}</td>
                           <td className="p-2">
                             <Link to={`/detail-odol/${item.id}`}>
                               <Button
