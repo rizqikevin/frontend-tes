@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StatsGrid from "./StatsGrid";
 import Filters from "./Filters";
-import MapSection from "./MapSection";
+import MapSection from "../Admin/MapSection";
 import ErrorLog from "./ErrorLog";
 import { ErrorItem } from "./ErrorLog";
 import { useTransactionStore } from "@/stores/useTransactionCardStore";
