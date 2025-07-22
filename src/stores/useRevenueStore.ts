@@ -36,6 +36,7 @@ export const useRevenueStore = create<RevenueStore>(() => ({
       });
 
       const result = res.data.data;
+      console.log(result);
       const { internal, external } = result.data;
 
       const allItems = [...external, internal];

@@ -16,7 +16,7 @@ interface TransactionStoreState {
   rkapTarget: string;
   rkapPercent: number;
   otherTargets: TargetData[];
-  fetchAchievement: () => Promise<void>;
+  fetchAchievement: (freq?: string) => Promise<void>;
 }
 
 export const useTransactionStore = create<TransactionStoreState>((set) => ({
@@ -26,7 +26,7 @@ export const useTransactionStore = create<TransactionStoreState>((set) => ({
   rkapPercent: 0,
   otherTargets: [],
 
-  fetchAchievement: async () => {
+  fetchAchievement: async (freq) => {
     const { start_date, end_date } = useDateFilterStore.getState();
     set({ isloading: true });
 
@@ -35,6 +35,7 @@ export const useTransactionStore = create<TransactionStoreState>((set) => ({
         params: {
           start_date,
           end_date,
+          freq: freq,
         },
       });
 

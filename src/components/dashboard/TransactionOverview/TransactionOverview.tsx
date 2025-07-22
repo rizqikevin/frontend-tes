@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useTransactionChartStore } from "@/stores/useTransactionChartStore ";
 import { useTransactionOverviewStore } from "@/stores/useTransactionOverviewStore";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
+import { useTransactionStore } from "@/stores/useTransactionStore";
 
 const months = [
   "Jan",
@@ -38,6 +39,7 @@ export const TransactionOverview = () => {
     useTransactionOverviewStore();
   const { start_date, end_date } = useDateFilterStore();
   const { chartData, fetchChartData } = useTransactionChartStore();
+  const { rkapPercent, otherTargets } = useTransactionStore();
 
   // console.log(totalRevenue);
 
@@ -68,6 +70,17 @@ export const TransactionOverview = () => {
     value: `Rp ${item.revenue.toLocaleString("id-ID")}`,
   }));
 
+  const mappedTarget = otherTargets.map((target) => {
+    return {
+      label: target.target_name,
+      value: target.percent,
+    };
+  });
+
+  const colors = ["#FF9800", "#2196F3", "#4CAF50", "#FF69B4", "#8BC34A"];
+
+  console.log(mappedTarget);
+
   return (
     <div className="bg-dashboard-dark min-h-screen p-4 text-white space-y-4">
       {/* ROW 1 */}
@@ -76,8 +89,8 @@ export const TransactionOverview = () => {
         {items.length > 0 ? (
           <div className="col-span-12 sm:col-span-1 lg:col-span-3 min-w-0 h-full">
             <DoughnutChart
-              title="Total Pendapatan Toll HMW"
-              total={`Rp ${totalRevenue.toLocaleString("id-ID")}`}
+              title="Daily"
+              total={`${rkapPercent.toFixed(2)}`}
               labels={transactionOverview.map((item) => item.name)}
               data={transactionOverview.map((item) => item.pendapatan)}
               backgroundColors={[
@@ -95,6 +108,15 @@ export const TransactionOverview = () => {
                 "#f44336",
                 "#c2185b",
               ].slice(0, transactionOverview.length)}
+              bars={[
+                ...mappedTarget.map((target, index) => ({
+                  label: target.label,
+                  value: target.value,
+                  color: colors[index % colors.length],
+                })),
+                { label: "RKAP", value: rkapPercent, color: "#4CAF50" },
+                { label: "Settlement", value: 80, color: "#9C27B0" },
+              ]}
             />
           </div>
         ) : (
@@ -105,27 +127,40 @@ export const TransactionOverview = () => {
 
         {/* Achievement Ring */}
         <div className="col-span-12 sm:col-span-4 lg:col-span-3 min-w-0 h-full">
-          <div className="col-span-2 flex flex-col h-full">
+          <div className="col-span-1 flex flex-col h-full">
             <SimplePanel
-              title="Total Pendapatan Toll HMW (Internal)"
+              title="Total Pendapatan Toll HMW "
               dateRange={dateRange}
-              value={formatCurrency(internalRevenue)}
+              value={formatCurrency(internalRevenue + externalRevenueTotal)}
+              title2="Pendapatan Internal"
+              value2={formatCurrency(internalRevenue)}
+              title3="Pendapatan Integrasi"
+              value3={formatCurrency(externalRevenueTotal)}
             />
-            <hr className=" border-white" />
-            <SimplePanel
+            <OtherRevenueList data={otherRevenueData} />
+
+            {/* <SimplePanel
               title="Total Pendapatan Toll HMW (Integrasi)"
               dateRange={dateRange}
               value={formatCurrency(externalRevenueTotal)}
-            />
+            /> */}
           </div>
         </div>
 
         {/* 3 Chart */}
         <div className="col-span-12 lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 min-w-0 h-full">
           <div className="h-full bg-dashboard-accent p-1 rounded-lg">
-            <OtherRevenueList data={otherRevenueData} />
+            <AchievementRingContainer
+              color="#FF9800"
+              title="Pencapaian Bulan Juli"
+              frequensi="monthly"
+            />
           </div>
-          <AchievementRingContainer />
+          <AchievementRingContainer
+            color="#4169e1"
+            title="Pencapaian Tahun 2025"
+            frequensi="yearly"
+          />
         </div>
       </div>
 

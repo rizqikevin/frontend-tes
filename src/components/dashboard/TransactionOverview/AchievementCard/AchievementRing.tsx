@@ -13,15 +13,25 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 import { useTransactionStore } from "@/stores/useTransactionStore";
 
 interface AchievementRingProps {
+  color: string;
+  title: string;
   percent: number;
   revenue: string;
   target: string;
+  bars?: {
+    label: any;
+    value: any;
+    color: string;
+  }[];
 }
 
 export const AchievementRing: React.FC<AchievementRingProps> = ({
+  title,
+  color,
   percent,
   revenue,
   target,
+  bars = [],
 }) => {
   const percentValue = Number(percent);
   const displayPercent = percentValue.toFixed(1);
@@ -32,7 +42,7 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
     datasets: [
       {
         data: [chartPercent, 100 - chartPercent],
-        backgroundColor: ["#cddc39", "#555"],
+        backgroundColor: [color, "#555"],
         borderWidth: 0,
       },
     ],
@@ -49,12 +59,18 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
     maintainAspectRatio: false,
   };
 
+  console.log(otherTargets);
+
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full h-full flex flex-col justify-between">
-      <h2 className="text-sm font-semibold uppercase mb-1">Achievement RKAP</h2>
+      <h2 className="text-sm font-semibold uppercase mb-1">{title}</h2>
+      <div>
+        <p className="text-xs text-gray-400 mb-1">Total Pendapatan</p>
+        <h2 className="text-2xl font-bold text-white">{revenue}</h2>
+      </div>
 
       {/* Ring Chart */}
-      <div className="relative w-full max-w-[170px] aspect-square self-center">
+      <div className="relative w-full max-w-[250px] aspect-square self-center">
         <Doughnut data={chartData} options={options} />
         <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-[#cddc39]">
           {displayPercent ?? 0}%
@@ -62,17 +78,17 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
       </div>
 
       {/* Persentase Info */}
-      <div className="mt-4 space-y-1 text-xs text-gray-400">
+      {/* <div className="mt-4 space-y-1 text-xs text-gray-400">
         {otherTargets.map((target, index) => (
           <div key={index} className="flex justify-between">
             <span>{target.target_name}</span>
             <span>{parseFloat(target.percent).toFixed(1)}%</span>
           </div>
         ))}
-      </div>
+      </div> */}
 
       {/* Nilai */}
-      <div className="mt-2 text-xs text-white space-y-1">
+      {/* <div className="mt-2 text-xs text-white space-y-1">
         <div className="flex justify-between">
           <p className="mt-1">RKAP Target</p>
           <p className="font-semibold text-[10px]">{target}</p>
@@ -86,8 +102,28 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
               </p>
             </div>
           </div>
+        ))} */}
+      {/* Horizontal Bars */}
+      <div className="mt-6 space-y-4">
+        {bars.map((bar, idx) => (
+          <div key={idx}>
+            <div className="flex justify-between text-xs mb-1">
+              <span>{bar.label}</span>
+              <span>{bar.value}%</span>
+            </div>
+            <div className="w-full bg-gray-600 rounded-full h-3">
+              <div
+                className="h-3 rounded-full"
+                style={{
+                  width: `${bar.value}%`,
+                  backgroundColor: bar.color,
+                }}
+              />
+            </div>
+          </div>
         ))}
       </div>
     </div>
+    // </div>
   );
 };
