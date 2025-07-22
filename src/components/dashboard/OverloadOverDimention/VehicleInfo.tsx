@@ -89,7 +89,13 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
         <span>Status :</span>
       </div>
       <div className="bg-red-900 w-full h-20 flex items-center justify-center text-6xl font-bold rounded-lg">
-        {status}
+        {status === "OL"
+          ? "Overload"
+          : status === "OD"
+          ? "Over Dimention"
+          : status === "ODOL"
+          ? "Overload-Overdimention"
+          : "Overload-Overdimention"}
       </div>
       <div className="text-center grid grid-cols-1 mt-5">
         <button
