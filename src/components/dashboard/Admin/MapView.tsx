@@ -52,7 +52,7 @@ function MapAutoCenter({ lat, lng }: { lat: number; lng: number }) {
   const map = useMap();
 
   useEffect(() => {
-    map.setView([lat, lng], 14);
+    map.setView([lat, lng], 15);
   }, [lat, lng, map]);
 
   return null;
@@ -108,8 +108,12 @@ export default function MapView() {
       <FullscreenControl />
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       {incidents.length > 0 && (
-        <MapAutoCenter lat={incidents[0].lat} lng={incidents[0].lng} />
+        <MapAutoCenter
+          lat={incidents[incidents.length - 1].lat}
+          lng={incidents[incidents.length - 1].lng}
+        />
       )}
+
       {incidents.map((incident, index) => (
         <Marker
           key={index}
@@ -228,7 +232,7 @@ export default function MapView() {
               lat,
               lon
             );
-            return distance <= 2;
+            return distance <= 10;
           });
         })
         .map((vehicle, index) => {

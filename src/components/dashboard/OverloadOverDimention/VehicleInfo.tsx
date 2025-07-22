@@ -82,9 +82,9 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
         <span>: {kartu}</span>
         <span>Golongan</span>
         <span>: {golongan}</span>
-        <span>Data Over Load</span>
+        <span>Data Berat Kendaraan</span>
         <span>: {berat}</span>
-        <span>Data Over Dimension </span>
+        <span>Data Dimensi Kendaraan </span>
         <span>: {dimensi.slice(5)}</span>
         <span>Status :</span>
       </div>
@@ -93,7 +93,7 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
       </div>
       <div className="text-center grid grid-cols-1 mt-5">
         <button
-          className="bg-yellow-400 text-black font-semibold w-full py-2 mt-16 rounded-md"
+          className="bg-yellow-400 text-black font-semibold w-full py-2 mt-64 rounded-md"
           onClick={handleExport}
         >
           Export

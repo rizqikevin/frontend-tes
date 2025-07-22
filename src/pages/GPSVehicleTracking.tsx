@@ -44,7 +44,7 @@ export const GPSVehicleTracking: React.FC = () => {
     fetchVehicles();
     const interval = setInterval(() => {
       fetchVehicles();
-    }, 10000);
+    }, 100000000);
 
     return () => clearInterval(interval);
   }, [selectedVehicle]);

@@ -1,9 +1,17 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L, { Map } from "leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  GeoJSON,
+  Polygon,
+} from "react-leaflet";
+import L, { LatLngExpression, Map } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { VehicleData } from "@/types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FullscreenControl } from "react-leaflet-fullscreen";
+import * as turf from "@turf/turf";
 
 export const getVehicleIcon = (type: string) => {
   switch (type) {
@@ -26,10 +34,47 @@ export const getVehicleIcon = (type: string) => {
   }
 };
 
+export const getVehicleIconOutOfBounds = (type: string) => {
+  switch (type) {
+    case "ambulance":
+      return new L.Icon({
+        iconUrl: "/icons/ambulance-out.png",
+      });
+    case "rescue":
+      return new L.Icon({
+        iconUrl: "/icons/rescue-boat-out.png",
+        iconSize: [50, 50],
+      });
+    case "car":
+    default:
+      return new L.Icon({
+        iconUrl: "/icons/car-warning.png",
+        iconSize: [50, 50],
+      });
+  }
+};
+
 interface MapViewGpsProps {
   vehicles: VehicleData[];
   onVehicleClick: (vehicle: VehicleData) => void;
 }
+
+const polygon = turf.polygon([
+  [
+    [99.47624550906254, 3.3481490716505355],
+    [99.39394104712702, 3.1231999327377857],
+    [99.18406466919147, 3.2341399936075925],
+    [99.10278901303015, 2.894092626910605],
+    [98.90525830438493, 2.9701245818541464],
+    [98.99167798941721, 3.305012037922486],
+    [99.18200705764308, 3.4775486758569403],
+    [99.47624550906254, 3.3481490716505355],
+  ],
+]);
+
+const point = turf.point([3.0522134461444947, 99.1946832627015]);
+const inside = turf.booleanPointInPolygon(point, polygon);
+console.log(inside);
 
 export default function MapViewGps({
   vehicles,
@@ -39,6 +84,17 @@ export default function MapViewGps({
   const [locationDetails, setLocationDetails] = useState<
     Record<string, string>
   >({});
+
+  const polygonRef: LatLngExpression[] = [
+    [3.3481490716505355, 99.47624550906254],
+    [3.1231999327377857, 99.39394104712702],
+    [3.2341399936075925, 99.18406466919147],
+    [2.894092626910605, 99.10278901303015],
+    [2.9701245818541464, 98.90525830438493],
+    [3.305012037922486, 98.99167798941721],
+    [3.4775486758569403, 99.18200705764308],
+    [3.3481490716505355, 99.47624550906254],
+  ];
 
   // Fetch addresses once for all vehicles
   useEffect(() => {
@@ -124,11 +180,19 @@ export default function MapViewGps({
 
         if (isNaN(lat) || isNaN(lon)) return null;
 
+        const point = turf.point([lon, lat]);
+        const isInside = turf.booleanPointInPolygon(point, polygon);
+
+        console.log(vehicle.vehicle_name, { lat, lon, isInside });
+        const icon = isInside
+          ? getVehicleIcon(vehicle.type)
+          : getVehicleIconOutOfBounds(vehicle.type);
+
         return (
           <Marker
             key={vehicle.radio_id}
             position={[lat, lon]}
-            icon={getVehicleIcon(vehicle.type)}
+            icon={icon}
             eventHandlers={{ click: () => onVehicleClick(vehicle) }}
           >
             <Popup>
@@ -136,6 +200,14 @@ export default function MapViewGps({
                 <h4 className="font-bold text-md">{vehicle.vehicle_name}</h4>
                 <p className="text-sm">Plat: {vehicle.vehicle_number}</p>
                 <p className="text-sm">Kecepatan: {vehicle.speed} Km/h</p>
+                <p className="text-sm">
+                  Status:{" "}
+                  <span
+                    className={isInside ? "text-green-600" : "text-red-600"}
+                  >
+                    {isInside ? "Di dalam batas" : "Melewati batas"}
+                  </span>
+                </p>
                 <p className="text-sm">Lokasi:</p>
                 <p className="text-sm italic">
                   {locationDetails[vehicle.radio_id] || "Memuat alamat..."}
@@ -153,6 +225,16 @@ export default function MapViewGps({
           </Marker>
         );
       })}
+
+      <Polygon
+        positions={polygonRef}
+        pathOptions={{
+          color: "red",
+          fill: false,
+          fillOpacity: 0,
+          weight: 2,
+        }}
+      />
     </MapContainer>
   );
 }
