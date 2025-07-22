@@ -82,9 +82,9 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
         <span>: {kartu}</span>
         <span>Golongan</span>
         <span>: {golongan}</span>
-        <span>Data Berat Kendaraan</span>
+        <span>Data Berat</span>
         <span>: {berat}</span>
-        <span>Data Dimensi Kendaraan </span>
+        <span>Data Dimensi (Lebar x Tinggi) </span>
         <span>: {dimensi.slice(5)}</span>
         <span>Status :</span>
       </div>
