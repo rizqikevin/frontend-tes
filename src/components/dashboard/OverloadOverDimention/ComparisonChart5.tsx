@@ -16,40 +16,42 @@ import { useDateFilterStore } from "@/stores/useDateFilterStore";
 // Register Chart.js modules
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-export const ComparisonChart1: React.FC = () => {
-  const { labels, odolData, fetchOdolData, title } = useOdolComparisonStore();
+export const ComparisonChart5: React.FC = () => {
+  const { fetchOdolData, title } = useOdolComparisonStore();
   const { start_date, end_date } = useDateFilterStore();
 
   useEffect(() => {
     fetchOdolData();
   }, [start_date, end_date]);
 
-  const defaultLabels = ["Gol 1", "Gol 2", "Gol 3", "Gol 4", "Gol 5"];
-  const displayLabels = labels.length ? labels : defaultLabels;
+  const labels = [
+    "Kuala Tanjung",
+    "Indrapura",
+    "Tebing Tinggi",
+    "Dolok Merawan",
+    "Sinaksak",
+    "Simpang Pane",
+  ];
 
   const dataByStatus = {
-    ODOL: [2000, 1400, 1300, 300, 500],
-    OL: [900, 800, 1000, 1500, 800],
-    OD: [1300, 700, 1900, 1100, 1300],
-    Normal: [1800, 1600, 2200, 1000, 1900],
+    ODOL: [40, 20, 29, 20, 20, 20],
+    Normal: [20, 20, 25, 20, 20, 20],
   };
 
   const colors: Record<string, string> = {
-    ODOL: "#f44336",
-    OD: "#ff9800",
-    OL: "#ffeb3b",
-    Normal: "#4caf50",
+    ODOL: "#f44336", // merah
+    Normal: "#4caf50", // hijau
   };
 
   const data: ChartData<"bar", number[], string> = {
-    labels: displayLabels,
-    datasets: Object.entries(dataByStatus).map(([label, data], index) => ({
+    labels,
+    datasets: Object.entries(dataByStatus).map(([label, values]) => ({
       label,
-      data,
+      data: values,
       backgroundColor: colors[label],
       borderSkipped: false,
-      borderRadius: 8,
-      barThickness: 30,
+      borderRadius: 6,
+      barThickness: 45,
     })),
   };
 
@@ -67,7 +69,11 @@ export const ComparisonChart1: React.FC = () => {
     scales: {
       y: {
         beginAtZero: true,
-        ticks: { color: "#fff" },
+        max: 100,
+        ticks: {
+          color: "#fff",
+          callback: (val) => `${val}%`,
+        },
         grid: { color: "rgba(255,255,255,0.1)" },
       },
       x: {
@@ -80,11 +86,11 @@ export const ComparisonChart1: React.FC = () => {
   return (
     <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
       <h2 className="text-sm mb-2 font-semibold uppercase text-white">
-        {title}
+        Perbandingan Kepatuhan dalam Tiap Gerbang
       </h2>
 
       {/* Chart */}
-      <Chart type="bar" data={data} options={options} height={150} />
+      <Chart type="bar" data={data} options={options} height={200} />
 
       {/* Table */}
       <div className="overflow-x-auto mt-6">
@@ -92,7 +98,7 @@ export const ComparisonChart1: React.FC = () => {
           <thead>
             <tr className="border-t border-gray-600">
               <th className="py-2 border-b border-gray-600">Status</th>
-              {displayLabels.map((label) => (
+              {labels.map((label) => (
                 <th key={label} className="py-2 border-b border-gray-600">
                   {label}
                 </th>
@@ -110,7 +116,7 @@ export const ComparisonChart1: React.FC = () => {
                 </td>
                 {values.map((val, i) => (
                   <td key={i} className="py-2">
-                    {val}
+                    {val}%
                   </td>
                 ))}
               </tr>

@@ -64,7 +64,7 @@ export const VehichleDougnut = () => {
         offset: 20,
         font: {
           weight: "bold",
-          size: 35,
+          size: 40,
         },
       },
     },

@@ -39,8 +39,12 @@ export const ComparisonChart3: React.FC = () => {
     fetchYearlyChartData();
   }, [start_date, end_date]);
 
+  const displayLabels = labels.length
+    ? labels
+    : ["2021", "2022", "2023", "2024", "2025"];
+
   const chartData: ChartData<"bar" | "line", number[], string> = {
-    labels: labels.length ? labels : ["2021", "2022", "2023", "2024", "2025"],
+    labels: displayLabels,
     datasets: datasets.length
       ? datasets.map((ds) => {
           const base = {
@@ -54,6 +58,7 @@ export const ComparisonChart3: React.FC = () => {
               type: "bar" as const,
               backgroundColor: ds.label === "ODOL" ? "#d32f2f" : "#4caf50",
               borderRadius: 4,
+              barThickness: 25,
             };
           } else {
             return {
@@ -104,10 +109,59 @@ export const ComparisonChart3: React.FC = () => {
     },
   };
 
+  const odolDataset = datasets.find((ds) => ds.label === "ODOL");
+  const normalDataset = datasets.find((ds) => ds.label === "Normal");
+
   return (
     <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
-      <h2 className="text-sm mb-2 font-semibold uppercase">{title}</h2>
-      <Chart type="bar" data={chartData} options={options} height={300} />
+      <h2 className="text-sm mb-2 font-semibold uppercase text-white">
+        {title}
+      </h2>
+
+      {/* Chart */}
+      <Chart type="bar" data={chartData} options={options} height={353} />
+
+      {/* Table */}
+      <div className="overflow-x-auto mt-6">
+        <table className="w-full text-sm text-white text-center border-collapse">
+          <thead>
+            <tr className="border-t border-gray-600">
+              <th className="py-2 border-b border-gray-600">Status</th>
+              {displayLabels.map((label) => (
+                <th key={label} className="py-2 border-b border-gray-600">
+                  {label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {odolDataset && (
+              <tr className="border-t border-gray-600">
+                <td className="py-2 font-semibold text-left px-2 text-red-500">
+                  ODOL
+                </td>
+                {odolDataset.data.map((val, i) => (
+                  <td key={i} className="py-2">
+                    {val}%
+                  </td>
+                ))}
+              </tr>
+            )}
+            {normalDataset && (
+              <tr className="border-t border-gray-600">
+                <td className="py-2 font-semibold text-left px-2 text-green-500">
+                  Normal
+                </td>
+                {normalDataset.data.map((val, i) => (
+                  <td key={i} className="py-2">
+                    {val}%
+                  </td>
+                ))}
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
