@@ -11,21 +11,6 @@ import { useTransactionOverviewStore } from "@/stores/useTransactionOverviewStor
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 import { useTransactionStore } from "@/stores/useTransactionStore";
 
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
 export const TransactionOverview = () => {
   const {
     items,
@@ -35,19 +20,27 @@ export const TransactionOverview = () => {
     externalItems,
     totalRevenue,
   } = useRevenueStore();
-  const { transactionOverview, fetchTransactionOverview, isDataLoading } =
+  const { transactionOverview, fetchTransactionOverview } =
     useTransactionOverviewStore();
   const { start_date, end_date } = useDateFilterStore();
   const { chartData, fetchChartData } = useTransactionChartStore();
-  const { rkapPercent, otherTargets } = useTransactionStore();
+  const { daily, fetchAchievement } = useTransactionStore();
 
-  // console.log(totalRevenue);
+  const rkapPercent = daily.rkapPercent;
+  const transactionAchievement = daily.otherTargets;
+  const mappedTarget = [
+    ...daily.otherTargets.map((item) => ({
+      label: item.target_name,
+      value: parseFloat(item.percent),
+    })),
+  ];
 
-  // console.log(transactionOverview);
+  console.log(transactionAchievement);
 
   useEffect(() => {
     const fetchAll = async () => {
       await fetchRevenue();
+      await fetchAchievement("daily");
       await fetchTransactionOverview();
       await fetchChartData("lhr", "1");
       await fetchChartData("lhr", "2");
@@ -70,16 +63,7 @@ export const TransactionOverview = () => {
     value: `Rp ${item.revenue.toLocaleString("id-ID")}`,
   }));
 
-  const mappedTarget = otherTargets.map((target) => {
-    return {
-      label: target.target_name,
-      value: target.percent,
-    };
-  });
-
   const colors = ["#FF9800", "#2196F3", "#4CAF50", "#FF69B4", "#8BC34A"];
-
-  console.log(mappedTarget);
 
   return (
     <div className="bg-dashboard-dark min-h-screen p-4 text-white space-y-4">
@@ -153,13 +137,13 @@ export const TransactionOverview = () => {
             <AchievementRingContainer
               color="#FF9800"
               title="Pencapaian Bulan Juli"
-              frequensi="monthly"
+              freq="monthly"
             />
           </div>
           <AchievementRingContainer
             color="#4169e1"
             title="Pencapaian Tahun 2025"
-            frequensi="yearly"
+            freq="yearly"
           />
         </div>
       </div>

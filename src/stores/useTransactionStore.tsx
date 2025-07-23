@@ -10,21 +10,40 @@ interface TargetData {
   transaction_target: number;
 }
 
-interface TransactionStoreState {
-  isloading: boolean;
+interface AchievementData {
   revenueAchievement: string;
   rkapTarget: string;
   rkapPercent: number;
   otherTargets: TargetData[];
-  fetchAchievement: (freq?: string) => Promise<void>;
 }
 
+interface TransactionStoreState {
+  isloading: boolean;
+  daily: AchievementData;
+  monthly: AchievementData;
+  yearly: AchievementData;
+  fetchAchievement: (freq: "daily" | "monthly" | "yearly") => Promise<void>;
+}
 export const useTransactionStore = create<TransactionStoreState>((set) => ({
   isloading: false,
-  revenueAchievement: "0",
-  rkapTarget: "0",
-  rkapPercent: 0,
-  otherTargets: [],
+  daily: {
+    revenueAchievement: "0",
+    rkapTarget: "0",
+    rkapPercent: 0,
+    otherTargets: [],
+  },
+  monthly: {
+    revenueAchievement: "0",
+    rkapTarget: "0",
+    rkapPercent: 0,
+    otherTargets: [],
+  },
+  yearly: {
+    revenueAchievement: "0",
+    rkapTarget: "0",
+    rkapPercent: 0,
+    otherTargets: [],
+  },
 
   fetchAchievement: async (freq) => {
     const { start_date, end_date } = useDateFilterStore.getState();
@@ -35,33 +54,39 @@ export const useTransactionStore = create<TransactionStoreState>((set) => ({
         params: {
           start_date,
           end_date,
-          freq: freq,
+          freq,
         },
       });
 
       const data = res.data.data;
 
       if (!data || !Array.isArray(data.target)) {
-        set({
-          revenueAchievement: "0",
-          rkapTarget: "0",
-          rkapPercent: 0,
-          otherTargets: [],
+        set((state) => ({
+          [freq]: {
+            revenueAchievement: "0",
+            rkapTarget: "0",
+            rkapPercent: 0,
+            otherTargets: [],
+          },
           isloading: false,
-        });
+        }));
         return;
       }
 
       const rkap = data.target.find((t) => t.target_name === "RKAP");
       const others = data.target.filter((t) => t.target_name !== "RKAP");
 
-      set({
-        revenueAchievement: data.revenue_achievement || "0",
-        rkapTarget: rkap?.revenue_target || "0",
-        rkapPercent: parseFloat(rkap?.percent || "0"),
-        otherTargets: others,
+      console.log("data :", data);
+
+      set((state) => ({
+        [freq]: {
+          revenueAchievement: data.revenue_achievement,
+          rkapTarget: rkap?.revenue_target,
+          rkapPercent: parseFloat(rkap.percent),
+          otherTargets: others,
+        },
         isloading: false,
-      });
+      }));
     } catch (err) {
       toast.error("Failed to fetch achievement data");
       set({ isloading: false });
