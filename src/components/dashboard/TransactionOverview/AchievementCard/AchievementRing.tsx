@@ -10,7 +10,6 @@ import {
 } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-import { useTransactionStore } from "@/stores/useTransactionStore";
 
 interface AchievementRingProps {
   color: string;
@@ -36,7 +35,6 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
   const percentValue = Number(percent);
   const displayPercent = percentValue.toFixed(1);
   const chartPercent = percentValue > 100 ? 100 : percentValue;
-  const { otherTargets } = useTransactionStore();
   const chartData: ChartData<"doughnut", number[], string> = {
     labels: ["Achieved", "Remaining"],
     datasets: [
@@ -59,8 +57,6 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
     maintainAspectRatio: false,
   };
 
-  console.log(otherTargets);
-
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full h-full flex flex-col justify-between">
       <h2 className="text-sm font-semibold uppercase mb-1">{title}</h2>
@@ -72,8 +68,11 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
       {/* Ring Chart */}
       <div className="relative w-full max-w-[250px] aspect-square self-center">
         <Doughnut data={chartData} options={options} />
-        <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-[#cddc39]">
-          {displayPercent ?? 0}%
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-3xl text-white">
+          <span className="font-bold">{displayPercent ?? 0}%</span>
+          <div>
+            <p className="text-2xl text-white">RKAP</p>
+          </div>
         </div>
       </div>
 

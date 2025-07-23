@@ -10,6 +10,7 @@ import { useTransactionChartStore } from "@/stores/useTransactionChartStore ";
 import { useTransactionOverviewStore } from "@/stores/useTransactionOverviewStore";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 import { useTransactionStore } from "@/stores/useTransactionStore";
+import { useSettlementStore } from "@/stores/useSettlementAchievementStore";
 
 export const TransactionOverview = () => {
   const {
@@ -18,16 +19,15 @@ export const TransactionOverview = () => {
     externalRevenueTotal,
     internalRevenue,
     externalItems,
-    totalRevenue,
   } = useRevenueStore();
   const { transactionOverview, fetchTransactionOverview } =
     useTransactionOverviewStore();
   const { start_date, end_date } = useDateFilterStore();
   const { chartData, fetchChartData } = useTransactionChartStore();
   const { daily, fetchAchievement } = useTransactionStore();
+  const { data, fetchData } = useSettlementStore();
 
   const rkapPercent = daily.rkapPercent;
-  const transactionAchievement = daily.otherTargets;
   const mappedTarget = [
     ...daily.otherTargets.map((item) => ({
       label: item.target_name,
@@ -35,12 +35,13 @@ export const TransactionOverview = () => {
     })),
   ];
 
-  console.log(transactionAchievement);
+  // console.log(transactionAchievement);
 
   useEffect(() => {
     const fetchAll = async () => {
       await fetchRevenue();
       await fetchAchievement("daily");
+      await fetchData();
       await fetchTransactionOverview();
       await fetchChartData("lhr", "1");
       await fetchChartData("lhr", "2");
@@ -63,76 +64,74 @@ export const TransactionOverview = () => {
     value: `Rp ${item.revenue.toLocaleString("id-ID")}`,
   }));
 
+  const settlementPercent = data?.persentase ?? 0;
+  console.log(settlementPercent);
+
   const colors = ["#FF9800", "#2196F3", "#4CAF50", "#FF69B4", "#8BC34A"];
 
   return (
     <div className="bg-dashboard-dark min-h-screen p-4 text-white space-y-4">
       {/* ROW 1 */}
-      <div className="grid grid-cols-12 gap-4 items-start">
-        {/* Doughnut Chart */}
-        {items.length > 0 ? (
-          <div className="col-span-12 sm:col-span-1 lg:col-span-3 min-w-0 h-full">
-            <DoughnutChart
-              title="Daily"
-              total={`${rkapPercent.toFixed(2)}`}
-              labels={transactionOverview.map((item) => item.name)}
-              data={transactionOverview.map((item) => item.pendapatan)}
-              backgroundColors={[
-                "#f9a825",
-                "#00bcd4",
-                "#7c4dff",
-                "#607d8b",
-                "#4caf50",
-                "#9c27b0",
-                "#795548",
-                "#ff5722",
-                "#8bc34a",
-                "#3f51b5",
-                "#ffeb3b",
-                "#f44336",
-                "#c2185b",
-              ].slice(0, transactionOverview.length)}
-              bars={[
-                ...mappedTarget.map((target, index) => ({
-                  label: target.label,
-                  value: target.value,
-                  color: colors[index % colors.length],
-                })),
-                { label: "RKAP", value: rkapPercent, color: "#4CAF50" },
-                { label: "Settlement", value: 80, color: "#9C27B0" },
-              ]}
-            />
-          </div>
-        ) : (
-          <div className="col-span-12 sm:col-span-1 lg:col-span-3 flex items-center justify-center h-full text-gray-400">
-            Tidak ada data revenue
-          </div>
-        )}
+      {/* Wrapper agar Doughnut dan Panel menyatu */}
+      <div className="grid grid-cols-12 gap-4">
+        <div className="col-span-12 sm:col-span-12 lg:col-span-6">
+          <div className=" bg-dashboard-accent rounded-xl shadow-md p-4 h-full grid grid-cols-12 gap-4">
+            {/* Doughnut Chart */}
+            <div className="col-span-12 md:col-span-6">
+              <DoughnutChart
+                title="Daily"
+                total={`RKAP ${rkapPercent.toFixed(2)}`}
+                labels={transactionOverview.map((item) => item.name)}
+                data={transactionOverview.map((item) => item.pendapatan)}
+                backgroundColors={[
+                  "#f9a825",
+                  "#00bcd4",
+                  "#7c4dff",
+                  "#607d8b",
+                  "#4caf50",
+                  "#9c27b0",
+                  "#795548",
+                  "#ff5722",
+                  "#8bc34a",
+                  "#3f51b5",
+                  "#ffeb3b",
+                  "#f44336",
+                  "#c2185b",
+                ].slice(0, transactionOverview.length)}
+                bars={[
+                  ...mappedTarget.map((target, index) => ({
+                    label: target.label,
+                    value: target.value,
+                    color: colors[index % colors.length],
+                  })),
+                  { label: "RKAP", value: rkapPercent, color: "#4CAF50" },
+                  {
+                    label: "Settlement",
+                    value: settlementPercent,
+                    color: "#9C27B0",
+                  },
+                ]}
+              />
+            </div>
 
-        {/* Achievement Ring */}
-        <div className="col-span-12 sm:col-span-4 lg:col-span-3 min-w-0 h-full">
-          <div className="col-span-1 flex flex-col h-full">
-            <SimplePanel
-              title="Total Pendapatan Toll HMW "
-              dateRange={dateRange}
-              value={formatCurrency(internalRevenue + externalRevenueTotal)}
-              title2="Pendapatan Internal"
-              value2={formatCurrency(internalRevenue)}
-              title3="Pendapatan Integrasi"
-              value3={formatCurrency(externalRevenueTotal)}
-            />
-            <OtherRevenueList data={otherRevenueData} />
-
-            {/* <SimplePanel
-              title="Total Pendapatan Toll HMW (Integrasi)"
-              dateRange={dateRange}
-              value={formatCurrency(externalRevenueTotal)}
-            /> */}
+            {/* Panel */}
+            <div className="col-span-12 md:col-span-6 flex flex-col justify-between">
+              <SimplePanel
+                title="Total Pendapatan Toll HMW "
+                dateRange={dateRange}
+                value={formatCurrency(internalRevenue + externalRevenueTotal)}
+                title2="Pendapatan Internal"
+                value2={formatCurrency(internalRevenue)}
+                title3="Pendapatan Integrasi"
+                value3={formatCurrency(externalRevenueTotal)}
+              />
+              <OtherRevenueList data={otherRevenueData} />
+            </div>
           </div>
         </div>
 
-        {/* 3 Chart */}
-        <div className="col-span-12 lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 min-w-0 h-full">
+        {/* Achievement Rings sebelah kanan */}
+        <div className="col-span-12 sm:col-span-12 lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
           <div className="h-full bg-dashboard-accent p-1 rounded-lg">
             <AchievementRingContainer
               color="#FF9800"

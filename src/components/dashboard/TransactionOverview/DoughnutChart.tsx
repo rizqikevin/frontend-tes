@@ -63,7 +63,7 @@ export const DoughnutChart = ({
   };
 
   return (
-    <div className="bg-[#2b2b2b] text-white rounded-lg p-6 shadow-md w-full h-full">
+    <div className=" text-white p-6 w-full h-full border-r-2 border-gray-600 ">
       <h4 className="text-base font-semibold mb-3">{title}</h4>
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -72,7 +72,10 @@ export const DoughnutChart = ({
           <Doughnut data={chartData} options={chartOptions} />
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <p className="text-2xl font-bold">{total.split(" ")[0]} %</p>
+              <p className="text-3xl font-bold">
+                {total.split(" ").slice(1).join(" ")}%
+              </p>
+              <p className="text-2xl ">{total.split(" ")[0]}</p>
             </div>
           </div>
         </div>
