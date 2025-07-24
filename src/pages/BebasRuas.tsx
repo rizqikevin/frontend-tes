@@ -4,14 +4,33 @@ import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import SeksiCard from "@/components/bebanRuas/SeksiCard";
 import Legend from "@/components/bebanRuas/Legend";
+import { api2 } from "@/services/api";
+import { Calendar } from "lucide-react";
+import DatePicker from "react-datepicker";
+import { Button } from "@/components/ui/button";
+import { start } from "repl";
+
+interface SegmentTarget {
+  target_name: string;
+  lhr: number;
+  total_lhr: number;
+}
+
+interface SegmentLoad {
+  segment_id: number;
+  segment_name: string;
+  branch_code: string;
+  load: number;
+  lhr: number;
+  target: SegmentTarget[];
+}
 
 interface RuasData {
   id: number;
   name: string;
-  panjang: number;
   persen: number;
-  nilaiA: number;
-  nilaiB: number;
+  binisPlanLhr: number;
+  realisasiLhr: number;
   posisi: {
     top: string;
     left: string;
@@ -23,6 +42,8 @@ export const BebanRuas: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [ruasData, setRuasData] = useState<RuasData[]>([]);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -51,68 +72,76 @@ export const BebanRuas: React.FC = () => {
     };
   }, []);
 
+  const fetchRuasData = async () => {
+    const posisiMapping: { [key: number]: { top: string; left: string } } = {
+      1: { top: "85%", left: "24%" }, // SINAKSAK - SIMPANG PANEI
+      2: { top: "42%", left: "25%" }, // DOLOK MERAWAN -SINAKSAK
+      3: { top: "1000%", left: "30%" }, // JC TEBING TINGGI - DOLOK MERAWAN
+      4: { top: "15%", left: "80%" }, // KUALA TANJUNG - INDRAPURA
+      5: { top: "1000%", left: "59%" }, // INDRAPURA - SS INDRAPURA
+      6: { top: "17%", left: "55%" }, // TEBING TINGGI - SS INDRAPURA
+      7: { top: "17%", left: "30%" }, // JC TEBING TINGGI - TEBING TINGGI
+    };
+
+    try {
+      api2
+        .get("/tracomm/transaction/segment/load", {
+          params: {
+            start_date: startDate.toISOString().split("T")[0],
+            end_date: endDate.toISOString().split("T")[0],
+            freq: "yearly",
+          },
+        })
+        .then((response) => {
+          const data = response.data?.data?.segment_load;
+          if (!Array.isArray(data)) return;
+
+          const ruas = data.map((segment) => {
+            const targetBussinesPlan = segment.target.find(
+              (t: SegmentTarget) => t.target_name === "BUSSINES PLAN"
+            );
+
+            const realisasiLhr = data.map((segment) => {
+              const realLhr = segment.lhr;
+              return realLhr;
+            });
+
+            console.log(realisasiLhr);
+
+            const persen = targetBussinesPlan
+              ? Math.round((segment.lhr / targetBussinesPlan.lhr) * 100)
+              : 0;
+
+            // console.log(
+            //   `Segment: ${segment.segment_name}, LHR: ${segment.lhr}, Target: ${targetBussinesPlan?.lhr}, Persen: ${persen}`
+            // );
+
+            return {
+              id: segment.segment_id,
+              name: segment.segment_name,
+              persen: persen,
+              binisPlanLhr: targetBussinesPlan?.lhr ?? 0,
+              realisasiLhr: Math.round(segment.lhr),
+              posisi: posisiMapping[segment.segment_id] || {
+                top: "0%",
+                left: "0%",
+              },
+            };
+          });
+
+          setRuasData(ruas);
+        })
+        .catch((error) => {
+          console.error("Failed to load segment data:", error);
+        });
+    } catch (error) {
+      console.error("Failed to load segment data:", error);
+    }
+  };
+
   useEffect(() => {
-    setRuasData([
-      {
-        id: 1,
-        name: "Seksi 1",
-        panjang: 20.4,
-        persen: 68,
-        nilaiA: 11900,
-        nilaiB: 8046,
-        posisi: { top: "52%", left: "59%" },
-      },
-      {
-        id: 2,
-        name: "Seksi 2",
-        panjang: 18.05,
-        persen: 11,
-        nilaiA: 7612,
-        nilaiB: 823,
-        posisi: { top: "20%", left: "85%" },
-      },
-      {
-        id: 3,
-        name: "Seksi 3",
-        panjang: 30,
-        persen: 114,
-        nilaiA: 6025,
-        nilaiB: 6875,
-        posisi: { top: "50%", left: "22%" },
-      },
-      {
-        id: 4,
-        name: "Seksi 4",
-        panjang: 28,
-        persen: 106,
-        nilaiA: 6025,
-        nilaiB: 6357,
-        posisi: { top: "75%", left: "22%" },
-      },
-      {
-        id: 5,
-        name: "Seksi 5",
-        panjang: 15.2,
-        persen: 74,
-        nilaiA: 5000,
-        nilaiB: 3700,
-        posisi: { top: "13%", left: "40%" },
-      },
-    ]);
+    fetchRuasData();
   }, []);
-
-  //   const posisiRuas = {
-  //     seksi1: { top: "55%", left: "55%" },
-  //     seksi2: { top: "30%", left: "75%" },
-  //     seksi3: { top: "40%", left: "25%" },
-  //     seksi4: { top: "60%", left: "30%" },
-  //     seksi5: { top: "35%", left: "40%" },
-  //   }
-
-  // const mappedRuasData = ruasData.map((ruas) => {
-  //   const seksiKey = `seksi${ruas.id}`;
-  //   return { ...ruas, posisi: posisiRuas[seksiKey] };
-  // });
 
   const isDark = theme === "dark";
 
@@ -138,14 +167,58 @@ export const BebanRuas: React.FC = () => {
         />
 
         <main className="p-10 relative">
-          <div className="flex flex-col justify-end mb-3">
-            <h1 className="text-2xl text-white font-bold">Beban Ruas</h1>
-            <div>
+          <div className="flex flex-row justify-between mb-3">
+            <div className="flex flex-col">
+              <h1 className="text-2xl text-white font-bold">Beban Ruas</h1>
               <p className="text-xs font-semibold text-gray-400">
                 Pantau Detail dari setiap ruas
               </p>
             </div>
+            <div className="flex items-center gap-2 mt-2 p-3 md:mt-0">
+              <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
+                <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date: Date) => setStartDate(date)}
+                  dateFormat="dd/MM/yyyy"
+                  className="bg-transparent w-24 outline-none text-white"
+                />
+              </div>
+              <div className="flex items-center">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 12H19M19 12L12 5M19 12L12 19"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
+                <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
+                <DatePicker
+                  selected={endDate}
+                  onChange={(date: Date) => setEndDate(date)}
+                  dateFormat="dd/MM/yyyy"
+                  className="bg-transparent  w-24 outline-none text-white"
+                />
+              </div>
+              <Button
+                onClick={fetchRuasData}
+                className="bg-white text-black rounded hover:bg-gray-200"
+              >
+                Search
+              </Button>
+            </div>
           </div>
+
           <div className="relative w-full h-[90vh] bg-dashboard-accent rounded-lg">
             <img
               src="/gate/tolgatemap.svg"
@@ -165,10 +238,9 @@ export const BebanRuas: React.FC = () => {
               >
                 <SeksiCard
                   name={ruas.name}
-                  panjang={ruas.panjang}
                   persen={ruas.persen}
-                  nilaiA={ruas.nilaiA}
-                  nilaiB={ruas.nilaiB}
+                  binisPlanLhr={ruas.binisPlanLhr}
+                  realisasiLhr={ruas.realisasiLhr}
                 />
               </div>
             ))}
