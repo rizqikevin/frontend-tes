@@ -36,6 +36,7 @@ import {
   UserX2Icon,
   UsersRoundIcon,
   DotIcon,
+  BookOpenTextIcon,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 
@@ -310,6 +311,13 @@ export const DashboardSidebar: React.FC = () => {
               icon={<PencilLine size={18} />}
               text="ODOL"
               to="/odol"
+            />
+          </div>
+          <div className="px-3 mb-2">
+            <SidebarItem
+              icon={<BookOpenTextIcon size={18} />}
+              text="Beban Ruas"
+              to="/beban-ruas"
             />
           </div>
           <div className="px-3 mb-2">

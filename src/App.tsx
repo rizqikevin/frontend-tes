@@ -44,6 +44,7 @@ import { useIncidentSpeech } from "./hooks/useIncidentSpeech";
 import UsersLevel from "./pages/UsersLevel";
 import Odol from "./pages/Odol";
 import DetailOdol from "./components/DetailOdol";
+import BebanRuas from "./pages/BebasRuas";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -138,6 +139,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <Incident />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/beban-ruas"
+                element={
+                  <ProtectedRoute>
+                    <BebanRuas />
                   </ProtectedRoute>
                 }
               />
