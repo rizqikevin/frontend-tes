@@ -4,62 +4,74 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
+  LineElement,
+  PointElement,
   Tooltip,
   Legend,
   ChartData,
   ChartOptions,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import { useOdolComparisonStore } from "@/stores/useOdolComparisonStore";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
+import { useGerbangOdolChartStore } from "@/stores/useGerbangOdolChartStore";
 
 // Register Chart.js modules
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Tooltip,
+  Legend
+);
 
 export const ComparisonChart5: React.FC = () => {
-  const { fetchOdolData, title } = useOdolComparisonStore();
+  const { labels, datasets, fetchGerbangOdolChartData, title } =
+    useGerbangOdolChartStore();
   const { start_date, end_date } = useDateFilterStore();
 
   useEffect(() => {
-    fetchOdolData();
+    fetchGerbangOdolChartData();
   }, [start_date, end_date]);
 
-  const labels = [
-    "Kuala Tanjung",
-    "Indrapura",
-    "Tebing Tinggi",
-    "Dolok Merawan",
-    "Sinaksak",
-    "Simpang Pane",
-  ];
-
-  const dataByStatus = {
-    ODOL: [40, 20, 29, 20, 20, 20],
-    Normal: [20, 20, 25, 20, 20, 20],
-  };
-
   const colors: Record<string, string> = {
-    ODOL: "#f44336", // merah
-    Normal: "#4caf50", // hijau
+    ODOL: "#f44336",
+    OD: "#ff9800",
+    OL: "#ffeb3b",
+    Normal: "#4caf50",
   };
 
-  const data: ChartData<"bar", number[], string> = {
+  // Filter out 'total' dataset
+  const filteredDatasets = datasets
+    .filter((ds) => ds.label.toLowerCase() !== "total")
+    .map((ds) => ({
+      ...ds,
+      backgroundColor: colors[ds.label] || "#999",
+      borderColor: colors[ds.label] || "#999",
+      borderWidth: 2,
+      borderRadius(ctx, options) {
+        options = options || {};
+        const { dataIndex } = ctx;
+        if (dataIndex !== undefined) {
+          return { topLeft: 10, topRight: 10, bottomLeft: 0, bottomRight: 0 };
+        }
+        return 0;
+      },
+      barThickness: ds.type === "bar" ? 25 : undefined,
+      fill: ds.type === "line" ? false : undefined,
+    }));
+
+  const chartData: ChartData<"bar" | "line", number[], string> = {
     labels,
-    datasets: Object.entries(dataByStatus).map(([label, values]) => ({
-      label,
-      data: values,
-      backgroundColor: colors[label],
-      borderSkipped: false,
-      borderRadius: 6,
-      barThickness: 45,
-    })),
+    datasets: filteredDatasets,
   };
 
-  const options: ChartOptions<"bar"> = {
+  const options: ChartOptions<"bar" | "line"> = {
     responsive: true,
     plugins: {
       legend: {
-        position: "top" as const,
+        position: "top",
         labels: { color: "#fff" },
       },
       datalabels: {
@@ -69,12 +81,15 @@ export const ComparisonChart5: React.FC = () => {
     scales: {
       y: {
         beginAtZero: true,
-        max: 100,
         ticks: {
           color: "#fff",
-          callback: (val) => `${val}%`,
+          callback: function (value) {
+            return Number(value).toLocaleString("id-ID");
+          },
         },
-        grid: { color: "rgba(255,255,255,0.1)" },
+        grid: {
+          color: "rgba(255,255,255,0.1)",
+        },
       },
       x: {
         ticks: { color: "#fff" },
@@ -86,13 +101,13 @@ export const ComparisonChart5: React.FC = () => {
   return (
     <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
       <h2 className="text-sm mb-2 font-semibold uppercase text-white">
-        Perbandingan Kepatuhan dalam Tiap Gerbang
+        {title}
       </h2>
 
       {/* Chart */}
-      <Chart type="bar" data={data} options={options} height={200} />
+      <Chart type="bar" data={chartData} options={options} height={200} />
 
-      {/* Table */}
+      {/* Table Persentase */}
       <div className="overflow-x-auto mt-6">
         <table className="w-full text-sm text-white text-center border-collapse">
           <thead>
@@ -106,21 +121,33 @@ export const ComparisonChart5: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {Object.entries(dataByStatus).map(([status, values]) => (
-              <tr key={status} className="border-t border-gray-600">
-                <td
-                  className="py-2 font-semibold text-left px-2"
-                  style={{ color: colors[status] }}
-                >
-                  {status}
-                </td>
-                {values.map((val, i) => (
-                  <td key={i} className="py-2">
-                    {val}%
+            {filteredDatasets.map(({ label, data }) => {
+              const totalPerLabel = data.map((_, i) =>
+                filteredDatasets.reduce((sum, ds) => sum + ds.data[i], 0)
+              );
+
+              const percentages = data.map((val, i) =>
+                totalPerLabel[i]
+                  ? ((val / totalPerLabel[i]) * 100).toFixed(1)
+                  : "0.0"
+              );
+
+              return (
+                <tr key={label} className="border-t border-gray-600">
+                  <td
+                    className="py-2 font-semibold text-left px-2"
+                    style={{ color: colors[label] }}
+                  >
+                    {label}
                   </td>
-                ))}
-              </tr>
-            ))}
+                  {percentages.map((pct, i) => (
+                    <td key={i} className="py-2">
+                      {pct}%
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

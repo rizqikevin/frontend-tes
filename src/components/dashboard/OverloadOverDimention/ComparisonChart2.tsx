@@ -17,7 +17,7 @@ import { Chart } from "react-chartjs-2";
 import { useMonthlyOdolChartStore } from "@/stores/useMonthlyOdolChartStore";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
-// Register components
+// Register ChartJS components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -53,38 +53,51 @@ export const ComparisonChart2: React.FC = () => {
     "Nov",
     "Dec",
   ];
-
   const displayLabels = labels.length ? labels : defaultLabels;
 
+  // Hapus dataset total dari chart
+  const filteredDatasets = datasets.filter((ds) => ds.label !== "Total");
+
+  // Hitung persentase per kategori berdasarkan total per bulan
+  const totalPerLabel = displayLabels.map((_, i) =>
+    filteredDatasets.reduce((sum, ds) => sum + (ds.data[i] || 0), 0)
+  );
+
+  const percentageMap: Record<string, string[]> = {};
+  filteredDatasets.forEach((ds) => {
+    percentageMap[ds.label] = ds.data.map((val, i) =>
+      totalPerLabel[i] ? ((val / totalPerLabel[i]) * 100).toFixed(1) : "0.0"
+    );
+  });
+
+  // Dataset untuk chart
   const chartData: ChartData<"bar" | "line", number[], string> = {
     labels: displayLabels,
-    datasets: datasets.length
-      ? datasets.map((ds) => {
-          const baseStyle = {
-            label: ds.label,
-            data: ds.data,
-          };
+    datasets: filteredDatasets.map((ds) => {
+      const baseStyle = {
+        label: ds.label,
+        data: ds.data,
+      };
 
-          if (ds.type === "bar") {
-            return {
-              ...baseStyle,
-              type: "bar" as const,
-              backgroundColor: ds.label === "ODOL" ? "#d32f2f" : "#4caf50",
-              borderRadius: 4,
-              barThickness: 15,
-            };
-          } else {
-            return {
-              ...baseStyle,
-              type: "line" as const,
-              borderColor: "#ffb300",
-              borderWidth: 2,
-              pointRadius: 0,
-              tension: 0.4,
-            };
-          }
-        })
-      : [],
+      if (ds.type === "bar") {
+        return {
+          ...baseStyle,
+          type: "bar" as const,
+          backgroundColor: ds.label === "ODOL" ? "#d32f2f" : "#4caf50",
+          borderRadius: 4,
+          barThickness: 15,
+        };
+      } else {
+        return {
+          ...baseStyle,
+          type: "line" as const,
+          borderColor: "#ffb300",
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.4,
+        };
+      }
+    }),
   };
 
   const options: ChartOptions<"bar" | "line"> = {
@@ -93,37 +106,24 @@ export const ComparisonChart2: React.FC = () => {
       legend: {
         display: true,
         position: "top",
-        labels: {
-          color: "#fff",
-        },
+        labels: { color: "#fff" },
       },
-      datalabels: {
-        display: false,
-      },
+      datalabels: { display: false },
     },
     scales: {
       y: {
         ticks: {
           color: "#fff",
-          callback: (value) => `${(+value / 1000).toFixed(0)}K`,
+          callback: (value) => `${(+value / 1000).toFixed(0)}K`, // tampilkan angka tanpa persen
         },
-        grid: {
-          color: "rgba(255,255,255,0.1)",
-        },
+        grid: { color: "rgba(255,255,255,0.1)" },
       },
       x: {
-        ticks: {
-          color: "#fff",
-        },
-        grid: {
-          display: false,
-        },
+        ticks: { color: "#fff" },
+        grid: { display: false },
       },
     },
   };
-
-  const odolDataset = datasets.find((ds) => ds.label === "ODOL");
-  const normalDataset = datasets.find((ds) => ds.label === "Normal");
 
   return (
     <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
@@ -148,30 +148,26 @@ export const ComparisonChart2: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {odolDataset && (
-              <tr className="border-t border-gray-600">
-                <td className="py-2 font-semibold text-left px-2 text-red-500">
-                  ODOL
+            {filteredDatasets.map((ds) => (
+              <tr key={ds.label} className="border-t border-gray-600">
+                <td
+                  className={`py-2 font-semibold text-left px-2 ${
+                    ds.label === "ODOL"
+                      ? "text-red-500"
+                      : ds.label === "Normal"
+                      ? "text-green-500"
+                      : "text-white"
+                  }`}
+                >
+                  {ds.label}
                 </td>
-                {odolDataset.data.map((val, idx) => (
-                  <td key={idx} className="py-2">
+                {percentageMap[ds.label].map((val, idx) => (
+                  <td key={idx} className="py-2 text-xs">
                     {val}%
                   </td>
                 ))}
               </tr>
-            )}
-            {normalDataset && (
-              <tr className="border-t border-gray-600">
-                <td className="py-2 font-semibold text-left px-2 text-green-500">
-                  Normal
-                </td>
-                {normalDataset.data.map((val, idx) => (
-                  <td key={idx} className="py-2">
-                    {val}%
-                  </td>
-                ))}
-              </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>

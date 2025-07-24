@@ -10,29 +10,28 @@ import {
   ChartOptions,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import { useOdolComparisonStore } from "@/stores/useOdolComparisonStore";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
+import { useOdolByGolonganStore } from "@/stores/useOdolByGolonganStore";
 
 // Register Chart.js modules
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 export const ComparisonChart1: React.FC = () => {
-  const { labels, odolData, fetchOdolData, title } = useOdolComparisonStore();
+  const { labels, odolData, fetchOdolData, title, percentages, isloading } =
+    useOdolByGolonganStore();
   const { start_date, end_date } = useDateFilterStore();
 
   useEffect(() => {
-    fetchOdolData();
+    const fetchAll = async () => {
+      await fetchOdolData();
+    };
+    fetchAll();
   }, [start_date, end_date]);
 
   const defaultLabels = ["Gol 1", "Gol 2", "Gol 3", "Gol 4", "Gol 5"];
   const displayLabels = labels.length ? labels : defaultLabels;
 
-  const dataByStatus = {
-    ODOL: [2000, 1400, 1300, 300, 500],
-    OL: [900, 800, 1000, 1500, 800],
-    OD: [1300, 700, 1900, 1100, 1300],
-    Normal: [1800, 1600, 2200, 1000, 1900],
-  };
+  const dataByStatus = odolData;
 
   const colors: Record<string, string> = {
     ODOL: "#f44336",
@@ -48,7 +47,14 @@ export const ComparisonChart1: React.FC = () => {
       data,
       backgroundColor: colors[label],
       borderSkipped: false,
-      borderRadius: 8,
+      borderRadius(ctx, options) {
+        options = options || {};
+        const { dataIndex } = ctx;
+        if (dataIndex !== undefined) {
+          return { topLeft: 10, topRight: 10, bottomLeft: 0, bottomRight: 0 };
+        }
+        return 0;
+      },
       barThickness: 30,
     })),
   };
@@ -76,6 +82,38 @@ export const ComparisonChart1: React.FC = () => {
       },
     },
   };
+
+  if (isloading) {
+    return (
+      <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
+        <h2 className="text-sm mb-2 font-semibold uppercase text-white">
+          {title}
+        </h2>
+        <div className="flex justify-center items-center h-[370px] w-full">
+          <svg
+            className="animate-spin h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4"
+            />
+          </svg>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
@@ -108,11 +146,17 @@ export const ComparisonChart1: React.FC = () => {
                 >
                   {status}
                 </td>
-                {values.map((val, i) => (
-                  <td key={i} className="py-2">
-                    {val}
-                  </td>
-                ))}
+                {values.map((_, i) => {
+                  const percent =
+                    percentages?.[status]?.[i] !== undefined
+                      ? `${percentages[status][i].toFixed(1)}%`
+                      : "-";
+                  return (
+                    <td key={i} className="py-2">
+                      {percent}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>

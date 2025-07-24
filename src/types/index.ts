@@ -24,4 +24,8 @@ export interface VehicleData {
   updated: string;
   created_at: string;
   tgl: string;
+  gps: {
+    mileage: number;
+    fuel: number;
+  };
 }

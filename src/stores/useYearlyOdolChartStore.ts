@@ -13,6 +13,7 @@ interface YearlyOdolChartStore {
   title: string;
   labels: string[];
   datasets: Dataset[];
+  isloading: boolean;
   fetchYearlyChartData: () => Promise<void>;
 }
 
@@ -20,10 +21,12 @@ export const useYearlyOdolChartStore = create<YearlyOdolChartStore>((set) => ({
   title: "",
   labels: [],
   datasets: [],
+  isloading: false,
 
   fetchYearlyChartData: async () => {
     const { start_date, end_date } = useDateFilterStore.getState();
     try {
+      set({ isloading: true });
       const res = await api.get("/odol/chart/yearly", {
         params: {
           start_time: start_date,
@@ -41,6 +44,7 @@ export const useYearlyOdolChartStore = create<YearlyOdolChartStore>((set) => ({
       }));
 
       set({
+        isloading: false,
         labels: chartData.labels,
         datasets: parsedDatasets,
         title,

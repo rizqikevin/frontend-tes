@@ -58,6 +58,7 @@ export const useGpsStore = create<GpsState>((set) => ({
           !isNaN(parseFloat(v.lon))
       );
       set({ vehicles: validVehicles });
+      console.log("Vehicles:", validVehicles);
     } catch (error) {
       toast.error("Failed to fetch vehicles", error);
     } finally {

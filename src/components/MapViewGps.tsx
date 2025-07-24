@@ -201,6 +201,9 @@ export default function MapViewGps({
                 <p className="text-sm">Plat: {vehicle.vehicle_number}</p>
                 <p className="text-sm">Kecepatan: {vehicle.speed} Km/h</p>
                 <p className="text-sm">
+                  Jarak Tempuh : {vehicle.gps.mileage} Km
+                </p>
+                <p className="text-sm">
                   Status:{" "}
                   <span
                     className={isInside ? "text-green-600" : "text-red-600"}

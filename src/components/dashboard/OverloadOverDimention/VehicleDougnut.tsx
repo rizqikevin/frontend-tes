@@ -19,7 +19,10 @@ export const VehichleDougnut = () => {
   const { start_date, end_date } = useDateFilterStore();
 
   useEffect(() => {
-    fetchChartData();
+    const fetchAll = async () => {
+      await fetchChartData();
+    };
+    fetchAll();
   }, [start_date, end_date]);
 
   if (!chartData || chartData.datasets.length === 0) {

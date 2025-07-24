@@ -31,7 +31,7 @@ ChartJS.register(
 );
 
 export const ComparisonChart3: React.FC = () => {
-  const { labels, datasets, fetchYearlyChartData, title } =
+  const { labels, datasets, fetchYearlyChartData, title, isloading } =
     useYearlyOdolChartStore();
   const { start_date, end_date } = useDateFilterStore();
 
@@ -43,10 +43,22 @@ export const ComparisonChart3: React.FC = () => {
     ? labels
     : ["2021", "2022", "2023", "2024", "2025"];
 
+  const filteredDatasets = datasets.filter((ds) => ds.label !== "Total");
+  const totalPerLabel = displayLabels.map((_, i) =>
+    filteredDatasets.reduce((sum, ds) => sum + (ds.data[i] || 0), 0)
+  );
+
+  const percentageMap: Record<string, string[]> = {};
+  filteredDatasets.forEach((ds) => {
+    percentageMap[ds.label] = ds.data.map((val, i) =>
+      totalPerLabel[i] ? ((val / totalPerLabel[i]) * 100).toFixed(1) : "0.0"
+    );
+  });
+
   const chartData: ChartData<"bar" | "line", number[], string> = {
     labels: displayLabels,
-    datasets: datasets.length
-      ? datasets.map((ds) => {
+    datasets: filteredDatasets.length
+      ? filteredDatasets.map((ds) => {
           const base = {
             label: ds.label,
             data: ds.data,
@@ -112,6 +124,37 @@ export const ComparisonChart3: React.FC = () => {
   const odolDataset = datasets.find((ds) => ds.label === "ODOL");
   const normalDataset = datasets.find((ds) => ds.label === "Normal");
 
+  if (isloading) {
+    return (
+      <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
+        <h2 className="text-sm mb-2 font-semibold uppercase text-white">
+          {title}
+        </h2>
+        <div className="flex justify-center items-center h-full">
+          <svg
+            className="animate-spin h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4"
+            />
+          </svg>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
       <h2 className="text-sm mb-2 font-semibold uppercase text-white">
@@ -135,30 +178,26 @@ export const ComparisonChart3: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {odolDataset && (
-              <tr className="border-t border-gray-600">
-                <td className="py-2 font-semibold text-left px-2 text-red-500">
-                  ODOL
+            {filteredDatasets.map((ds) => (
+              <tr key={ds.label} className="border-t border-gray-600">
+                <td
+                  className={`py-2 font-semibold text-left px-2 ${
+                    ds.label === "ODOL"
+                      ? "text-red-500"
+                      : ds.label === "Normal"
+                      ? "text-green-500"
+                      : "text-white"
+                  }`}
+                >
+                  {ds.label}
                 </td>
-                {odolDataset.data.map((val, i) => (
-                  <td key={i} className="py-2">
+                {percentageMap[ds.label].map((val, idx) => (
+                  <td key={idx} className="py-2 text-xs">
                     {val}%
                   </td>
                 ))}
               </tr>
-            )}
-            {normalDataset && (
-              <tr className="border-t border-gray-600">
-                <td className="py-2 font-semibold text-left px-2 text-green-500">
-                  Normal
-                </td>
-                {normalDataset.data.map((val, i) => (
-                  <td key={i} className="py-2">
-                    {val}%
-                  </td>
-                ))}
-              </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>
