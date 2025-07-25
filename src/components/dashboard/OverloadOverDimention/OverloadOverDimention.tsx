@@ -16,7 +16,7 @@ export const OverloadOverDimention: React.FC = () => {
         <VehichleDougnut />
         <div className="flex flex-col gap-2">
           <div className="w-full flex flex-row gap-4 justify-between">
-            <div className="w-full h-[200px]">
+            <div className="w-full h-full">
               <VehicleSummaryPanel />
             </div>
 

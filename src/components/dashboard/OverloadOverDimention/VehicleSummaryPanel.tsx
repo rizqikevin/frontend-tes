@@ -23,12 +23,10 @@ export const VehicleSummaryPanel: React.FC = () => {
   const total = data.reduce((sum, val) => sum + val, 0);
 
   return (
-    <div className="bg-[#2b2b2b] rounded-md p-4 flex flex-col justify-between w-full min-h-[228px]">
-      <p className="text-sm text-white font-semibold mb-2">
-        {chartTitle || "Total Kendaraan"}
-      </p>
+    <div className="bg-[#2b2b2b] rounded-lg p-4 flex flex-col justify-between w-full h-full">
+      <p className="text-xl text-white font-semibold mb-2">{chartTitle}</p>
 
-      <div className="text-sm text-gray-200 space-y-2 mb-4">
+      <div className="text-xl text-gray-200 space-y-2 mb-4">
         {labels.map((label, idx) => {
           const value = data[idx];
           const percentage = ((value / total) * 100).toFixed(1);

@@ -74,13 +74,13 @@ export const BebanRuas: React.FC = () => {
 
   const fetchRuasData = async () => {
     const posisiMapping: { [key: number]: { top: string; left: string } } = {
-      1: { top: "85%", left: "24%" }, // SINAKSAK - SIMPANG PANEI
-      2: { top: "42%", left: "25%" }, // DOLOK MERAWAN -SINAKSAK
-      3: { top: "1000%", left: "30%" }, // JC TEBING TINGGI - DOLOK MERAWAN
-      4: { top: "15%", left: "80%" }, // KUALA TANJUNG - INDRAPURA
+      1: { top: "82%", left: "25%" }, // SINAKSAK - SIMPANG PANEI
+      2: { top: "60%", left: "25%" }, // DOLOK MERAWAN -SINAKSAK
+      3: { top: "41%", left: "25%" }, // JC TEBING TINGGI - DOLOK MERAWAN
+      4: { top: "15%", left: "81%" }, // KUALA TANJUNG - INDRAPURA
       5: { top: "1000%", left: "59%" }, // INDRAPURA - SS INDRAPURA
-      6: { top: "17%", left: "55%" }, // TEBING TINGGI - SS INDRAPURA
-      7: { top: "17%", left: "30%" }, // JC TEBING TINGGI - TEBING TINGGI
+      6: { top: "42%", left: "57%" }, // TEBING TINGGI - SS INDRAPURA
+      7: { top: "23%", left: "33%" }, // JC TEBING TINGGI - TEBING TINGGI
     };
 
     try {

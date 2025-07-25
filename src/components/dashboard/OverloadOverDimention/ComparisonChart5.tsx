@@ -109,12 +109,17 @@ export const ComparisonChart5: React.FC = () => {
 
       {/* Table Persentase */}
       <div className="overflow-x-auto mt-6">
-        <table className="w-full text-sm text-white text-center border-collapse">
+        <table className="w-full text-sm text-white border-collapse">
           <thead>
             <tr className="border-t border-gray-600">
-              <th className="py-2 border-b border-gray-600">Status</th>
+              <th className="py-1 pl-2 text-left border-b border-gray-600">
+                Status
+              </th>
               {labels.map((label) => (
-                <th key={label} className="py-2 border-b border-gray-600">
+                <th
+                  key={label}
+                  className="py-1 pl-0 text-left border-b border-gray-600"
+                >
                   {label}
                 </th>
               ))}
@@ -135,13 +140,13 @@ export const ComparisonChart5: React.FC = () => {
               return (
                 <tr key={label} className="border-t border-gray-600">
                   <td
-                    className="py-2 font-semibold text-left px-2"
+                    className="py-1 pl-2 text-left font-semibold"
                     style={{ color: colors[label] }}
                   >
                     {label}
                   </td>
                   {percentages.map((pct, i) => (
-                    <td key={i} className="py-2">
+                    <td key={i} className="py-1 pl-2 text-left">
                       {pct}%
                     </td>
                   ))}

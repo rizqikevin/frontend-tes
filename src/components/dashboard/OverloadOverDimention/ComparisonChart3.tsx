@@ -69,7 +69,19 @@ export const ComparisonChart3: React.FC = () => {
               ...base,
               type: "bar" as const,
               backgroundColor: ds.label === "ODOL" ? "#d32f2f" : "#4caf50",
-              borderRadius: 4,
+              borderRadius(ctx, options) {
+                options = options || {};
+                const { dataIndex } = ctx;
+                if (dataIndex !== undefined) {
+                  return {
+                    topLeft: 10,
+                    topRight: 10,
+                    bottomLeft: 0,
+                    bottomRight: 0,
+                  };
+                }
+                return 0;
+              },
               barThickness: 25,
             };
           } else {

@@ -60,8 +60,6 @@ api2.interceptors.request.use(
     const token = "Basic YWRtaW46c2VjcmV0";
 
     if (token && config.headers) {
-      config.headers["Accept"] = "*/*";
-      config.headers["User-Agent"] = "Apidog/1.0.0 (https://apidog.com)";
       config.headers["Authorization"] = token;
     }
 

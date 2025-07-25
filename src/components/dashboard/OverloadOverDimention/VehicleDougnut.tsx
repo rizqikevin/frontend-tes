@@ -67,7 +67,7 @@ export const VehichleDougnut = () => {
         offset: 20,
         font: {
           weight: "bold",
-          size: 40,
+          size: 45,
         },
       },
     },
@@ -77,7 +77,7 @@ export const VehichleDougnut = () => {
 
   return (
     <div className="bg-[#2b2b2b] rounded-lg p-4 shadow-sm text-white w-auto flex flex-col justify-between">
-      <div className="flex justify-between mb-4 text-sm font-semibold">
+      <div className="flex justify-between mb-4 text-xl font-semibold">
         <span>{chartTitle || "Semua Golongan"}</span>
         <span>{chartDate || "-"}</span>
       </div>
@@ -85,11 +85,11 @@ export const VehichleDougnut = () => {
         <Doughnut data={data} options={options} />
       </div>
       <div className="flex flex-row text-sm mt-4 gap-2 justify-center">
-        <span className="flex items-center gap-1 text-white">
-          <span className="text-lg leading-3 text-green-500">●</span> Patuh
+        <span className="flex text-2xl items-center gap-1 text-white">
+          <span className=" leading-3 text-green-500">●</span> Patuh
         </span>
-        <span className="flex items-center gap-1 text-white">
-          <span className="text-lg leading-3 text-red-500">●</span> Tidak Patuh
+        <span className="flex  text-2xl items-center gap-1 text-white">
+          <span className="leading-3 text-red-500">●</span>Tidak Patuh
         </span>
       </div>
     </div>
