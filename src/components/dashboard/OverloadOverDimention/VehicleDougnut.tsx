@@ -10,6 +10,8 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { useGolonganChartStore } from "@/stores/useGolonganChartStore";
 import { useEffect } from "react";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
@@ -91,6 +93,11 @@ export const VehichleDougnut = () => {
         <span className="flex  text-2xl items-center gap-1 text-white">
           <span className="leading-3 text-red-500">●</span>Tidak Patuh
         </span>
+        <Link to={"/odol"} className="ml-auto">
+          <Button className="text-xs text-ri text-white bg-dashboard-accent shadow-sm hover:bg-blue-600 px-3 py-1 rounded-md flex items-center gap-1">
+            <span className="font-semibold">Selengkapnya</span>
+          </Button>
+        </Link>
       </div>
     </div>
   );

@@ -61,7 +61,7 @@ const VehicleStatusCard: React.FC = () => {
     <div className="bg-[#2D2D2D] p-4 rounded-lg text-white w-full">
       <h2 className="text-xl font-semibold mb-4">Status Kendaraan</h2>
 
-      <div className="space-y-2 mb-5 text-xl">
+      <div className="space-y-2 mb-5 text-sm">
         {statusData.map((item) => (
           <div key={item.label} className="flex justify-between items-center">
             <div className="flex items-center gap-2">
@@ -77,12 +77,12 @@ const VehicleStatusCard: React.FC = () => {
         <div className="text-sm text-gray-400 mb-1">
           Total Kendaraan Tidak Patuh
         </div>
-        <div className="text-lg font-bold">{totalTidakPatuh} Kendaraan</div>
+        <div className="text-sm font-bold">{totalTidakPatuh} Kendaraan</div>
       </div>
 
       <div className="mb-2">
         <div className="text-sm text-gray-400 mb-1">Total Normal</div>
-        <div className="text-lg font-bold">{data.total_normal} Kendaraan</div>
+        <div className="text-sm font-bold">{data.total_normal} Kendaraan</div>
       </div>
     </div>
   );
