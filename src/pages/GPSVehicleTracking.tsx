@@ -8,6 +8,7 @@ import MapViewGps from "@/components/MapViewGps";
 import Header from "@/components/Header";
 import { useGpsStore, useTrackGpsStore } from "@/stores/useGpsStore";
 import DatePicker from "react-datepicker";
+import { useMileageStore } from "@/stores/useMileageStore";
 
 export const GPSVehicleTracking: React.FC = () => {
   const { user, logout } = useAuth();
@@ -20,7 +21,6 @@ export const GPSVehicleTracking: React.FC = () => {
     fetchVehicles,
     isVehicleLoading,
   } = useGpsStore();
-
   const {
     trackData,
     fetchTrackData,
@@ -37,6 +37,21 @@ export const GPSVehicleTracking: React.FC = () => {
     setLimit,
     total,
   } = useTrackGpsStore();
+  const { fetchMileage, data } = useMileageStore();
+
+  useEffect(() => {
+    fetchMileage();
+  }, [startDate]);
+
+  console.log(data);
+
+  const mappedData = Object.values(data).map((item) => ({
+    id: item.id,
+    mileage: item.mileage,
+    fuel: item.fuel,
+  }));
+
+  console.log(mappedData);
 
   const totalPages = Math.ceil(total / limit);
 
@@ -132,11 +147,9 @@ export const GPSVehicleTracking: React.FC = () => {
 
                   <div className="flex justify-center items-center gap-8 text-white p-4 rounded">
                     <div className="text-center">
-                      <div className="text-sm text-gray-400">
-                        Status Kendaraan
-                      </div>
+                      <div className="text-sm text-gray-400">Jarak Tempuh</div>
                       <div className="text-lg font-semibold">
-                        {selectedVehicle.status ?? "-"}
+                        {selectedVehicle.gps?.mileage ?? 0} Km
                       </div>
                     </div>
 
@@ -146,6 +159,14 @@ export const GPSVehicleTracking: React.FC = () => {
                       <div className="text-sm text-gray-400">Average Speed</div>
                       <div className="text-lg font-semibold">
                         {selectedVehicle.speed?.toFixed(2) ?? 0} Km/h
+                      </div>
+                    </div>
+                    <div className="h-8 w-px bg-gray-600"></div>
+
+                    <div className="text-center">
+                      <div className="text-sm text-gray-400">Konsumsi BBM</div>
+                      <div className="text-lg font-semibold">
+                        {selectedVehicle.gps?.fuel ?? 0} L
                       </div>
                     </div>
                   </div>

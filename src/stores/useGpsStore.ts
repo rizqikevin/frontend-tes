@@ -21,6 +21,8 @@ interface TrackDataState {
   endDate: Date;
   search: string;
   isTrackLoading: boolean;
+  mileage: number;
+  fuel: number;
 
   fetchTrackData: (radioId: string) => Promise<void>;
   setTotal: (total: number) => void;
@@ -70,6 +72,8 @@ export const useGpsStore = create<GpsState>((set) => ({
 
 export const useTrackGpsStore = create<TrackDataState>((set, get) => ({
   trackData: [],
+  mileage: 0,
+  fuel: 0,
   startDate: new Date(),
   endDate: new Date(),
   search: "",
@@ -87,6 +91,8 @@ export const useTrackGpsStore = create<TrackDataState>((set, get) => ({
       const res = await api.get(`/gps/track/${radioId}`, {
         params: { startDate: sDate, endDate: eDate, search, page, limit },
       });
+      set({ mileage: res.data.data.mileage });
+      set({ fuel: res.data.data.fuel });
       set({ trackData: res.data.data.rows });
       get().setTotal(res.data.data.total);
     } catch (error) {
