@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { UserRole } from "../types";
+import { toast } from "sonner";
 
 interface PrivateRouteProps {
   children: React.ReactNode;
@@ -13,8 +14,9 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   requiredRole,
 }) => {
   const { user, isLoading } = useAuth();
+  const location = useLocation();
 
-  if (isLoading || !user) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -23,6 +25,11 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
         </div>
       </div>
     );
+  }
+
+  if (!user) {
+    toast.error("You must be logged in to access this page");
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   if (requiredRole && user.role !== requiredRole) {
