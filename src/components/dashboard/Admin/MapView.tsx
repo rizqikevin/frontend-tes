@@ -81,7 +81,7 @@ export default function MapView() {
   const { incidents, clearIncidents, removeIncident } =
     useIncidentSocketStore();
   const { gismaps, fetchGismaps } = useGismapsStore();
-  const { vehicles, fetchVehicles } = useGpsStore();
+  const { vehicles, fetchVehicles, setVehiclesNearIncidents } = useGpsStore();
   console.log("vehicles from map : ", vehicles);
   // console.log("incidents from map : ", incidents);
   // console.log("gismaps from map : ", gismaps);
@@ -98,6 +98,30 @@ export default function MapView() {
       fetchVehicles();
     }
   }, [incidents]);
+
+  useEffect(() => {
+    if (vehicles.length > 0 && incidents.length > 0) {
+      const nearbyMap: Record<string, typeof vehicles> = {};
+
+      incidents.forEach((incident) => {
+        nearbyMap[incident.id] = vehicles.filter((vehicle) => {
+          const lat = parseFloat(vehicle.lat);
+          const lon = parseFloat(vehicle.lon);
+          if (isNaN(lat) || isNaN(lon)) return false;
+
+          const distance = haversineDistance(
+            incident.lat,
+            incident.lng,
+            lat,
+            lon
+          );
+          return distance <= 2;
+        });
+      });
+
+      setVehiclesNearIncidents(nearbyMap);
+    }
+  }, [vehicles, incidents]);
 
   return (
     <MapContainer
@@ -232,7 +256,7 @@ export default function MapView() {
               lat,
               lon
             );
-            return distance <= 10;
+            return distance <= 2;
           });
         })
         .map((vehicle, index) => {

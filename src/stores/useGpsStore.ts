@@ -35,14 +35,17 @@ interface TrackDataState {
 
 interface GpsState {
   vehicles: VehicleData[];
+  vehiclesNearIncidents: Record<string, VehicleData[]>;
   isVehicleLoading: boolean;
   selectedVehicle: VehicleData | null;
   fetchVehicles: () => Promise<void>;
   setSelectedVehicle: (vehicle: VehicleData | null) => void;
+  setVehiclesNearIncidents: (data: Record<string, VehicleData[]>) => void;
 }
 
 export const useGpsStore = create<GpsState>((set) => ({
   vehicles: [],
+  vehiclesNearIncidents: {},
   selectedVehicle: null,
   isVehicleLoading: false,
   isTrackLoading: false,
@@ -67,6 +70,8 @@ export const useGpsStore = create<GpsState>((set) => ({
       set({ isVehicleLoading: false });
     }
   },
+  setVehiclesNearIncidents: (vehicle) =>
+    set({ vehiclesNearIncidents: vehicle }),
   setSelectedVehicle: (vehicle) => set({ selectedVehicle: vehicle }),
 }));
 

@@ -3,17 +3,21 @@ import { useIncidentStore } from "@/stores/useIncidentStore";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNotificationStore } from "@/stores/useNotificationStore";
+import { useGpsStore } from "@/stores/useGpsStore";
 
 const IncidentCard: React.FC = () => {
   const { data, fetchData, total, expandedVideo, setExpandedVideo } =
     useIncidentStore();
   const { popupQueue } = useNotificationStore();
+  const { vehiclesNearIncidents } = useGpsStore();
 
   // console.log(incidents);
 
   useEffect(() => {
     fetchData();
-  }, [popupQueue]);
+  }, [vehiclesNearIncidents]);
+
+  console.log("vehiclesNearIncidents: ", vehiclesNearIncidents);
 
   return (
     <div className="bg-dashboard-accent text-white p-5 rounded-xl w-full h-auto">
@@ -33,7 +37,7 @@ const IncidentCard: React.FC = () => {
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-600">
         {data.slice(0, 4).map((incident) => (
           <div
             key={incident.id}
@@ -56,6 +60,20 @@ const IncidentCard: React.FC = () => {
                 <p className="text-gray-400">{incident.cam_loc}</p>
               </div>
             </div>
+            {vehiclesNearIncidents[incident.id]?.length > 0 && (
+              <div className="ml-1 text-gray-300 text-xs">
+                <p className="font-semibold text-white mb-1">
+                  Kendaraan Terdekat:
+                </p>
+                <ul className="list-disc ml-4 space-y-1">
+                  {vehiclesNearIncidents[incident.id]?.map((vehicle, i) => (
+                    <li key={i}>
+                      {vehicle.vehicle_name} - {vehicle.vehicle_number}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <span className="text-xs text-gray-400 mt-1 whitespace-nowrap">
               {new Date(incident.time_logging).toLocaleTimeString("id-ID", {
                 hour: "2-digit",
