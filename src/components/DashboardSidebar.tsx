@@ -37,6 +37,7 @@ import {
   UsersRoundIcon,
   DotIcon,
   BookOpenTextIcon,
+  Database,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 
@@ -415,6 +416,14 @@ export const DashboardSidebar: React.FC = () => {
                 }`}
               >
                 SETTINGS
+              </div>
+
+              <div className="mb-2">
+                <SidebarItem
+                  icon={<Database size={18} />}
+                  text="Master Data"
+                  to="/master-data"
+                />
               </div>
 
               {/* Account Menu */}

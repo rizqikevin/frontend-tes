@@ -12,7 +12,7 @@ const IncidentNotification = () => {
   if (!isAuth || !popupIncident || !current) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 z-[9999] flex items-center justify-center">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center">
       <div className="fixed bottom-10 right-5 z-50 bg-dashboard-accent p-4 rounded-xl text-white w-[400px]">
         <button
           onClick={dismissPopupIncident}

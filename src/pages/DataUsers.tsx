@@ -61,8 +61,8 @@ export const DataUsers: React.FC = () => {
         />
         {/* MAIN */}
         <main className="p-6 space-y-6">
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 h-[90vh]">
+          <div className="grid lg:grid-cols-1 gap-6">
+            <div className="lg:col-span-2 h-full">
               <UserTable />
             </div>
           </div>
