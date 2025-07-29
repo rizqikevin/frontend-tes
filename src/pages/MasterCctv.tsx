@@ -6,8 +6,9 @@ import { FormMasterDataVehicle } from "@/components/dashboard/Admin/masterdataVe
 import { Calendar } from "lucide-react";
 import DatePicker from "react-datepicker";
 import { Button } from "@/components/ui/button";
+import { FormMasterDataCctv } from "@/components/dashboard/Admin/masterdataCctv/FormMasterDataCctv";
 
-export const DataVehicle: React.FC = () => {
+export const DataCctv: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -114,7 +115,7 @@ export const DataVehicle: React.FC = () => {
           </div>
           <div className="grid lg:grid-cols-1 gap-6">
             <div className="lg:col-span-2 h-full">
-              <FormMasterDataVehicle />
+              <FormMasterDataCctv />
             </div>
           </div>
         </main>

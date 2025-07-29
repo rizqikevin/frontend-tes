@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "../../../ui/button";
-import { AddVehicleModal } from "@/components/dashboard/Admin/masterdata/AddVehicleModal";
+import { AddVehicleModal } from "@/components/dashboard/Admin/masterdataVehicle/AddVehicleModal";
 import api from "@/services/api";
 
 interface Vehicle {
@@ -14,7 +14,7 @@ interface Vehicle {
   average_fuel_consumption: string;
 }
 
-export const FormMasterData: React.FC = () => {
+export const FormMasterDataVehicle: React.FC = () => {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
 

@@ -46,6 +46,7 @@ import Odol from "./pages/Odol";
 import DetailOdol from "./components/DetailOdol";
 import BebanRuas from "./pages/BebasRuas";
 import { DataVehicle } from "./pages/MasterVehicle";
+import { DataCctv } from "./pages/MasterCctv";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -300,6 +301,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <DataVehicle />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/data-cctv"
+                element={
+                  <ProtectedRoute>
+                    <DataCctv />
                   </ProtectedRoute>
                 }
               />
