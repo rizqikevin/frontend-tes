@@ -37,7 +37,7 @@ const IncidentCard: React.FC = () => {
         </div>
       </div>
 
-      <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-600">
+      <div className="space-y-3 max-h-[250px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-600">
         {data.slice(0, 100).map((incident) => (
           <div
             key={incident.id}

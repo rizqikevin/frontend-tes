@@ -11,54 +11,32 @@ import CctvCard from "./CctvCard";
 import AqiCard from "@/components/airquality/aqi/AqiHeader";
 import { useAqiStore } from "@/stores/useAqiStore";
 import { useTransactionStore } from "@/stores/useTransactionCardStore";
-import BebanRuasChart from "./BebanRuasChart";
+import Filters from "../GeographicInfoSystem/Filters";
+import ErrorLog from "../GeographicInfoSystem/ErrorLog";
+import { ErrorItem } from "../GeographicInfoSystem/ErrorLog";
+import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
-const statsData = [
-  { label: "Active Gate", value: "9", date: "25/02/2025" },
-  { label: "Inactive Gate", value: "1", date: "25/02/2025" },
+const errorLogData: ErrorItem[] = [
   {
-    label: "Total Lalin Harian Rata-Rata",
-    value: "323",
-    date: "25/02/2025",
+    jenisAlat: "CCTV",
+    ruas: "Kuala Tanjung",
+    waktu: "30/04/2025, 11:12:35 WIB",
+    lamaError: "2 Hari 2 Jam",
+    status: "error",
   },
   {
-    label: "Beban Ruas",
-    value: "1000",
-    date: "25/02/2025",
-  },
-];
-
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-const sampleBarData = [
-  {
-    label: "LHR",
-    backgroundColor: "#42A5F5",
-    data: [
-      90_000, 85_000, 80_000, 70_000, 60_000, 55_000, 50_000, 48_000, 45_000,
-      44_000, 42_000, 40_000,
-    ],
+    jenisAlat: "VMS",
+    ruas: "Kuala Tanjung",
+    waktu: "01/05/2025, 13:12:35 WIB",
+    lamaError: "1 Hari 2 Jam",
+    status: "warning",
   },
   {
-    label: "Prognosa",
-    backgroundColor: "#FFEB3B",
-    data: [
-      100_000, 95_000, 90_000, 88_000, 85_000, 80_000, 75_000, 72_000, 70_000,
-      68_000, 65_000, 62_000,
-    ],
+    jenisAlat: "Toll Gate",
+    ruas: "Gerbang Sinaksak",
+    waktu: "02/05/2025, 13:12:35 WIB",
+    lamaError: "1 Jam",
+    status: "success",
   },
 ];
 
@@ -66,19 +44,22 @@ const Dashboard: React.FC = () => {
   const { data, fetchAQI } = useAqiStore();
   const { TransactionDataAdmin, fetchTransactionData, isDataLoading } =
     useTransactionStore();
+  const { start_date, end_date } = useDateFilterStore();
+  const [selectedDeviceType, setSelectedDeviceType] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   useEffect(() => {
-    fetchAQI();
-  }, []);
-
-  useEffect(() => {
-    fetchTransactionData();
+    const fetchAll = async () => {
+      await fetchAQI();
+      await fetchTransactionData();
+    };
+    fetchAll();
   }, []);
 
   // console.log(TransactionDataAdmin);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {isDataLoading ? (
         <div className="text-white flex justify-center items-center gap-2">
           <svg
@@ -107,25 +88,50 @@ const Dashboard: React.FC = () => {
         <StatsGrid statsData={TransactionDataAdmin} />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="px-72">
+        <Filters
+          selectedDeviceType={selectedDeviceType}
+          setSelectedDeviceType={setSelectedDeviceType}
+          selectedStatus={selectedStatus}
+          setSelectedStatus={setSelectedStatus}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
         <MapSection />
-        <div className=" overflow-y-auto  max-h-[70vh] scrollbar-hidden rounded-lg p-2 w-full h-auto items-center mb-4">
+        <div className=" overflow-y-auto  max-h-[70vh] scrollbar-hidden rounded-lg p-2 w-full items-center mb-4">
           <TrafficChart />
           <div className="mt-4">
-            <BebanRuasChart />
+            <ErrorLog errorLogData={errorLogData} />
           </div>
         </div>
         <div className="flex justify-end min-w-0">
           <div className="overflow-y-auto h-full max-h-[70vh] pr-1 scrollbar-hidden rounded-lg">
-            <div className="rounded-lg border p-2 w-full h-auto bg-[#082d72] items-center mb-4">
-              <WeatherCard />
+            <div className="mb-4">
+              <CctvCard
+                title="CCTV"
+                description="Monitoring CCTV"
+                date="25/02/2025"
+                active={100}
+                nonActive={10}
+              />
             </div>
-            <div className="mt-4">
-              <IncidentCard />
+            {/* <div className="mb-4">
+              <CctvCard
+                title="VMS"
+                description="Monitoring VMS"
+                date="25/02/2025"
+                active={100}
+                nonActive={10}
+              />
+            </div> */}
+
+            <div className="rounded-lg border p-2 w-full h-1/4 bg-[#082d72] items-center mb-4">
+              <WeatherCard />
             </div>
 
             <div className="mt-4">
-              <CctvCard date="25/02/2025" active={100} nonActive={10} />
+              <IncidentCard />
             </div>
 
             <div className="rounded-lg border p-4 bg-dashboard-accent max-h-[100vh] overflow-y-auto mt-4">

@@ -29,7 +29,7 @@ const Filters: React.FC<FiltersProps> = ({
   // setSelectedCondition,
 }) => {
   return (
-    <div className="flex flex-wrap px-[552px] gap-2 ">
+    <div className="flex flex-wrap gap-2 ">
       {/* <Select value={selectedRoute} onValueChange={setSelectedRoute}>
         <SelectTrigger className="w-48 bg-dashboard-accent">
           <SelectValue placeholder="Pilih Ruas Jalan" />
@@ -45,7 +45,7 @@ const Filters: React.FC<FiltersProps> = ({
         <SelectTrigger className="w-48 bg-dashboard-accent">
           <SelectValue placeholder="Semua Jenis Alat" />
         </SelectTrigger>
-        <SelectContent className="z-[9999]">
+        <SelectContent className="z-[9999] bg-dashboard-accent">
           <SelectItem value="cctv">CCTV</SelectItem>
           <SelectItem value="vms">VMS</SelectItem>
           <SelectItem value="toll-gate">Toll Gate</SelectItem>
@@ -56,7 +56,7 @@ const Filters: React.FC<FiltersProps> = ({
         <SelectTrigger className="w-48 bg-dashboard-accent">
           <SelectValue placeholder="Semua Status" />
         </SelectTrigger>
-        <SelectContent className="z-[9999]">
+        <SelectContent className="z-[9999] bg-dashboard-accent">
           <SelectItem value="active">Active</SelectItem>
           <SelectItem value="inactive">Inactive</SelectItem>
           <SelectItem value="maintenance">Maintenance</SelectItem>

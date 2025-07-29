@@ -4,16 +4,24 @@ interface CctvCardProps {
   date: string;
   active: number;
   nonActive: number;
+  title?: string;
+  description?: string;
 }
 
-const CctvCard: React.FC<CctvCardProps> = ({ date, active, nonActive }) => {
+const CctvCard: React.FC<CctvCardProps> = ({
+  date,
+  active,
+  nonActive,
+  title,
+  description,
+}) => {
   return (
     <div className="bg-dashboard-accent text-white rounded-lg p-4 w-full  shadow-md">
       {/* Header */}
       <div className="flex justify-between items-center mb-1">
         <div>
-          <h3 className="text-sm font-semibold">CCTV</h3>
-          <p className="text-xs text-gray-400">Monitoring CCTV</p>
+          <h3 className="text-sm font-semibold">{title}</h3>
+          <p className="text-xs text-gray-400">{description}</p>
         </div>
         <span className="text-xs text-gray-400">{date}</span>
       </div>

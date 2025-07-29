@@ -19,8 +19,8 @@ interface WeatherData {
 
 const WeatherCard: React.FC = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [error, setError] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -32,7 +32,6 @@ const WeatherCard: React.FC = () => {
         const response = await axios.get(
           `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=yes`
         );
-
         const data = response.data;
 
         setWeather({
@@ -49,8 +48,7 @@ const WeatherCard: React.FC = () => {
           uv: `${data.current.uv}`,
         });
       } catch (err) {
-        console.error("Failed to fetch weather data:", err);
-        toast.error("Gagal memuat data cuaca. Silakan coba lagi nanti.");
+        toast.error("Gagal memuat data cuaca.");
         setError(true);
       } finally {
         setLoading(false);
@@ -60,94 +58,56 @@ const WeatherCard: React.FC = () => {
     fetchWeather();
   }, []);
 
-  if (loading) {
+  if (loading || error || !weather) {
     return (
-      <div className="flex justify-between mb-4">
-        <div className="flex justify-between items-center px-0">
-          <div className="rounded-lg p-4 w-full h-full text-center text-gray-400">
-            Memuat data cuaca...
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex justify-between mb-4">
-        <div className="flex justify-between items-center px-0">
-          <div className="rounded-lg p-4 w-full h-full text-center text-red-400">
-            <Cloud className="mx-auto h-12 w-12 text-red-500 mb-2" />
-            <p className="font-semibold">Data cuaca tidak tersedia.</p>
-            <p className="text-sm">
-              Kami tidak dapat mengambil data cuaca saat ini.
-            </p>
-            <p className="text-sm">
-              Silakan periksa koneksi internet Anda atau coba lagi nanti.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!weather) {
-    return (
-      <div className="flex justify-between mb-4">
-        <div className="flex justify-between items-center px-0">
-          <div className="rounded-lg p-4 w-full h-full text-center text-gray-400">
-            Tidak ada data cuaca yang tersedia.
-          </div>
-        </div>
+      <div className="w-full p-4 text-center text-sm text-gray-400 bg-[#082d72] rounded-lg">
+        {error ? (
+          <>
+            <Cloud className="mx-auto h-8 w-8 text-red-500 mb-2" />
+            <p className="text-red-400 font-semibold">Cuaca tidak tersedia</p>
+            <p className="text-xs">Coba lagi nanti.</p>
+          </>
+        ) : (
+          <>Memuat data cuaca...</>
+        )}
       </div>
     );
   }
 
   return (
-    <div className="flex justify-center mb-4 ">
-      <div className="flex justify-between items-center px-0">
-        <div className="rounded-lg p-4 w-full h-full">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">
-              {weather.location || "tidak ada data"}
-            </h2>
-            <p className="text-sm text-gray-400">{weather.localTime || "-"}</p>
-          </div>
-          <div className="flex items-center justify-center space-x-3">
-            <img src={weather.icon} alt="Icon Weather" />
-            <div>
-              <p className="text-3xl font-bold">{weather.temperature || "-"}</p>
-              <p className="text-sm text-gray-400">
-                {weather.condition || "-"}
-              </p>
-            </div>
-          </div>
-          <div className="mt-4 text-sm grid grid-cols-2 gap-y-2 gap-x-4 text-gray-300">
-            <p>
-              Wind Dir:{" "}
-              <span className="text-white">{weather.windDirection || "-"}</span>
-            </p>
-            <p>
-              Wind Spd:{" "}
-              <span className="text-white">{weather.windSpeed || "-"}</span>
-            </p>
-            <p>
-              Humidity:{" "}
-              <span className="text-white">{weather.humidity || "-"}</span>
-            </p>
-            <p>
-              Pressure:{" "}
-              <span className="text-white">{weather.pressure || "-"}</span>
-            </p>
-            <p>
-              Rainfall:{" "}
-              <span className="text-white">{weather.rainfall || "-"}</span>
-            </p>
-            <p>
-              UV: <span className="text-white">{weather.uv || "-"}</span>
-            </p>
-          </div>
+    <div className="w-full rounded-lg p-1 text-sm text-white">
+      <div className="flex justify-between items-center mb-3">
+        <h2 className="text-base font-semibold">{weather.location}</h2>
+        <p className="text-xs text-gray-400">{weather.localTime}</p>
+      </div>
+
+      <div className="flex items-center justify-center gap-3">
+        <img src={weather.icon} alt="Weather Icon" className="h-10 w-10" />
+        <div>
+          <p className="text-xl font-bold">{weather.temperature}</p>
+          <p className="text-xs text-gray-400">{weather.condition}</p>
         </div>
+      </div>
+
+      <div className="mt-3 grid grid-cols-3 gap-2 text-xs text-gray-300">
+        <p>
+          Wind Dir: <span className="text-white">{weather.windDirection}</span>
+        </p>
+        <p>
+          Wind Spd: <span className="text-white">{weather.windSpeed}</span>
+        </p>
+        <p>
+          Humidity: <span className="text-white">{weather.humidity}</span>
+        </p>
+        <p>
+          Pressure: <span className="text-white">{weather.pressure}</span>
+        </p>
+        <p>
+          Rainfall: <span className="text-white">{weather.rainfall}</span>
+        </p>
+        <p>
+          UV: <span className="text-white">{weather.uv}</span>
+        </p>
       </div>
     </div>
   );
