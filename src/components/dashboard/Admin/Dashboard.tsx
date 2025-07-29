@@ -88,25 +88,17 @@ const Dashboard: React.FC = () => {
         <StatsGrid statsData={TransactionDataAdmin} />
       )}
 
-      <div className="px-72">
-        <Filters
-          selectedDeviceType={selectedDeviceType}
-          setSelectedDeviceType={setSelectedDeviceType}
-          selectedStatus={selectedStatus}
-          setSelectedStatus={setSelectedStatus}
-        />
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
         <MapSection />
-        <div className=" overflow-y-auto  max-h-[70vh] scrollbar-hidden rounded-lg p-2 w-full items-center mb-4">
+
+        <div className=" overflow-y-auto  max-h-[75vh] scrollbar-hidden rounded-lg p-2 w-full h-full items-center  flex flex-col mb-4">
           <TrafficChart />
           <div className="mt-4">
             <ErrorLog errorLogData={errorLogData} />
           </div>
         </div>
         <div className="flex justify-end min-w-0">
-          <div className="overflow-y-auto h-full max-h-[70vh] pr-1 scrollbar-hidden rounded-lg">
+          <div className="overflow-y-auto h-full max-h-[75vh] pr-1 scrollbar-hidden rounded-lg">
             <div className="mb-4">
               <CctvCard
                 title="CCTV"

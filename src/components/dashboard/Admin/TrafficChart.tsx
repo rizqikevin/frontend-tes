@@ -66,7 +66,7 @@ const TrafficChart = () => {
   };
 
   return (
-    <div className="bg-dashboard-accent rounded-lg p-4 text-white max-h-[310px]">
+    <div className="bg-dashboard-accent rounded-lg p-4 text-white w-full max-h-[400px]">
       <h2 className="text-lg font-semibold mb-4">Traffic Harian</h2>
       <div className="w-full h-[240px]">
         <Line data={data} options={options} />

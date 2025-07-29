@@ -16,7 +16,7 @@ export interface ErrorItem {
 
 const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
   return (
-    <div className="rounded-lg border p-4 bg-dashboard-accent">
+    <div className="rounded-lg border p-4 bg-dashboard-accent h-[400px]">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-semibold">Log error alat</h3>
       </div>

@@ -217,8 +217,10 @@ export const DetailOdol: React.FC = () => {
                   jam={data.jam}
                   golongan={data.golongan}
                   berat={data.berat}
-                  dimensi={data.dimensi}
+                  dimensi={data.dimensi.replace("x", "  ")}
                   status={data.status}
+                  StandarJBI={data.raw?.StandarJBI?.toString() || "N/A"}
+                  OverWeight={data.raw?.OverWeight?.toString() || "N/A"}
                 />
               </div>
             </div>

@@ -229,10 +229,12 @@ export const GPSVehicleTracking: React.FC = () => {
                     className="w-full bg-dashboard-accent px-2 py-1 rounded border border-gray-600 mb-4"
                   />
 
-                  <div className="grid grid-cols-3 text-xs text-gray-400 border-b pb-2 mb-2">
+                  <div className="grid grid-cols-5 text-xs text-gray-400 border-b pb-2 mb-2">
                     <span>Time</span>
                     <span>Speed</span>
                     <span>Device</span>
+                    <span>Longitude</span>
+                    <span>Latitude</span>
                   </div>
 
                   {isTrackLoading ? (
@@ -244,7 +246,7 @@ export const GPSVehicleTracking: React.FC = () => {
                       {trackData.map((track, i) => (
                         <div
                           key={i}
-                          className="grid grid-cols-3 text-xs border-b border-gray-600 py-3"
+                          className="grid grid-cols-5 text-xs border-b border-gray-600 py-3"
                         >
                           <span>
                             {new Date(track.updated).toLocaleDateString(
@@ -257,6 +259,8 @@ export const GPSVehicleTracking: React.FC = () => {
                           </span>
                           <span>{track.speed.toFixed(2)} Km/h</span>
                           <span>{selectedVehicle?.radio_id}</span>
+                          <span>{track.lat}</span>
+                          <span>{track.lon}</span>
                         </div>
                       ))}
                       <div className="flex justify-end items-center mt-4 text-sm">
