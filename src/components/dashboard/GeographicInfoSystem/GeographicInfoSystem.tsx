@@ -7,10 +7,6 @@ import { ErrorItem } from "./ErrorLog";
 import { useTransactionStore } from "@/stores/useTransactionCardStore";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 const GeographicInfoSystem: React.FC = () => {
-  const [selectedRoute, setSelectedRoute] = useState("");
-  const [selectedDeviceType, setSelectedDeviceType] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
-  const [selectedCondition, setSelectedCondition] = useState("");
   const { transactionData, fetchTransactionData, isDataLoading } =
     useTransactionStore();
   const { start_date, end_date } = useDateFilterStore();
@@ -73,20 +69,11 @@ const GeographicInfoSystem: React.FC = () => {
         <StatsGrid statsData={transactionData} />
       )}
 
-      <Filters
-        // selectedRoute={selectedRoute}
-        // setSelectedRoute={setSelectedRoute}
-        selectedDeviceType={selectedDeviceType}
-        setSelectedDeviceType={setSelectedDeviceType}
-        selectedStatus={selectedStatus}
-        setSelectedStatus={setSelectedStatus}
-        // selectedCondition={selectedCondition}
-        // setSelectedCondition={setSelectedCondition}
-      />
-
       <div className="grid grid-row-2 lg:grid-cols-3 gap-6">
         <MapSection />
-        <ErrorLog errorLogData={errorLogData} />
+        <div className="h-full w-full bg-dashboard-accent rounded-lg p-4 overflow-y-auto">
+          <ErrorLog errorLogData={errorLogData} />
+        </div>
       </div>
     </div>
   );

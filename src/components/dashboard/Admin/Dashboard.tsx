@@ -14,7 +14,6 @@ import { useTransactionStore } from "@/stores/useTransactionCardStore";
 import ErrorLog from "../GeographicInfoSystem/ErrorLog";
 import { ErrorItem } from "../GeographicInfoSystem/ErrorLog";
 import api from "@/services/api";
-import { m } from "framer-motion";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
 const errorLogData: ErrorItem[] = [
