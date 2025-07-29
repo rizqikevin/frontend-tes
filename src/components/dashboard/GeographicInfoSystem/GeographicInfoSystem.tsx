@@ -44,7 +44,7 @@ const GeographicInfoSystem: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3">
       {isDataLoading ? (
         <div className="text-white flex justify-center items-center gap-2">
           <svg
@@ -74,14 +74,14 @@ const GeographicInfoSystem: React.FC = () => {
       )}
 
       <Filters
-        selectedRoute={selectedRoute}
-        setSelectedRoute={setSelectedRoute}
+        // selectedRoute={selectedRoute}
+        // setSelectedRoute={setSelectedRoute}
         selectedDeviceType={selectedDeviceType}
         setSelectedDeviceType={setSelectedDeviceType}
         selectedStatus={selectedStatus}
         setSelectedStatus={setSelectedStatus}
-        selectedCondition={selectedCondition}
-        setSelectedCondition={setSelectedCondition}
+        // selectedCondition={selectedCondition}
+        // setSelectedCondition={setSelectedCondition}
       />
 
       <div className="grid grid-row-2 lg:grid-cols-3 gap-6">

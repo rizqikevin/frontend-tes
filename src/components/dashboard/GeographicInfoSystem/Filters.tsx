@@ -8,29 +8,29 @@ import {
 } from "@/components/ui/select";
 
 interface FiltersProps {
-  selectedRoute: string;
-  setSelectedRoute: (value: string) => void;
+  // selectedRoute: string;
+  // setSelectedRoute: (value: string) => void;
   selectedDeviceType: string;
   setSelectedDeviceType: (value: string) => void;
   selectedStatus: string;
   setSelectedStatus: (value: string) => void;
-  selectedCondition: string;
-  setSelectedCondition: (value: string) => void;
+  // selectedCondition: string;
+  // setSelectedCondition: (value: string) => void;
 }
 
 const Filters: React.FC<FiltersProps> = ({
-  selectedRoute,
-  setSelectedRoute,
+  // selectedRoute,
+  // setSelectedRoute,
   selectedDeviceType,
   setSelectedDeviceType,
   selectedStatus,
   setSelectedStatus,
-  selectedCondition,
-  setSelectedCondition,
+  // selectedCondition,
+  // setSelectedCondition,
 }) => {
   return (
-    <div className="flex flex-wrap px-40 gap-2 items-center">
-      <Select value={selectedRoute} onValueChange={setSelectedRoute}>
+    <div className="flex flex-wrap px-[552px] gap-2 ">
+      {/* <Select value={selectedRoute} onValueChange={setSelectedRoute}>
         <SelectTrigger className="w-48 bg-dashboard-accent">
           <SelectValue placeholder="Pilih Ruas Jalan" />
         </SelectTrigger>
@@ -39,7 +39,7 @@ const Filters: React.FC<FiltersProps> = ({
           <SelectItem value="gerbang-sinaksak">Gerbang Sinaksak</SelectItem>
           <SelectItem value="dolok-merawan">Dolok Merawan</SelectItem>
         </SelectContent>
-      </Select>
+      </Select> */}
 
       <Select value={selectedDeviceType} onValueChange={setSelectedDeviceType}>
         <SelectTrigger className="w-48 bg-dashboard-accent">
@@ -63,7 +63,7 @@ const Filters: React.FC<FiltersProps> = ({
         </SelectContent>
       </Select>
 
-      <Select value={selectedCondition} onValueChange={setSelectedCondition}>
+      {/* <Select value={selectedCondition} onValueChange={setSelectedCondition}>
         <SelectTrigger className="w-48 bg-dashboard-accent">
           <SelectValue placeholder="Semua Kondisi" />
         </SelectTrigger>
@@ -72,7 +72,7 @@ const Filters: React.FC<FiltersProps> = ({
           <SelectItem value="warning">Warning</SelectItem>
           <SelectItem value="error">Error</SelectItem>
         </SelectContent>
-      </Select>
+      </Select> */}
 
       <Button className="px-6">Search</Button>
     </div>
