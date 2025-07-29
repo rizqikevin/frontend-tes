@@ -45,7 +45,7 @@ import UsersLevel from "./pages/UsersLevel";
 import Odol from "./pages/Odol";
 import DetailOdol from "./components/DetailOdol";
 import BebanRuas from "./pages/BebasRuas";
-import MasterData from "./pages/MasterData";
+import { DataVehicle } from "./pages/MasterVehicle";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -296,10 +296,10 @@ const App = () => {
                 }
               />
               <Route
-                path="/master-data"
+                path="/data-vehicle"
                 element={
                   <ProtectedRoute>
-                    <MasterData />
+                    <DataVehicle />
                   </ProtectedRoute>
                 }
               />

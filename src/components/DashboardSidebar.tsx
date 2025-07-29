@@ -38,6 +38,11 @@ import {
   DotIcon,
   BookOpenTextIcon,
   Database,
+  Truck,
+  CameraIcon,
+  VideoIcon,
+  VideoOffIcon,
+  Videotape,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 
@@ -422,8 +427,29 @@ export const DashboardSidebar: React.FC = () => {
                 <SidebarItem
                   icon={<Database size={18} />}
                   text="Master Data"
-                  to="/master-data"
-                />
+                  hasSubmenu
+                  expanded={expandedItem === "masterData"}
+                  onClick={() => toggleExpand("masterData")}
+                >
+                  {expandedItem === "masterData" && (
+                    <div className="m-1 space-y-1">
+                      <SidebarItem
+                        icon={<Truck size={18} />}
+                        text="Vehicle"
+                        to="/data-vehicle"
+                      />
+                    </div>
+                  )}
+                  {expandedItem === "masterData" && (
+                    <div className="m-1 space-y-1">
+                      <SidebarItem
+                        icon={<Videotape size={18} />}
+                        text="CCTV"
+                        to="/data-cctv"
+                      />
+                    </div>
+                  )}
+                </SidebarItem>
               </div>
 
               {/* Account Menu */}

@@ -7,7 +7,7 @@ import { Calendar } from "lucide-react";
 import DatePicker from "react-datepicker";
 import { Button } from "@/components/ui/button";
 
-export const MasterData: React.FC = () => {
+export const DataVehicle: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -122,5 +122,3 @@ export const MasterData: React.FC = () => {
     </div>
   );
 };
-
-export default MasterData;

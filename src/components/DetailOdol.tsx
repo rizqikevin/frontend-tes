@@ -52,6 +52,22 @@ const gardanImageMap: Record<string, string> = {
   "3-2-true": "/gardan/Red/9.svg",
   "3-3-false": "/gardan/Green/10.svg",
   "3-3-true": "/gardan/Red/10.svg",
+  "4-2-false": "/gardan/Green/12.svg",
+  "4-2-true": "/gardan/Red/12.svg",
+  "4-3-false": "/gardan/Green/14.svg",
+  "4-3-true": "/gardan/Red/14.svg",
+  "4-4-false": "/gardan/Green/16.svg",
+  "4-4-true": "/gardan/Red/16.svg",
+  "5-2-false": "/gardan/Green/18.svg",
+  "5-2-true": "/gardan/Red/18.svg",
+  "5-3-false": "/gardan/Green/20.svg",
+  "5-3-true": "/gardan/Red/20.svg",
+  "5-4-false": "/gardan/Green/22.svg",
+  "5-4-true": "/gardan/Red/22.svg",
+  "5-5-false": "/gardan/Green/18.svg",
+  "5-5-true": "/gardan/Red/18.svg",
+  "6-5-true": "/gardan/Red/18.svg",
+  "6-5-false": "/gardan/Green/18.svg",
 };
 
 export const DetailOdol: React.FC = () => {
@@ -95,6 +111,7 @@ export const DetailOdol: React.FC = () => {
         const res = await api.get(`/odol/${id}`);
         const odolData: OdolDetail = res.data.data;
         setData(odolData);
+        console.log("Detail data:", odolData);
 
         if (odolData.raw) {
           setParsedRaw(odolData.raw);
