@@ -12,6 +12,7 @@ import { VehicleData } from "@/types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FullscreenControl } from "react-leaflet-fullscreen";
 import * as turf from "@turf/turf";
+import { Polyline } from "react-leaflet";
 
 export const getVehicleIcon = (type: string) => {
   switch (type) {
@@ -57,6 +58,7 @@ export const getVehicleIconOutOfBounds = (type: string) => {
 interface MapViewGpsProps {
   vehicles: VehicleData[];
   onVehicleClick: (vehicle: VehicleData) => void;
+  trackCoordinates?: [number, number][];
 }
 
 const polygon = turf.polygon([
@@ -79,6 +81,7 @@ console.log(inside);
 export default function MapViewGps({
   vehicles,
   onVehicleClick,
+  trackCoordinates,
 }: MapViewGpsProps) {
   const mapRef = useRef<Map | null>(null);
   const [locationDetails, setLocationDetails] = useState<
@@ -238,6 +241,12 @@ export default function MapViewGps({
           weight: 2,
         }}
       />
+      {trackCoordinates && trackCoordinates.length > 1 && (
+        <Polyline
+          positions={trackCoordinates}
+          pathOptions={{ color: "#1aff66", weight: 6 }}
+        />
+      )}
     </MapContainer>
   );
 }

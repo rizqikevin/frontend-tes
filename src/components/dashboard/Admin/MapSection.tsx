@@ -9,7 +9,7 @@ const MapSection = () => {
   return (
     <div className="lg:col-span-2 rounded-lg relative overflow-hidden">
       <div className=" h-auto rounded-lg">
-        <div className="mb-3 mr-0 w-full flex flex-row justify-end">
+        <div className="my-2 mr-0 w-full flex flex-row justify-end">
           <Filters
             selectedDeviceType={selectedDeviceType}
             setSelectedDeviceType={setSelectedDeviceType}

@@ -16,7 +16,7 @@ export interface ErrorItem {
 
 const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
   return (
-    <div className="rounded-lg border p-4 bg-dashboard-accent h-[400px]">
+    <div className="rounded-lg p-4 bg-dashboard-accent h-[400px]">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-semibold">Log error alat</h3>
       </div>
@@ -26,7 +26,7 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
           <SelectTrigger className="flex-1 bg-dashboard-accent">
             <SelectValue placeholder="Pilih Ruas Jalan" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-dashboard-accent border">
             <SelectItem value="kuala-tanjung">Kuala Tanjung</SelectItem>
             <SelectItem value="gerbang-sinaksak">Gerbang Sinaksak</SelectItem>
           </SelectContent>
@@ -36,7 +36,7 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
           <SelectTrigger className="flex-1 bg-dashboard-accent">
             <SelectValue placeholder="Semua Jenis Alat" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-dashboard-accent border">
             <SelectItem value="cctv">CCTV</SelectItem>
             <SelectItem value="vms">VMS</SelectItem>
             <SelectItem value="toll-gate">Toll Gate</SelectItem>

@@ -11,22 +11,6 @@ import { Link } from "react-router-dom";
 import { useOdolStore } from "@/stores/useOdolStore";
 import api from "@/services/api";
 
-interface OdolData {
-  id: string;
-  gerbang: string;
-  gardu: string;
-  noresi: number;
-  platnomor: string;
-  tanggal: string;
-  jam: string;
-  kartu: string;
-  golongan: string;
-  berat: string;
-  dimensi: string;
-  url1: string;
-  url2: string;
-}
-
 const Odol: React.FC = () => {
   const { user, logout } = useAuth();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -231,7 +215,7 @@ const Odol: React.FC = () => {
                     <th className="p-2">Nomor Kartu</th>
                     <th className="p-2">Golongan</th>
                     <th className="p-2">Data Overload</th>
-                    <th className="p-2">Data Overdimention</th>
+                    <th className="p-2">Dimention (Lebar x Tinggi)</th>
 
                     <th className="p-2">Action</th>
                   </tr>

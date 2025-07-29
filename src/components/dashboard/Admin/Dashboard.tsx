@@ -11,9 +11,10 @@ import CctvCard from "./CctvCard";
 import AqiCard from "@/components/airquality/aqi/AqiHeader";
 import { useAqiStore } from "@/stores/useAqiStore";
 import { useTransactionStore } from "@/stores/useTransactionCardStore";
-import Filters from "../GeographicInfoSystem/Filters";
 import ErrorLog from "../GeographicInfoSystem/ErrorLog";
 import { ErrorItem } from "../GeographicInfoSystem/ErrorLog";
+import api from "@/services/api";
+import { m } from "framer-motion";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 
 const errorLogData: ErrorItem[] = [
@@ -44,12 +45,29 @@ const Dashboard: React.FC = () => {
   const { data, fetchAQI } = useAqiStore();
   const { TransactionDataAdmin, fetchTransactionData, isDataLoading } =
     useTransactionStore();
+  const [statusCctv, setStatusCctv] = useState([]);
   const { start_date, end_date } = useDateFilterStore();
-  const [selectedDeviceType, setSelectedDeviceType] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
+
+  const fetchStatusCctv = async () => {
+    try {
+      const response = await api.get("/cctv/status");
+      setStatusCctv(response.data.data);
+    } catch (error) {
+      console.error("Error fetching CCTV status:", error);
+      return [];
+    }
+  };
+
+  const mappedStatusCctv = statusCctv.map((item: any) => ({
+    total_active: item.total_active,
+    total_inactive: item.total_inactive,
+  }));
+
+  console.log("statusCctv fetched", statusCctv);
 
   useEffect(() => {
     const fetchAll = async () => {
+      await fetchStatusCctv();
       await fetchAQI();
       await fetchTransactionData();
     };
@@ -59,7 +77,7 @@ const Dashboard: React.FC = () => {
   // console.log(TransactionDataAdmin);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-3">
       {isDataLoading ? (
         <div className="text-white flex justify-center items-center gap-2">
           <svg
@@ -88,38 +106,39 @@ const Dashboard: React.FC = () => {
         <StatsGrid statsData={TransactionDataAdmin} />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 ">
         <MapSection />
 
-        <div className=" overflow-y-auto  max-h-[75vh] scrollbar-hidden rounded-lg p-2 w-full h-full items-center  flex flex-col mb-4">
+        <div className=" overflow-y-auto  max-h-[75vh] scrollbar-hidden rounded-lg p-2 w-full h-full items-center  flex flex-col mb-4 ">
           <TrafficChart />
           <div className="mt-4">
             <ErrorLog errorLogData={errorLogData} />
           </div>
         </div>
         <div className="flex justify-end min-w-0">
-          <div className="overflow-y-auto h-full max-h-[75vh] pr-1 scrollbar-hidden rounded-lg">
+          <div className="overflow-y-auto h-full max-h-[75vh] pr-1  p-2 scrollbar-hidden rounded-lg">
+            <div className="rounded-lg border p-2 w-full h-1/4 bg-[#082d72] items-center mb-4">
+              <WeatherCard />
+            </div>
+
             <div className="mb-4">
               <CctvCard
                 title="CCTV"
                 description="Monitoring CCTV"
-                date="25/02/2025"
-                active={100}
-                nonActive={10}
+                date={start_date}
+                active={mappedStatusCctv[0]?.total_active || 0}
+                nonActive={mappedStatusCctv[0]?.total_inactive || 0}
               />
             </div>
-            {/* <div className="mb-4">
+
+            <div className="mb-4">
               <CctvCard
                 title="VMS"
                 description="Monitoring VMS"
-                date="25/02/2025"
+                date={start_date}
                 active={100}
                 nonActive={10}
               />
-            </div> */}
-
-            <div className="rounded-lg border p-2 w-full h-1/4 bg-[#082d72] items-center mb-4">
-              <WeatherCard />
             </div>
 
             <div className="mt-4">

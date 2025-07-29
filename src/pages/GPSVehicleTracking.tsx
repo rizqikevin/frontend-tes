@@ -54,6 +54,13 @@ export const GPSVehicleTracking: React.FC = () => {
   console.log(mappedData);
 
   const totalPages = Math.ceil(total / limit);
+  const trackCoordinates: [number, number][] = trackData.map((track) => [
+    Number(track.lat),
+    Number(track.lon),
+  ]);
+
+  console.log("Track Coordinates", trackCoordinates);
+  console.log("Track Data", trackData);
 
   useEffect(() => {
     fetchVehicles();
@@ -126,6 +133,7 @@ export const GPSVehicleTracking: React.FC = () => {
               <MapViewGps
                 vehicles={vehicles}
                 onVehicleClick={setSelectedVehicle}
+                trackCoordinates={trackCoordinates}
               />
             </div>
 

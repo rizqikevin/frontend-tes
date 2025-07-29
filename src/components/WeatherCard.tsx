@@ -82,14 +82,14 @@ const WeatherCard: React.FC = () => {
       </div>
 
       <div className="flex items-center justify-center gap-3">
-        <img src={weather.icon} alt="Weather Icon" className="h-10 w-10" />
+        <img src={weather.icon} alt="Weather Icon" className="h-11 w-11" />
         <div>
-          <p className="text-xl font-bold">{weather.temperature}</p>
+          <p className="text-2xl font-bold">{weather.temperature}</p>
           <p className="text-xs text-gray-400">{weather.condition}</p>
         </div>
       </div>
 
-      <div className="mt-3 grid grid-cols-3 gap-2 text-xs text-gray-300">
+      <div className="mt-3 grid grid-cols-2 text-center gap-2 text-xs text-gray-300">
         <p>
           Wind Dir: <span className="text-white">{weather.windDirection}</span>
         </p>
