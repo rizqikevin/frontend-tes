@@ -45,6 +45,7 @@ const Dashboard: React.FC = () => {
   const { TransactionDataAdmin, fetchTransactionData, isDataLoading } =
     useTransactionStore();
   const [statusCctv, setStatusCctv] = useState([]);
+  const [statusVMS, setStatusVMS] = useState([]);
   const { start_date, end_date } = useDateFilterStore();
 
   const fetchStatusCctv = async () => {
@@ -57,7 +58,22 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const fetchStatusVMS = async () => {
+    try {
+      const response = await api.get("/heartbeat/status?id_alat=VMS");
+      setStatusVMS(response.data.data);
+    } catch (error) {
+      console.error("Error fetching VMS status:", error);
+      return [];
+    }
+  };
+
   const mappedStatusCctv = statusCctv.map((item: any) => ({
+    total_active: item.total_active,
+    total_inactive: item.total_inactive,
+  }));
+
+  const mappedStatusVMS = statusVMS.map((item: any) => ({
     total_active: item.total_active,
     total_inactive: item.total_inactive,
   }));
@@ -66,6 +82,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     const fetchAll = async () => {
+      await fetchStatusVMS();
       await fetchStatusCctv();
       await fetchAQI();
       await fetchTransactionData();
@@ -135,8 +152,8 @@ const Dashboard: React.FC = () => {
                 title="VMS"
                 description="Monitoring VMS"
                 date={start_date}
-                active={100}
-                nonActive={10}
+                active={mappedStatusVMS[0]?.total_active || 0}
+                nonActive={mappedStatusVMS[0]?.total_inactive || 0}
               />
             </div>
 
