@@ -23,7 +23,7 @@ export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState<Date>(subDays(new Date(), 1));
   const [endDate, setEndDate] = useState<Date>(subDays(new Date(), 1));
-  const [selectedView, setSelectedView] = useState("geographic");
+  const [selectedView, setSelectedView] = useState("transaction");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
@@ -76,7 +76,7 @@ export const Dashboard: React.FC = () => {
       case "overload":
         return "Overload - Over Dimention";
       default:
-        return "Geographic Informasi Sistem";
+        return "Transaction Overview";
     }
   };
 
@@ -89,7 +89,7 @@ export const Dashboard: React.FC = () => {
       case "overload":
         return "Monitoring kendaraan berlebih muatan dan dimensi";
       default:
-        return "Pantau detail dari setiap kejadian";
+        return "Pantau setiap detail transaksi";
     }
   };
 
@@ -102,7 +102,7 @@ export const Dashboard: React.FC = () => {
       case "overload":
         return <OverloadOverDimention />;
       default:
-        return <GeographicInfoSystem />;
+        return <TransactionOverview />;
     }
   };
 
