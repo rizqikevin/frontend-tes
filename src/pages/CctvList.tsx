@@ -15,10 +15,12 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import api from "@/services/api";
 import { useCameraStore } from "@/stores/useCameraStore";
 import ReactPlayer from "react-player";
+
+import type { Camera } from "@/stores/useCameraStore";
 
 type CameraGroup = {
   id: number;
@@ -26,20 +28,25 @@ type CameraGroup = {
   description: string;
 };
 
-type Camera = {
-  id: string;
-  name: string;
-  group_id: string;
-  url_local: string;
-  status_id?: number;
-};
-
 const DraggableCamera = ({ camera }: { camera: Camera }) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
-      id: camera.id,
+      id: camera.id.toString(),
       data: camera,
     });
+
+  const getStatusColorDot = () => {
+    switch (camera.status_id) {
+      case 1:
+        return "bg-green-500"; // Active
+      case 2:
+        return "bg-yellow-400"; // Maintenance
+      case 3:
+        return "bg-red-500"; // Inactive
+      default:
+        return "bg-gray-400";
+    }
+  };
 
   return (
     <div
@@ -52,9 +59,21 @@ const DraggableCamera = ({ camera }: { camera: Camera }) => {
           : undefined,
         opacity: isDragging ? 0.5 : 1,
       }}
-      className="text-sm bg-zinc-700 text-white p-2 rounded shadow cursor-move"
+      className="text-sm bg-zinc-700 text-white p-2 rounded shadow cursor-move flex items-center gap-2"
     >
-      {camera.name}
+      <span
+        className={`w-2.5 h-2.5 rounded-full ${getStatusColorDot()}`}
+        title={
+          camera.status_id === 1
+            ? "Active"
+            : camera.status_id === 2
+            ? "Maintenance"
+            : camera.status_id === 3
+            ? "Inactive"
+            : "Unknown"
+        }
+      />
+      <span>{camera.name}</span>
     </div>
   );
 };
@@ -63,6 +82,7 @@ const DroppableGridSlot = ({
   id,
   camera,
   onRemoveCamera,
+  onDropCamera,
 }: {
   id: string;
   camera: Camera | null;
@@ -130,15 +150,31 @@ const CCTVList = () => {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<
-    "active" | "inactive" | "maintenance"
-  >("active");
+    "active" | "inactive" | "maintenance" | "all"
+  >("all");
 
-  const { cameraList, fetchCameras, grid, setCameraAt, removeCameraAt } =
-    useCameraStore();
+  const {
+    fetchCameras,
+    filteredCameras,
+    setStatusFilter,
+    grid,
+    setCameraAt,
+    removeCameraAt,
+  } = useCameraStore();
 
   useEffect(() => {
     fetchCameras();
-  }, []);
+  }, [fetchCameras]);
+
+  useEffect(() => {
+    const statusMap: Record<string, number | null> = {
+      all: null,
+      active: 1,
+      maintenance: 2,
+      inactive: 3,
+    };
+    setStatusFilter(statusMap[selectedStatus]);
+  }, [selectedStatus, setStatusFilter]);
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -179,24 +215,30 @@ const CCTVList = () => {
     fetchGroups();
   }, []);
 
-  const filteredCameras =
-    selectedGroupId === null
-      ? []
-      : cameraList.filter((cam) => {
-          const matchGroup = Number(cam.group_id) === selectedGroupId;
-          const matchSearch = cam.name
-            .toLowerCase()
-            .includes(search.toLowerCase());
-          const isUsed = grid.some((item) => item?.id === cam.id);
+  const rawFiltered = filteredCameras();
 
-          return matchGroup && matchSearch && !isUsed;
-        });
+  const filteredCamerasByGroup = useMemo(() => {
+    return rawFiltered.filter((cam) => {
+      const matchGroup =
+        selectedGroupId === null || cam.group_id === selectedGroupId;
+
+      const matchSearch = cam.name.toLowerCase().includes(search.toLowerCase());
+
+      const matchStatus =
+        selectedStatus === "all" ||
+        (selectedStatus === "active" && cam.status_id === 1) ||
+        (selectedStatus === "maintenance" && cam.status_id === 2) ||
+        (selectedStatus === "inactive" && cam.status_id === 3);
+
+      return matchGroup && matchSearch && matchStatus;
+    });
+  }, [rawFiltered, selectedGroupId, search, selectedStatus]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { over, active } = event;
     if (over && active.data.current) {
       const camera = active.data.current as Camera;
-      const index = parseInt(over.id as string);
+      const index = parseInt(over.id.toString());
       setCameraAt(index, camera);
     }
   };
@@ -230,7 +272,7 @@ const CCTVList = () => {
               value={selectedStatus}
               onValueChange={(value) =>
                 setSelectedStatus(
-                  value as "active" | "inactive" | "maintenance"
+                  value as "active" | "inactive" | "maintenance" | "all"
                 )
               }
             >
@@ -238,6 +280,7 @@ const CCTVList = () => {
                 <SelectValue placeholder="Pilih Status" />
               </SelectTrigger>
               <SelectContent className="bg-dashboard-accent">
+                <SelectItem value="all">All</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="inactive">Inactive</SelectItem>
                 <SelectItem value="maintenance">Maintenance</SelectItem>
@@ -277,19 +320,17 @@ const CCTVList = () => {
                 <div className="text-center text-sm text-zinc-400">
                   Pilih grup CCTV terlebih dahulu
                 </div>
-              ) : filteredCameras.length === 0 ? (
+              ) : filteredCamerasByGroup.length === 0 ? (
                 <div className="text-center text-sm text-zinc-400">
                   Tidak ada kamera ditemukan
                 </div>
               ) : (
-                filteredCameras.map((cam) => (
+                filteredCamerasByGroup.map((cam) => (
                   <DraggableCamera key={cam.id} camera={cam} />
                 ))
               )}
             </div>
           </div>
-
-          {/* <div className="text-sm text-zinc-400 mt-6">Gate KM 78</div> */}
         </div>
       </DndContext>
     </div>
