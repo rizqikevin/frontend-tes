@@ -104,7 +104,7 @@ export const useTrackGpsStore = create<TrackDataState>((set, get) => ({
     const { startDate, endDate, search } = get();
     const sDate = startDate.toISOString().split("T")[0];
     const eDate = endDate.toISOString().split("T")[0];
-    const Alllimit = 1000;
+    const Alllimit = 100000;
     let Allpage = 1;
     let allRows: TrackData[] = [];
     let hasMore = true;

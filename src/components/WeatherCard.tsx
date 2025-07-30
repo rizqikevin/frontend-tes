@@ -89,7 +89,7 @@ const WeatherCard: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-1 grid grid-cols-3 text-center gap-2 text-xs text-gray-300">
+      <div className="mt-2 grid grid-cols-3 text-center gap-2 text-xs text-gray-300">
         <p>
           Wind Dir: <span className="text-white">{weather.windDirection}</span>
         </p>
