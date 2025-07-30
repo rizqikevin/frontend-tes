@@ -1,43 +1,44 @@
 import React, { useEffect, useState } from "react";
 import StatsGrid from "./StatsGrid";
-import Filters from "./Filters";
 import MapSection from "../Admin/MapSection";
 import ErrorLog from "./ErrorLog";
 import { ErrorItem } from "./ErrorLog";
 import { useTransactionStore } from "@/stores/useTransactionCardStore";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
+import { useHeartbeatStore } from "@/stores/useHeartbeatStore";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 const GeographicInfoSystem: React.FC = () => {
   const { transactionData, fetchTransactionData, isDataLoading } =
     useTransactionStore();
   const { start_date, end_date } = useDateFilterStore();
+  const { data: heartbeatData, fetchHeartbeat } = useHeartbeatStore();
 
   useEffect(() => {
     fetchTransactionData();
+    fetchHeartbeat();
   }, [start_date, end_date]);
 
-  const errorLogData: ErrorItem[] = [
-    {
-      jenisAlat: "CCTV",
-      ruas: "Kuala Tanjung",
-      waktu: "30/04/2025, 11:12:35 WIB",
-      lamaError: "2 Hari 2 Jam",
-      status: "error",
-    },
-    {
-      jenisAlat: "VMS",
-      ruas: "Kuala Tanjung",
-      waktu: "01/05/2025, 13:12:35 WIB",
-      lamaError: "1 Hari 2 Jam",
-      status: "warning",
-    },
-    {
-      jenisAlat: "Toll Gate",
-      ruas: "Gerbang Sinaksak",
-      waktu: "02/05/2025, 13:12:35 WIB",
-      lamaError: "1 Jam",
-      status: "success",
-    },
-  ];
+  console.log(heartbeatData);
+
+  const errorLogData: ErrorItem[] = heartbeatData.map((item) => ({
+    jenisAlat: item.id_alat,
+    ruas: item.nama_gerbang,
+    namaGerbang: item.nama_gerbang,
+    gardu: item.gardu,
+    waktu: dayjs(item.insert_at).format("DD/MM/YYYY, HH:mm:ss") + " WIB",
+    lamaError:
+      item.last_status === "off"
+        ? dayjs(item.insert_at).fromNow(true)
+        : "Normal",
+    status:
+      item.last_status === "off"
+        ? "error"
+        : item.last_status === "on"
+        ? "success"
+        : "warning",
+  }));
 
   return (
     <div className="space-y-3">

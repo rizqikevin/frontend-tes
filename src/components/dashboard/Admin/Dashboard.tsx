@@ -15,30 +15,10 @@ import ErrorLog from "../GeographicInfoSystem/ErrorLog";
 import { ErrorItem } from "../GeographicInfoSystem/ErrorLog";
 import api from "@/services/api";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
-
-const errorLogData: ErrorItem[] = [
-  {
-    jenisAlat: "CCTV",
-    ruas: "Kuala Tanjung",
-    waktu: "30/04/2025, 11:12:35 WIB",
-    lamaError: "2 Hari 2 Jam",
-    status: "error",
-  },
-  {
-    jenisAlat: "VMS",
-    ruas: "Kuala Tanjung",
-    waktu: "01/05/2025, 13:12:35 WIB",
-    lamaError: "1 Hari 2 Jam",
-    status: "warning",
-  },
-  {
-    jenisAlat: "Toll Gate",
-    ruas: "Gerbang Sinaksak",
-    waktu: "02/05/2025, 13:12:35 WIB",
-    lamaError: "1 Jam",
-    status: "success",
-  },
-];
+import { useHeartbeatStore } from "@/stores/useHeartbeatStore";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 const Dashboard: React.FC = () => {
   const { data, fetchAQI } = useAqiStore();
@@ -47,6 +27,25 @@ const Dashboard: React.FC = () => {
   const [statusCctv, setStatusCctv] = useState([]);
   const [statusVMS, setStatusVMS] = useState([]);
   const { start_date, end_date } = useDateFilterStore();
+  const { data: heartbeatData, fetchHeartbeat } = useHeartbeatStore();
+
+  const errorLogData: ErrorItem[] = heartbeatData.map((item) => ({
+    jenisAlat: item.id_alat,
+    ruas: item.nama_gerbang,
+    namaGerbang: item.nama_gerbang,
+    gardu: item.gardu,
+    waktu: dayjs(item.insert_at).format("DD/MM/YYYY, HH:mm:ss") + " WIB",
+    lamaError:
+      item.last_status === "off"
+        ? dayjs(item.insert_at).fromNow(true)
+        : "Normal",
+    status:
+      item.last_status === "off"
+        ? "error"
+        : item.last_status === "on"
+        ? "success"
+        : "warning",
+  }));
 
   const fetchStatusCctv = async () => {
     try {
@@ -82,6 +81,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     const fetchAll = async () => {
+      await fetchHeartbeat();
       await fetchStatusVMS();
       await fetchStatusCctv();
       await fetchAQI();
@@ -127,7 +127,7 @@ const Dashboard: React.FC = () => {
 
         <div className=" overflow-y-auto  max-h-[75vh] scrollbar-hidden rounded-lg p-2 w-full h-full items-center  flex flex-col mb-4 ">
           <TrafficChart />
-          <div className="mt-4">
+          <div className="mt-4 h-full w-full bg-dashboard-accent">
             <ErrorLog errorLogData={errorLogData} />
           </div>
         </div>
