@@ -12,11 +12,21 @@ interface TrackData {
   updated: string;
 }
 
+interface allTrackData {
+  radio_time: string;
+  lat: string;
+  lon: string;
+  speed: number;
+  create_at: string;
+  updated: string;
+}
+
 interface TrackDataState {
   page: number;
   limit: number;
   total: number;
   trackData: TrackData[];
+  allTrackData: TrackData[];
   startDate: Date;
   endDate: Date;
   search: string;
@@ -25,6 +35,8 @@ interface TrackDataState {
   fuel: number;
 
   fetchTrackData: (radioId: string) => Promise<void>;
+  fetchAllTrackData: (radioId: string) => Promise<void>;
+
   setTotal: (total: number) => void;
   setPage: (page: number) => void;
   setLimit: (limit: number) => void;
@@ -77,6 +89,7 @@ export const useGpsStore = create<GpsState>((set) => ({
 
 export const useTrackGpsStore = create<TrackDataState>((set, get) => ({
   trackData: [],
+  allTrackData: [],
   mileage: 0,
   fuel: 0,
   startDate: new Date(),
@@ -86,6 +99,53 @@ export const useTrackGpsStore = create<TrackDataState>((set, get) => ({
   limit: 10,
   total: 0,
   isTrackLoading: false,
+
+  fetchAllTrackData: async (radioId: string) => {
+    const { startDate, endDate, search } = get();
+    const sDate = startDate.toISOString().split("T")[0];
+    const eDate = endDate.toISOString().split("T")[0];
+    const Alllimit = 1000;
+    let Allpage = 1;
+    let allRows: TrackData[] = [];
+    let hasMore = true;
+
+    set({ isTrackLoading: true });
+
+    try {
+      while (hasMore) {
+        const res = await api.get(`/gps/track/${radioId}`, {
+          params: {
+            startDate: sDate,
+            endDate: eDate,
+            search,
+            page: Allpage,
+            limit: Alllimit,
+          },
+        });
+
+        const rows: allTrackData[] = res.data.data.rows;
+        allRows = allRows.concat(rows);
+
+        const total = res.data.data.total;
+        const totalPages = Math.ceil(total / Alllimit);
+
+        Allpage++;
+        hasMore = Allpage <= totalPages;
+      }
+
+      set({
+        allTrackData: allRows,
+        total: allRows.length,
+        mileage: 0,
+        fuel: 0,
+      });
+    } catch (error) {
+      toast.error("Failed to fetch full track data", error);
+    } finally {
+      set({ isTrackLoading: false });
+    }
+  },
+
   fetchTrackData: async (radioId: string) => {
     const { startDate, endDate, search, page, limit } = get();
     const sDate = startDate.toISOString().split("T")[0];

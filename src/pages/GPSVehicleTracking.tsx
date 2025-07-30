@@ -23,6 +23,8 @@ export const GPSVehicleTracking: React.FC = () => {
   } = useGpsStore();
   const {
     trackData,
+    allTrackData,
+    fetchAllTrackData,
     fetchTrackData,
     isTrackLoading,
     startDate,
@@ -54,13 +56,14 @@ export const GPSVehicleTracking: React.FC = () => {
   console.log(mappedData);
 
   const totalPages = Math.ceil(total / limit);
-  const trackCoordinates: [number, number][] = trackData.map((track) => [
+  const trackCoordinates: [number, number][] = allTrackData.map((track) => [
     Number(track.lat),
     Number(track.lon),
   ]);
 
   console.log("Track Coordinates", trackCoordinates);
   console.log("Track Data", trackData);
+  console.log("All Track Data", allTrackData);
 
   useEffect(() => {
     fetchVehicles();
@@ -69,6 +72,12 @@ export const GPSVehicleTracking: React.FC = () => {
     }, 100000000);
 
     return () => clearInterval(interval);
+  }, [selectedVehicle]);
+
+  useEffect(() => {
+    if (selectedVehicle) {
+      fetchAllTrackData(selectedVehicle.radio_id);
+    }
   }, [selectedVehicle]);
 
   useEffect(() => {
