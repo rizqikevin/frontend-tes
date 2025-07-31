@@ -11,8 +11,8 @@ import CctvCard from "./CctvCard";
 import AqiCard from "@/components/airquality/aqi/AqiHeader";
 import { useAqiStore } from "@/stores/useAqiStore";
 import { useTransactionStore } from "@/stores/useTransactionCardStore";
-import ErrorLog from "../GeographicInfoSystem/ErrorLog";
-import { ErrorItem } from "../GeographicInfoSystem/ErrorLog";
+import ErrorLog from "./ErrorLog";
+import { ErrorItem } from "./ErrorLog";
 import api from "@/services/api";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 import { useHeartbeatStore } from "@/stores/useHeartbeatStore";
@@ -27,7 +27,13 @@ const Dashboard: React.FC = () => {
   const [statusCctv, setStatusCctv] = useState([]);
   const [statusVMS, setStatusVMS] = useState([]);
   const { start_date, end_date } = useDateFilterStore();
-  const { data: heartbeatData, fetchHeartbeat } = useHeartbeatStore();
+  const {
+    data: heartbeatData,
+    fetchHeartbeat,
+    selectedRuas,
+    selectedStatus,
+    selectedAlat,
+  } = useHeartbeatStore();
 
   const errorLogData: ErrorItem[] = heartbeatData.map((item) => ({
     jenisAlat: item.id_alat,
@@ -41,7 +47,7 @@ const Dashboard: React.FC = () => {
         : "Normal",
     status:
       item.last_status === "off"
-        ? "error"
+        ? "off"
         : item.last_status === "on"
         ? "success"
         : "warning",
@@ -80,8 +86,11 @@ const Dashboard: React.FC = () => {
   console.log("statusCctv fetched", statusCctv);
 
   useEffect(() => {
+    fetchHeartbeat();
+  }, [selectedAlat, selectedStatus, selectedRuas]);
+
+  useEffect(() => {
     const fetchAll = async () => {
-      await fetchHeartbeat();
       await fetchStatusVMS();
       await fetchStatusCctv();
       await fetchAQI();

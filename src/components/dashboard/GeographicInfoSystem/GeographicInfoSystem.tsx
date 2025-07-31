@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import StatsGrid from "./StatsGrid";
-import MapSection from "../Admin/MapSection";
+import MapSection from "./MapSection";
 import ErrorLog from "./ErrorLog";
 import { ErrorItem } from "./ErrorLog";
 import { useTransactionStore } from "@/stores/useTransactionCardStore";
@@ -13,16 +13,16 @@ const GeographicInfoSystem: React.FC = () => {
   const { transactionData, fetchTransactionData, isDataLoading } =
     useTransactionStore();
   const { start_date, end_date } = useDateFilterStore();
-  const { data: heartbeatData, fetchHeartbeat } = useHeartbeatStore();
+  const { cordinat, fetchHeartbeat } = useHeartbeatStore();
 
   useEffect(() => {
     fetchTransactionData();
     fetchHeartbeat();
   }, [start_date, end_date]);
 
-  console.log(heartbeatData);
+  // console.log(heartbeatData);
 
-  const errorLogData: ErrorItem[] = heartbeatData.map((item) => ({
+  const errorLogData: ErrorItem[] = cordinat.map((item) => ({
     jenisAlat: item.id_alat,
     ruas: item.nama_gerbang,
     namaGerbang: item.nama_gerbang,
@@ -41,7 +41,7 @@ const GeographicInfoSystem: React.FC = () => {
   }));
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {isDataLoading ? (
         <div className="text-white flex justify-center items-center gap-2">
           <svg

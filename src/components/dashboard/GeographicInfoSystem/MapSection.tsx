@@ -2,8 +2,8 @@ import MapView from "./MapView";
 
 const MapSection = () => {
   return (
-    <div className="lg:col-span-2 rounded-lg border relative overflow-hidden">
-      <div className="w-full h-3/6 rounded-lg">
+    <div className="lg:col-span-2 rounded-lg relative overflow-hidden">
+      <div className=" h-auto rounded-lg">
         <MapView />
       </div>
     </div>

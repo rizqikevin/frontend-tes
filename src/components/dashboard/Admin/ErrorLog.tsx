@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Select,
   SelectTrigger,
@@ -13,7 +13,7 @@ export interface ErrorItem {
   ruas: string;
   waktu: string;
   lamaError: string;
-  status: "error" | "warning" | "success";
+  status: "off" | "warning" | "success";
 }
 
 const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
@@ -24,8 +24,15 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
     setSelectedRuas,
     selectedStatus,
     setSelectedStatus,
-    loading,
+    fetchHeartbeat,
   } = useHeartbeatStore();
+
+  useEffect(() => {
+    fetchHeartbeat();
+    if (!selectedStatus) {
+      setSelectedStatus("off");
+    }
+  }, [selectedStatus, setSelectedStatus, selectedAlat, selectedRuas]);
 
   const ruasOptions = useMemo(() => {
     return Array.from(new Set(errorLogData.map((item) => item.ruas)));
@@ -33,10 +40,6 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
 
   const alatOptions = useMemo(() => {
     return Array.from(new Set(errorLogData.map((item) => item.jenisAlat)));
-  }, [errorLogData]);
-
-  const statusOptions = useMemo(() => {
-    return Array.from(new Set(errorLogData.map((item) => item.status)));
   }, [errorLogData]);
 
   const filteredLog = useMemo(() => {
@@ -57,7 +60,7 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
       <div className="flex gap-4 mb-4">
         <Select onValueChange={setSelectedRuas}>
           <SelectTrigger className="flex-1 bg-dashboard-accent">
-            <SelectValue placeholder="Semua Ruas" />
+            <SelectValue placeholder="Semua Ruas Jalan" />
           </SelectTrigger>
           <SelectContent className="bg-dashboard-accent border">
             {ruasOptions.map((ruas) => (
@@ -70,7 +73,7 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
 
         <Select onValueChange={setSelectedAlat}>
           <SelectTrigger className="flex-1 bg-dashboard-accent">
-            <SelectValue placeholder="Semua Alat" />
+            <SelectValue placeholder="Semua Jenis Alat" />
           </SelectTrigger>
           <SelectContent className="bg-dashboard-accent border">
             {alatOptions.map((alat) => (
@@ -80,24 +83,11 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
             ))}
           </SelectContent>
         </Select>
-
-        <Select onValueChange={setSelectedStatus}>
-          <SelectTrigger className="flex-1 bg-dashboard-accent">
-            <SelectValue placeholder="Semua Status" />
-          </SelectTrigger>
-          <SelectContent className="bg-dashboard-accent border">
-            {statusOptions.map((alat) => (
-              <SelectItem key={alat} value={alat}>
-                {alat}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
       </div>
 
       <hr className="my-3 border-gray-400" />
-      {loading && <div className="text-center">Loading...</div>}
-      <div className="space-y-2 overflow-y-auto max-h-[600px]">
+
+      <div className="space-y-2 overflow-y-auto max-h-[270px]">
         <div className="grid grid-cols-4 gap-2 text-xs font-medium p-2 rounded">
           <span>Jenis Alat</span>
           <span>Ruas</span>
@@ -115,7 +105,7 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
             <span>{item.waktu}</span>
             <span
               className={`inline-flex px-2 py-1 rounded text-xs text-white ${
-                item.status === "error"
+                item.status === "off"
                   ? "bg-red-500"
                   : item.status === "warning"
                   ? "bg-orange-500"

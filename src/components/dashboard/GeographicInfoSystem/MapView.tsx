@@ -1,14 +1,29 @@
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  Polyline,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
+import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-fullscreen/styles.css";
-import { FullscreenControl } from "react-leaflet-fullscreen";
+import { useIncidentSocketStore } from "@/stores/useNotificationStore";
+import { Link } from "react-router-dom";
+import "../../../incident-marker.css";
+import { useEffect } from "react";
+import MarkerClusterGroup from "react-leaflet-cluster";
+import { useGpsStore } from "@/stores/useGpsStore";
+import { useHeartbeatStore } from "@/stores/useHeartbeatStore";
+
+const incidentIcon = new L.DivIcon({
+  className: "incident-pulse-icon",
+  html: `
+    <div class="blink-container">
+      <img src="/marker/pulse.png" class="blink-icon-img" />
+      <div class="pulse-circle"></div>
+    </div>
+  `,
+  iconUrl: "/marker/pulse.png",
+  iconSize: [100, 100],
+  iconAnchor: [16, 16],
+  popupAnchor: [0, -16],
+});
 
 const marker = new L.Icon({
   iconUrl: "/marker/tollstation.png",
@@ -24,17 +39,94 @@ const marker2 = new L.Icon({
   popupAnchor: [0, -16],
 });
 
-const center: [number, number] = [3.226, 99.227];
-const positions: [number, number][] = [
-  [3.305, 99.353],
-  [3.384, 99.175],
-  [3.152, 99.097],
-  [3.025, 99.07],
-  [3.134, 99.152],
-  [3.134, 99.384],
-];
+const car = new L.Icon({
+  iconUrl: "/icons/car.png",
+  iconSize: [40, 40],
+  iconAnchor: [16, 16],
+  popupAnchor: [0, -16],
+});
+
+const center: [number, number] = [3.35094, 99.25094];
+
+function MapAutoCenter({ lat, lng }: { lat: number; lng: number }) {
+  const map = useMap();
+
+  useEffect(() => {
+    map.setView([lat, lng], 15);
+  }, [lat, lng, map]);
+
+  return null;
+}
+
+function haversineDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const R = 6371;
+  const toRad = (angle: number) => (angle * Math.PI) / 180;
+
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c;
+}
 
 export default function MapView() {
+  const { incidents, clearIncidents, removeIncident } =
+    useIncidentSocketStore();
+  const { vehicles, fetchVehicles, setVehiclesNearIncidents } = useGpsStore();
+  const {
+    filteredCordinat,
+    fetchHeartbeat,
+    selectedAlat,
+    selectedStatus,
+    selectedRuas,
+  } = useHeartbeatStore();
+  const heartbeatMarkers = filteredCordinat();
+  // console.log("vehicles from map : ", vehicles);
+  // console.log("incidents from map : ", incidents);
+  // console.log("gismaps from map : ", gismaps);
+
+  useEffect(() => {
+    fetchHeartbeat();
+  }, [selectedAlat, selectedStatus, selectedRuas]);
+
+  useEffect(() => {
+    if (incidents.length > 0) {
+      fetchVehicles();
+    }
+  }, [incidents]);
+
+  useEffect(() => {
+    if (vehicles.length > 0 && incidents.length > 0) {
+      const nearbyMap: Record<string, typeof vehicles> = {};
+
+      incidents.forEach((incident) => {
+        nearbyMap[incident.id] = vehicles.filter((vehicle) => {
+          const lat = parseFloat(vehicle.lat);
+          const lon = parseFloat(vehicle.lon);
+          if (isNaN(lat) || isNaN(lon)) return false;
+
+          const distance = haversineDistance(
+            incident.lat,
+            incident.lng,
+            lat,
+            lon
+          );
+          return distance <= 2;
+        });
+      });
+
+      setVehiclesNearIncidents(nearbyMap);
+    }
+  }, [vehicles, incidents]);
+
   return (
     <MapContainer
       center={center}
@@ -43,297 +135,151 @@ export default function MapView() {
     >
       <FullscreenControl />
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      {incidents.length > 0 && (
+        <MapAutoCenter
+          lat={incidents[incidents.length - 1].lat}
+          lng={incidents[incidents.length - 1].lng}
+        />
+      )}
 
-      {/* <Polyline positions={positions} color="blue" weight={5} /> */}
+      {incidents.map((incident, index) => (
+        <Marker
+          key={index}
+          position={[incident.lat, incident.lng]}
+          icon={incidentIcon}
+        >
+          <Popup>
+            <div className="w-[250px] text-gray-900">
+              <h2 className="text-base font-semibold mb-2">
+                🚨 Notifikasi Insiden - {incident.id}
+              </h2>
+              <p className="mb-1">
+                <span className="font-semibold ">Lokasi:</span>{" "}
+                {incident.cam_loc}
+              </p>
+              <p className="mb-1">
+                <span className="font-semibold ">Jenis Insiden:</span>{" "}
+                {incident.description}
+              </p>
+              <p className="mb-1">
+                <span className="font-semibold ">Lokasi:</span> {incident.lat} -{" "}
+                {incident.lng}
+              </p>
+              <video
+                src={incident.url_video}
+                autoPlay
+                controls
+                loop
+                className="w-full rounded"
+              />
+              <button
+                onClick={() => removeIncident(incident.id)}
+                className="mt-3 w-full bg-green-600 text-white py-1.5 rounded hover:bg-red-700"
+              >
+                Clear
+              </button>
+              <button
+                onClick={clearIncidents}
+                className="mt-3 w-full bg-red-600 text-white py-1.5 rounded hover:bg-red-700"
+              >
+                Clear All
+              </button>
+              <Link to={`/incident`}>
+                <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
+                  Selengkapnya
+                </button>
+              </Link>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+      <MarkerClusterGroup
+        chunkedLoading
+        iconCreateFunction={(cluster) => {
+          const count = cluster.getChildCount();
+          return L.divIcon({
+            html: `
+        <div class="custom-cluster-wrapper">
+          <img src="/marker/green.png" class="custom-cluster-image" />
+          <span class="custom-cluster-count text-black">${count}</span>
+        </div>
+      `,
+            className: "custom-cluster-icon",
+            iconSize: L.point(50, 50),
+          });
+        }}
+      >
+        {heartbeatMarkers.map((item, index) => {
+          const lat =
+            typeof item.latitude === "string"
+              ? parseFloat((item.latitude as string).replace(",", "."))
+              : item.latitude;
 
-      <Marker position={[3.025, 99.07]} icon={marker}>
-        <Popup>
-          <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
-            <img
-              src="/img/tol.jpg"
-              alt="CCTV"
-              className="w-full h-32 object-cover"
-            />
-            <div className="p-3">
-              <h4 className="font-semibold text-lg mb-2">
-                CCTV Akses Dolok Merawan - Sinaksak
-              </h4>
-              <div className="text-sm space-y-2">
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">
-                    📍 Ruas <span className="pl-5">Jalan</span>
-                  </span>{" "}
-                  : Dolok Merawan - Sinaksak
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📌 Lokasi</span> : KM 10
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">⚠️ Kondisi</span> : Offline
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📍 Posisi</span> : Kiri
-                </p>
-              </div>
-              <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
-                Laporkan
-              </button>
-            </div>
-          </div>
-        </Popup>
-      </Marker>
-      <Marker position={[3.025, 99.03]} icon={marker2}>
-        <Popup>
-          <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
-            <img
-              src="/img/tol.jpg"
-              alt="CCTV"
-              className="w-full h-32 object-cover"
-            />
-            <div className="p-3">
-              <h4 className="font-semibold text-lg mb-2">
-                CCTV Akses Dolok Merawan - Sinaksak
-              </h4>
-              <div className="text-sm space-y-2">
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">
-                    📍 Ruas <span className="pl-5">Jalan</span>
-                  </span>{" "}
-                  : Dolok Merawan - Sinaksak
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📌 Lokasi</span> : KM 10
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">⚠️ Kondisi</span> : Offline
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📍 Posisi</span> : Kiri
-                </p>
-              </div>
-              <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
-                Laporkan
-              </button>
-            </div>
-          </div>
-        </Popup>
-      </Marker>
-      <Marker position={[3.152, 99.097]} icon={marker}>
-        <Popup>
-          <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
-            <img
-              src="/img/tol.jpg"
-              alt="CCTV"
-              className="w-full h-32 object-cover"
-            />
-            <div className="p-3">
-              <h4 className="font-semibold text-lg mb-2">
-                CCTV Akses Dolok Merawan - Sinaksak
-              </h4>
-              <div className="text-sm space-y-2">
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">
-                    📍 Ruas <span className="pl-5">Jalan</span>
-                  </span>{" "}
-                  : Dolok Merawan - Sinaksak
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📌 Lokasi</span> : KM 10
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">⚠️ Kondisi</span> : Offline
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📍 Posisi</span> : Kiri
-                </p>
-              </div>
-              <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
-                Laporkan
-              </button>
-            </div>
-          </div>
-        </Popup>
-      </Marker>
-      <Marker position={[3.152, 99.08]} icon={marker2}>
-        <Popup>
-          <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
-            <img
-              src="/img/tol.jpg"
-              alt="CCTV"
-              className="w-full h-32 object-cover"
-            />
-            <div className="p-3">
-              <h4 className="font-semibold text-lg mb-2">
-                CCTV Akses Dolok Merawan - Sinaksak
-              </h4>
-              <div className="text-sm space-y-2">
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">
-                    📍 Ruas <span className="pl-5">Jalan</span>
-                  </span>{" "}
-                  : Dolok Merawan - Sinaksak
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📌 Lokasi</span> : KM 10
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">⚠️ Kondisi</span> : Offline
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📍 Posisi</span> : Kiri
-                </p>
-              </div>
-              <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
-                Laporkan
-              </button>
-            </div>
-          </div>
-        </Popup>
-      </Marker>
-      <Marker position={[3.384, 99.175]} icon={marker}>
-        <Popup>
-          <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
-            <img
-              src="/img/tol.jpg"
-              alt="CCTV"
-              className="w-full h-32 object-cover"
-            />
-            <div className="p-3">
-              <h4 className="font-semibold text-lg mb-2">
-                CCTV Akses Dolok Merawan - Sinaksak
-              </h4>
-              <div className="text-sm space-y-2">
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">
-                    📍 Ruas <span className="pl-5">Jalan</span>
-                  </span>{" "}
-                  : Dolok Merawan - Sinaksak
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📌 Lokasi</span> : KM 10
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">⚠️ Kondisi</span> : Offline
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📍 Posisi</span> : Kiri
-                </p>
-              </div>
-              <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
-                Laporkan
-              </button>
-            </div>
-          </div>
-        </Popup>
-      </Marker>
-      <Marker position={[3.305, 99.353]} icon={marker}>
-        <Popup>
-          <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
-            <img
-              src="/img/tol.jpg"
-              alt="CCTV"
-              className="w-full h-32 object-cover"
-            />
-            <div className="p-3">
-              <h4 className="font-semibold text-lg mb-2">
-                CCTV Akses Dolok Merawan - Sinaksak
-              </h4>
-              <div className="text-sm space-y-2">
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">
-                    📍 Ruas <span className="pl-5">Jalan</span>
-                  </span>{" "}
-                  : Dolok Merawan - Sinaksak
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📌 Lokasi</span> : KM 10
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">⚠️ Kondisi</span> : Offline
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📍 Posisi</span> : Kiri
-                </p>
-              </div>
-              <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
-                Laporkan
-              </button>
-            </div>
-          </div>
-        </Popup>
-      </Marker>
-      <Marker position={[3.134, 99.152]} icon={marker}>
-        <Popup>
-          <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
-            <img
-              src="/img/tol.jpg"
-              alt="CCTV"
-              className="w-full h-32 object-cover"
-            />
-            <div className="p-3">
-              <h4 className="font-semibold text-lg mb-2">
-                CCTV Akses Dolok Merawan - Sinaksak
-              </h4>
-              <div className="text-sm space-y-2">
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">
-                    📍 Ruas <span className="pl-5">Jalan</span>
-                  </span>{" "}
-                  : Dolok Merawan - Sinaksak
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📌 Lokasi</span> : KM 10
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">⚠️ Kondisi</span> : Offline
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📍 Posisi</span> : Kiri
-                </p>
-              </div>
-              <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
-                Laporkan
-              </button>
-            </div>
-          </div>
-        </Popup>
-      </Marker>
-      <Marker position={[3.134, 99.384]} icon={marker}>
-        <Popup>
-          <div className="w-[250px] rounded-lg overflow-hidden text-gray-800">
-            <img
-              src="/img/tol.jpg"
-              alt="CCTV"
-              className="w-full h-32 object-cover"
-            />
-            <div className="p-3">
-              <h4 className="font-semibold text-lg mb-2">
-                CCTV Akses Dolok Merawan - Sinaksak
-              </h4>
-              <div className="text-sm space-y-2">
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">
-                    📍 Ruas <span className="pl-5">Jalan</span>
-                  </span>{" "}
-                  : Dolok Merawan - Sinaksak
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📌 Lokasi</span> : KM 10
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">⚠️ Kondisi</span> : Offline
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-600">📍 Posisi</span> : Kiri
-                </p>
-              </div>
-              <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
-                Laporkan
-              </button>
-            </div>
-          </div>
-        </Popup>
-      </Marker>
+          const lng =
+            typeof item.longitude === "string"
+              ? parseFloat((item.longitude as string).replace(",", "."))
+              : item.longitude;
+
+          if (isNaN(lat) || isNaN(lng)) return null;
+          // if (!isNaN(lat) && !isNaN(lng)) {
+          //   console.log(`Rendering vehicle marker at ${lat}, ${lng}`);
+          // }
+
+          return (
+            <Marker key={index} position={[lat, lng]} icon={marker}>
+              <Popup>
+                <div className="w-[250px] text-gray-900">
+                  <h2 className="text-base font-semibold mb-2">
+                    🚨 Info Gerbang - {item.id_alat} - {item.id_lokasi}
+                  </h2>
+                  <p className="mb-1">
+                    <span className="font-semibold">Lokasi:</span>{" "}
+                    {item.id_lokasi}
+                  </p>
+                  <p className="mb-1">
+                    <span className="font-semibold">Deskripsi:</span>{" "}
+                    {item.last_status || "-"}
+                  </p>
+                </div>
+              </Popup>
+            </Marker>
+          );
+        })}
+      </MarkerClusterGroup>
+      {vehicles
+        .filter((vehicle) => {
+          const lat = parseFloat(vehicle.lat);
+          const lon = parseFloat(vehicle.lon);
+
+          if (isNaN(lat) || isNaN(lon)) return false;
+
+          return incidents.some((incident) => {
+            const distance = haversineDistance(
+              incident.lat,
+              incident.lng,
+              lat,
+              lon
+            );
+            return distance <= 2;
+          });
+        })
+        .map((vehicle, index) => {
+          const lat = parseFloat(vehicle.lat);
+          const lon = parseFloat(vehicle.lon);
+
+          return (
+            <Marker key={`vehicle-${index}`} position={[lat, lon]} icon={car}>
+              <Popup>
+                <div className="w-[250px] text-black">
+                  <h4 className="font-bold text-md">{vehicle.vehicle_name}</h4>
+                  <p className="text-sm">Plat: {vehicle.vehicle_number}</p>
+                  <p className="text-sm">Kecepatan: {vehicle.speed} Km/h</p>
+                  <p className="text-sm">Status: {vehicle.status}</p>
+                </div>
+              </Popup>
+            </Marker>
+          );
+        })}
     </MapContainer>
   );
 }

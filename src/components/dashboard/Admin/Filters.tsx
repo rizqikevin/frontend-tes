@@ -23,15 +23,15 @@ const Filters: React.FC<FiltersProps> = ({
   selectedStatus,
   setSelectedStatus,
 }) => {
-  const { cordinat: heartbeatData } = useHeartbeatStore();
+  const { data: cordinat } = useHeartbeatStore();
 
   const jenisAlatOptions = useMemo(() => {
-    return Array.from(new Set(heartbeatData.map((item) => item.id_alat)));
-  }, [heartbeatData]);
+    return Array.from(new Set(cordinat.map((item) => item.id_alat)));
+  }, [cordinat]);
 
   const statusOptions = useMemo(() => {
-    return Array.from(new Set(heartbeatData.map((item) => item.last_status)));
-  }, [heartbeatData]);
+    return Array.from(new Set(cordinat.map((item) => item.last_status)));
+  }, [cordinat]);
 
   return (
     <div className="flex flex-wrap gap-2 ">

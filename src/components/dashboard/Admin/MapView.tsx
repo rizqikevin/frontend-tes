@@ -4,12 +4,12 @@ import { FullscreenControl } from "react-leaflet-fullscreen";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-fullscreen/styles.css";
 import { useIncidentSocketStore } from "@/stores/useNotificationStore";
-import { useGismapsStore } from "@/stores/useGisMapsStore";
 import { Link } from "react-router-dom";
 import "../../../incident-marker.css";
 import { useEffect } from "react";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { useGpsStore } from "@/stores/useGpsStore";
+import { useHeartbeatStore } from "@/stores/useHeartbeatStore";
 
 const incidentIcon = new L.DivIcon({
   className: "incident-pulse-icon",
@@ -80,18 +80,18 @@ function haversineDistance(
 export default function MapView() {
   const { incidents, clearIncidents, removeIncident } =
     useIncidentSocketStore();
-  const { gismaps, fetchGismaps } = useGismapsStore();
   const { vehicles, fetchVehicles, setVehiclesNearIncidents } = useGpsStore();
+  const {
+    filteredData,
+    fetchHeartbeat,
+    selectedAlat,
+    selectedStatus,
+    selectedRuas,
+  } = useHeartbeatStore();
+  const heartbeatMarkers = filteredData();
   console.log("vehicles from map : ", vehicles);
   // console.log("incidents from map : ", incidents);
   // console.log("gismaps from map : ", gismaps);
-
-  useEffect(() => {
-    const fetchAll = async () => {
-      await fetchGismaps();
-    };
-    fetchAll();
-  }, []);
 
   useEffect(() => {
     if (incidents.length > 0) {
@@ -205,16 +205,16 @@ export default function MapView() {
           });
         }}
       >
-        {gismaps.map((gismap, index) => {
+        {heartbeatMarkers.map((item, index) => {
           const lat =
-            typeof gismap.latitude === "string"
-              ? parseFloat((gismap.latitude as string).replace(",", "."))
-              : gismap.latitude;
+            typeof item.latitude === "string"
+              ? parseFloat((item.latitude as string).replace(",", "."))
+              : item.latitude;
 
           const lng =
-            typeof gismap.longitude === "string"
-              ? parseFloat((gismap.longitude as string).replace(",", "."))
-              : gismap.longitude;
+            typeof item.longitude === "string"
+              ? parseFloat((item.longitude as string).replace(",", "."))
+              : item.longitude;
 
           if (isNaN(lat) || isNaN(lng)) return null;
           // if (!isNaN(lat) && !isNaN(lng)) {
@@ -226,15 +226,15 @@ export default function MapView() {
               <Popup>
                 <div className="w-[250px] text-gray-900">
                   <h2 className="text-base font-semibold mb-2">
-                    🚨 Info Gerbang - {gismap.id_alat} - {gismap.id_lokasi}
+                    🚨 Info Gerbang - {item.id_alat} - {item.id_lokasi}
                   </h2>
                   <p className="mb-1">
                     <span className="font-semibold">Lokasi:</span>{" "}
-                    {gismap.id_lokasi}
+                    {item.id_lokasi}
                   </p>
                   <p className="mb-1">
-                    <span className="font-semibold">Deskripsi:</span>{" "}
-                    {gismap.deskripsi || "-"}
+                    <span className="font-semibold">Status:</span>{" "}
+                    {item.last_status || "-"}
                   </p>
                 </div>
               </Popup>

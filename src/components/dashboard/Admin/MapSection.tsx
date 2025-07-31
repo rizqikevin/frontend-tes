@@ -1,18 +1,18 @@
 import MapView from "./MapView";
-import Filters from "../GeographicInfoSystem/Filters";
-import { useState } from "react";
+import Filters from "./Filters";
+import { useHeartbeatStore } from "@/stores/useHeartbeatStore";
 
 const MapSection = () => {
-  const [selectedDeviceType, setSelectedDeviceType] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const { selectedAlat, selectedStatus, setSelectedStatus, setSelectedAlat } =
+    useHeartbeatStore();
 
   return (
     <div className="lg:col-span-2 rounded-lg relative overflow-hidden">
       <div className=" h-auto rounded-lg">
         <div className="my-2 mr-0 w-full flex flex-row justify-end">
           <Filters
-            selectedDeviceType={selectedDeviceType}
-            setSelectedDeviceType={setSelectedDeviceType}
+            selectedAlat={selectedAlat}
+            setSelectedAlat={setSelectedAlat}
             selectedStatus={selectedStatus}
             setSelectedStatus={setSelectedStatus}
           />
