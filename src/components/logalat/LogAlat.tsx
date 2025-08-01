@@ -281,7 +281,7 @@ const LogAlat: React.FC = () => {
                           {item.last_status === "off"
                             ? dayjs(item.insert_at).fromNow(true)
                             : item.last_status === "on"
-                            ? dayjs(item.insert_at).fromNow(true)
+                            ? "Normal"
                             : "Normal"}
                         </td>
                         <td className="px-5 py-5">
