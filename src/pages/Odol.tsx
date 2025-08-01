@@ -40,6 +40,8 @@ const Odol: React.FC = () => {
     setGateId,
   } = useOdolStore();
 
+  console.log(data);
+
   // Listen for theme changes and sidebar state changes
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -275,7 +277,11 @@ const Odol: React.FC = () => {
                             {item.dimensi.split(" x ").slice(1).join(" x ")}
                           </td>
                           <td className="p-2">
-                            <Link to={`/detail-odol/${item.id}`}>
+                            <Link
+                              to={`/detail-odol/${item.id}?date=${dayjs(
+                                item.tanggal
+                              ).format("YYYY-MM-DD")}`}
+                            >
                               <Button
                                 variant="default"
                                 className="bg-yellow-500 border-white text-white hover:bg-gray-700"

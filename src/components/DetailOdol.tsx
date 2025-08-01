@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import api from "@/services/api";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import { ImageCard } from "./dashboard/OverloadOverDimention/ImageCard";
 import { VehicleInfo } from "./dashboard/OverloadOverDimention/VehicleInfo";
+import { c } from "node_modules/framer-motion/dist/types.d-Bq-Qm38R";
 
 interface RawData {
   id: number;
@@ -75,8 +76,11 @@ export const DetailOdol: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [data, setData] = useState<OdolDetail | null>(null);
   const [parsedRaw, setParsedRaw] = useState<RawData | null>(null);
+
+  const date = searchParams.get("date") || "";
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -106,9 +110,10 @@ export const DetailOdol: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log(date);
     const fetchDetail = async () => {
       try {
-        const res = await api.get(`/odol/${id}`);
+        const res = await api.get(`/odol/${id}?date=${date}`);
         const odolData: OdolDetail = res.data.data;
         setData(odolData);
         console.log("Detail data:", odolData);
@@ -122,7 +127,8 @@ export const DetailOdol: React.FC = () => {
     };
 
     if (id) fetchDetail();
-  }, [id]);
+    if (date) fetchDetail();
+  }, [id, date]);
 
   const isDark = theme === "dark";
 
