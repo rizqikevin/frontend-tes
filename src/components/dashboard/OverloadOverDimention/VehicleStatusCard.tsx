@@ -20,12 +20,14 @@ const VehicleStatusCard: React.FC = () => {
     total: 0,
   });
 
+  console.log(start_date, end_date);
+
   const fetchVehicleStatusData = async () => {
     try {
       const response = await api.get("/odol/status", {
         params: {
-          start_date,
-          end_date,
+          start_time: start_date,
+          end_time: end_date,
         },
       });
 
