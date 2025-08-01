@@ -285,7 +285,7 @@ const LogAlat: React.FC = () => {
                             : "Normal"}
                         </td>
                         <td className="px-5 py-5">
-                          <Link to={`/detail-odol/${item.id_lokasi}`}>
+                          <Link to={`/${item.id_lokasi}`}>
                             <Button
                               variant="default"
                               className="bg-yellow-500 border-white text-white hover:bg-gray-700"
