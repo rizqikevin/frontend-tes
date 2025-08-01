@@ -1,0 +1,114 @@
+import React, { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import DashboardSidebar from "@/components/DashboardSidebar";
+import { Button } from "@/components/ui/button";
+import { Daily } from "@/components/lalinharian/Lalinreport/daily/Daily";
+import { Summary } from "@/components/lalinharian/Lalinreport/Summary/Summary";
+import Header from "@/components/Header";
+import LogAlat from "@/components/logalat/LogAlat";
+
+export const LogAlatPages: React.FC = () => {
+  const { user, logout } = useAuth();
+  const [selectedTab, setSelectedTab] = useState("status");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+  // Listen for theme changes and sidebar state changes
+  useEffect(() => {
+    const handleSidebarChange = (event: CustomEvent) => {
+      setIsSidebarCollapsed(event.detail.collapsed);
+    };
+
+    const checkTheme = () => {
+      const savedTheme =
+        (localStorage.getItem("theme") as "light" | "dark") || "dark";
+      setTheme(savedTheme);
+    };
+
+    // Initial theme check
+    checkTheme();
+
+    // Listen for theme changes
+    const themeInterval = setInterval(checkTheme, 100);
+
+    window.addEventListener(
+      "sidebarStateChange",
+      handleSidebarChange as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        "sidebarStateChange",
+        handleSidebarChange as EventListener
+      );
+      clearInterval(themeInterval);
+    };
+  }, []);
+
+  const isDark = theme === "dark";
+
+  const renderContent = () => {
+    switch (selectedTab) {
+      case "status":
+        return <LogAlat />;
+      case "log":
+        return <Daily />;
+      default:
+        return <LogAlat />;
+    }
+  };
+
+  return (
+    <div
+      className={`flex min-h-screen bg-dashboard-dark text-white  ${
+        isDark ? "bg-dashboard-dark text-white" : "bg-gray-500 text-gray-900"
+      } transition-all duration-300`}
+    >
+      <DashboardSidebar />
+      <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
+        <Header
+          isDark={isDark}
+          user={
+            user
+              ? {
+                  name: user.name,
+                  role: String(user.role),
+                }
+              : null
+          }
+          logout={logout}
+        />
+
+        <main
+          className={`p-8 ${isDark ? "border-gray-700" : "border-gray-200"}`}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-2">
+              <Button
+                onClick={() => setSelectedTab("status")}
+                className={`${
+                  selectedTab === "status"
+                    ? "bg-gray-50 text-gray-900"
+                    : "bg-dashboard-accent text-white"
+                }`}
+              >
+                Status Alat
+              </Button>
+              <Button
+                onClick={() => setSelectedTab("daily")}
+                className={`${
+                  selectedTab === "daily"
+                    ? "bg-gray-50 text-gray-900"
+                    : "bg-dashboard-accent text-white"
+                }`}
+              >
+                Log
+              </Button>
+            </div>
+          </div>
+          {renderContent()}
+        </main>
+      </div>
+    </div>
+  );
+};

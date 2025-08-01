@@ -55,7 +55,7 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
       </div>
 
       <div className="flex gap-4 mb-4">
-        <Select onValueChange={setSelectedRuas}>
+        <Select value={selectedRuas} onValueChange={setSelectedRuas}>
           <SelectTrigger className="flex-1 bg-dashboard-accent">
             <SelectValue placeholder="Semua Ruas" />
           </SelectTrigger>
@@ -68,7 +68,7 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
           </SelectContent>
         </Select>
 
-        <Select onValueChange={setSelectedAlat}>
+        <Select value={selectedAlat} onValueChange={setSelectedAlat}>
           <SelectTrigger className="flex-1 bg-dashboard-accent">
             <SelectValue placeholder="Semua Alat" />
           </SelectTrigger>
@@ -81,7 +81,7 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
           </SelectContent>
         </Select>
 
-        <Select onValueChange={setSelectedStatus}>
+        <Select value={selectedStatus} onValueChange={setSelectedStatus}>
           <SelectTrigger className="flex-1 bg-dashboard-accent">
             <SelectValue placeholder="Semua Status" />
           </SelectTrigger>
@@ -95,19 +95,16 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
         </Select>
       </div>
 
-      <hr className="my-3 border-gray-400" />
-      {loading && <div className="text-center">Loading...</div>}
-      <div className="space-y-2 overflow-y-auto max-h-[600px]">
-        <div className="grid grid-cols-4 gap-2 text-xs font-medium p-2 rounded">
-          <span>Jenis Alat</span>
-          <span>Ruas</span>
-          <span>Waktu</span>
-          <span>Lama Error</span>
+      {loading ? (
+        <div className="text-center text-sm text-gray-400">Memuat data...</div>
+      ) : filteredLog.length === 0 ? (
+        <div className="text-center text-sm text-gray-400">
+          Tidak ada data yang tersedia.
         </div>
-
-        {filteredLog.map((item, index) => (
+      ) : (
+        filteredLog.map((item, index) => (
           <div
-            key={index}
+            key={`${item.jenisAlat}-${item.ruas}-${item.waktu}-${index}`}
             className="grid grid-cols-4 gap-2 text-xs p-2 rounded border"
           >
             <span>{item.jenisAlat}</span>
@@ -125,8 +122,8 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
               {item.lamaError}
             </span>
           </div>
-        ))}
-      </div>
+        ))
+      )}
     </div>
   );
 };

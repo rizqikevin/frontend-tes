@@ -1,5 +1,5 @@
 // pages/LogAlat.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import Header from "@/components/Header";
@@ -7,8 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import { useLogAlatStore } from "@/stores/useLogAlatStore";
 import DatePicker from "react-datepicker";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { Link } from "react-router-dom";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+dayjs.extend(relativeTime);
 
 const LogAlat: React.FC = () => {
   const { user, logout } = useAuth();
@@ -17,8 +28,21 @@ const LogAlat: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
-  const { logs, isLoading, fetchLogs, page, setPage, limit, setLimit } =
-    useLogAlatStore();
+  const {
+    logs,
+    isLoading,
+    fetchLogs,
+    page,
+    setPage,
+    limit,
+    setLimit,
+    selectedAlat,
+    selectedRuas,
+    selectedStatus,
+    setSelectedAlat,
+    setSelectedRuas,
+    setSelectedStatus,
+  } = useLogAlatStore();
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -44,42 +68,118 @@ const LogAlat: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    fetchLogs();
+  }, [fetchLogs]);
+
   const handleSearch = () => {
     const start = format(startDate, "yyyy-MM-dd");
     const end = format(endDate, "yyyy-MM-dd");
-    fetchLogs(start, end);
+    console.log(start, end);
+    fetchLogs();
   };
+
+  const ruasOptions = useMemo(() => {
+    return Array.from(new Set(logs.map((item) => item.nama_gerbang)));
+  }, [logs]);
+
+  const alatOptions = useMemo(() => {
+    return Array.from(new Set(logs.map((item) => item.id_alat)));
+  }, [logs]);
+
+  const statusOptions = useMemo(() => {
+    return Array.from(new Set(logs.map((item) => item.last_status)));
+  }, [logs]);
+
+  const filteredLog = useMemo(() => {
+    return logs.filter(
+      (item) =>
+        (selectedRuas ? item.nama_gerbang === selectedRuas : true) &&
+        (selectedAlat ? item.id_alat === selectedAlat : true) &&
+        (selectedStatus ? item.last_status === selectedStatus : true)
+    );
+  }, [logs, selectedRuas, selectedAlat, selectedStatus]);
 
   // Paginated data
   const startIndex = (page - 1) * limit;
-  const paginatedLogs = logs.slice(startIndex, startIndex + limit);
+  const paginatedLogs = filteredLog.slice(startIndex, startIndex + limit);
   const totalItems = logs.length;
   const totalPages = Math.ceil(totalItems / limit);
 
   return (
     <div className="flex min-h-screen bg-dashboard-dark text-white">
-      <DashboardSidebar />
       <div
         className={`flex-1 ${
-          isSidebarCollapsed ? "ml-16" : "ml-64"
+          isSidebarCollapsed ? "ml-0 mr-0" : "ml-0"
         } transition-all duration-300`}
       >
-        <Header
-          isDark={theme === "dark"}
-          user={user ? { name: user.name, role: String(user.role) } : null}
-          logout={logout}
-        />
-        <main className="p-8">
+        <main className="p-0">
           {/* Filter */}
           <div className="flex flex-col lg:flex-row justify-end gap-4 flex-wrap mb-8">
             <div className="flex items-center space-x-4">
+              <Select onValueChange={setSelectedStatus}>
+                <SelectTrigger className="flex-1 bg-dashboard-accent w-[200px]">
+                  <SelectValue className="w-full" placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent className="bg-dashboard-accent border">
+                  {statusOptions.length > 0 ? (
+                    statusOptions.map((alat) => (
+                      <SelectItem key={alat} value={alat}>
+                        {alat}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="no-data" disabled>
+                      Tidak ada data tersedia
+                    </SelectItem>
+                  )}
+                </SelectContent>
+              </Select>
+
+              <Select onValueChange={setSelectedRuas}>
+                <SelectTrigger className="flex-1 bg-dashboard-accent w-[200px]">
+                  <SelectValue className="w-full" placeholder="Semua Ruas" />
+                </SelectTrigger>
+                <SelectContent className="bg-dashboard-accent border">
+                  {ruasOptions.length > 0 ? (
+                    ruasOptions.map((alat) => (
+                      <SelectItem key={alat} value={alat}>
+                        {alat}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="no-data" disabled>
+                      Tidak ada data tersedia
+                    </SelectItem>
+                  )}
+                </SelectContent>
+              </Select>
+
+              <Select onValueChange={setSelectedAlat}>
+                <SelectTrigger className="flex-1 bg-dashboard-accent w-[200px]">
+                  <SelectValue className="w-full" placeholder="Semua Alat" />
+                </SelectTrigger>
+                <SelectContent className="bg-dashboard-accent border">
+                  {alatOptions.length > 0 ? (
+                    alatOptions.map((alat) => (
+                      <SelectItem key={alat} value={alat}>
+                        {alat}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="no-data" disabled>
+                      Tidak ada data tersedia
+                    </SelectItem>
+                  )}
+                </SelectContent>
+              </Select>
               <div className="border border-gray-700 rounded-lg px-4 py-2 bg-dashboard-accent flex items-center">
                 <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                 <DatePicker
                   selected={startDate}
                   onChange={(date: Date) => setStartDate(date)}
                   dateFormat="dd-MM-yyyy"
-                  className="bg-transparent text-white outline-none"
+                  className="bg-transparent w-24 text-white outline-none"
                 />
               </div>
               <svg
@@ -103,7 +203,7 @@ const LogAlat: React.FC = () => {
                   selected={endDate}
                   onChange={(date: Date) => setEndDate(date)}
                   dateFormat="dd-MM-yyyy"
-                  className="bg-transparent text-white outline-none"
+                  className="bg-transparent w-24 text-white outline-none"
                 />
               </div>
               <Button
@@ -123,10 +223,12 @@ const LogAlat: React.FC = () => {
                 <thead>
                   <tr className="border-b border-gray-700">
                     <th className="px-4 py-3">#</th>
-                    <th className="px-4 py-3">Time</th>
-                    <th className="px-4 py-3">Nama Alat</th>
-                    <th className="px-4 py-3">Kordinat</th>
-                    <th className="px-4 py-3">Detail</th>
+                    <th className="px-4 py-3">Jenis Alat</th>
+                    <th className="px-4 py-3">Ruas</th>
+                    <th className="px-4 py-3">Waktu</th>
+                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3">Lama Error</th>
+                    <th className="px-4 py-3">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -138,7 +240,7 @@ const LogAlat: React.FC = () => {
                     </tr>
                   ) : paginatedLogs.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="text-center py-4">
+                      <td colSpan={7} className="text-center py-4">
                         Tidak ada data.
                       </td>
                     </tr>
@@ -149,24 +251,48 @@ const LogAlat: React.FC = () => {
                         className="border-b border-gray-700 hover:bg-gray-800 transition"
                       >
                         <td className="px-5 py-5">{startIndex + index + 1}</td>
+                        <td className="px-5 py-5">{item.id_alat}</td>
+                        <td className="px-5 py-5">{item.nama_gerbang}</td>
                         <td className="px-5 py-5">
                           {format(new Date(item.insert_at), "dd/MM/yyyy HH:mm")}
                         </td>
-                        <td className="px-5 py-5">{item.id_alat}</td>
                         <td className="px-5 py-5">
-                          {item.latitude}, {item.longitude}
-                        </td>
-                        <td className="px-5 py-5">
-                          Status:{" "}
                           <span
                             className={`font-semibold ${
-                              item.status === "off"
+                              item.last_status === "off"
                                 ? "text-red-400"
                                 : "text-green-400"
                             }`}
                           >
-                            {item.status.toUpperCase()}
+                            {item.last_status === "off"
+                              ? "◉ Offline"
+                              : "◉ Online"}
                           </span>
+                        </td>
+                        <td
+                          className={` mt-5 px-2 py-5 w-[100px] max-h-4 inline-flex rounded-lg text-sm font-medium text-white items-center justify-center text-center ${
+                            item.last_status === "off"
+                              ? "bg-red-500"
+                              : item.last_status === "on"
+                              ? "bg-green-500"
+                              : "bg-green-500"
+                          }`}
+                        >
+                          {item.last_status === "off"
+                            ? dayjs(item.insert_at).fromNow(true)
+                            : item.last_status === "on"
+                            ? dayjs(item.insert_at).fromNow(true)
+                            : "Normal"}
+                        </td>
+                        <td className="px-5 py-5">
+                          <Link to={`/detail-odol/${item.id_lokasi}`}>
+                            <Button
+                              variant="default"
+                              className="bg-yellow-500 border-white text-white hover:bg-gray-700"
+                            >
+                              Detail
+                            </Button>
+                          </Link>
                         </td>
                       </tr>
                     ))

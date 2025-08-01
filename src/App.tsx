@@ -25,7 +25,7 @@ import Camera from "./pages/Camera";
 import { Incident } from "./pages/Incident";
 import { GPSVehicleTracking } from "./pages/GPSVehicleTracking";
 import Weather from "./pages/Weather";
-import LogAlat from "./pages/LogAlat";
+import LogAlat from "./components/logalat/LogAlat";
 import LogHistory from "./pages/LogHistory";
 import { LalinReport } from "./pages/LalinReport";
 import { LalinPortableReport } from "./pages/LalinPortableReport";
@@ -47,6 +47,7 @@ import DetailOdol from "./components/DetailOdol";
 import BebanRuas from "./pages/BebasRuas";
 import { DataVehicle } from "./pages/MasterVehicle";
 import { DataCctv } from "./pages/MasterCctv";
+import { LogAlatPages } from "./pages/LogAlatPages";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -172,7 +173,7 @@ const App = () => {
                 path="/log-alat"
                 element={
                   <ProtectedRoute>
-                    <LogAlat />
+                    <LogAlatPages />
                   </ProtectedRoute>
                 }
               />
