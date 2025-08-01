@@ -18,18 +18,18 @@ export const getVehicleIcon = (type: string) => {
   switch (type) {
     case "ambulance":
       return new L.Icon({
-        iconUrl: "/icons/ambulance.png",
+        iconUrl: "/icons/Ambulance.svg",
         iconSize: [50, 50],
       });
     case "rescue":
       return new L.Icon({
-        iconUrl: "/icons/rescue-boat.png",
+        iconUrl: "/icons/Towing.svg",
         iconSize: [50, 50],
       });
     case "car":
     default:
       return new L.Icon({
-        iconUrl: "/icons/car.png",
+        iconUrl: "/icons/Car.svg",
         iconSize: [50, 50],
       });
   }
@@ -39,17 +39,17 @@ export const getVehicleIconOutOfBounds = (type: string) => {
   switch (type) {
     case "ambulance":
       return new L.Icon({
-        iconUrl: "/icons/ambulance-out.png",
+        iconUrl: "/icons/Car.svg",
       });
     case "rescue":
       return new L.Icon({
-        iconUrl: "/icons/rescue-boat-out.png",
+        iconUrl: "/icons/Towing.svg",
         iconSize: [50, 50],
       });
     case "car":
     default:
       return new L.Icon({
-        iconUrl: "/icons/car-warning.png",
+        iconUrl: "/icons/Ambulance.svg",
         iconSize: [50, 50],
       });
   }
@@ -98,6 +98,8 @@ export default function MapViewGps({
     [3.4775486758569403, 99.18200705764308],
     [3.3481490716505355, 99.47624550906254],
   ];
+
+  const hasFitBoundsRef = useRef(false);
 
   // Fetch addresses once for all vehicles
   useEffect(() => {
@@ -151,7 +153,8 @@ export default function MapViewGps({
 
   // Zoom otomatis ke semua marker
   useEffect(() => {
-    if (!mapRef.current || vehicles.length === 0) return;
+    if (!mapRef.current || vehicles.length === 0 || hasFitBoundsRef.current)
+      return;
 
     const bounds = L.latLngBounds(
       vehicles.map(
@@ -160,6 +163,7 @@ export default function MapViewGps({
     );
 
     mapRef.current.fitBounds(bounds, { padding: [50, 50] });
+    hasFitBoundsRef.current = true;
   }, [vehicles]);
 
   return (
