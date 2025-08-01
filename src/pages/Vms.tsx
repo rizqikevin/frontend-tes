@@ -16,6 +16,7 @@ type Camera = {
   name: string;
   group_id: string;
   url_local: string;
+  status_id: number;
 };
 
 type GridSlot = Camera | null;
@@ -23,9 +24,22 @@ type GridSlot = Camera | null;
 const DraggableCamera = ({ camera }: { camera: Camera }) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
-      id: camera.id,
+      id: camera.id.toString(),
       data: camera,
     });
+
+  const getStatusColorDot = () => {
+    switch (camera.status_id) {
+      case 1:
+        return "bg-green-500"; // Active
+      case 2:
+        return "bg-yellow-400"; // Maintenance
+      case 3:
+        return "bg-red-500"; // Inactive
+      default:
+        return "bg-gray-400";
+    }
+  };
 
   return (
     <div
@@ -38,9 +52,21 @@ const DraggableCamera = ({ camera }: { camera: Camera }) => {
           : undefined,
         opacity: isDragging ? 0.5 : 1,
       }}
-      className="text-sm bg-zinc-700 text-white p-2 rounded shadow cursor-move"
+      className="text-sm bg-zinc-700 text-white p-2 rounded shadow cursor-move flex items-center gap-2"
     >
-      {camera.name}
+      <span
+        className={`w-2.5 h-2.5 rounded-full ${getStatusColorDot()}`}
+        title={
+          camera.status_id === 1
+            ? "Active"
+            : camera.status_id === 2
+            ? "Maintenance"
+            : camera.status_id === 3
+            ? "Inactive"
+            : "Unknown"
+        }
+      />
+      <span>{camera.name}</span>
     </div>
   );
 };
@@ -165,7 +191,9 @@ const VMS = () => {
     const matchGroup = Number(cam.group_id) === 5;
     const matchSearch = cam.name.toLowerCase().includes(search.toLowerCase());
     const isUsed = grid.some((item) => item?.id === cam.id);
-    return matchGroup && matchSearch && !isUsed;
+    const matchStatus =
+      cam.status_id === 1 || cam.status_id === 2 || cam.status_id === 3;
+    return matchGroup && matchStatus && matchSearch && !isUsed;
   });
 
   useEffect(() => {
