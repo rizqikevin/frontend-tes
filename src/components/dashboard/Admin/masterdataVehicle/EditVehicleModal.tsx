@@ -1,30 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dialog, DialogTitle } from "@headlessui/react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Vehicle } from "./FormMasterDataVehicle";
 import api from "@/services/api";
 
-interface AddVehicleModalProps {
+interface EditVehicleModalProps {
   isOpen: boolean;
   onClose: () => void;
+  vehicle: Vehicle;
   onSuccess?: () => void;
 }
 
-export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
+export const EditVehicleModal: React.FC<EditVehicleModalProps> = ({
   isOpen,
   onClose,
+  vehicle,
   onSuccess,
 }) => {
-  const [form, setForm] = useState({
-    radio_id: "",
-    vehicle_number: "",
-    vehicle_name: "",
-    type: "car",
-    target: 0,
-    average_fuel_consumption: 0,
-  });
-
+  const [form, setForm] = useState(vehicle);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setForm(vehicle);
+  }, [vehicle]);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -41,16 +41,14 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const res = await api.post("/vehicle", form);
-      console.log("Vehicle added:", res.data);
-
-      if (!res) throw new Error("Failed to add vehicle");
+      const res = await api.put(`/vehicle/${vehicle.radio_id}`, form);
+      console.log("Vehicle updated:", res.data);
 
       if (onSuccess) onSuccess();
       onClose();
     } catch (err) {
       console.error(err);
-      alert("Gagal menambahkan kendaraan");
+      alert("Gagal mengedit kendaraan");
     } finally {
       setLoading(false);
     }
@@ -67,10 +65,8 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
         <div className="relative bg-[#1e1e1e] text-white rounded-lg w-full max-w-md p-6 z-10">
           <div className="flex justify-between items-center mb-4">
             <DialogTitle className="text-lg font-semibold">
-              <span className="text-white text-lg">Add Vehicle</span>
-              <p className="text-sm text-gray-400">
-                Please fill out the form below
-              </p>
+              Edit Vehicle
+              <p className="text-sm text-gray-400">Update vehicle data</p>
             </DialogTitle>
             <button onClick={onClose}>
               <X className="w-5 h-5" />
@@ -177,7 +173,7 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
               onClick={handleSubmit}
               disabled={loading}
             >
-              {loading ? "Saving..." : "Save"}
+              {loading ? "Saving..." : "Update"}
             </Button>
           </div>
         </div>

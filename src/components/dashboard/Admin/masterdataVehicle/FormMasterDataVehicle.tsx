@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { Button } from "../../../ui/button";
 import { AddVehicleModal } from "@/components/dashboard/Admin/masterdataVehicle/AddVehicleModal";
 import api from "@/services/api";
+import { EditVehicleModal } from "./EditVehicleModal";
 
-interface Vehicle {
+export interface Vehicle {
   radio_id: string;
   vehicle_number: string;
   vehicle_name: string;
@@ -103,10 +104,20 @@ export const FormMasterDataVehicle: React.FC = () => {
         onClose={() => setAddModalOpen(false)}
         onSuccess={() => {
           setAddModalOpen(false);
-          // TODO: Trigger refetch vehicle list here
-          console.log("Vehicle successfully added!");
+          fetchVehicles();
         }}
       />
+      {selectedVehicle && (
+        <EditVehicleModal
+          isOpen={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          vehicle={selectedVehicle}
+          onSuccess={() => {
+            setEditModalOpen(false);
+            fetchVehicles();
+          }}
+        />
+      )}
     </div>
   );
 };
