@@ -15,6 +15,7 @@ const CctvCard: React.FC<CctvCardProps> = ({
   title,
   description,
 }) => {
+  const total = Math.round(active) + Math.round(nonActive);
   return (
     <div className="bg-dashboard-accent text-white rounded-lg p-4 w-full  shadow-md">
       {/* Header */}
@@ -23,7 +24,11 @@ const CctvCard: React.FC<CctvCardProps> = ({
           <h3 className="text-sm font-semibold">{title}</h3>
           <p className="text-xs text-gray-400">{description}</p>
         </div>
-        <span className="text-xs text-gray-400">{date}</span>
+
+        <div>
+          <span className="text-xs text-gray-400">{date}</span>
+          <p className="text-lg font-bold text-white">{total} Units</p>
+        </div>
       </div>
 
       {/* Divider */}

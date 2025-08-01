@@ -17,7 +17,8 @@ interface Vehicle {
 export const FormMasterDataVehicle: React.FC = () => {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const fetchVehicles = async () => {
     try {
       const response = await api.get("/vehicle");
@@ -60,8 +61,8 @@ export const FormMasterDataVehicle: React.FC = () => {
               <th>Status</th>
               <th>Create Date</th>
               <th>Type</th>
-              <th>Target</th>
-              <th>Penggunaan Bahan Bakar</th>
+              <th>Target (Km)</th>
+              <th>Penggunaan BBM (Km/L)</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -81,9 +82,15 @@ export const FormMasterDataVehicle: React.FC = () => {
                 <td className="px-1 py-2 text-center">
                   {vehicle.average_fuel_consumption}
                 </td>
-                <td className="px-2 py-2">
-                  <Button className="bg-[#FFA500] text-white hover:bg-[#e69500]">
-                    Archieve
+                <td className="px-2 py-2 flex gap-2">
+                  <Button
+                    className="bg-blue-500 text-white hover:bg-blue-600"
+                    onClick={() => {
+                      setSelectedVehicle(vehicle);
+                      setEditModalOpen(true);
+                    }}
+                  >
+                    Edit
                   </Button>
                 </td>
               </tr>

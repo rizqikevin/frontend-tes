@@ -164,7 +164,7 @@ export default function MapViewGps({
 
   return (
     <MapContainer
-      center={center}
+      // center={center}
       zoom={12}
       style={{ height: "100%", width: "100%" }}
       whenReady={() => {}}

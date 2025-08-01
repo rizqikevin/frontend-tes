@@ -168,12 +168,14 @@ export const BebanRuas: React.FC = () => {
         <main className="p-10 relative">
           <div className="flex flex-row justify-between mb-3">
             <div className="flex flex-col">
-              <h1 className="text-2xl text-white font-bold">Beban Ruas</h1>
+              <h1 className="text-2xl text-white font-bold">
+                Beban Ruas Tahun 2025
+              </h1>
               <p className="text-xs font-semibold text-gray-400">
                 Pantau Detail dari setiap ruas
               </p>
             </div>
-            <div className="flex items-center gap-2 mt-2 p-3 md:mt-0">
+            {/* <div className="flex items-center gap-2 mt-2 p-3 md:mt-0">
               <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
                 <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
                 <DatePicker
@@ -215,7 +217,7 @@ export const BebanRuas: React.FC = () => {
               >
                 Search
               </Button>
-            </div>
+            </div> */}
           </div>
 
           <div className="relative w-full h-[90vh] bg-dashboard-accent rounded-lg">
