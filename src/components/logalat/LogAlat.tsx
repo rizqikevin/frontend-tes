@@ -70,13 +70,17 @@ const LogAlat: React.FC = () => {
 
   useEffect(() => {
     fetchLogs();
-  }, [fetchLogs]);
+  }, []);
 
   const handleSearch = () => {
     const start = format(startDate, "yyyy-MM-dd");
     const end = format(endDate, "yyyy-MM-dd");
-    console.log(start, end);
-    fetchLogs();
+    fetchLogs({
+      id_alat: selectedAlat,
+      status: selectedStatus,
+      start_time: start,
+      end_time: end,
+    });
   };
 
   const ruasOptions = useMemo(() => {
@@ -117,15 +121,15 @@ const LogAlat: React.FC = () => {
           {/* Filter */}
           <div className="flex flex-col lg:flex-row justify-end gap-4 flex-wrap mb-8">
             <div className="flex items-center space-x-4">
-              <Select onValueChange={setSelectedStatus}>
+              <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                 <SelectTrigger className="flex-1 bg-dashboard-accent w-[200px]">
                   <SelectValue className="w-full" placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent className="bg-dashboard-accent border">
                   {statusOptions.length > 0 ? (
-                    statusOptions.map((alat) => (
-                      <SelectItem key={alat} value={alat}>
-                        {alat}
+                    statusOptions.map((status) => (
+                      <SelectItem key={status} value={status}>
+                        {status}
                       </SelectItem>
                     ))
                   ) : (
@@ -136,15 +140,15 @@ const LogAlat: React.FC = () => {
                 </SelectContent>
               </Select>
 
-              <Select onValueChange={setSelectedRuas}>
+              <Select value={selectedRuas} onValueChange={setSelectedRuas}>
                 <SelectTrigger className="flex-1 bg-dashboard-accent w-[200px]">
                   <SelectValue className="w-full" placeholder="Semua Ruas" />
                 </SelectTrigger>
                 <SelectContent className="bg-dashboard-accent border">
                   {ruasOptions.length > 0 ? (
-                    ruasOptions.map((alat) => (
-                      <SelectItem key={alat} value={alat}>
-                        {alat}
+                    ruasOptions.map((ruas) => (
+                      <SelectItem key={ruas} value={ruas}>
+                        {ruas}
                       </SelectItem>
                     ))
                   ) : (
@@ -155,9 +159,12 @@ const LogAlat: React.FC = () => {
                 </SelectContent>
               </Select>
 
-              <Select onValueChange={setSelectedAlat}>
+              <Select value={selectedAlat} onValueChange={setSelectedAlat}>
                 <SelectTrigger className="flex-1 bg-dashboard-accent w-[200px]">
-                  <SelectValue className="w-full" placeholder="Semua Alat" />
+                  <SelectValue
+                    className="w-full text-white"
+                    placeholder="Semua Alat"
+                  />
                 </SelectTrigger>
                 <SelectContent className="bg-dashboard-accent border">
                   {alatOptions.length > 0 ? (

@@ -3,8 +3,14 @@ import Filters from "./Filters";
 import { useHeartbeatStore } from "@/stores/useHeartbeatStore";
 
 const MapSection = () => {
-  const { selectedAlat, selectedStatus, setSelectedStatus, setSelectedAlat } =
-    useHeartbeatStore();
+  const {
+    selectedAlat,
+    selectedStatus,
+    setSelectedStatus,
+    setSelectedAlat,
+    selectedRuas,
+    setSelectedRuas,
+  } = useHeartbeatStore();
 
   return (
     <div className="lg:col-span-2 rounded-lg relative overflow-hidden">
@@ -13,6 +19,8 @@ const MapSection = () => {
           <Filters
             selectedAlat={selectedAlat}
             setSelectedAlat={setSelectedAlat}
+            selectedRuas={selectedRuas}
+            setSelectedRuas={setSelectedRuas}
             selectedStatus={selectedStatus}
             setSelectedStatus={setSelectedStatus}
           />

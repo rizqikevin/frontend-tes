@@ -25,10 +25,14 @@ interface LogState {
   setSelectedAlat: (alat: string) => void;
   setSelectedRuas: (gerbang: string) => void;
   setSelectedStatus: (status: string) => void;
-  filteredData: () => Log[];
   setPage: (page: number) => void;
   setLimit: (limit: number) => void;
-  fetchLogs: () => Promise<void>;
+  fetchLogs: (params?: {
+    id_alat?: string;
+    status?: string;
+    start_time?: string;
+    end_time?: string;
+  }) => Promise<void>;
 }
 
 export const useLogAlatStore = create<LogState>((set, get) => ({
@@ -45,20 +49,6 @@ export const useLogAlatStore = create<LogState>((set, get) => ({
   setSelectedRuas: (gerbang: string) => set({ selectedRuas: gerbang }),
   setSelectedStatus: (status: string) => set({ selectedStatus: status }),
 
-  filteredData: () => {
-    const { logs, selectedAlat, selectedRuas, selectedStatus } = get();
-    return logs.filter((item) => {
-      const matchAlat = selectedAlat ? item.id_alat === selectedAlat : true;
-      const matchRuas = selectedRuas
-        ? item.nama_gerbang === selectedRuas
-        : true;
-      const matchStatus = selectedStatus
-        ? item.last_status === selectedStatus
-        : true;
-      return matchAlat && matchRuas && matchStatus;
-    });
-  },
-
   setPage: (page) => set({ page }),
   setLimit: (limit) => {
     const totalItems = get().logs.length;
@@ -66,12 +56,10 @@ export const useLogAlatStore = create<LogState>((set, get) => ({
     set({ limit, page: 1, totalPages: newTotalPages });
   },
 
-  fetchLogs: async () => {
+  fetchLogs: async (params = {}) => {
     set({ isLoading: true });
     try {
-      const res = await api.get("/heartbeat", {
-        params: {},
-      });
+      const res = await api.get("/heartbeat", { params });
 
       if (res.data.status === "success") {
         const allLogs = res.data.data;

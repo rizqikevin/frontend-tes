@@ -63,11 +63,15 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
             <SelectValue placeholder="Semua Ruas Jalan" />
           </SelectTrigger>
           <SelectContent className="bg-dashboard-accent border">
-            {ruasOptions.map((ruas) => (
-              <SelectItem key={ruas} value={ruas}>
-                {ruas}
-              </SelectItem>
-            ))}
+            {ruasOptions.length > 0 ? (
+              ruasOptions.map((ruas) => (
+                <SelectItem key={ruas} value={ruas}>
+                  {ruas}
+                </SelectItem>
+              ))
+            ) : (
+              <SelectItem value="Tidak ada data">Tidak ada data</SelectItem>
+            )}
           </SelectContent>
         </Select>
 
@@ -76,11 +80,17 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
             <SelectValue placeholder="Semua Jenis Alat" />
           </SelectTrigger>
           <SelectContent className="bg-dashboard-accent border">
-            {alatOptions.map((alat) => (
-              <SelectItem key={alat} value={alat}>
-                {alat}
+            {alatOptions.length > 0 ? (
+              alatOptions.map((alat) => (
+                <SelectItem key={alat} value={alat}>
+                  {alat}
+                </SelectItem>
+              ))
+            ) : (
+              <SelectItem value="no-data" disabled>
+                Tidak ada data tersedia
               </SelectItem>
-            ))}
+            )}
           </SelectContent>
         </Select>
       </div>
@@ -95,27 +105,33 @@ const ErrorLog = ({ errorLogData }: { errorLogData: ErrorItem[] }) => {
           <span>Lama Error</span>
         </div>
 
-        {filteredLog.map((item, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-4 gap-2 text-xs p-2 rounded border"
-          >
-            <span>{item.jenisAlat}</span>
-            <span>{item.ruas}</span>
-            <span>{item.waktu}</span>
-            <span
-              className={`inline-flex px-2 py-1 rounded text-xs text-white ${
-                item.status === "off"
-                  ? "bg-red-500"
-                  : item.status === "warning"
-                  ? "bg-orange-500"
-                  : "bg-green-500"
-              }`}
+        {filteredLog.length > 0 ? (
+          filteredLog.map((item, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-4 gap-2 text-xs p-2 rounded border"
             >
-              {item.lamaError}
-            </span>
+              <span>{item.jenisAlat}</span>
+              <span>{item.ruas}</span>
+              <span>{item.waktu}</span>
+              <span
+                className={`inline-flex px-2 py-1 rounded text-xs text-white ${
+                  item.status === "off"
+                    ? "bg-red-500"
+                    : item.status === "warning"
+                    ? "bg-orange-500"
+                    : "bg-green-500"
+                }`}
+              >
+                {item.lamaError}
+              </span>
+            </div>
+          ))
+        ) : (
+          <div className="flex flex-row justify-center items-center h-[240px]">
+            <p className="text-gray-400">tidak ada data error tersedia</p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
