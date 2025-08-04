@@ -77,7 +77,7 @@ export const DetailOdol: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const { id } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [data, setData] = useState<OdolDetail | null>(null);
   const [parsedRaw, setParsedRaw] = useState<RawData | null>(null);
 

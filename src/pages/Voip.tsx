@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import api from "@/services/api";
 import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
+import { toast } from "sonner";
 
 interface VoipLog {
   linkedid: string;
@@ -82,7 +83,7 @@ const Voip: React.FC = () => {
       setData(filtered);
       setTotal(response.data.total);
     } catch (error) {
-      console.error("Failed to fetch VOIP logs:", error);
+      toast.error("Failed to fetch VOIP logs:", error);
     } finally {
       setLoading(false);
     }

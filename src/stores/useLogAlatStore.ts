@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { api } from "@/services/api";
 
 interface Log {
+  gate: string;
   id_lokasi: number;
   id_alat: string;
   gardu: string;
@@ -28,6 +29,7 @@ interface LogState {
   setPage: (page: number) => void;
   setLimit: (limit: number) => void;
   fetchLogs: (params?: {
+    gate?: string;
     id_alat?: string;
     status?: string;
     start_time?: string;

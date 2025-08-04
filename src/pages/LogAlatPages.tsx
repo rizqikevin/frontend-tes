@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { Button } from "@/components/ui/button";
-import { Daily } from "@/components/lalinharian/Lalinreport/daily/Daily";
-import { Summary } from "@/components/lalinharian/Lalinreport/Summary/Summary";
 import Header from "@/components/Header";
-import LogAlat from "@/components/logalat/LogAlat";
+import { LogAlat } from "@/components/logalat/LogAlat";
+import StatusAlat from "@/components/logalat/StatusAlat";
 
 export const LogAlatPages: React.FC = () => {
   const { user, logout } = useAuth();
@@ -50,11 +49,11 @@ export const LogAlatPages: React.FC = () => {
   const renderContent = () => {
     switch (selectedTab) {
       case "status":
-        return <LogAlat />;
+        return <StatusAlat />;
       case "log":
-        return <Daily />;
-      default:
         return <LogAlat />;
+      default:
+        return <StatusAlat />;
     }
   };
 
@@ -95,9 +94,9 @@ export const LogAlatPages: React.FC = () => {
                 Status Alat
               </Button>
               <Button
-                onClick={() => setSelectedTab("daily")}
+                onClick={() => setSelectedTab("log")}
                 className={`${
-                  selectedTab === "daily"
+                  selectedTab === "log"
                     ? "bg-gray-50 text-gray-900"
                     : "bg-dashboard-accent text-white"
                 }`}
