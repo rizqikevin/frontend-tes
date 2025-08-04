@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import { ImageCard } from "./dashboard/OverloadOverDimention/ImageCard";
 import { VehicleInfo } from "./dashboard/OverloadOverDimention/VehicleInfo";
 import { c } from "node_modules/framer-motion/dist/types.d-Bq-Qm38R";
+import { toast } from "sonner";
 
 interface RawData {
   id: number;
@@ -110,19 +111,19 @@ export const DetailOdol: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log(date);
+    // console.log(date);
     const fetchDetail = async () => {
       try {
         const res = await api.get(`/odol/${id}?date=${date}`);
         const odolData: OdolDetail = res.data.data;
         setData(odolData);
-        console.log("Detail data:", odolData);
+        // console.log("Detail data:", odolData);
 
         if (odolData.raw) {
           setParsedRaw(odolData.raw);
         }
       } catch (err) {
-        console.error("Gagal fetch detail:", err);
+        toast.error("Gagal fetch detail:", err);
       }
     };
 

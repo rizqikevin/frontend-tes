@@ -14,13 +14,8 @@ export const GPSVehicleTracking: React.FC = () => {
   const { user, logout } = useAuth();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const {
-    selectedVehicle,
-    setSelectedVehicle,
-    vehicles,
-    fetchVehicles,
-    isVehicleLoading,
-  } = useGpsStore();
+  const { selectedVehicle, setSelectedVehicle, vehicles, fetchVehicles } =
+    useGpsStore();
   const {
     trackData,
     allTrackData,
@@ -45,7 +40,7 @@ export const GPSVehicleTracking: React.FC = () => {
     fetchMileage();
   }, [startDate]);
 
-  console.log(data);
+  // console.log(data);
 
   const mappedData = Object.values(data).map((item) => ({
     id: item.id,
@@ -53,7 +48,7 @@ export const GPSVehicleTracking: React.FC = () => {
     fuel: item.fuel,
   }));
 
-  console.log(mappedData);
+  // console.log(mappedData);
 
   const totalPages = Math.ceil(total / limit);
   const trackCoordinates: [number, number][] = allTrackData.map((track) => [
@@ -61,15 +56,15 @@ export const GPSVehicleTracking: React.FC = () => {
     Number(track.lon),
   ]);
 
-  console.log("Track Coordinates", trackCoordinates);
-  console.log("Track Data", trackData);
-  console.log("All Track Data", allTrackData);
+  // console.log("Track Coordinates", trackCoordinates);
+  // console.log("Track Data", trackData);
+  // console.log("All Track Data", allTrackData);
 
   useEffect(() => {
     fetchVehicles();
     const interval = setInterval(() => {
       fetchVehicles();
-    }, 10000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [selectedVehicle]);
@@ -78,13 +73,13 @@ export const GPSVehicleTracking: React.FC = () => {
     if (selectedVehicle) {
       fetchAllTrackData(selectedVehicle.radio_id);
     }
-  }, [selectedVehicle]);
+  }, [selectedVehicle, page, limit, total, startDate, endDate, search]);
 
   useEffect(() => {
     if (selectedVehicle) {
       fetchTrackData(selectedVehicle.radio_id);
     }
-  }, [selectedVehicle, page, limit, total]);
+  }, [selectedVehicle, page, limit, total, startDate, endDate, search]);
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {

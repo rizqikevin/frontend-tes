@@ -65,7 +65,7 @@ export const TransactionOverview = () => {
   }));
 
   const settlementPercent = data?.persentase ?? 0;
-  console.log(settlementPercent);
+  // console.log(settlementPercent);
 
   const colors = ["#FF9800", "#2196F3", "#4CAF50", "#FF69B4", "#8BC34A"];
 

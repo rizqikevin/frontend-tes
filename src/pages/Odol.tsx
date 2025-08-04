@@ -40,7 +40,7 @@ const Odol: React.FC = () => {
     setGateId,
   } = useOdolStore();
 
-  console.log(data);
+  // console.log(data);
 
   // Listen for theme changes and sidebar state changes
   useEffect(() => {

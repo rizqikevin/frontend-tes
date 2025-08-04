@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "../../../ui/button";
 import { AddCctvModal } from "./AddCctvModal";
 import api from "@/services/api";
+import { toast } from "sonner";
 
 interface Vehicle {
   radio_id: string;
@@ -23,9 +24,9 @@ export const FormMasterDataCctv: React.FC = () => {
       const response = await api.get("/vehicle");
 
       setVehicles(response.data);
-      console.log("Fetched vehicles:", response.data);
+      // console.log("Fetched vehicles:", response.data);
     } catch (error) {
-      console.error("Error fetching vehicles:", error);
+      toast.error("Error fetching vehicles:", error);
     }
   };
 
@@ -33,7 +34,7 @@ export const FormMasterDataCctv: React.FC = () => {
     fetchCctv();
   }, []);
 
-  console.log("Vehicles from FormMasterData:", vehicles);
+  // console.log("Vehicles from FormMasterData:", vehicles);
 
   return (
     <div className="bg-dashboard-accent text-white rounded-lg p-6">
@@ -97,7 +98,7 @@ export const FormMasterDataCctv: React.FC = () => {
         onSuccess={() => {
           setAddModalOpen(false);
           // TODO: Trigger refetch vehicle list here
-          console.log("Vehicle successfully added!");
+          // console.log("Vehicle successfully added!");
         }}
       />
     </div>

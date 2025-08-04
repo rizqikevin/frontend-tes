@@ -17,7 +17,7 @@ const IncidentCard: React.FC = () => {
     fetchData();
   }, [vehiclesNearIncidents]);
 
-  console.log("vehiclesNearIncidents: ", vehiclesNearIncidents);
+  // console.log("vehiclesNearIncidents: ", vehiclesNearIncidents);
 
   return (
     <div className="bg-dashboard-accent text-white p-5 rounded-xl w-full h-auto">

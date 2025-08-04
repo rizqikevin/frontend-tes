@@ -42,7 +42,7 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({
     setLoading(true);
     try {
       const res = await api.post("/vehicle", form);
-      console.log("Vehicle added:", res.data);
+      // console.log("Vehicle added:", res.data);
 
       if (!res) throw new Error("Failed to add vehicle");
 

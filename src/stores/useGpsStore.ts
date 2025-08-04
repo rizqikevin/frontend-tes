@@ -75,7 +75,7 @@ export const useGpsStore = create<GpsState>((set) => ({
           !isNaN(parseFloat(v.lon))
       );
       set({ vehicles: validVehicles });
-      console.log("Vehicles:", validVehicles);
+      // console.log("Vehicles:", validVehicles);
     } catch (error) {
       toast.error("Failed to fetch vehicles", error);
     } finally {
@@ -101,9 +101,7 @@ export const useTrackGpsStore = create<TrackDataState>((set, get) => ({
   isTrackLoading: false,
 
   fetchAllTrackData: async (radioId: string) => {
-    const { startDate, endDate, search } = get();
-    const sDate = startDate.toISOString().split("T")[0];
-    const eDate = endDate.toISOString().split("T")[0];
+    const { startDate, endDate } = get();
     const Alllimit = 100000;
     let Allpage = 1;
     let allRows: TrackData[] = [];
@@ -115,16 +113,18 @@ export const useTrackGpsStore = create<TrackDataState>((set, get) => ({
       while (hasMore) {
         const res = await api.get(`/gps/track/${radioId}`, {
           params: {
-            startDate: sDate,
-            endDate: eDate,
-            search,
+            startDate: startDate,
+            endDate: endDate,
             page: Allpage,
             limit: Alllimit,
           },
         });
 
         const rows: allTrackData[] = res.data.data.rows;
+
+        console.log("Rows:", rows);
         allRows = allRows.concat(rows);
+        console.log("All Rows:", allRows);
 
         const total = res.data.data.total;
         const totalPages = Math.ceil(total / Alllimit);

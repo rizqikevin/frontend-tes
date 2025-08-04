@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { api2 } from "@/services/api";
 import { useDateFilterStore } from "./useDateFilterStore";
+import { toast } from "sonner";
 
 interface SettlementData {
   pendapatan_at: number;
@@ -33,9 +34,9 @@ export const useSettlementStore = create<SettlementStoreState>((set) => ({
         }
       );
       set({ data: res.data.data });
-      console.log(res.data.data);
+      // console.log(res.data.data);
     } catch (error) {
-      console.log(error);
+      toast.error("Failed to fetch data", error);
     } finally {
       set({ loading: false });
     }

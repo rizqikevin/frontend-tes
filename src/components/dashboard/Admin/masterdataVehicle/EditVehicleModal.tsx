@@ -42,7 +42,7 @@ export const EditVehicleModal: React.FC<EditVehicleModalProps> = ({
     setLoading(true);
     try {
       const res = await api.put(`/vehicle/${vehicle.radio_id}`, form);
-      console.log("Vehicle updated:", res.data);
+      // console.log("Vehicle updated:", res.data);
 
       if (onSuccess) onSuccess();
       onClose();

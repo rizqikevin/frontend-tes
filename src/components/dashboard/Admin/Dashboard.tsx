@@ -83,7 +83,7 @@ const Dashboard: React.FC = () => {
     total_inactive: item.total_inactive,
   }));
 
-  console.log("statusCctv fetched", statusCctv);
+  // console.log("statusCctv fetched", statusCctv);
 
   useEffect(() => {
     fetchHeartbeat();

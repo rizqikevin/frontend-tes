@@ -76,7 +76,7 @@ export const useTransactionStore = create<TransactionStoreState>((set) => ({
       const rkap = data.target.find((t) => t.target_name === "RKAP");
       const others = data.target.filter((t) => t.target_name !== "RKAP");
 
-      console.log("data :", data);
+      // console.log("data :", data);
 
       set((state) => ({
         [freq]: {

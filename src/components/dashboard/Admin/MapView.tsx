@@ -89,7 +89,7 @@ export default function MapView() {
     selectedRuas,
   } = useHeartbeatStore();
   const heartbeatMarkers = filteredData();
-  console.log("vehicles from map : ", vehicles);
+  // console.log("vehicles from map : ", vehicles);
   // console.log("incidents from map : ", incidents);
   // console.log("gismaps from map : ", gismaps);
 

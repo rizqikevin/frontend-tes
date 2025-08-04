@@ -76,7 +76,7 @@ const polygon = turf.polygon([
 
 const point = turf.point([3.0522134461444947, 99.1946832627015]);
 const inside = turf.booleanPointInPolygon(point, polygon);
-console.log(inside);
+// console.log(inside);
 
 export default function MapViewGps({
   vehicles,
@@ -123,7 +123,7 @@ export default function MapViewGps({
             [vehicle.radio_id]: address,
           }));
         } catch (error) {
-          console.error("Gagal ambil alamat:", error);
+          // console.error("Gagal ambil alamat:", error);
           setLocationDetails((prev) => ({
             ...prev,
             [vehicle.radio_id]: "Gagal mengambil alamat",
@@ -190,7 +190,7 @@ export default function MapViewGps({
         const point = turf.point([lon, lat]);
         const isInside = turf.booleanPointInPolygon(point, polygon);
 
-        console.log(vehicle.vehicle_name, { lat, lon, isInside });
+        // console.log(vehicle.vehicle_name, { lat, lon, isInside });
         const icon = isInside
           ? getVehicleIcon(vehicle.type)
           : getVehicleIconOutOfBounds(vehicle.type);
