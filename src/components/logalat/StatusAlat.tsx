@@ -111,7 +111,7 @@ const StatusAlat: React.FC = () => {
     <div className="flex min-h-screen bg-dashboard-dark text-white">
       <div
         className={`flex-1 ${
-          isSidebarCollapsed ? " ml-0 " : "ml-6"
+          isSidebarCollapsed ? " ml-0 " : "ml-0"
         } transition-all duration-300`}
       >
         <main className="p-0">
@@ -280,7 +280,7 @@ const StatusAlat: React.FC = () => {
                             : "Normal"}
                         </td>
                         <td className="px-5 py-5">
-                          <Link to={`/${item.gate}`}>
+                          <Link to={`/log-alat/${item.id_lokasi}`}>
                             <Button
                               variant="default"
                               className="bg-yellow-500 border-white text-white hover:bg-gray-700"

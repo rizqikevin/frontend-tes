@@ -3,14 +3,21 @@ import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
-import { LogAlat } from "@/components/logalat/LogAlat";
+import LogAlat from "@/components/logalat/LogAlat";
 import StatusAlat from "@/components/logalat/StatusAlat";
+import { UserRole } from "@/types";
 
 export const LogAlatPages: React.FC = () => {
   const { user, logout } = useAuth();
   const [selectedTab, setSelectedTab] = useState("status");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+  if (!user) {
+    return null;
+  }
+
+  const isAdmin = user.role === UserRole.ADMIN;
 
   // Listen for theme changes and sidebar state changes
   useEffect(() => {
@@ -81,7 +88,7 @@ export const LogAlatPages: React.FC = () => {
         <main
           className={`p-8 ${isDark ? "border-gray-700" : "border-gray-200"}`}
         >
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-0">
             <div className="flex items-center space-x-2">
               <Button
                 onClick={() => setSelectedTab("status")}
@@ -93,16 +100,18 @@ export const LogAlatPages: React.FC = () => {
               >
                 Status Alat
               </Button>
-              <Button
-                onClick={() => setSelectedTab("log")}
-                className={`${
-                  selectedTab === "log"
-                    ? "bg-gray-50 text-gray-900"
-                    : "bg-dashboard-accent text-white"
-                }`}
-              >
-                Log
-              </Button>
+              {isAdmin && (
+                <Button
+                  onClick={() => setSelectedTab("log")}
+                  className={`${
+                    selectedTab === "log"
+                      ? "bg-gray-50 text-gray-900"
+                      : "bg-dashboard-accent text-white"
+                  }`}
+                >
+                  Log
+                </Button>
+              )}
             </div>
           </div>
           {renderContent()}

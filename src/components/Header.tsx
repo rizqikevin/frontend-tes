@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 type HeaderProps = {
-  isDark: boolean;
+  isDark?: boolean;
   user: {
     name: string;
     role: string;

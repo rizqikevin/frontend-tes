@@ -47,7 +47,8 @@ import BebanRuas from "./pages/BebasRuas";
 import { DataVehicle } from "./pages/MasterVehicle";
 import { DataCctv } from "./pages/MasterCctv";
 import { LogAlatPages } from "./pages/LogAlatPages";
-import { LogAlat } from "./components/logalat/LogAlat";
+import LogAlat from "./components/logalat/LogAlat";
+import LogAlatDetail from "./components/logalat/LogAlatDetail";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -181,7 +182,7 @@ const App = () => {
                 path="/log-alat/:gateId"
                 element={
                   <ProtectedRoute>
-                    <LogAlat />
+                    <LogAlatDetail />
                   </ProtectedRoute>
                 }
               />

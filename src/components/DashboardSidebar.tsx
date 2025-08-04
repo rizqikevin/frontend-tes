@@ -192,7 +192,7 @@ export const DashboardSidebar: React.FC = () => {
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="overflow-y-auto max-h-[56vh] pr-1 scrollbar-hidden"
+          className="overflow-y-auto max-h-[60vh] pr-1 scrollbar-hidden"
         >
           <div className="px-3 mb-3">
             <div
@@ -291,34 +291,46 @@ export const DashboardSidebar: React.FC = () => {
               to="/vms"
             />
           </div>
-          <div className="px-3 mb-2">
-            <SidebarItem
-              icon={<BusFrontIcon size={18} />}
-              text="ALPR"
-              to="/alpr"
-            />
-          </div>
-          <div className="px-3 mb-2">
-            <SidebarItem
-              icon={<Car size={18} />}
-              text="Incident"
-              to="/incident"
-            />
-          </div>
-          <div className="px-3 mb-2">
-            <SidebarItem
-              icon={<CloudDownloadIcon size={18} />}
-              text="Voip"
-              to="/voip"
-            />
-          </div>
-          <div className="px-3 mb-2">
-            <SidebarItem
-              icon={<PencilLine size={18} />}
-              text="ODOL"
-              to="/odol"
-            />
-          </div>
+
+          {isAdmin && (
+            <div className="px-3 mb-2">
+              <SidebarItem
+                icon={<BusFrontIcon size={18} />}
+                text="ALPR"
+                to="/alpr"
+              />
+            </div>
+          )}
+
+          {isAdmin && (
+            <div className="px-3 mb-2">
+              <SidebarItem
+                icon={<Car size={18} />}
+                text="Incident"
+                to="/incident"
+              />
+            </div>
+          )}
+          {isAdmin && (
+            <div className="px-3 mb-2">
+              <SidebarItem
+                icon={<CloudDownloadIcon size={18} />}
+                text="Voip"
+                to="/voip"
+              />
+            </div>
+          )}
+
+          {isAdmin && (
+            <div className="px-3 mb-2">
+              <SidebarItem
+                icon={<PencilLine size={18} />}
+                text="ODOL"
+                to="/odol"
+              />
+            </div>
+          )}
+
           <div className="px-3 mb-2">
             <SidebarItem
               icon={<BookOpenTextIcon size={18} />}
@@ -348,9 +360,15 @@ export const DashboardSidebar: React.FC = () => {
             />
           </div>
 
-          <div className="px-3 mt-auto mb-2">
-            <SidebarItem icon={<Cast size={18} />} text="Floods" to="/floods" />
-          </div>
+          {isAdmin && (
+            <div className="px-3 mt-auto mb-2">
+              <SidebarItem
+                icon={<Cast size={18} />}
+                text="Floods"
+                to="/floods"
+              />
+            </div>
+          )}
 
           <div className="px-3 mb-2">
             <SidebarItem
@@ -367,13 +385,15 @@ export const DashboardSidebar: React.FC = () => {
             )}
           </div>
 
-          <div className="px-3 mb-2">
-            <SidebarItem
-              icon={<ChartNoAxesColumnIcon size={18} />}
-              text="PDB"
-              to="/pdb"
-            />
-          </div>
+          {isAdmin && (
+            <div className="px-3 mb-2">
+              <SidebarItem
+                icon={<ChartNoAxesColumnIcon size={18} />}
+                text="PDB"
+                to="/pdb"
+              />
+            </div>
+          )}
 
           {/* <div className="px-3 mb-2">
       <SidebarItem icon={<ZapIcon size={18} />} text="UPS" to="/ups" />
@@ -394,14 +414,15 @@ export const DashboardSidebar: React.FC = () => {
         to="/genset"
       />
     </div> */}
-
-          <div className="px-3 mb-2">
-            <SidebarItem
-              icon={<Timer size={18} />}
-              text="Log History"
-              to="/log-history"
-            />
-          </div>
+          {isAdmin && (
+            <div className="px-3 mb-2">
+              <SidebarItem
+                icon={<Timer size={18} />}
+                text="Log History"
+                to="/log-history"
+              />
+            </div>
+          )}
 
           <div className="px-3 mb-2">
             <SidebarItem
