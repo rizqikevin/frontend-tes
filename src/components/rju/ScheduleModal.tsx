@@ -1,6 +1,7 @@
 import { Dialog, DialogTitle, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { X } from "lucide-react";
+import api from "@/services/api";
 
 interface OperationalHourModalProps {
   isOpen: boolean;
@@ -14,9 +15,21 @@ export const OperationalHourModal: React.FC<OperationalHourModalProps> = ({
   const [jamMenyala, setJamMenyala] = useState("17:00");
   const [jamMati, setJamMati] = useState("06:00");
 
+  const postJamOperasional = async () => {
+    await api.post("/scheduler/pju", {
+      params: {
+        on_time: jamMenyala,
+        off_time: jamMati,
+      },
+    });
+  };
+
+  useEffect(() => {
+    postJamOperasional();
+  }, [jamMenyala, jamMati]);
+
   const handleSave = () => {
-    console.log("Jam Menyala:", jamMenyala);
-    console.log("Jam Mati:", jamMati);
+    postJamOperasional();
     onClose();
   };
 
