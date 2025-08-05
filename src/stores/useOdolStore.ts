@@ -18,6 +18,7 @@ interface OdolData {
   dimensi: string;
   url1: string;
   url2: string;
+  status: string;
 }
 
 interface OdolStore {
@@ -62,14 +63,19 @@ export const useOdolStore = create<OdolStore>((set, get) => ({
         params: {
           start_time: dayjs(startDate).format("YYYY-MM-DD"),
           end_time: dayjs(endDate).format("YYYY-MM-DD"),
+          page,
+          limit,
           ...(gateId ? { gate: gateId } : {}),
         },
       });
 
-      const result: OdolData[] = res.data.data;
-      const paginated = result.slice((page - 1) * limit, page * limit);
+      const rows: OdolData[] = res.data.data.row;
+      const pagination = res.data.data.pagination;
 
-      set({ data: paginated, total: result.length });
+      set({
+        data: rows,
+        total: pagination.total,
+      });
     } catch (error) {
       toast.error("Gagal memuat data ODOL", error);
     } finally {

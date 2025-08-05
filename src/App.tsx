@@ -49,6 +49,7 @@ import { DataCctv } from "./pages/MasterCctv";
 import { LogAlatPages } from "./pages/LogAlatPages";
 import LogAlat from "./components/logalat/LogAlat";
 import LogAlatDetail from "./components/logalat/LogAlatDetail";
+import { Kecelakaan } from "./pages/Kecelakaan";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -320,6 +321,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <DataCctv />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/kecelakaan"
+                element={
+                  <ProtectedRoute>
+                    <Kecelakaan />
                   </ProtectedRoute>
                 }
               />

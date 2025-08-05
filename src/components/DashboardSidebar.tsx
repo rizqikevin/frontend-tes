@@ -56,9 +56,12 @@ export const DashboardSidebar: React.FC = () => {
   const isAdmin = user.role === UserRole.ADMIN;
   const isDireksi = user.role === UserRole.DIREKSI;
 
-  const [expandedItem, setExpandedItem] = useState<string | null>(
-    "LalinHarian"
-  );
+  const [expandedItem, setExpandedItem] = useState<string[] | null>([
+    "LalinHarian",
+    "Incident",
+    // "settings",
+    // "account",
+  ]);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -118,7 +121,11 @@ export const DashboardSidebar: React.FC = () => {
   };
 
   const toggleExpand = (item: string) => {
-    setExpandedItem(expandedItem === item ? null : item);
+    if (expandedItem.includes(item)) {
+      setExpandedItem(expandedItem.filter((i) => i !== item));
+    } else {
+      setExpandedItem([...expandedItem, item]);
+    }
   };
 
   const toggleSidebar = () => {
@@ -242,10 +249,10 @@ export const DashboardSidebar: React.FC = () => {
               icon={<BarChart size={18} />}
               text="Lalin Harian"
               hasSubmenu
-              expanded={expandedItem === "LalinHarian"}
+              expanded={expandedItem.includes("LalinHarian")}
               onClick={() => toggleExpand("LalinHarian")}
             >
-              {expandedItem === "LalinHarian" && (
+              {expandedItem.includes("LalinHarian") && (
                 <div className=" mt-1 space-y-1">
                   <SidebarItem
                     icon={<DotIcon size={18} />}
@@ -269,7 +276,7 @@ export const DashboardSidebar: React.FC = () => {
       />
       <span>Lain Portable Report</span>
     </NavLink> */}
-              {expandedItem === "LalinHarian" && (
+              {expandedItem.includes("LalinHarian") && (
                 <div className=" mt-1 space-y-1">
                   <SidebarItem
                     icon={<DotIcon size={18} />}
@@ -301,16 +308,35 @@ export const DashboardSidebar: React.FC = () => {
               />
             </div>
           )}
+          <div className="px-3 mb-2">
+            <SidebarItem
+              icon={<Car size={18} />}
+              text="Incident"
+              hasSubmenu
+              expanded={expandedItem.includes("Incident")}
+              onClick={() => toggleExpand("Incident")}
+            >
+              {expandedItem.includes("Incident") && (
+                <div className=" mt-1 space-y-1">
+                  <SidebarItem
+                    icon={<DotIcon size={18} />}
+                    text="Incident"
+                    to="/incident"
+                  />
+                </div>
+              )}
+              {expandedItem.includes("Incident") && (
+                <div className=" mt-1 space-y-1">
+                  <SidebarItem
+                    icon={<DotIcon size={18} />}
+                    text="Kecelakaan"
+                    to="/kecelakaan"
+                  />
+                </div>
+              )}
+            </SidebarItem>
+          </div>
 
-          {isAdmin && (
-            <div className="px-3 mb-2">
-              <SidebarItem
-                icon={<Car size={18} />}
-                text="Incident"
-                to="/incident"
-              />
-            </div>
-          )}
           {isAdmin && (
             <div className="px-3 mb-2">
               <SidebarItem
@@ -375,10 +401,10 @@ export const DashboardSidebar: React.FC = () => {
               icon={<Lamp size={18} />}
               text="Street Light"
               hasSubmenu
-              expanded={expandedItem === "streetLight"}
+              expanded={expandedItem.includes("streetLight")}
               onClick={() => toggleExpand("streetLight")}
             />
-            {expandedItem === "streetLight" && (
+            {expandedItem.includes("streetLight") && (
               <div className="ml-6 mt-1 space-y-1">
                 <SidebarItem icon={<Cast size={18} />} text="PJU" to="/pju" />
               </div>
@@ -449,10 +475,10 @@ export const DashboardSidebar: React.FC = () => {
                   icon={<Database size={18} />}
                   text="Master Data"
                   hasSubmenu
-                  expanded={expandedItem === "masterData"}
+                  expanded={expandedItem.includes("masterData")}
                   onClick={() => toggleExpand("masterData")}
                 >
-                  {expandedItem === "masterData" && (
+                  {expandedItem.includes("masterData") && (
                     <div className="m-1 space-y-1">
                       <SidebarItem
                         icon={<Truck size={18} />}
@@ -461,7 +487,7 @@ export const DashboardSidebar: React.FC = () => {
                       />
                     </div>
                   )}
-                  {expandedItem === "masterData" && (
+                  {expandedItem.includes("masterData") && (
                     <div className="m-1 space-y-1">
                       <SidebarItem
                         icon={<Videotape size={18} />}
@@ -479,10 +505,10 @@ export const DashboardSidebar: React.FC = () => {
                   icon={<UserCircle size={18} />}
                   text="Account"
                   hasSubmenu
-                  expanded={expandedItem === "account"}
+                  expanded={expandedItem.includes("account")}
                   onClick={() => toggleExpand("account")}
                 >
-                  {expandedItem === "account" && (
+                  {expandedItem.includes("account") && (
                     <div className="m-1 space-y-1">
                       <SidebarItem
                         icon={<User size={18} />}
@@ -491,7 +517,7 @@ export const DashboardSidebar: React.FC = () => {
                       />
                     </div>
                   )}
-                  {expandedItem === "account" && (
+                  {expandedItem.includes("account") && (
                     <div className="m-1 space-y-1">
                       <SidebarItem
                         icon={<UsersRoundIcon size={18} />}
@@ -509,10 +535,10 @@ export const DashboardSidebar: React.FC = () => {
                   icon={<Settings size={18} />}
                   text="Settings"
                   hasSubmenu
-                  expanded={expandedItem === "settings"}
+                  expanded={expandedItem.includes("settings")}
                   onClick={() => toggleExpand("settings")}
                 >
-                  {expandedItem === "settings" && (
+                  {expandedItem.includes("settings") && (
                     <div className="m-1 space-y-1">
                       <SidebarItem
                         icon={<User size={18} />}
