@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
 import HmwLogo from "./HmwLogo";
 import { useAuth } from "@/context/AuthContext";
 import { UserRole } from "@/types";
@@ -440,16 +439,6 @@ export const DashboardSidebar: React.FC = () => {
         to="/genset"
       />
     </div> */}
-          {isAdmin && (
-            <div className="px-3 mb-2">
-              <SidebarItem
-                icon={<Timer size={18} />}
-                text="Log History"
-                to="/log-history"
-              />
-            </div>
-          )}
-
           <div className="px-3 mb-2">
             <SidebarItem
               icon={<Settings size={18} />}
@@ -458,6 +447,16 @@ export const DashboardSidebar: React.FC = () => {
             />
           </div>
         </div>
+
+        {isAdmin && (
+          <div className="px-3 mb-2">
+            <SidebarItem
+              icon={<Timer size={18} />}
+              text="Log History"
+              to="/log-history"
+            />
+          </div>
+        )}
 
         {isAdmin && (
           <div className="mt-10 mb-auto px-3 space-y-4">
