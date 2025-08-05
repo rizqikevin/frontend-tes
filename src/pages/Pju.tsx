@@ -7,12 +7,40 @@ import MapView from "@/components/rju/MapView";
 import StreetlightTable from "@/components/streetlights/StreetlightTable";
 import { Button } from "@/components/ui/button";
 import { OperationalHourModal } from "@/components/rju/ScheduleModal";
+import { useStreetLightStore } from "@/stores/useStreetlightStore";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const Pju: React.FC = () => {
   const { user, logout } = useAuth();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [isModalOpen, setJadwalKanModalOpen] = useState(false);
+  const {
+    lights,
+    gateways,
+    selectedGateway,
+    setSelectedGateway,
+    fetchGateways,
+    fetchLights,
+    toggleLights,
+    addLight,
+  } = useStreetLightStore();
+
+  useEffect(() => {
+    fetchGateways();
+  }, []);
+
+  useEffect(() => {
+    if (selectedGateway) {
+      fetchLights();
+    }
+  }, [selectedGateway]);
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -102,15 +130,12 @@ export const Pju: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="flex justify-between mt-5 space-y-1 text-sm">
+                  <div className="flex justify-evenly mt-5 space-y-1 text-sm">
                     <p>
                       Average: <strong>499.0688 kWh</strong>
                     </p>
                     <p>
                       Actual Usage: <strong>3493.4817 kWh</strong>
-                    </p>
-                    <p>
-                      Bill Estimate: <strong>Rp 5.047.033</strong>
                     </p>
                   </div>
                 </div>
@@ -119,38 +144,67 @@ export const Pju: React.FC = () => {
                   <h3 className="text-md font-semibold mt-4 mb-2">
                     Streetlight
                   </h3>
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    className="w-full px-2 py-1 text-black rounded"
-                  />
+                  <div className="flex flex-row justify-between items-center">
+                    <div>
+                      <input
+                        type="text"
+                        onChange={(e) => console.log(e.target.value)}
+                        placeholder="Search..."
+                        className="w-full px-2 py-1 text-black rounded"
+                      />
+                    </div>
+                    <div>
+                      <Select
+                        onValueChange={(value) => setSelectedGateway(value)}
+                        value={selectedGateway}
+                      >
+                        <SelectTrigger className="w-48 bg-dashboard-accent">
+                          <SelectValue placeholder="Semua Gerbang" />
+                        </SelectTrigger>
+                        <SelectContent className="z-[9999] bg-dashboard-accent">
+                          {gateways.map((gateway) => (
+                            <SelectItem key={gateway.id} value={gateway.id}>
+                              {gateway.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
 
                   <table className="w-full mt-2  text-xs">
                     <thead>
                       <tr className="text-gray-400">
-                        <th className="py-3 px-3">ID</th>
+                        <th className="py-3 px-3">Name</th>
                         <th className="py-3 px-3">Status</th>
                         <th className="py-3 px-3">Updated</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {[...Array(5)].map((_, i) => (
-                        <tr key={i} className="border-b border-gray-600">
-                          <td className="py-3 px-3 text-center">819180203</td>
-                          <td className="py-3 px-3 text-green-400 text-center">
-                            connected
-                          </td>
+                      {lights.map((light) => (
+                        <tr key={light.id} className="border-b border-gray-600">
                           <td className="py-3 px-3 text-center">
-                            2025-03-03 12:50
+                            {light.sensor_name}
+                          </td>
+                          {light.status === 0 ? (
+                            <td className="py-3 px-3 text-red-400 text-center">
+                              disconnected
+                            </td>
+                          ) : (
+                            <td className="py-3 px-3 text-green-400 text-center">
+                              connected
+                            </td>
+                          )}
+
+                          <td className="py-3 px-3 text-center">
+                            {new Date(light.updated_at).toLocaleString()}
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
-                <div>
-                  <StreetlightTable />
-                </div>
+                <div>{/* <StreetlightTable /> */}</div>
               </div>
             </div>
           </div>

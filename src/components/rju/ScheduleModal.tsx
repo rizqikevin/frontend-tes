@@ -17,16 +17,14 @@ export const OperationalHourModal: React.FC<OperationalHourModalProps> = ({
 
   const postJamOperasional = async () => {
     await api.post("/scheduler/pju", {
-      params: {
-        on_time: jamMenyala,
-        off_time: jamMati,
-      },
+      on_time: jamMenyala,
+      off_time: jamMati,
     });
   };
 
   useEffect(() => {
     postJamOperasional();
-  }, [jamMenyala, jamMati]);
+  }, []);
 
   const handleSave = () => {
     postJamOperasional();
