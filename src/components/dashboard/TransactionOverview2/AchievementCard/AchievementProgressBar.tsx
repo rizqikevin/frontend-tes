@@ -21,9 +21,9 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
     fetchAchievement(freq);
   }, [start_date, end_date, freq]);
 
-  const percent = Number(achievementData.rkapPercent) || 0;
-  const revenuePercent = Number(achievementData.rkapPercent) || 0;
-  const lhrPercent = Number(achievementData.rkapTarget) || 0;
+  const percent = Number(achievementData.rkapPercent);
+  const revenuePercent = Number(achievementData.rkapPercent);
+  const lhrPercent = Number(achievementData.rkapTarget);
   const displayPercent = percent.toFixed(1);
 
   const totalRevenue = Number(achievementData.rkapTarget) || 0;

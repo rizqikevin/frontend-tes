@@ -169,6 +169,10 @@
   }
 }
 
+svg text {
+  fill: white !important;
+}
+
 /* Custom styles for the app */
 .dashboard-layout {
   @apply bg-dashboard-dark min-h-screen;
