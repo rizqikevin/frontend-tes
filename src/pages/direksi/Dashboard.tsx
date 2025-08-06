@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import GeographicInfoSystem from "@/components/dashboard/GeographicInfoSystem/GeographicInfoSystem";
-import TransactionOverview from "@/components/dashboard/TransactionOverview/TransactionOverview";
+import TransactionOverview2 from "@/components/dashboard/TransactionOverview2/TransactionOverview2";
 import { OverloadOverDimention } from "@/components/dashboard/OverloadOverDimention/OverloadOverDimention";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
@@ -23,6 +23,7 @@ export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState<Date>(subDays(new Date(), 1));
   const [endDate, setEndDate] = useState<Date>(subDays(new Date(), 1));
+  const [selectedTab, setSelectedTab] = useState("bagian1");
   const [selectedView, setSelectedView] = useState("transaction");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
@@ -93,16 +94,27 @@ export const Dashboard: React.FC = () => {
     }
   };
 
+  const renderTab = () => {
+    switch (selectedTab) {
+      case "bagian1":
+        return <TransactionOverview2 />;
+      case "bagian2":
+        return null;
+      default:
+        return <TransactionOverview2 />;
+    }
+  };
+
   const renderContent = () => {
     switch (selectedView) {
       case "geographic":
         return <GeographicInfoSystem />;
       case "transaction":
-        return <TransactionOverview />;
+        return null;
       case "overload":
         return <OverloadOverDimention />;
       default:
-        return <TransactionOverview />;
+        return <TransactionOverview2 />;
     }
   };
 
@@ -132,6 +144,36 @@ export const Dashboard: React.FC = () => {
             isDark ? "bg-dashboard-dark text-white" : "bg-gray-50 text-gray-900"
           } transition-all duration-300`}
         >
+          {selectedView === "transaction" && (
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setSelectedTab("bagian1")}
+                  className={`${
+                    selectedTab === "bagian1"
+                      ? "bg-gray-50 text-gray-900"
+                      : "bg-trasparent text-white border border-white"
+                  }`}
+                >
+                  Bagian 1
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => setSelectedTab("bagian2")}
+                  className={`${
+                    selectedTab === "bagian2"
+                      ? "bg-gray-50 text-gray-900"
+                      : "bg-transparent text-white border border-white"
+                  }`}
+                >
+                  Bagian 2
+                </Button>
+              </div>
+            </div>
+          )}
+
           <div className="flex justify-between mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
@@ -237,7 +279,7 @@ export const Dashboard: React.FC = () => {
               </Button>
             </div>
           </div>
-
+          {renderTab()}
           {renderContent()}
         </main>
       </div>

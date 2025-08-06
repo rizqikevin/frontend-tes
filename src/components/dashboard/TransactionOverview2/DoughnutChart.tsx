@@ -1,0 +1,123 @@
+import { Doughnut } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  ChartOptions,
+} from "chart.js";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+type DoughnutChartProps = {
+  title: string;
+  total: string;
+  labels: string[];
+  data: number[];
+  backgroundColors: string[];
+  bars?: {
+    label: string;
+    value: number;
+    color: string;
+  }[];
+};
+
+export const DoughnutChart = ({
+  title,
+  total,
+  labels,
+  data,
+  backgroundColors,
+  bars = [],
+}: DoughnutChartProps) => {
+  const adjustedData = data.map((val) => (val === 0 ? 0.0001 : val));
+
+  const chartData = {
+    labels,
+    datasets: [
+      {
+        data: adjustedData,
+        backgroundColor: backgroundColors,
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  const chartOptions: ChartOptions<"doughnut"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: "70%",
+    plugins: {
+      legend: { display: false },
+      datalabels: { display: false },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const label = context.label || "";
+            const value = context.raw as number;
+            return `${label}: ${value}`;
+          },
+        },
+      },
+    },
+  };
+
+  // Pisahkan total menjadi persentase dan label
+  const [labelText, percentText] = total.split(" ");
+
+  return (
+    <div className="text-white pr-5 w-full h-full border-r-2 border-gray-600">
+      <h4 className="text-base font-semibold mb-3">{title}</h4>
+
+      <div className="flex flex-col lg:flex-row justify-start gap-1">
+        {/* Chart + Legend */}
+        <div className="flex flex-col items-center">
+          {/* Doughnut Chart */}
+          <div className="relative w-[400px] h-[400px]">
+            <Doughnut data={chartData} options={chartOptions} />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center leading-tight">
+                <p className="text-3xl font-bold">{percentText}%</p>
+                <p className="text-xl">{labelText}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Legend di bawah chart */}
+          <div className="grid grid-cols-3 gap-x-2 gap-y-2 mt-10 ml-4 sm:text-xs">
+            {labels.map((label, idx) => (
+              <div key={idx} className="flex items-center text-white gap-3">
+                <div
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: backgroundColors[idx] }}
+                />
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Horizontal Bars di kanan */}
+        <div className="flex flex-col relative -top-16 justify-center gap-10 flex-1 min-w-[200px]">
+          {bars.map((bar, idx) => (
+            <div key={idx}>
+              <div className="flex justify-between text-xs mb-1">
+                <span className="truncate max-w-[120px]">{bar.label}</span>
+                <span>{bar.value}%</span>
+              </div>
+              <div className="w-full bg-gray-600 rounded-full h-3">
+                <div
+                  className="h-3 rounded-full"
+                  style={{
+                    width: `${bar.value}%`,
+                    backgroundColor: bar.color,
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};

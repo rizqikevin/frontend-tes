@@ -8,6 +8,7 @@ interface TargetData {
   revenue_target: string;
   percent: string;
   transaction_target: number;
+  percent_lhr: number;
 }
 
 interface AchievementData {
@@ -80,9 +81,9 @@ export const useTransactionStore = create<TransactionStoreState>((set) => ({
 
       set((state) => ({
         [freq]: {
-          revenueAchievement: data.revenue_achievement,
+          revenueAchievement: data.lhr_achievement,
           rkapTarget: rkap?.revenue_target,
-          rkapPercent: parseFloat(rkap.percent),
+          rkapPercent: parseFloat(rkap.percent_lhr),
           otherTargets: others,
         },
         isloading: false,

@@ -8,6 +8,7 @@ interface SettlementData {
   pendapatan_epds: number;
   pendapatan_settlement: number;
   persentase: number;
+  persentase_fs_rfs: number;
   date: string;
 }
 
