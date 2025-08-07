@@ -25,7 +25,9 @@ export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState<Date>(subDays(new Date(), 1));
   const [endDate, setEndDate] = useState<Date>(subDays(new Date(), 1));
-  const [selectedTab, setSelectedTab] = useState("bagian1");
+  const [selectedTab, setSelectedTab] = useState<"bagian1" | "bagian2">(
+    "bagian1"
+  );
   const [selectedView, setSelectedView] = useState("transaction");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
@@ -34,6 +36,40 @@ export const Dashboard: React.FC = () => {
 
   const handleSearch = () => {
     setDateRange(startDate, endDate);
+  };
+
+  const renderTab = () => {
+    if (selectedView !== "transaction") return null;
+
+    return (
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            onClick={() => setSelectedTab("bagian1")}
+            className={`${
+              selectedTab === "bagian1"
+                ? "bg-gray-50 text-gray-900"
+                : "bg-transparent text-white border border-white"
+            }`}
+          >
+            Bagian 1
+          </Button>
+
+          <Button
+            variant="outline"
+            onClick={() => setSelectedTab("bagian2")}
+            className={`${
+              selectedTab === "bagian2"
+                ? "bg-gray-50 text-gray-900"
+                : "bg-transparent text-white border border-white"
+            }`}
+          >
+            Bagian 2
+          </Button>
+        </div>
+      </div>
+    );
   };
 
   // Listen for theme changes and sidebar state changes
@@ -103,24 +139,16 @@ export const Dashboard: React.FC = () => {
         return "Pantau setiap detail transaksi";
     }
   };
-
-  const renderTab = () => {
-    switch (selectedTab) {
-      case "bagian1":
-        return <Bagian1 />;
-      case "bagian2":
-        return <Bagian2 />;
-      default:
-        return null;
-    }
-  };
-
   const renderContent = () => {
     switch (selectedView) {
       case "geographic":
         return <GeographicInfoSystem />;
       case "transaction":
-        return null;
+        return selectedTab === "bagian1" ? (
+          <Bagian1 selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+        ) : (
+          <Bagian2 selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+        );
       case "overload":
         return <OverloadOverDimention />;
       default:
@@ -154,36 +182,6 @@ export const Dashboard: React.FC = () => {
             isDark ? "bg-dashboard-dark text-white" : "bg-gray-50 text-gray-900"
           } transition-all duration-300`}
         >
-          {selectedView === "transaction" && (
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setSelectedTab("bagian1")}
-                  className={`${
-                    selectedTab === "bagian1"
-                      ? "bg-gray-50 text-gray-900"
-                      : "bg-trasparent text-white border border-white"
-                  }`}
-                >
-                  Bagian 1
-                </Button>
-
-                <Button
-                  variant="outline"
-                  onClick={() => setSelectedTab("bagian2")}
-                  className={`${
-                    selectedTab === "bagian2"
-                      ? "bg-gray-50 text-gray-900"
-                      : "bg-transparent text-white border border-white"
-                  }`}
-                >
-                  Bagian 2
-                </Button>
-              </div>
-            </div>
-          )}
-
           <div className="flex justify-between mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
@@ -289,7 +287,7 @@ export const Dashboard: React.FC = () => {
               </Button>
             </div>
           </div>
-          {selectedView === "transaction" && renderTab()}
+
           {renderContent()}
         </main>
       </div>

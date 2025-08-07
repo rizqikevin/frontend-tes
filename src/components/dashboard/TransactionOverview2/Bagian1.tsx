@@ -12,7 +12,14 @@ import { useDateFilterStore } from "@/stores/useDateFilterStore";
 import { useTransactionStore } from "@/stores/useTransactionStore";
 import { useSettlementStore } from "@/stores/useSettlementAchievementStore";
 import { AchievementProgressBar } from "./AchievementCard/AchievementProgressBar";
-export const Bagian1 = () => {
+import { Button } from "@/components/ui/button";
+export const Bagian1 = ({
+  selectedTab,
+  setSelectedTab,
+}: {
+  selectedTab: "bagian1" | "bagian2";
+  setSelectedTab: (tab: "bagian1" | "bagian2") => void;
+}) => {
   const {
     items,
     fetchRevenue,
@@ -111,6 +118,17 @@ export const Bagian1 = () => {
                   },
                 ]}
               />
+              <div className="relative right-10 bottom-24 flex justify-end">
+                <Button
+                  className="w-full max-w-48"
+                  variant="default"
+                  onClick={() => {
+                    setSelectedTab("bagian2");
+                  }}
+                >
+                  Selanjutnya
+                </Button>
+              </div>
             </div>
 
             {/* Panel */}

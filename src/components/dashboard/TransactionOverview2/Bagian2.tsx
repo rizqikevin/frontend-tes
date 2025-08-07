@@ -11,8 +11,15 @@ import { useTransactionOverviewStore } from "@/stores/useTransactionOverviewStor
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 import { useTransactionStore } from "@/stores/useTransactionStore";
 import { useSettlementStore } from "@/stores/useSettlementAchievementStore";
+import { Button } from "@/components/ui/button";
 
-export const Bagian2 = () => {
+export const Bagian2 = ({
+  selectedTab,
+  setSelectedTab,
+}: {
+  selectedTab: "bagian1" | "bagian2";
+  setSelectedTab: (tab: "bagian1" | "bagian2") => void;
+}) => {
   const {
     items,
     fetchRevenue,
@@ -71,6 +78,14 @@ export const Bagian2 = () => {
 
   return (
     <div className="bg-dashboard-dark min-h-screen p-4 text-white space-y-4">
+      <Button
+        onClick={() => {
+          setSelectedTab("bagian1");
+        }}
+      >
+        Kembali
+      </Button>
+
       {/* ROW 2 */}
       <div className="grid grid-cols-12 gap-4">
         {/* 3 Chart */}
