@@ -6,6 +6,7 @@ import {
   Legend,
   ChartOptions,
 } from "chart.js";
+import React from "react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -62,18 +63,17 @@ export const DoughnutChart = ({
     },
   };
 
-  // Pisahkan total menjadi persentase dan label
   const [labelText, percentText] = total.split(" ");
 
   return (
     <div className="text-white pr-5 w-full h-full border-r-2 border-gray-600">
       <h4 className="text-base font-semibold mb-3">{title}</h4>
 
-      <div className="flex flex-col lg:flex-row justify-start gap-1">
+      <div className="flex flex-col lg:flex-row justify-start gap-2  w-full transition-all duration-300">
         {/* Chart + Legend */}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center flex-shrink-0">
           {/* Doughnut Chart */}
-          <div className="relative w-[400px] h-[400px]">
+          <div className="relative w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px]">
             <Doughnut data={chartData} options={chartOptions} />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center leading-tight">
@@ -83,31 +83,30 @@ export const DoughnutChart = ({
             </div>
           </div>
 
-          {/* Legend di bawah chart */}
-          <div className="grid grid-cols-3 gap-x-2 gap-y-2 mt-10 ml-4 sm:text-xs">
+          <div className="grid grid-cols-3 gap-x-4 gap-y-2 mt-6 text-xs sm:text-sm">
             {labels.map((label, idx) => (
-              <div key={idx} className="flex items-center text-white gap-3">
+              <div key={idx} className="flex items-center text-white gap-2">
                 <div
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: backgroundColors[idx] }}
                 />
-                <span>{label}</span>
+                <span className="truncate">{label}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Horizontal Bars di kanan */}
-        <div className="flex flex-col relative -top-16 justify-center gap-10 flex-1 min-w-[200px]">
+        <div className="flex flex-col justify-center gap-6 flex-1 min-w-[200px] transition-all duration-300">
           {bars.map((bar, idx) => (
-            <div key={idx}>
+            <div key={idx} className="w-full">
               <div className="flex justify-between text-xs mb-1">
-                <span className="truncate max-w-[120px]">{bar.label}</span>
+                <span className="truncate max-w-[50%]">{bar.label}</span>
                 <span>{bar.value}%</span>
               </div>
-              <div className="w-full bg-gray-600 rounded-full h-3">
+              <div className="w-full bg-gray-600 rounded-full h-3 overflow-hidden">
                 <div
-                  className="h-3 rounded-full"
+                  className="h-3 rounded-full transition-all duration-500"
                   style={{
                     width: `${bar.value}%`,
                     backgroundColor: bar.color,
