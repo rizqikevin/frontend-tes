@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,58 +10,57 @@ import {
   ChartOptions,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
+import axios from "axios";
+import { api2 } from "@/services/api";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 export const KecelakaanBarChartTime: React.FC = () => {
-  const labels = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "Mei",
-    "Jun",
-    "Jul",
-    "Agu",
-    "Sep",
-    "Okt",
-    "Nov",
-    "Des",
-  ];
+  const [chartData, setChartData] = useState<
+    ChartData<"bar", number[], string>
+  >({
+    labels: [],
+    datasets: [],
+  });
 
-  const chartData: ChartData<"bar", number[], string> = {
-    labels,
-    datasets: [
-      {
-        label: "00:00 - 06:00",
-        data: [4, 3, 2, 6, 5, 1, 2, 1, 2, 3, 2, 1],
-        backgroundColor: "#3b82f6",
-        borderRadius: 6,
-        barThickness: 12,
-      },
-      {
-        label: "06:00 - 12:00",
-        data: [4, 1, 3, 2, 1, 3, 1, 2, 3, 2, 1, 2],
-        backgroundColor: "#ef4444",
-        borderRadius: 6,
-        barThickness: 12,
-      },
-      {
-        label: "12:00 - 18:00",
-        data: [1, 2, 3, 5, 8, 2, 1, 2, 3, 2, 1, 2],
-        backgroundColor: "#facc15",
-        borderRadius: 6,
-        barThickness: 12,
-      },
-      {
-        label: "18:00 - 24:00",
-        data: [2, 3, 3, 2, 2, 2, 1, 2, 3, 2, 1, 2],
-        backgroundColor: "#6b7280",
-        borderRadius: 6,
-        barThickness: 12,
-      },
-    ],
+  const colorMap: Record<string, string> = {
+    "00-06": "#3b82f6",
+    "06-12": "#ef4444",
+    "12-18": "#facc15",
+    "18-24": "#6b7280",
   };
+
+  const labelMap: Record<string, string> = {
+    "00-06": "00:00 - 06:00",
+    "06-12": "06:00 - 12:00",
+    "12-18": "12:00 - 18:00",
+    "18-24": "18:00 - 24:00",
+  };
+
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        const res = await api2.get(
+          "/ticket/list_kecelakaan/chart/by/time?frequency=monthly"
+        );
+        const { labels, series } = res.data.data;
+
+        const datasets = series.map((s: any) => ({
+          label: labelMap[s.name] || s.name,
+          data: s.data,
+          backgroundColor: colorMap[s.name] || "#ccc",
+          borderRadius: 6,
+          barThickness: 12,
+        }));
+
+        setChartData({ labels, datasets });
+      } catch (error) {
+        console.error("Gagal fetch chart data waktu:", error);
+      }
+    };
+
+    fetchChartData();
+  }, []);
 
   const options: ChartOptions<"bar"> = {
     responsive: true,
@@ -71,7 +70,9 @@ export const KecelakaanBarChartTime: React.FC = () => {
         position: "top",
         labels: { color: "#fff" },
       },
-      datalabels: { display: false },
+      datalabels: {
+        display: false,
+      },
       tooltip: { enabled: true },
     },
     scales: {
@@ -102,13 +103,13 @@ export const KecelakaanBarChartTime: React.FC = () => {
       />
 
       <div className="mt-6">
-        <table className="relative -left-10  w-full min-w-[760px] text-sm text-white border-collapse">
+        <table className="relative -left-10 w-full min-w-[760px] text-sm text-white border-collapse">
           <thead>
             <tr className="border-t border-gray-600">
               <th className="py-1 pl-2 text-left border-b border-gray-600 w-20">
                 Waktu
               </th>
-              {labels.map((label) => (
+              {chartData.labels?.map((label) => (
                 <th
                   key={label}
                   className="py-0 pl-0 text-left border-b border-gray-600"
