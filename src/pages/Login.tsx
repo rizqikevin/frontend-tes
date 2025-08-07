@@ -59,6 +59,8 @@ export const Login = () => {
             navigate("/dashboard/admin", { replace: true });
           } else if (role === UserRole.DIREKSI) {
             navigate("/dashboard/direksi", { replace: true });
+          } else if (role === UserRole.SUPPORT) {
+            navigate("/odol", { replace: true });
           } else {
             toast.error("Role tidak dikenali");
           }

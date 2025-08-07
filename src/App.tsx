@@ -54,7 +54,7 @@ const queryClient = new QueryClient();
 
 const App = () => {
   useSocketNotifications();
-  useIncidentSpeech();
+  // useIncidentSpeech();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -295,7 +295,9 @@ const App = () => {
               <Route
                 path="/odol"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute
+                    requiredRole={UserRole.SUPPORT || UserRole.ADMIN}
+                  >
                     <Odol />
                   </ProtectedRoute>
                 }
@@ -303,7 +305,9 @@ const App = () => {
               <Route
                 path="/detail-odol/:id"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute
+                    requiredRole={UserRole.SUPPORT || UserRole.ADMIN}
+                  >
                     <DetailOdol />
                   </ProtectedRoute>
                 }
