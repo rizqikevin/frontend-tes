@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Doughnut, Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -16,17 +16,43 @@ import {
 } from "@/components/ui/select";
 import { KecelakaanBarChartTime } from "./KecelakaanBarChartTime";
 import KumulatifKecelakaanChart from "./KumulatifKecelakaanChart";
+import { api2 } from "@/services/api";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const KecelakaanPieChart: React.FC = () => {
+  const [faktorData, setFaktorData] = useState<number[]>([]);
+  const [faktorLabels, setFaktorLabels] = useState<string[]>([]);
+  const [faktorTotal, setFaktorTotal] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchFaktorData = async () => {
+      try {
+        const res = await api2.get("/ticket/list_kecelakaan/chart?by=factor");
+        const data = res.data.data;
+
+        const labels = data.map((item: any) => item.name);
+        const counts = data.map((item: any) => item.count);
+        const total = counts.reduce((acc: number, val: number) => acc + val, 0);
+
+        setFaktorLabels(labels);
+        setFaktorData(counts);
+        setFaktorTotal(total);
+      } catch (error) {
+        console.error("Gagal mengambil data faktor kecelakaan:", error);
+      }
+    };
+
+    fetchFaktorData();
+  }, []);
+
   const faktorKecelakaanData = {
-    labels: ["Pengemudi", "Kendaraan", "Jalan", "Lingkungan"],
+    labels: faktorLabels,
     datasets: [
       {
         label: "Faktor Kecelakaan",
-        data: [3, 2, 8, 4],
-        backgroundColor: ["#3b82f6", "#06b6d4", "#d1d5db", "#f59e0b"],
+        data: faktorData,
+        backgroundColor: ["#3b82f6", "#06b6d4", "#ef4444", "#f59e0b"],
         borderWidth: 0,
       },
     ],
@@ -54,7 +80,16 @@ const KecelakaanPieChart: React.FC = () => {
         },
       },
       datalabels: {
-        display: false,
+        display: true,
+        color: "#fff",
+        formatter: (value: number) => value.toLocaleString("id-ID"),
+        anchor: "center",
+        align: "center",
+        offset: 20,
+        font: {
+          weight: "bold",
+          size: 20,
+        },
       },
       tooltip: {
         enabled: true,
@@ -124,8 +159,8 @@ const KecelakaanPieChart: React.FC = () => {
 
             <div className="relative -top-16 w-80 h-80">
               <Doughnut data={faktorKecelakaanData} options={options} />
-              <div className="absolute inset-0 flex items-center left-1/2 transform -translate-x-1/2 text-3xl font-bold">
-                17
+              <div className="absolute inset-0 flex items-center left-36 transform -translate-x-1/2 text-3xl font-bold">
+                {faktorTotal}
               </div>
             </div>
           </div>
