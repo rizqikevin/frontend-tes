@@ -96,11 +96,11 @@ export const useTransactionStore = create<TransactionStoreState>((set) => ({
 
       set((state) => ({
         [freq]: {
-          percent: rkap?.percent,
+          percent: rkap?.percent_lhr,
           lhr_achievement: data.lhr_achievement,
           revenueAchievement: data.lhr_achievement,
           rkapTarget: rkap?.revenue_target,
-          rkapPercent: parseFloat(rkap.percent_lhr),
+          rkapPercent: parseFloat(rkap.percent),
           otherTargets: others,
         },
         isloading: false,

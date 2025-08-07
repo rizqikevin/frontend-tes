@@ -21,9 +21,9 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
     fetchAchievement(freq);
   }, [start_date, end_date, freq]);
 
-  const percentLHR = Number(achievementData.rkapPercent); // LHR percent
-  const revenuePercent = Number(achievementData.percent);
-  const displayPercent = percentLHR.toFixed(1);
+  const percent = Number(achievementData.rkapPercent); //  percent
+  const LHRPercent = Number(achievementData.percent);
+  const displayPercent = percent.toFixed(1);
 
   // console.log(" LHR :", percentLHR);
   // console.log("REVENUE :", revenuePercent);
@@ -83,12 +83,12 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
               circles={[
                 {
                   text: "Revenue",
-                  value: BUSINESS_PLAN_REVENUE,
+                  value: percent,
                   color: "#FF9800",
                 },
                 {
                   text: "LHR",
-                  value: BUSINESS_PLAN_LHR,
+                  value: LHRPercent,
                   color: "#4CAF50",
                 },
               ]}
