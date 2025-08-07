@@ -145,7 +145,6 @@ export const TransactionOverview2 = () => {
       {/* ROW 2 */}
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-6 gap-4 bg-dashboard-accent shadow-md rounded-lg">
-          <p className="text-xl p-3 mt-2">Achievement Bulanan</p>
           <AchievementProgressBar
             color="#4169e4"
             title="Pencapaian Bulan Juli"
@@ -153,8 +152,6 @@ export const TransactionOverview2 = () => {
           />
         </div>
         <div className="col-span-6 gap-4 bg-dashboard-accent shadow-md rounded-lg">
-          <p className="text-xl p-3 mt-2">Achievement Bulanan</p>
-
           <AchievementProgressBar
             color="#4169e4"
             title="Pencapaian Tahun 2025"
