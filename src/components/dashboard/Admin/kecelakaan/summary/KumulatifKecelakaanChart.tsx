@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,6 +11,8 @@ import {
   ChartOptions,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import axios from "axios";
+import { api2 } from "@/services/api";
 
 ChartJS.register(
   CategoryScale,
@@ -22,46 +24,57 @@ ChartJS.register(
 );
 
 const KumulatifKecelakaanChart: React.FC = () => {
-  const labels = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "Mei",
-    "Jun",
-    "Jul",
-    "Agu",
-    "Sep",
-    "Okt",
-    "Nov",
-    "Des",
-  ];
+  const [labels, setLabels] = useState<string[]>([]);
+  const [datasets, setDatasets] = useState<any[]>([]);
+  const [tableData, setTableData] = useState<
+    { year: string; data: string[] }[]
+  >([]);
 
-  const data: ChartData<"bar"> = {
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        const res = await api2.get(
+          "/ticket/list_kecelakaan/chart/accumulation?start_year=2022&end_year=2025"
+        );
+        const { data } = res.data;
+
+        if (data && data.labels && data.series) {
+          setLabels(data.labels);
+
+          const colorMap: Record<string, string> = {
+            "2022": "#6b7280", // abu
+            "2023": "#22c55e", // hijau
+            "2024": "#3b82f6", // biru
+            "2025": "#facc15", // kuning
+          };
+
+          const newDatasets = data.series.map((item: any) => ({
+            label: item.name,
+            data: item.data,
+            backgroundColor: colorMap[item.name] || "#ccc",
+            borderRadius: 4,
+            barPercentage: 0.5,
+          }));
+
+          const newTableData = data.series.map((item: any) => ({
+            year: item.name,
+            data: item.data.map((d: number) => d.toString()),
+          }));
+
+          setDatasets(newDatasets);
+          setTableData(newTableData);
+        }
+      } catch (error) {
+        console.error("Gagal mengambil data akumulasi kecelakaan:", error);
+      }
+    };
+
+    fetchChartData();
+  }, []);
+
+  const chartData: ChartData<"bar"> = {
     labels,
-    datasets: [
-      {
-        label: "2023",
-        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        backgroundColor: "#22c55e", // hijau
-        borderRadius: 4,
-        barPercentage: 0.5,
-      },
-      {
-        label: "2024",
-        data: [16, 8, 10, 7, 8, 2, 9, 7, 12, 9, 18, 19],
-        backgroundColor: "#3b82f6", // biru
-        borderRadius: 4,
-        barPercentage: 0.5,
-      },
-      {
-        label: "2025",
-        data: [12, 10, 11, 15, 16, 7, 7, 0, 0, 0, 0, 0],
-        backgroundColor: "#facc15", // kuning
-        borderRadius: 4,
-        barPercentage: 0.5,
-      },
-    ],
+    datasets,
   };
 
   const options: ChartOptions<"bar"> = {
@@ -109,24 +122,9 @@ const KumulatifKecelakaanChart: React.FC = () => {
     },
   };
 
-  const tableData = [
-    {
-      year: 2023,
-      data: ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],
-    },
-    {
-      year: 2024,
-      data: ["16", "8", "10", "7", "8", "2", "9", "7", "12", "9", "18", "19"],
-    },
-    {
-      year: 2025,
-      data: ["12", "10", "11", "15", "16", "7", "7", "0", "0", "0", "0", "0"],
-    },
-  ];
-
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg h-full w-full">
-      <Bar data={data} options={options} width={500} height={250} />
+      <Bar data={chartData} options={options} width={500} height={250} />
       <div className="mt-3 relative -left-9">
         <table className="text-white text-sm w-full min-w-[740px] border-collapse">
           <thead>
