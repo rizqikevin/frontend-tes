@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,6 +13,7 @@ import {
   ChartOptions,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { api2 } from "@/services/api";
 
 ChartJS.register(
   CategoryScale,
@@ -26,58 +27,83 @@ ChartJS.register(
 );
 
 export const LakaFatalityChart: React.FC = () => {
-  const labels = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "Mei",
-    "Jun",
-    "Jul",
-    "Agu",
-    "Sep",
-    "Okt",
-    "Nov",
-    "Des",
-  ];
+  const [chartData, setChartData] = useState<ChartData<"line">>({
+    labels: [],
+    datasets: [],
+  });
 
-  const data: ChartData<"line"> = {
-    labels,
-    datasets: [
-      {
-        label: "Tingkat Kecelakaan",
-        data: [50, 59, 48, 67, 61, 122, 115, 88, 88, 99, 102, 100],
-        fill: true,
-        borderColor: "#3b82f6",
-        backgroundColor: (ctx) => {
-          const chart = ctx.chart;
-          const { ctx: canvas } = chart;
-          const gradient = canvas.createLinearGradient(0, 0, 0, chart.height);
-          gradient.addColorStop(0, "rgba(59,130,246,0.3)");
-          gradient.addColorStop(1, "rgba(59,130,246,0)");
-          return gradient;
-        },
-        tension: 0.4,
-        pointRadius: 0,
-      },
-      {
-        label: "Tingkat Fatality",
-        data: [20, 27, 31, 28, 29, 33, 30, 31, 30, 31, 32, 33],
-        fill: true,
-        borderColor: "#ef4444",
-        backgroundColor: (ctx) => {
-          const chart = ctx.chart;
-          const { ctx: canvas } = chart;
-          const gradient = canvas.createLinearGradient(0, 0, 0, chart.height);
-          gradient.addColorStop(0, "rgba(239,68,68,0.3)");
-          gradient.addColorStop(1, "rgba(239,68,68,0)");
-          return gradient;
-        },
-        tension: 0.4,
-        pointRadius: 0,
-      },
-    ],
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api2.get(
+          "/ticket/list_kecelakaan/chart/by/fatalities?frequency=monthly"
+        );
+        const response = res.data.data;
+
+        const labels = response.labels;
+
+        const accidentsData = response.series.find(
+          (s: any) => s.name === "accidents"
+        )?.data;
+
+        const fatalitiesData = response.series.find(
+          (s: any) => s.name === "fatalities"
+        )?.data;
+
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: "Tingkat Kecelakaan",
+              data: accidentsData,
+              fill: true,
+              borderColor: "#3b82f6",
+              backgroundColor: (ctx) => {
+                const chart = ctx.chart;
+                const { ctx: canvas } = chart;
+                const gradient = canvas.createLinearGradient(
+                  0,
+                  0,
+                  0,
+                  chart.height
+                );
+                gradient.addColorStop(0, "rgba(59,130,246,0.3)");
+                gradient.addColorStop(1, "rgba(59,130,246,0)");
+                return gradient;
+              },
+              tension: 0.4,
+              pointRadius: 0,
+            },
+            {
+              label: "Tingkat Fatality",
+              data: fatalitiesData,
+              fill: true,
+              borderColor: "#ef4444",
+              backgroundColor: (ctx) => {
+                const chart = ctx.chart;
+                const { ctx: canvas } = chart;
+                const gradient = canvas.createLinearGradient(
+                  0,
+                  0,
+                  0,
+                  chart.height
+                );
+                gradient.addColorStop(0, "rgba(239,68,68,0.3)");
+                gradient.addColorStop(1, "rgba(239,68,68,0)");
+                return gradient;
+              },
+              tension: 0.4,
+              pointRadius: 0,
+            },
+          ],
+        });
+      } catch (error) {
+        console.error("Gagal mengambil data grafik:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const options: ChartOptions<"line"> = {
     responsive: true,
@@ -88,7 +114,9 @@ export const LakaFatalityChart: React.FC = () => {
           color: "#fff",
         },
       },
-      datalabels: { display: false },
+      datalabels: {
+        display: false,
+      },
       tooltip: {
         mode: "index",
         intersect: false,
@@ -116,7 +144,7 @@ export const LakaFatalityChart: React.FC = () => {
       <h2 className="text-sm mb-2 font-semibold text-white">
         Tingkat Laka & Fatality
       </h2>
-      <Line data={data} options={options} height={355} />
+      <Line data={chartData} options={options} height={355} />
     </div>
   );
 };
