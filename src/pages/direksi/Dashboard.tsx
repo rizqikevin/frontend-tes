@@ -18,6 +18,7 @@ import {
 import Header from "@/components/Header";
 import DatePicker from "react-datepicker";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
+import { TransactionOverview } from "@/components/dashboard/TransactionOverview2/TransactionOverview";
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
@@ -99,7 +100,7 @@ export const Dashboard: React.FC = () => {
       case "bagian1":
         return <TransactionOverview2 />;
       case "bagian2":
-        return null;
+        return <TransactionOverview />;
       default:
         return <TransactionOverview2 />;
     }

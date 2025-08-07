@@ -58,6 +58,11 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
   const PROGNOSA_REVENUE = prognosa?.percent ?? 0;
   const PROGNOSA_LHR = prognosa?.percent_lhr ?? 0;
 
+  console.log("BUSINESS PLAN REVENUE:", BUSINESS_PLAN_REVENUE);
+  console.log("BUSINESS PLAN LHR:", BUSINESS_PLAN_LHR);
+  console.log("PROGNOSA REVENUE:", PROGNOSA_REVENUE);
+  console.log("PROGNOSA LHR:", PROGNOSA_LHR);
+
   // console.log("bars :", bars);
 
   return (
