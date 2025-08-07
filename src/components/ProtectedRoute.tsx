@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 interface PrivateRouteProps {
   children: React.ReactNode;
-  requiredRole?: UserRole | UserRole[];
+  requiredRole?: UserRole;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({

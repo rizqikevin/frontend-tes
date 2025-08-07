@@ -295,9 +295,7 @@ const App = () => {
               <Route
                 path="/odol"
                 element={
-                  <ProtectedRoute
-                    requiredRole={UserRole.SUPPORT || UserRole.ADMIN}
-                  >
+                  <ProtectedRoute>
                     <Odol />
                   </ProtectedRoute>
                 }
@@ -305,9 +303,7 @@ const App = () => {
               <Route
                 path="/detail-odol/:id"
                 element={
-                  <ProtectedRoute
-                    requiredRole={UserRole.SUPPORT || UserRole.ADMIN}
-                  >
+                  <ProtectedRoute>
                     <DetailOdol />
                   </ProtectedRoute>
                 }
