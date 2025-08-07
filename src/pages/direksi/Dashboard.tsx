@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import GeographicInfoSystem from "@/components/dashboard/GeographicInfoSystem/GeographicInfoSystem";
-import TransactionOverview2 from "@/components/dashboard/TransactionOverview2/TransactionOverview2";
+import TransactionOverview2 from "@/components/dashboard/TransactionOverview2/Bagian1";
 import { OverloadOverDimention } from "@/components/dashboard/OverloadOverDimention/OverloadOverDimention";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
@@ -18,7 +18,8 @@ import {
 import Header from "@/components/Header";
 import DatePicker from "react-datepicker";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
-import { TransactionOverview } from "@/components/dashboard/TransactionOverview2/TransactionOverview";
+import { Bagian1 } from "@/components/dashboard/TransactionOverview2/Bagian1";
+import { Bagian2 } from "@/components/dashboard/TransactionOverview2/Bagian2";
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
@@ -69,6 +70,14 @@ export const Dashboard: React.FC = () => {
 
   const isDark = theme === "dark";
 
+  useEffect(() => {
+    if (selectedView !== "transaction") {
+      setSelectedTab(null);
+    } else if (selectedTab === null) {
+      setSelectedTab("bagian1");
+    }
+  }, [selectedView]);
+
   const getViewTitle = () => {
     switch (selectedView) {
       case "geographic":
@@ -98,11 +107,11 @@ export const Dashboard: React.FC = () => {
   const renderTab = () => {
     switch (selectedTab) {
       case "bagian1":
-        return <TransactionOverview2 />;
+        return <Bagian1 />;
       case "bagian2":
-        return <TransactionOverview />;
+        return <Bagian2 />;
       default:
-        return <TransactionOverview2 />;
+        return null;
     }
   };
 
@@ -115,7 +124,7 @@ export const Dashboard: React.FC = () => {
       case "overload":
         return <OverloadOverDimention />;
       default:
-        return <TransactionOverview2 />;
+        return null;
     }
   };
 
@@ -280,7 +289,7 @@ export const Dashboard: React.FC = () => {
               </Button>
             </div>
           </div>
-          {renderTab()}
+          {selectedView === "transaction" && renderTab()}
           {renderContent()}
         </main>
       </div>

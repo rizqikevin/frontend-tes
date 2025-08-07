@@ -5,14 +5,14 @@ import { SimplePanel } from "./SimplePanel";
 import { OtherRevenueList } from "./OtherRevenueList";
 import { AchievementRingContainer } from "./AchievementCard/AchievementRingContainer";
 import { useRevenueStore } from "@/stores/useRevenueStore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTransactionChartStore } from "@/stores/useTransactionChartStore ";
 import { useTransactionOverviewStore } from "@/stores/useTransactionOverviewStore";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 import { useTransactionStore } from "@/stores/useTransactionStore";
 import { useSettlementStore } from "@/stores/useSettlementAchievementStore";
-import { AchievementProgressBar } from "./AchievementCard/AchievementProgressBar";
-export const TransactionOverview2 = () => {
+
+export const Bagian2 = () => {
   const {
     items,
     fetchRevenue,
@@ -64,105 +64,18 @@ export const TransactionOverview2 = () => {
     value: `Rp ${item.revenue.toLocaleString("id-ID")}`,
   }));
 
-  const settlementPercent = data?.persentase_fs_rfs ?? 0;
+  const settlementPercent = data?.persentase ?? 0;
   // console.log(settlementPercent);
 
   const colors = ["#FF9800", "#2196F3", "#4CAF50", "#FF69B4", "#8BC34A"];
 
   return (
     <div className="bg-dashboard-dark min-h-screen p-4 text-white space-y-4">
-      {/* ROW 1 */}
-      <div className="grid grid-cols-12 h-full">
-        <div className="col-span-9">
-          <div className=" bg-dashboard-accent shadow-md p-4 h-full grid grid-cols-12">
-            {/* Doughnut Chart */}
-            <div className="col-span-8">
-              <DoughnutChart
-                title="Daily"
-                total={`RKAP ${rkapPercent.toFixed(2)}`}
-                labels={transactionOverview.map((item) => item.name)}
-                data={transactionOverview.map((item) => item.pendapatan)}
-                backgroundColors={[
-                  "#f9a825",
-                  "#00bcd4",
-                  "#7c4dff",
-                  "#607d8b",
-                  "#4caf50",
-                  "#9c27b0",
-                  "#795548",
-                  "#ff5722",
-                  "#8bc34a",
-                  "#3f51b5",
-                  "#ffeb3b",
-                  "#f44336",
-                  "#c2185b",
-                ].slice(0, transactionOverview.length)}
-                bars={[
-                  ...mappedTarget.map((target, index) => ({
-                    label: target.label,
-                    value: target.value,
-                    color: colors[index % colors.length],
-                  })),
-                  { label: "RKAP", value: rkapPercent, color: "#4CAF50" },
-                  {
-                    label: "Settlement",
-                    value: settlementPercent,
-                    color: "#9C27B0",
-                  },
-                ]}
-              />
-            </div>
-
-            {/* Panel */}
-            <div className="col-span-4 flex flex-col justify-between border-l-2 border-r-2 border-gray-500">
-              <SimplePanel
-                title="Total Pendapatan Toll HMW "
-                dateRange={dateRange}
-                value={formatCurrency(internalRevenue + externalRevenueTotal)}
-                title2="Pendapatan Internal"
-                value2={formatCurrency(internalRevenue)}
-                title3="Pendapatan Integrasi"
-                value3={formatCurrency(externalRevenueTotal)}
-              />
-              <OtherRevenueList data={otherRevenueData} />
-            </div>
-          </div>
-        </div>
-
-        {/* Achievement Rings sebelah kanan */}
-        <div className="col-span-3">
-          <div className="h-full bg-dashboard-accent shadow-md">
-            <AchievementRingContainer
-              color="#4169e4"
-              title="Achievement LHR"
-              freq="daily"
-            />
-          </div>
-        </div>
-
-        {/* </div> */}
-      </div>
       {/* ROW 2 */}
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-6 gap-4 bg-dashboard-accent shadow-md rounded-lg">
-          <AchievementProgressBar
-            color="#4169e4"
-            title="Pencapaian Bulan Juli"
-            freq="monthly"
-          />
-        </div>
-        <div className="col-span-6 gap-4 bg-dashboard-accent shadow-md rounded-lg">
-          <AchievementProgressBar
-            color="#4169e4"
-            title="Pencapaian Tahun 2025"
-            freq="yearly"
-          />
-        </div>
-      </div>
       <div className="grid grid-cols-12 gap-4">
         {/* 3 Chart */}
         <div className="col-span-12 grid grid-cols-3 gap-4">
-          {/* <BarChart
+          <BarChart
             title="Pendapatan vs Prognosa"
             labels={chartData.revenue["1"].labels}
             datasets={chartData.revenue["1"].series}
@@ -176,11 +89,12 @@ export const TransactionOverview2 = () => {
             title="Pendapatan vs RKAP"
             labels={chartData.revenue["3"].labels}
             datasets={chartData.revenue["3"].series}
-          /> */}
+          />
         </div>
       </div>
+
       <div className="col-span-12 grid grid-cols-3 gap-4">
-        {/* <BarChart
+        <BarChart
           title="LHR vs Prognosa"
           labels={chartData.lhr["1"].labels}
           datasets={chartData.lhr["1"].series}
@@ -194,11 +108,12 @@ export const TransactionOverview2 = () => {
           title="LHR vs RKAP"
           labels={chartData.lhr["3"].labels}
           datasets={chartData.lhr["3"].series}
-        /> */}
+        />
       </div>
+
       {/* ROW 3 - Card Panel */}
       <div className="grid grid-cols-7 gap-4">
-        {/* {transactionOverview && transactionOverview.length > 0 ? (
+        {transactionOverview && transactionOverview.length > 0 ? (
           transactionOverview.map((item) => (
             <CardPanel
               key={item.gate_code}
@@ -213,10 +128,10 @@ export const TransactionOverview2 = () => {
           <div className="col-span-6 text-center text-sm text-gray-400">
             Tidak ada data revenue yang tersedia.
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );
 };
 
-export default TransactionOverview2;
+export default Bagian2;
