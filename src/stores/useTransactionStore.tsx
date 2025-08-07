@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { api3 } from "@/services/api";
 import { toast } from "sonner";
 import { useDateFilterStore } from "./useDateFilterStore";
+import { percent } from "framer-motion";
 
 interface TargetData {
   target_name: string;
@@ -13,8 +14,10 @@ interface TargetData {
 
 interface AchievementData {
   revenueAchievement: string;
+  lhr_achievement: string;
   rkapTarget: string;
   rkapPercent: number;
+  percent?: string;
   otherTargets: TargetData[];
 }
 
@@ -28,21 +31,27 @@ interface TransactionStoreState {
 export const useTransactionStore = create<TransactionStoreState>((set) => ({
   isloading: false,
   daily: {
+    lhr_achievement: "0",
     revenueAchievement: "0",
     rkapTarget: "0",
     rkapPercent: 0,
+    percent: "0",
     otherTargets: [],
   },
   monthly: {
+    lhr_achievement: "0",
     revenueAchievement: "0",
     rkapTarget: "0",
     rkapPercent: 0,
+    percent: "0",
     otherTargets: [],
   },
   yearly: {
+    lhr_achievement: "0",
     revenueAchievement: "0",
     rkapTarget: "0",
     rkapPercent: 0,
+    percent: "0",
     otherTargets: [],
   },
 
@@ -64,9 +73,12 @@ export const useTransactionStore = create<TransactionStoreState>((set) => ({
       if (!data || !Array.isArray(data.target)) {
         set((state) => ({
           [freq]: {
+            lhr_achievement: "0",
             revenueAchievement: "0",
             rkapTarget: "0",
             rkapPercent: 0,
+            percent_lhr: 0,
+            percent: "0",
             otherTargets: [],
           },
           isloading: false,
@@ -77,10 +89,15 @@ export const useTransactionStore = create<TransactionStoreState>((set) => ({
       const rkap = data.target.find((t) => t.target_name === "RKAP");
       const others = data.target.filter((t) => t.target_name !== "RKAP");
 
+      console.log("others :", others);
+      console.log("rkap :", rkap);
+
       // console.log("data :", data);
 
       set((state) => ({
         [freq]: {
+          percent: rkap?.percent,
+          lhr_achievement: data.lhr_achievement,
           revenueAchievement: data.lhr_achievement,
           rkapTarget: rkap?.revenue_target,
           rkapPercent: parseFloat(rkap.percent_lhr),

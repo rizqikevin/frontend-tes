@@ -21,35 +21,44 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
     fetchAchievement(freq);
   }, [start_date, end_date, freq]);
 
-  const percent = Number(achievementData.rkapPercent);
-  const revenuePercent = Number(achievementData.rkapPercent);
-  const lhrPercent = Number(achievementData.rkapTarget);
-  const displayPercent = percent.toFixed(1);
+  const percentLHR = Number(achievementData.rkapPercent); // LHR percent
+  const revenuePercent = Number(achievementData.percent);
+  const displayPercent = percentLHR.toFixed(1);
+
+  // console.log(" LHR :", percentLHR);
+  // console.log("REVENUE :", revenuePercent);
 
   const totalRevenue = Number(achievementData.rkapTarget) || 0;
-  const totalLHR = Number(achievementData.revenueAchievement) || 0;
-  const mappedTarget = achievementData.otherTargets.map((target) => ({
-    section: "Prognosa",
-    label: target.target_name,
-    value: target.percent_lhr,
+  const totalLHR = Number(achievementData.lhr_achievement) || 0;
+
+  const colorRevenue = "#FF9800";
+  const colorLHR = "#4CAF50";
+
+  console.log("OTHER TARGETS :", achievementData.otherTargets);
+
+  const bars = achievementData.otherTargets.map((target) => ({
+    section: target.target_name,
+    items: [
+      { label: "Revenue", value: target.percent, color: colorRevenue },
+      { label: "LHR", value: target.percent_lhr, color: colorLHR },
+    ],
   }));
 
-  const bars = [
-    {
-      section: "Prognosa",
-      items: [
-        { label: "Revenue", value: 31.49, color: "#FF9800" },
-        { label: "LHR", value: 44.68, color: "#4CAF50" },
-      ],
-    },
-    {
-      section: "Business Plan",
-      items: [
-        { label: "Revenue", value: 19.39, color: "#FF9800" },
-        { label: "LHR", value: 39.36, color: "#4CAF50" },
-      ],
-    },
-  ];
+  const businessPlan = achievementData.otherTargets.find(
+    (target) => target.target_name === "BUSSINES PLAN"
+  );
+
+  const prognosa = achievementData.otherTargets.find(
+    (target) => target.target_name === "PROGNOSA"
+  );
+
+  const BUSINESS_PLAN_REVENUE = businessPlan?.percent ?? 0;
+  const BUSINESS_PLAN_LHR = businessPlan?.percent_lhr ?? 0;
+
+  const PROGNOSA_REVENUE = prognosa?.percent ?? 0;
+  const PROGNOSA_LHR = prognosa?.percent_lhr ?? 0;
+
+  // console.log("bars :", bars);
 
   return (
     <div className=" text-white p-6 rounded-lg w-full">
@@ -69,12 +78,12 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
               circles={[
                 {
                   text: "Revenue",
-                  value: revenuePercent,
+                  value: BUSINESS_PLAN_REVENUE,
                   color: "#FF9800",
                 },
                 {
                   text: "LHR",
-                  value: percent,
+                  value: BUSINESS_PLAN_LHR,
                   color: "#4CAF50",
                 },
               ]}
