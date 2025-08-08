@@ -48,8 +48,15 @@ export const getVehicleIconOutOfBounds = (type: string) => {
       });
     case "car":
     default:
-      return new L.Icon({
-        iconUrl: "/icons/Ambulance.svg",
+      return new L.DivIcon({
+        className: "incident-pulse-icon",
+        html: `
+    <div class="blink-container">
+      <img src="/icons/Car.svg" class="blink-icon-img" />
+      <div class="pulse-circle"></div>
+    </div>
+  `,
+        iconUrl: "/icons/Car.svg",
         iconSize: [50, 50],
       });
   }
