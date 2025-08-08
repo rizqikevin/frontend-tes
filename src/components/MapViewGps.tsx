@@ -243,7 +243,7 @@ export default function MapViewGps({
         );
       })}
 
-      <Polygon
+      {/* <Polygon
         positions={polygonRef}
         pathOptions={{
           color: "red",
@@ -251,7 +251,7 @@ export default function MapViewGps({
           fillOpacity: 0,
           weight: 2,
         }}
-      />
+      /> */}
       {trackCoordinates && trackCoordinates.length > 1 && (
         <Polyline
           positions={trackCoordinates}
