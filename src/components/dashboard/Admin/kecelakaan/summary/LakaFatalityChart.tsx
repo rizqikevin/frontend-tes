@@ -144,7 +144,7 @@ export const LakaFatalityChart: React.FC = () => {
       <h2 className="text-sm mb-2 font-semibold text-white">
         Tingkat Laka & Fatality
       </h2>
-      <Line data={chartData} options={options} height={355} />
+      <Line data={chartData} options={options} height={225} />
     </div>
   );
 };

@@ -94,7 +94,7 @@ export const Kecelakaan: React.FC = () => {
                 Summary
               </Button>
 
-              <Button
+              {/* <Button
                 onClick={() => setSelectedTab("rekap")}
                 className={`${
                   selectedTab === "rekap"
@@ -103,7 +103,7 @@ export const Kecelakaan: React.FC = () => {
                 }`}
               >
                 Rekap Kecelakaan
-              </Button>
+              </Button> */}
             </div>
           </div>
           {renderContent()}

@@ -98,7 +98,7 @@ export const KecelakaanBarChartTime: React.FC = () => {
         type="bar"
         data={chartData}
         options={options}
-        height={132}
+        height={80}
         width={250}
       />
 

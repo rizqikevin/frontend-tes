@@ -127,16 +127,16 @@ const KumulatifKecelakaanChart: React.FC = () => {
 
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg h-full w-full">
-      <Bar data={chartData} options={options} width={500} height={250} />
+      <Bar data={chartData} options={options} width={500} height={170} />
       <div className="mt-3 relative -left-9">
         <table className="text-white text-sm w-full min-w-[740px] border-collapse">
           <thead>
             <tr>
-              <th className="p-2 text-left"></th>
+              <th className="p-1 text-left"></th>
               {labels.map((month, i) => (
                 <th
                   key={i}
-                  className="p-2 border-l border-gray-700 text-center"
+                  className="p-1 border-l border-gray-700 text-center"
                 >
                   {month}
                 </th>
@@ -146,11 +146,11 @@ const KumulatifKecelakaanChart: React.FC = () => {
           <tbody>
             {tableData.map((row, idx) => (
               <tr key={idx} className="border-t border-gray-700">
-                <td className="p-2 text-left">{row.year}</td>
+                <td className="p-1 text-left">{row.year}</td>
                 {row.data.map((val, i) => (
                   <td
                     key={i}
-                    className="p-2 border-l border-gray-700 text-center"
+                    className="p-1 border-l border-gray-700 text-center"
                   >
                     {val}
                   </td>

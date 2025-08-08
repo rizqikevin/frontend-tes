@@ -66,6 +66,14 @@ export const KecelakaanBarChart: React.FC = () => {
   };
 
   const options: ChartOptions<"bar"> = {
+    layout: {
+      padding: {
+        top: 10,
+        bottom: 10,
+        left: 10,
+        right: 10,
+      },
+    },
     responsive: true,
     plugins: {
       legend: {
@@ -82,7 +90,7 @@ export const KecelakaanBarChart: React.FC = () => {
       y: {
         ticks: {
           color: "#fff",
-          stepSize: 1,
+          stepSize: 2,
         },
         grid: { color: "rgba(255,255,255,0.1)" },
       },
