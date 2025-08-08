@@ -86,7 +86,7 @@ export const ComparisonChart1: React.FC = () => {
         <h2 className="text-xl mb-2 font-semibold uppercase text-white">
           {title}
         </h2>
-        <div className="flex justify-center items-center h-[370px] w-full">
+        <div className="flex justify-center items-center h-[300px] w-full">
           <svg
             className="animate-spin h-5 w-5 text-white"
             xmlns="http://www.w3.org/2000/svg"

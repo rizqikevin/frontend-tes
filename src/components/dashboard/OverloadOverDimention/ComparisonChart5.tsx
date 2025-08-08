@@ -105,7 +105,7 @@ export const ComparisonChart5: React.FC = () => {
       </h2>
 
       {/* Chart */}
-      <Chart type="bar" data={chartData} options={options} height={200} />
+      <Chart type="bar" data={chartData} options={options} height={150} />
 
       {/* Table Persentase */}
       <div className="overflow-x-auto mt-6">

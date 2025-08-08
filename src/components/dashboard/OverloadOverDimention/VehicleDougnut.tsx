@@ -69,7 +69,7 @@ export const VehichleDougnut = () => {
         offset: 20,
         font: {
           weight: "bold",
-          size: 45,
+          size: 35,
         },
       },
     },
@@ -78,23 +78,23 @@ export const VehichleDougnut = () => {
   };
 
   return (
-    <div className="bg-[#2b2b2b] rounded-lg p-4 shadow-sm text-white w-auto flex flex-col justify-between">
+    <div className="bg-[#2b2b2b] rounded-lg p-4 shadow-sm text-white w-auto h-auto flex flex-col justify-between">
       <div className="flex justify-between mb-4 text-xl font-semibold">
         <span>{chartTitle || "Semua Golongan"}</span>
         <span>{chartDate || "-"}</span>
       </div>
-      <div className="relative w-[550px] h-[550px] mx-auto">
+      <div className="relative w-[500px] h-[500px] mx-auto">
         <Doughnut data={data} options={options} />
       </div>
       <div className="flex flex-row text-sm mt-4 gap-2 justify-center">
-        <span className="flex text-2xl items-center gap-1 text-white">
+        <span className="flex text-xl items-center gap-1 text-white">
           <span className=" leading-3 text-green-500">●</span> Patuh
         </span>
-        <span className="flex  text-2xl items-center gap-1 text-white">
+        <span className="flex  text-xl items-center gap-1 text-white">
           <span className="leading-3 text-red-500">●</span>Tidak Patuh
         </span>
         <Link to={"/odol"} className="ml-auto">
-          <Button className="text-xs text-ri text-white bg-dashboard-accent shadow-sm hover:bg-blue-600 px-3 py-1 rounded-md flex items-center gap-1">
+          <Button className="text-xs text-ri text-white bg-dashboard-accent  shadow-sm hover:bg-blue-600 px-3 py-1 rounded-md flex items-center gap-1">
             <span className="font-semibold">Selengkapnya</span>
           </Button>
         </Link>
