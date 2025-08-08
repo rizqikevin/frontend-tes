@@ -77,13 +77,13 @@ export const Bagian1 = ({
   const colors = ["#FF9800", "#2196F3", "#4CAF50", "#FF69B4", "#8BC34A"];
 
   return (
-    <div className="bg-dashboard-dark min-h-screen p-4 text-white space-y-4">
+    <div className="bg-dashboard-dark min-h-screen p-0 text-white space-y-4">
       {/* ROW 1 */}
-      <div className="grid grid-cols-12 h-full">
-        <div className="col-span-9">
-          <div className=" bg-dashboard-accent shadow-md p-4 h-full grid grid-cols-12">
+      <div className="grid grid-cols-1 lg:grid-cols-12 h-full">
+        <div className="col-span-1 lg:col-span-9">
+          <div className="bg-dashboard-accent shadow-md p-4 h-full grid grid-cols-1 md:grid-cols-12">
             {/* Doughnut Chart */}
-            <div className="col-span-8">
+            <div className="col-span-1 md:col-span-8 relative">
               <DoughnutChart
                 title="Daily"
                 total={`RKAP ${rkapPercent.toFixed(2)}`}
@@ -118,7 +118,7 @@ export const Bagian1 = ({
                   },
                 ]}
               />
-              <div className="relative right-10 bottom-24 flex justify-end">
+              <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4">
                 <Button
                   className="w-full max-w-48"
                   variant="default"
@@ -132,7 +132,7 @@ export const Bagian1 = ({
             </div>
 
             {/* Panel */}
-            <div className="col-span-4 flex flex-col justify-between border-l-2 border-r-2 border-gray-500">
+            <div className="col-span-1 md:col-span-4 flex flex-col justify-between border-t-2 md:border-t-0 md:border-l-2 md:border-r-2 border-gray-500 pt-4 md:pt-0">
               <SimplePanel
                 title="Total Pendapatan Toll HMW "
                 dateRange={dateRange}
@@ -148,7 +148,7 @@ export const Bagian1 = ({
         </div>
 
         {/* Achievement Rings sebelah kanan */}
-        <div className="col-span-3">
+        <div className="col-span-1 lg:col-span-3">
           <div className="h-full bg-dashboard-accent shadow-md">
             <AchievementRingContainer
               color="#4169e4"
@@ -157,19 +157,17 @@ export const Bagian1 = ({
             />
           </div>
         </div>
-
-        {/* </div> */}
       </div>
       {/* ROW 2 */}
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-6 gap-4 bg-dashboard-accent shadow-md rounded-lg">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <div className="col-span-1 md:col-span-6 gap-4 bg-dashboard-accent shadow-md rounded-lg">
           <AchievementProgressBar
             color="#4169e4"
             title="Pencapaian Bulan Juli"
             freq="monthly"
           />
         </div>
-        <div className="col-span-6 gap-4 bg-dashboard-accent shadow-md rounded-lg">
+        <div className="col-span-1 md:col-span-6 gap-4 bg-dashboard-accent shadow-md rounded-lg">
           <AchievementProgressBar
             color="#4169e4"
             title="Pencapaian Tahun 2025"
@@ -177,10 +175,9 @@ export const Bagian1 = ({
           />
         </div>
       </div>
-      <div className="grid grid-cols-12 gap-4">
-        {/* 3 Chart */}
-        <div className="col-span-12 grid grid-cols-3 gap-4">
-          {/* <BarChart
+      {/* ROW 3 - Charts */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {/* <BarChart
             title="Pendapatan vs Prognosa"
             labels={chartData.revenue["1"].labels}
             datasets={chartData.revenue["1"].series}
@@ -195,9 +192,9 @@ export const Bagian1 = ({
             labels={chartData.revenue["3"].labels}
             datasets={chartData.revenue["3"].series}
           /> */}
-        </div>
       </div>
-      <div className="col-span-12 grid grid-cols-3 gap-4">
+      {/* ROW 4 - Charts */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {/* <BarChart
           title="LHR vs Prognosa"
           labels={chartData.lhr["1"].labels}
@@ -214,8 +211,8 @@ export const Bagian1 = ({
           datasets={chartData.lhr["3"].series}
         /> */}
       </div>
-      {/* ROW 3 - Card Panel */}
-      <div className="grid grid-cols-7 gap-4">
+      {/* ROW 5 - Card Panel */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-4">
         {/* {transactionOverview && transactionOverview.length > 0 ? (
           transactionOverview.map((item) => (
             <CardPanel
@@ -228,7 +225,7 @@ export const Bagian1 = ({
             />
           ))
         ) : (
-          <div className="col-span-6 text-center text-sm text-gray-400">
+          <div className="col-span-full text-center text-sm text-gray-400">
             Tidak ada data revenue yang tersedia.
           </div>
         )} */}

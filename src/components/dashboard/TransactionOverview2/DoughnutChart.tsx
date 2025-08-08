@@ -73,7 +73,7 @@ export const DoughnutChart = ({
         {/* Chart + Legend */}
         <div className="flex flex-col items-center flex-shrink-0">
           {/* Doughnut Chart */}
-          <div className="relative w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px]">
+          <div className="relative w-[170px] h-[170px] sm:w-[200px] sm:h-[200px] lg:w-[320px] lg:h-[320px]">
             <Doughnut data={chartData} options={chartOptions} />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center leading-tight">
@@ -83,7 +83,7 @@ export const DoughnutChart = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-x-4 gap-y-2 mt-6 text-xs sm:text-sm">
+          <div className="grid grid-cols-3 gap-x-4 gap-y-1 mt-6 text-xs sm:text-sm">
             {labels.map((label, idx) => (
               <div key={idx} className="flex items-center text-white gap-2">
                 <div
@@ -97,10 +97,10 @@ export const DoughnutChart = ({
         </div>
 
         {/* Horizontal Bars di kanan */}
-        <div className="flex flex-col justify-center gap-6 flex-1 min-w-[200px] transition-all duration-300">
+        <div className="flex flex-col justify-center relative bottom-11 gap-6 flex-1 min-w-[250px] transition-all duration-300">
           {bars.map((bar, idx) => (
             <div key={idx} className="w-full">
-              <div className="flex justify-between text-xs mb-1">
+              <div className="flex justify-between text-xs font-semibold mb-1">
                 <span className="truncate max-w-[50%]">{bar.label}</span>
                 <span>{bar.value}%</span>
               </div>

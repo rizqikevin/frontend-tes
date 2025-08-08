@@ -77,7 +77,7 @@ export const Bagian2 = ({
   const colors = ["#FF9800", "#2196F3", "#4CAF50", "#FF69B4", "#8BC34A"];
 
   return (
-    <div className="bg-dashboard-dark min-h-screen p-4 text-white space-y-4">
+    <div className="bg-dashboard-dark min-h-screen p-0 text-white space-y-4">
       <Button
         onClick={() => {
           setSelectedTab("bagian1");
@@ -86,29 +86,23 @@ export const Bagian2 = ({
         Kembali
       </Button>
 
-      {/* ROW 2 */}
-      <div className="grid grid-cols-12 gap-4">
-        {/* 3 Chart */}
-        <div className="col-span-12 grid grid-cols-3 gap-4">
-          <BarChart
-            title="Pendapatan vs Prognosa"
-            labels={chartData.revenue["1"].labels}
-            datasets={chartData.revenue["1"].series}
-          />
-          <BarChart
-            title="Pendapatan vs Business Plan"
-            labels={chartData.revenue["2"].labels}
-            datasets={chartData.revenue["2"].series}
-          />
-          <BarChart
-            title="Pendapatan vs RKAP"
-            labels={chartData.revenue["3"].labels}
-            datasets={chartData.revenue["3"].series}
-          />
-        </div>
-      </div>
-
-      <div className="col-span-12 grid grid-cols-3 gap-4">
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <BarChart
+          title="Pendapatan vs Prognosa"
+          labels={chartData.revenue["1"].labels}
+          datasets={chartData.revenue["1"].series}
+        />
+        <BarChart
+          title="Pendapatan vs Business Plan"
+          labels={chartData.revenue["2"].labels}
+          datasets={chartData.revenue["2"].series}
+        />
+        <BarChart
+          title="Pendapatan vs RKAP"
+          labels={chartData.revenue["3"].labels}
+          datasets={chartData.revenue["3"].series}
+        />
         <BarChart
           title="LHR vs Prognosa"
           labels={chartData.lhr["1"].labels}
@@ -126,8 +120,8 @@ export const Bagian2 = ({
         />
       </div>
 
-      {/* ROW 3 - Card Panel */}
-      <div className="grid grid-cols-7 gap-4">
+      {/* Card Panel Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-4">
         {transactionOverview && transactionOverview.length > 0 ? (
           transactionOverview.map((item) => (
             <CardPanel
@@ -140,7 +134,7 @@ export const Bagian2 = ({
             />
           ))
         ) : (
-          <div className="col-span-6 text-center text-sm text-gray-400">
+          <div className="col-span-full text-center text-sm text-gray-400">
             Tidak ada data revenue yang tersedia.
           </div>
         )}
