@@ -30,46 +30,49 @@ const KumulatifKecelakaanChart: React.FC = () => {
     { year: string; data: string[] }[]
   >([]);
 
-  useEffect(() => {
-    const fetchChartData = async () => {
-      try {
-        const res = await api2.get(
-          "/ticket/list_kecelakaan/chart/accumulation?start_year=2022&end_year=2025"
-        );
-        const { data } = res.data;
+  const fetchChartData = async () => {
+    try {
+      const res = await api2.get(
+        "/ticket/list_kecelakaan/chart/accumulation?start_year=2022&end_year=2025"
+      );
+      const { data } = res.data;
 
-        if (data && data.labels && data.series) {
-          setLabels(data.labels);
+      if (data && data.labels && data.series) {
+        setLabels(data.labels);
 
-          const colorMap: Record<string, string> = {
-            "2022": "#6b7280", // abu
-            "2023": "#22c55e", // hijau
-            "2024": "#3b82f6", // biru
-            "2025": "#facc15", // kuning
-          };
+        const colorMap: Record<string, string> = {
+          "2022": "#6b7280", // abu
+          "2023": "#22c55e", // hijau
+          "2024": "#3b82f6", // biru
+          "2025": "#facc15", // kuning
+        };
 
-          const newDatasets = data.series.map((item: any) => ({
-            label: item.name,
-            data: item.data,
-            backgroundColor: colorMap[item.name] || "#ccc",
-            borderRadius: 4,
-            barPercentage: 0.5,
-          }));
+        const newDatasets = data.series.map((item: any) => ({
+          label: item.name,
+          data: item.data,
+          backgroundColor: colorMap[item.name] || "#ccc",
+          borderRadius: 4,
+          barPercentage: 0.5,
+        }));
 
-          const newTableData = data.series.map((item: any) => ({
-            year: item.name,
-            data: item.data.map((d: number) => d.toString()),
-          }));
+        const newTableData = data.series.map((item: any) => ({
+          year: item.name,
+          data: item.data.map((d: number) => d.toString()),
+        }));
 
-          setDatasets(newDatasets);
-          setTableData(newTableData);
-        }
-      } catch (error) {
-        console.error("Gagal mengambil data akumulasi kecelakaan:", error);
+        setDatasets(newDatasets);
+        setTableData(newTableData);
       }
-    };
+    } catch (error) {
+      console.error("Gagal mengambil data akumulasi kecelakaan:", error);
+    }
+  };
 
-    fetchChartData();
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchChartData();
+    };
+    fetchData();
   }, []);
 
   const chartData: ChartData<"bar"> = {

@@ -81,7 +81,7 @@ export const Kecelakaan: React.FC = () => {
         <main
           className={`p-8 ${isDark ? "border-gray-700" : "border-gray-200"}`}
         >
-          <div className="flex items-center justify-between mb-0">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
               <Button
                 onClick={() => setSelectedTab("summary")}

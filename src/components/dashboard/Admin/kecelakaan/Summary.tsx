@@ -5,7 +5,7 @@ import LakaFatalityChart from "./summary/LakaFatalityChart";
 
 export const Summary: React.FC = () => {
   return (
-    <div className="bg-[#1e1e1e] text-white p-2 space-y-4">
+    <div className="bg-[#1e1e1e] text-white p-0 space-y-4 ">
       <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
         <KecelakaanPieChart />
         <div className="flex flex-col gap-2">

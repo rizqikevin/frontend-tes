@@ -19,41 +19,44 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 export const KecelakaanBarChart: React.FC = () => {
   const [labels, setLabels] = useState<string[]>([]);
   const [datasets, setDatasets] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchChartData = async () => {
+    try {
+      const res = await api2.get(
+        "/ticket/list_kecelakaan/chart/by/class?frequency=monthly"
+      );
+      const responseData = res.data.data;
+
+      if (responseData && responseData.labels && responseData.series) {
+        setLabels(responseData.labels);
+
+        const colorMap: Record<string, string> = {
+          "Golongan 1": "#3b82f6",
+          "Golongan 2": "#ef4444",
+          "Golongan 3": "#6b7280",
+          "Golongan 4": "#f59e0b",
+          "Golongan 5": "#22c55e",
+        };
+
+        const mappedDatasets = responseData.series.map((item: any) => ({
+          label: item.name,
+          data: item.data,
+          backgroundColor: colorMap[item.name] || "#ccc",
+          borderRadius: 6,
+          barThickness: 10,
+        }));
+
+        setDatasets(mappedDatasets);
+      }
+    } catch (error) {
+      console.error("Gagal mengambil data grafik golongan:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchChartData = async () => {
-      try {
-        const res = await api2.get(
-          "/ticket/list_kecelakaan/chart/by/class?frequency=monthly"
-        );
-        const responseData = res.data.data;
-
-        if (responseData && responseData.labels && responseData.series) {
-          setLabels(responseData.labels);
-
-          const colorMap: Record<string, string> = {
-            "Golongan 1": "#3b82f6",
-            "Golongan 2": "#ef4444",
-            "Golongan 3": "#6b7280",
-            "Golongan 4": "#f59e0b",
-            "Golongan 5": "#22c55e",
-          };
-
-          const mappedDatasets = responseData.series.map((item: any) => ({
-            label: item.name,
-            data: item.data,
-            backgroundColor: colorMap[item.name] || "#ccc",
-            borderRadius: 6,
-            barThickness: 10,
-          }));
-
-          setDatasets(mappedDatasets);
-        }
-      } catch (error) {
-        console.error("Gagal mengambil data grafik golongan:", error);
-      }
-    };
-
     fetchChartData();
   }, []);
 
@@ -95,7 +98,16 @@ export const KecelakaanBarChart: React.FC = () => {
       <h2 className="text-sm mb-2 font-semibold uppercase text-white">
         DATA KECELAKAAN PER GOLONGAN
       </h2>
-      <Chart type="bar" data={chartData} options={options} height={287} />
+      {loading ? (
+        <div
+          className="flex items-center justify-center"
+          style={{ height: "287px" }}
+        >
+          <p className="text-white">Loading...</p>
+        </div>
+      ) : (
+        <Chart type="bar" data={chartData} options={options} height={287} />
+      )}
     </div>
   );
 };
