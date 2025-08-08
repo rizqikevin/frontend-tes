@@ -61,15 +61,18 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
       <div className="flex justify-between items-start">
         {/* Kiri: Nested Circular Progress */}
         <div className="flex flex-col items-center w-1/3">
-          <div className="text-left w-full mb-2">
+          <div className="text-left w-full mb-2 border-r-2 border-gray-500">
             <p className="text-xs text-gray-300">Total Pendapatan</p>
             <p className="text-xl font-bold">
               Rp {totalRevenue.toLocaleString("id-ID")}
             </p>
           </div>
+          <div className="text-left w-full mb-2 ">
+            <span className="text-xs text-white">Presentase Pencapaian</span>
+          </div>
 
           <div
-            className="w-full max-w-[250px] relative my-2 aspect-square self-center text-center"
+            className="w-full max-w-[220px] relative my-2 aspect-square self-center text-center"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
@@ -116,7 +119,7 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
 
         {/* Kanan: Progress Bars */}
         <div className="w-2/3 pl-8">
-          <div className="text-right mb-4">
+          <div className="text-left mb-4">
             <p className="text-xs text-gray-300">Total LHR</p>
             <p className="text-xl font-bold">
               {totalLHR.toLocaleString("id-ID")}

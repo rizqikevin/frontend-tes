@@ -3,7 +3,6 @@ import React from "react";
 interface SimplePanelProps {
   title: string;
   value: string;
-  dateRange: string;
   title2?: string;
   value2?: string;
   title3?: string;
@@ -13,7 +12,6 @@ interface SimplePanelProps {
 export const SimplePanel: React.FC<SimplePanelProps> = ({
   title,
   value,
-  dateRange,
   title2,
   value2,
   title3,
@@ -22,10 +20,7 @@ export const SimplePanel: React.FC<SimplePanelProps> = ({
   return (
     <div className="bg-dashboard-accent p-4  h-full w-full text-white shadow-sm flex flex-col justify-start ">
       <div>
-        <p className="text-xs text-gray-400 flex justify-end mb-1">
-          Tanggal: {dateRange}
-        </p>
-        <h3 className="text-sm font-semibold">{title}</h3>
+        <h3 className="text-lg font-semibold">{title}</h3>
         <p className="text-2xl font-bold mt-1 mb-2">{value}</p>
         <hr className=" border-gray-500 mb-4" />
       </div>

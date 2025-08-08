@@ -67,7 +67,7 @@ export const DoughnutChart = ({
 
   return (
     <div className="text-white pr-5 w-full h-full border-r-2 border-gray-600">
-      <h4 className="text-base font-semibold mb-3">{title}</h4>
+      <h4 className="text-lg font-semibold">{title}</h4>
 
       <div className="flex flex-col lg:flex-row justify-start gap-2  w-full transition-all duration-300">
         {/* Chart + Legend */}

@@ -17,6 +17,7 @@ interface AchievementRingProps {
   percent: number;
   revenue: string;
   target: string;
+  dateRange?: string;
   bars?: {
     label: any;
     value: any;
@@ -30,6 +31,7 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
   percent,
   revenue,
   target,
+  dateRange,
   bars = [],
 }) => {
   const percentValue = Number(percent);
@@ -59,9 +61,12 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
 
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg text-white shadow-md w-full h-full flex flex-col justify-between">
-      <h2 className="text-sm font-semibold uppercase mb-1">{title}</h2>
+      <p className="text-xs text-gray-400 flex justify-end ">
+        Tanggal: {dateRange}
+      </p>
+      <h2 className="text-lg font-semibold  ">{title}</h2>
       <div>
-        <p className="text-xs text-gray-400 mb-1">Total Pendapatan</p>
+        <p className="text-xs text-gray-400 mb-1">Lalin Tertimbang</p>
         <h2 className="text-2xl font-bold text-white">{revenue}</h2>
       </div>
 

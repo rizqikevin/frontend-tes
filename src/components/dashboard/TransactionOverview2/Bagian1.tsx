@@ -135,7 +135,6 @@ export const Bagian1 = ({
             <div className="col-span-1 md:col-span-4 flex flex-col justify-between border-t-2 md:border-t-0 md:border-l-2 md:border-r-2 border-gray-500 pt-4 md:pt-0">
               <SimplePanel
                 title="Total Pendapatan Toll HMW "
-                dateRange={dateRange}
                 value={formatCurrency(internalRevenue + externalRevenueTotal)}
                 title2="Pendapatan Internal"
                 value2={formatCurrency(internalRevenue)}
@@ -154,6 +153,7 @@ export const Bagian1 = ({
               color="#4169e4"
               title="Achievement LHR"
               freq="daily"
+              dateRange={dateRange}
             />
           </div>
         </div>
@@ -163,7 +163,7 @@ export const Bagian1 = ({
         <div className="col-span-1 md:col-span-6 gap-4 bg-dashboard-accent shadow-md rounded-lg">
           <AchievementProgressBar
             color="#4169e4"
-            title="Pencapaian Bulan Juli"
+            title="Pencapaian Bulan Juli 2025"
             freq="monthly"
           />
         </div>

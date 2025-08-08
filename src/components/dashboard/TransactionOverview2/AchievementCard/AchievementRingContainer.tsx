@@ -7,11 +7,12 @@ interface AchievementRingContainerProps {
   title: string;
   color: string;
   freq: "monthly" | "yearly" | "daily";
+  dateRange?: string;
 }
 
 export const AchievementRingContainer: React.FC<
   AchievementRingContainerProps
-> = ({ title, color, freq }) => {
+> = ({ title, color, freq, dateRange }) => {
   const { fetchAchievement, [freq]: achievementData } = useTransactionStore();
   const { start_date, end_date } = useDateFilterStore();
 
@@ -30,6 +31,7 @@ export const AchievementRingContainer: React.FC<
     <AchievementRing
       color={color}
       title={title}
+      dateRange={dateRange}
       percent={Number(achievementData.rkapPercent)}
       revenue={`${Number(achievementData.revenueAchievement).toLocaleString(
         "id-ID"
