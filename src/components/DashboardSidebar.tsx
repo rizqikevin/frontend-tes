@@ -42,6 +42,7 @@ import {
   VideoIcon,
   VideoOffIcon,
   Videotape,
+  Dot,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 
@@ -384,8 +385,28 @@ theme === "dark" ? "bg-gray-400" : "bg-gray-600"
                 <SidebarItem
                   icon={<MapPinPlusIcon size={18} />}
                   text="GPS Vehicle Tracking"
-                  to="/gps-vehicle-tracking"
+                  hasSubmenu
+                  expanded={expandedItem.includes("gps")}
+                  onClick={() => toggleExpand("gps")}
                 />
+                {expandedItem.includes("gps") && (
+                  <div className="ml-6 mt-1 space-y-1">
+                    <SidebarItem
+                      icon={<Dot size={18} />}
+                      text="GPS Vehicle Tracking"
+                      to="/gps-vehicle-tracking"
+                    />
+                  </div>
+                )}
+                {expandedItem.includes("gps") && (
+                  <div className="ml-6 mt-1 space-y-1">
+                    <SidebarItem
+                      icon={<Dot size={18} />}
+                      text="Summary"
+                      to="/summary-gps-vehicle-tracking"
+                    />
+                  </div>
+                )}
               </div>
               <div className="px-3 mb-2">
                 <SidebarItem
