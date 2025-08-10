@@ -114,8 +114,42 @@ export const KecelakaanBarChart: React.FC = () => {
           <p className="text-white">Loading...</p>
         </div>
       ) : (
-        <Chart type="bar" data={chartData} options={options} height={287} />
+        <Chart type="bar" data={chartData} options={options} />
       )}
+      <div className="mt-1">
+        <table className="relative -left-3 w-full min-w-[760px] text-sm text-white border-collapse">
+          <thead>
+            <tr className="border-t border-gray-600">
+              <th className="py-1 pl-0 text-left border-b border-gray-600 w-20"></th>
+              {chartData.labels?.map((label) => (
+                <th
+                  key={label}
+                  className="py-0 pl-0 text-left border-b border-gray-600"
+                >
+                  {label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {chartData.datasets.map((ds) => (
+              <tr key={ds.label} className="border-t border-gray-600">
+                <td
+                  className="py-2 pl-2 font-semibold relative right-2 text-left"
+                  style={{ color: ds.backgroundColor as string }}
+                >
+                  {ds.label}
+                </td>
+                {ds.data.map((val, i) => (
+                  <td key={i} className="py-1 pl-1 text-left">
+                    {val}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

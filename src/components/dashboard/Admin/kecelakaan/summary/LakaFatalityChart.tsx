@@ -27,7 +27,9 @@ ChartJS.register(
 );
 
 export const LakaFatalityChart: React.FC = () => {
-  const [chartData, setChartData] = useState<ChartData<"line">>({
+  const [chartData, setChartData] = useState<
+    ChartData<"line", number[], string>
+  >({
     labels: [],
     datasets: [],
   });
@@ -144,7 +146,48 @@ export const LakaFatalityChart: React.FC = () => {
       <h2 className="text-sm mb-2 font-semibold text-white">
         Tingkat Laka & Fatality
       </h2>
-      <Line data={chartData} options={options} height={225} />
+      <Line data={chartData} options={options} height={170} />
+      <div className="mt-6">
+        <table className="relative -left-10 w-full min-w-[760px] text-sm text-white border-collapse">
+          <thead>
+            <tr className="text-white text-sm">
+              <th className="p-1 text-left">Bulan</th>
+              {chartData.labels.map((label, index) => (
+                <th
+                  key={index}
+                  className="p-1 border-l border-gray-700 text-left"
+                >
+                  {label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="text-white text-sm">
+              <td className="p-1 text-left">Tingkat Kecelakaan</td>
+              {chartData.datasets[0]?.data.map((value, index) => (
+                <td
+                  key={index}
+                  className="py-0 pl-0 text-left border-b border-gray-600"
+                >
+                  {value}
+                </td>
+              ))}
+            </tr>
+            <tr className="text-white text-sm">
+              <td className="p-1 text-left">Tingkat Fatality</td>
+              {chartData.datasets[1]?.data.map((value, index) => (
+                <td
+                  key={index}
+                  className="py-0 pl-0 text-left border-b border-gray-600"
+                >
+                  {value}
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
