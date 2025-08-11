@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import api from "@/services/api";
 
 export const Pju: React.FC = () => {
   const { user, logout } = useAuth();
@@ -30,10 +31,25 @@ export const Pju: React.FC = () => {
     setSearchTerm,
   } = useStreetLightStore();
   const [localSearch, setLocalSearch] = useState(searchTerm);
+  const [dataPju, setDataPju] = useState({
+    total_active: "0",
+    total_inactive: "0",
+  });
+
+  const fetchTotalLights = async () => {
+    const res = await api.get("/sensor/pju/total");
+    const { total_active, total_inactive } = res.data.data[0];
+    setDataPju({ total_active, total_inactive });
+  };
+
+  useEffect(() => {
+    fetchTotalLights();
+  }, []);
+
+  // console.log(dataPju);
 
   useEffect(() => {
     fetchGateways();
-    // On component unmount, clear the search term
     return () => {
       setSearchTerm("");
     };
@@ -135,9 +151,11 @@ export const Pju: React.FC = () => {
                     Energy Summary
                   </h3>
                   <div className="flex justify-between">
-                    <p className="text-sm">⚡ 483 Streetlight Connect</p>
+                    <p className="text-sm">
+                      ⚡ {dataPju.total_active} Streetlight on
+                    </p>
                     <p className="text-sm text-red-400">
-                      🔴 1 Street disconnected
+                      🔴 {dataPju.total_inactive} StreetLIght off
                     </p>
                   </div>
 
