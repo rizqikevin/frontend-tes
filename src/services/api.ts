@@ -120,7 +120,7 @@ api.interceptors.response.use(
           toast.error("You do not have permission to perform this action");
           break;
         case 404:
-          toast.error("Resource not found");
+          console.error("Resource not found");
           break;
         case 500:
           toast.error("Server error. Please try again later.");

@@ -2,6 +2,14 @@ import { Dialog, DialogTitle, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { X } from "lucide-react";
 import api from "@/services/api";
+import { useStreetLightStore } from "@/stores/useStreetlightStore";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface OperationalHourModalProps {
   isOpen: boolean;
@@ -14,17 +22,16 @@ export const OperationalHourModal: React.FC<OperationalHourModalProps> = ({
 }) => {
   const [jamMenyala, setJamMenyala] = useState("17:00");
   const [jamMati, setJamMati] = useState("06:00");
+  const { gateways, selectedGateway, setSelectedGateway } =
+    useStreetLightStore();
 
   const postJamOperasional = async () => {
     await api.post("/scheduler/pju", {
+      gateway_id: selectedGateway,
       on_time: jamMenyala,
       off_time: jamMati,
     });
   };
-
-  useEffect(() => {
-    postJamOperasional();
-  }, []);
 
   const handleSave = () => {
     postJamOperasional();
@@ -71,6 +78,24 @@ export const OperationalHourModal: React.FC<OperationalHourModalProps> = ({
                     {generateTimeOptions()}
                   </select>
                 </div>
+              </div>
+
+              <div className="mb-4">
+                <Select
+                  onValueChange={(value) => setSelectedGateway(value)}
+                  value={selectedGateway}
+                >
+                  <SelectTrigger className="w-full bg-[#2C2C2C] text-white p-2 rounded">
+                    <SelectValue placeholder="Pilih Gateway" />
+                  </SelectTrigger>
+                  <SelectContent className="z-[9999] bg-[#2C2C2C] text-white">
+                    {gateways.map((gateway) => (
+                      <SelectItem key={gateway.id} value={gateway.id}>
+                        {gateway.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <button

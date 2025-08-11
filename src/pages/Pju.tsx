@@ -188,11 +188,11 @@ export const Pju: React.FC = () => {
                           </td>
                           {light.status === 0 ? (
                             <td className="py-3 px-3 text-red-400 text-center">
-                              disconnected
+                              off
                             </td>
                           ) : (
                             <td className="py-3 px-3 text-green-400 text-center">
-                              connected
+                              on
                             </td>
                           )}
 
