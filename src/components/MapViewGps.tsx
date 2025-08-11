@@ -15,6 +15,7 @@ import * as turf from "@turf/turf";
 import { Polyline } from "react-leaflet";
 import { toast } from "sonner";
 import api from "@/services/api";
+import ViolationValidationModal from "./ViolationValidationModal";
 
 export const getVehicleIcon = (type: string) => {
   switch (type) {
@@ -99,6 +100,20 @@ export default function MapViewGps({
   const [reportedViolations, setReportedViolations] = useState<Set<string>>(
     new Set()
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState<VehicleData | null>(
+    null
+  );
+
+  const handleOpenModal = (vehicle: VehicleData) => {
+    setSelectedVehicle(vehicle);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedVehicle(null);
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const reportViolations = async () => {
@@ -291,6 +306,14 @@ export default function MapViewGps({
                 >
                   View on Google Maps
                 </a>
+                {!isInside && (
+                  <button
+                    onClick={() => handleOpenModal(vehicle)}
+                    className="w-full bg-orange-500 text-white px-3 py-1 rounded-md mt-2 text-sm"
+                  >
+                    Validasi Pelanggaran
+                  </button>
+                )}
               </div>
             </Popup>
           </Marker>
@@ -310,6 +333,15 @@ export default function MapViewGps({
         <Polyline
           positions={trackCoordinates}
           pathOptions={{ color: "#1aff66", weight: 6 }}
+        />
+      )}
+
+      {isModalOpen && selectedVehicle && (
+        <ViolationValidationModal
+          vehicle={selectedVehicle}
+          location={locationDetails[selectedVehicle.radio_id]}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
         />
       )}
     </MapContainer>
