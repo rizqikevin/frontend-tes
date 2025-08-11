@@ -22,7 +22,7 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
     fetchAchievement(freq);
   }, [start_date, end_date, freq]);
 
-  const percent = Number(achievementData.rkapPercent); //  percent
+  const percent = Number(achievementData.rkapPercent);
   const LHRPercent = Number(achievementData.percent);
   const displayPercent = percent.toFixed(2);
   const percentLHR = LHRPercent.toFixed(2);
@@ -42,35 +42,46 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
   }));
 
   const businessPlan = achievementData.otherTargets.find(
-    (target) => target.target_name === "BUSSINES PLAN"
+    (t) => t.target_name === "BUSSINES PLAN"
   );
-
   const prognosa = achievementData.otherTargets.find(
-    (target) => target.target_name === "PROGNOSA"
+    (t) => t.target_name === "PROGNOSA"
   );
-
   const BUSINESS_PLAN_REVENUE = businessPlan?.percent ?? 0;
   const BUSINESS_PLAN_LHR = businessPlan?.percent_lhr ?? 0;
-
   const PROGNOSA_REVENUE = prognosa?.percent ?? 0;
   const PROGNOSA_LHR = prognosa?.percent_lhr ?? 0;
 
   return (
     <div className="text-white p-6 rounded-lg w-full">
       <h3 className="text-lg font-semibold mb-4">{title}</h3>
-      <div className="flex justify-between items-start">
-        {/* Kiri: Nested Circular Progress */}
-        <div className="flex flex-col items-center w-1/3">
-          <div className="text-left w-full mb-2 border-r-2 border-gray-500">
-            <p className="text-xs text-gray-300">Total Pendapatan</p>
-            <p className="text-xl font-bold">
-              Rp {totalRevenue.toLocaleString("id-ID")}
-            </p>
-          </div>
-          <div className="text-left w-full mb-2 ">
-            <span className="text-xs text-white">Presentase Pencapaian</span>
-          </div>
 
+      <div className="flex justify-start gap-10 items-start">
+        <div className="text-left mb-4 border-r-2 border-gray-600 pr-7">
+          <p className="text-xs text-gray-300">Total Pendapatan</p>
+          <p className="text-xl font-bold">
+            Rp {totalRevenue.toLocaleString("id-ID")}
+          </p>
+        </div>
+        <div className="text-left mb-4">
+          <p className="text-xs text-gray-300">Total LHR</p>
+          <p className="text-xl font-bold">
+            {totalLHR.toLocaleString("id-ID")}
+          </p>
+        </div>
+      </div>
+
+      <hr className="w-full border-t border-gray-600 mb-4" />
+
+      <div className="text-left w-full mb-3">
+        <span className="text-sm font-semibold uppercase text-white">
+          Presentase Pencapaian
+        </span>
+      </div>
+
+      <div className="flex justify-between items-start">
+        {/* Kiri */}
+        <div className="flex flex-col items-center w-1/3">
           <div
             className="w-full max-w-[220px] relative my-2 aspect-square self-center text-center"
             onMouseEnter={() => setIsHovered(true)}
@@ -78,16 +89,8 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
           >
             <Nested
               circles={[
-                {
-                  text: "Revenue",
-                  value: percent,
-                  color: "#FF9800",
-                },
-                {
-                  text: "LHR",
-                  value: LHRPercent,
-                  color: "#4CAF50",
-                },
+                { text: "Revenue", value: percent, color: "#FF9800" },
+                { text: "LHR", value: LHRPercent, color: "#4CAF50" },
               ]}
               sx={{
                 bgColor: "#E5E7EB",
@@ -97,8 +100,6 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
                 roundedStroke: true,
               }}
             />
-
-            {/* Text di tengah */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-3xl text-white">
               <span className="font-bold">
                 {isHovered ? percentLHR ?? 0 : displayPercent ?? 0}%
@@ -117,15 +118,8 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
           </div>
         </div>
 
-        {/* Kanan: Progress Bars */}
+        {/* Kanan */}
         <div className="w-2/3 pl-8">
-          <div className="text-left mb-4">
-            <p className="text-xs text-gray-300">Total LHR</p>
-            <p className="text-xl font-bold">
-              {totalLHR.toLocaleString("id-ID")}
-            </p>
-          </div>
-
           {bars.map((section, idx) => (
             <div key={idx} className="mb-6">
               <h4 className="text-sm font-semibold mb-2">{section.section}</h4>

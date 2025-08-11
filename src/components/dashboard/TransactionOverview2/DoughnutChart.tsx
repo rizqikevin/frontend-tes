@@ -97,7 +97,7 @@ export const DoughnutChart = ({
         </div>
 
         {/* Horizontal Bars di kanan */}
-        <div className="flex flex-col justify-center relative bottom-11 gap-6 flex-1 min-w-[250px] transition-all duration-300">
+        <div className="flex flex-col justify-center relative bottom-11 gap-6 flex-1 transition-all duration-300">
           {bars.map((bar, idx) => (
             <div key={idx} className="w-full">
               <div className="flex justify-between text-xs font-semibold mb-1">
