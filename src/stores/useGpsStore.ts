@@ -2,6 +2,7 @@ import { create } from "zustand";
 import api from "@/services/api";
 import { VehicleData } from "@/types";
 import { toast } from "sonner";
+import { m } from "framer-motion";
 
 interface TrackData {
   radio_time: string;
@@ -19,6 +20,8 @@ interface allTrackData {
   speed: number;
   create_at: string;
   updated: string;
+  mileage: number;
+  fuel: number;
 }
 
 interface TrackDataState {
@@ -106,6 +109,8 @@ export const useTrackGpsStore = create<TrackDataState>((set, get) => ({
     let Allpage = 1;
     let allRows: TrackData[] = [];
     let hasMore = true;
+    let mileage = 0;
+    let fuel = 0;
 
     set({ isTrackLoading: true });
 
@@ -122,12 +127,16 @@ export const useTrackGpsStore = create<TrackDataState>((set, get) => ({
 
         const rows: allTrackData[] = res.data.data.rows;
 
-        console.log("Rows:", rows);
+        // console.log("Rows:", rows);
         allRows = allRows.concat(rows);
-        console.log("All Rows:", allRows);
+        // console.log("All Rows:", allRows);
 
+        mileage = res.data.data.mileage;
+        fuel = res.data.data.fuel;
         const total = res.data.data.total;
         const totalPages = Math.ceil(total / Alllimit);
+
+        // console.log(mileage, fuel);
 
         Allpage++;
         hasMore = Allpage <= totalPages;
@@ -136,8 +145,8 @@ export const useTrackGpsStore = create<TrackDataState>((set, get) => ({
       set({
         allTrackData: allRows,
         total: allRows.length,
-        mileage: 0,
-        fuel: 0,
+        mileage: mileage,
+        fuel: fuel,
       });
     } catch (error) {
       toast.error("Failed to fetch full track data", error);

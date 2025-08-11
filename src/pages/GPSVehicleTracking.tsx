@@ -18,6 +18,8 @@ export const GPSVehicleTracking: React.FC = () => {
     useGpsStore();
   const {
     trackData,
+    mileage,
+    fuel,
     allTrackData,
     fetchAllTrackData,
     fetchTrackData,
@@ -40,13 +42,15 @@ export const GPSVehicleTracking: React.FC = () => {
     fetchMileage();
   }, [startDate]);
 
-  // console.log(data);
+  // console.log(mileage, fuel);
 
   const mappedData = Object.values(data).map((item) => ({
     id: item.id,
     mileage: item.mileage,
     fuel: item.fuel,
   }));
+
+  // console.log("track data : ", allTrackData);
 
   // console.log(mappedData);
 
@@ -160,9 +164,7 @@ export const GPSVehicleTracking: React.FC = () => {
                   <div className="flex justify-center items-center gap-8 text-white p-4 rounded">
                     <div className="text-center">
                       <div className="text-sm text-gray-400">Jarak Tempuh</div>
-                      <div className="text-lg font-semibold">
-                        {selectedVehicle.gps?.mileage ?? 0} Km
-                      </div>
+                      <div className="text-lg font-semibold">{mileage} Km</div>
                     </div>
 
                     <div className="h-8 w-px bg-gray-600"></div>
@@ -177,9 +179,7 @@ export const GPSVehicleTracking: React.FC = () => {
 
                     <div className="text-center">
                       <div className="text-sm text-gray-400">Konsumsi BBM</div>
-                      <div className="text-lg font-semibold">
-                        {selectedVehicle.gps?.fuel ?? 0} L
-                      </div>
+                      <div className="text-lg font-semibold">{fuel}L</div>
                     </div>
                   </div>
 
