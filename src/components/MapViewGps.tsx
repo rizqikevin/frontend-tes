@@ -13,6 +13,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FullscreenControl } from "react-leaflet-fullscreen";
 import * as turf from "@turf/turf";
 import { Polyline } from "react-leaflet";
+import { toast } from "sonner";
+import api from "@/services/api";
 
 export const getVehicleIcon = (type: string) => {
   switch (type) {
@@ -94,6 +96,58 @@ export default function MapViewGps({
   const [locationDetails, setLocationDetails] = useState<
     Record<string, string>
   >({});
+  const [reportedViolations, setReportedViolations] = useState<Set<string>>(
+    new Set()
+  );
+
+  useEffect(() => {
+    const reportViolations = async () => {
+      for (const vehicle of vehicles) {
+        const lat = parseFloat(vehicle.lat);
+        const lon = parseFloat(vehicle.lon);
+
+        if (isNaN(lat) || isNaN(lon)) continue;
+
+        const point = turf.point([lon, lat]);
+        const isInside = turf.booleanPointInPolygon(point, polygon);
+        const location = locationDetails[vehicle.radio_id];
+
+        if (!isInside && location && !reportedViolations.has(vehicle.radio_id)) {
+          try {
+            console.log(
+              `Reporting violation for ${vehicle.radio_id} at ${location}`
+            );
+            await api.post("/violation/vehicle", {
+              radio_id: vehicle.radio_id,
+              area: location,
+            });
+
+            toast.success(
+              `Pelanggaran oleh ${vehicle.vehicle_name} (${vehicle.radio_id}) telah dilaporkan.`
+            );
+
+            setReportedViolations((prev) => {
+              const newSet = new Set(prev);
+              newSet.add(vehicle.radio_id);
+              return newSet;
+            });
+          } catch (error) {
+            console.error(
+              `Gagal melaporkan pelanggaran untuk ${vehicle.radio_id}:`,
+              error
+            );
+            toast.error(
+              `Gagal melaporkan pelanggaran untuk ${vehicle.vehicle_name}.`
+            );
+          }
+        }
+      }
+    };
+
+    if (vehicles.length > 0 && Object.keys(locationDetails).length > 0) {
+      reportViolations();
+    }
+  }, [vehicles, locationDetails, reportedViolations]);
 
   const polygonRef: LatLngExpression[] = [
     [3.3481490716505355, 99.47624550906254],
