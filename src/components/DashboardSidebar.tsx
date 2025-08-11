@@ -398,15 +398,15 @@ theme === "dark" ? "bg-gray-400" : "bg-gray-600"
                     />
                   </div>
                 )}
-                {/* {expandedItem.includes("gps") && (
+                {expandedItem.includes("gps") && (
                   <div className="ml-6 mt-1 space-y-1">
                     <SidebarItem
                       icon={<Dot size={18} />}
-                      text="Summary"
-                      to="/summary-gps-vehicle-tracking"
+                      text="Log Report Violation"
+                      to="/log-report-violation"
                     />
                   </div>
-                )} */}
+                )}
               </div>
               <div className="px-3 mb-2">
                 <SidebarItem

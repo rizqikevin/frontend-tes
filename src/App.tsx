@@ -50,6 +50,7 @@ import { LogAlatPages } from "./pages/LogAlatPages";
 import LogAlat from "./components/logalat/LogAlat";
 import LogAlatDetail from "./components/logalat/LogAlatDetail";
 import { Kecelakaan } from "./pages/Kecelakaan";
+import LogReportViolation from "./pages/LogReportViolation";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -160,6 +161,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <GPSVehicleTracking />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/log-report-violation"
+                element={
+                  <ProtectedRoute>
+                    <LogReportViolation />
                   </ProtectedRoute>
                 }
               />
