@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import jsPDF from "jspdf";
 
 interface LogReportViolation {
   id: number;
@@ -205,10 +206,30 @@ const LogReportViolation: React.FC = () => {
                           <Button
                             className="bg-yellow-500 text-white rounded hover:bg-yellow-600"
                             onClick={() => {
-                              // Handle view details action
-                              toast.success(
-                                `Viewing details for ${item.radio_id}`
+                              const doc = new jsPDF();
+                              doc.text(
+                                `Data Laporan Violation ${item.radio_id}`,
+                                10,
+                                10
                               );
+                              doc.text(
+                                `ID Kendaraan: ${item.radio_id}`,
+                                10,
+                                20
+                              );
+                              doc.text(
+                                `Area Pelanggaran: ${item.area.slice(0, 20)}`,
+                                10,
+                                30
+                              );
+                              doc.text(
+                                `Alasan Pelanggaran: ${
+                                  item.reason || "Tidak ada alasan"
+                                }`,
+                                10,
+                                40
+                              );
+                              doc.save(`cetak_${item.radio_id}.pdf`);
                             }}
                           >
                             Cetak
