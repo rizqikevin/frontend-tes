@@ -3,6 +3,8 @@ import api from "@/services/api";
 import { toast } from "sonner";
 import { VehicleData } from "@/types";
 import * as Dialog from "@radix-ui/react-dialog";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 interface Violation extends VehicleData {
   id: string;
@@ -61,6 +63,36 @@ export default function ViolationValidationModal({
 
     fetchViolation();
   }, [vehicle, isOpen, location]);
+
+  const handleExport = () => {
+    if (!violation) return;
+
+    const data = [
+      {
+        Tanggal: violation.created_at,
+        Waktu: violation.created_at.split(" ")[1],
+        "ID Kendaraan": violation.radio_id,
+        "Area Pelanggaran": violation.area,
+        "Alasan Pelanggaran": violation.reason || "Tidak ada alasan",
+        "Status Pelanggaran": violation.status,
+        "Status Validasi": violation.type || "Belum divalidasi",
+        "ID Pelanggaran": violation.id,
+      },
+    ];
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Log Pelanggaran");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const dataBlob = new Blob([excelBuffer], {
+      type: "application/octet-stream",
+    });
+    saveAs(dataBlob, "log_pelanggaran.xlsx");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,6 +190,13 @@ export default function ViolationValidationModal({
                   className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
                 >
                   Simpan
+                </button>
+                <button
+                  type="button"
+                  onClick={handleExport}
+                  className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors"
+                >
+                  Ekspor Log Pelanggaran
                 </button>
               </div>
             </form>
