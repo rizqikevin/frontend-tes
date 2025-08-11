@@ -4,7 +4,6 @@ import { useAuth } from "@/context/AuthContext";
 import EnergyChart from "@/components/rju/EnergiChart";
 import Header from "@/components/Header";
 import MapView from "@/components/rju/MapView";
-import StreetlightTable from "@/components/streetlights/StreetlightTable";
 import { Button } from "@/components/ui/button";
 import { OperationalHourModal } from "@/components/rju/ScheduleModal";
 import { useStreetLightStore } from "@/stores/useStreetlightStore";
@@ -27,20 +26,32 @@ export const Pju: React.FC = () => {
     selectedGateway,
     setSelectedGateway,
     fetchGateways,
-    fetchLights,
-    toggleLights,
-    addLight,
+    searchTerm,
+    setSearchTerm,
   } = useStreetLightStore();
+  const [localSearch, setLocalSearch] = useState(searchTerm);
 
   useEffect(() => {
     fetchGateways();
+    // On component unmount, clear the search term
+    return () => {
+      setSearchTerm("");
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Debounce search term
   useEffect(() => {
-    if (selectedGateway) {
-      fetchLights();
-    }
-  }, [selectedGateway]);
+    const handler = setTimeout(() => {
+      if (localSearch !== searchTerm) {
+        setSearchTerm(localSearch);
+      }
+    }, 500); // 500ms debounce
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [localSearch, searchTerm, setSearchTerm]);
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -148,7 +159,8 @@ export const Pju: React.FC = () => {
                     <div>
                       <input
                         type="text"
-                        onChange={(e) => console.log(e.target.value)}
+                        value={localSearch}
+                        onChange={(e) => setLocalSearch(e.target.value)}
                         placeholder="Search..."
                         className="w-full px-2 py-1 text-black rounded"
                       />
@@ -162,11 +174,19 @@ export const Pju: React.FC = () => {
                           <SelectValue placeholder="Semua Gerbang" />
                         </SelectTrigger>
                         <SelectContent className="z-[9999] bg-dashboard-accent">
-                          {gateways.map((gateway) => (
-                            <SelectItem key={gateway.id} value={gateway.id}>
-                              {gateway.name}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="all-gateways">
+                            Semua Gerbang
+                          </SelectItem>
+                          {gateways
+                            .filter((gateway) => gateway && gateway.id)
+                            .map((gateway) => (
+                              <SelectItem
+                                key={gateway.id}
+                                value={String(gateway.id)}
+                              >
+                                {gateway.name}
+                              </SelectItem>
+                            ))}
                         </SelectContent>
                       </Select>
                     </div>

@@ -1,5 +1,5 @@
 import { Dialog, DialogTitle, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { X } from "lucide-react";
 import api from "@/services/api";
 import { useStreetLightStore } from "@/stores/useStreetlightStore";
@@ -26,11 +26,25 @@ export const OperationalHourModal: React.FC<OperationalHourModalProps> = ({
     useStreetLightStore();
 
   const postJamOperasional = async () => {
-    await api.post("/scheduler/pju", {
-      gateway_id: selectedGateway,
+    const payload: {
+      on_time: string;
+      off_time: string;
+      gateway_id?: string;
+    } = {
       on_time: jamMenyala,
       off_time: jamMati,
-    });
+    };
+
+    if (selectedGateway && selectedGateway !== "all-gateways") {
+      payload.gateway_id = selectedGateway;
+    }
+
+    try {
+      await api.post("/scheduler/pju", payload);
+    } catch (error) {
+      console.error("Failed to set operational hours:", error);
+      // Optionally: show an error toast to the user
+    }
   };
 
   const handleSave = () => {
@@ -89,6 +103,7 @@ export const OperationalHourModal: React.FC<OperationalHourModalProps> = ({
                     <SelectValue placeholder="Pilih Gateway" />
                   </SelectTrigger>
                   <SelectContent className="z-[9999] bg-[#2C2C2C] text-white">
+                    {/* <SelectItem value="all-gateways">Semua Gerbang</SelectItem> */}
                     {gateways.map((gateway) => (
                       <SelectItem key={gateway.id} value={gateway.id}>
                         {gateway.name}

@@ -20,7 +20,9 @@ interface StreetLightState {
   lights: Light[];
   gateways: Gateway[];
   selectedGateway: string;
+  searchTerm: string;
   setSelectedGateway: (gateway: string) => void;
+  setSearchTerm: (term: string) => void;
   fetchGateways: () => Promise<void>;
   fetchLights: () => Promise<void>;
   toggleLights: (id: number, status: number) => Promise<void>;
@@ -35,27 +37,52 @@ interface StreetLightState {
 export const useStreetLightStore = create<StreetLightState>((set, get) => ({
   lights: [],
   gateways: [],
-  selectedGateway: "HWM-101",
+  selectedGateway: "",
+  searchTerm: "",
 
   setSelectedGateway: (gateway) => {
     set({ selectedGateway: gateway });
     get().fetchLights();
   },
 
-  fetchGateways: async () => {
-    const res = await api.get("/sensor/pju-gateway");
-    const data = res.data.data.rows;
-    set({ gateways: data, selectedGateway: data[0]?.id || "" });
+  setSearchTerm: (term) => {
+    set({ searchTerm: term });
     get().fetchLights();
   },
 
+  fetchGateways: async () => {
+    try {
+      const res = await api.get("/sensor/pju-gateway");
+      const data = res.data.data.rows;
+      set({ gateways: data });
+      get().fetchLights();
+    } catch (error) {
+      console.error("Failed to fetch gateways:", error);
+    }
+  },
+
   fetchLights: async () => {
-    const res = await api.get(
-      `/sensor/pju?page=1&limit=100&gatewayId=${get().selectedGateway}`
-    );
-    const data = res.data.data.rows;
-    // console.log(data);
-    set({ lights: data });
+    try {
+      const { selectedGateway, searchTerm } = get();
+      const params = new URLSearchParams({
+        page: "1",
+        limit: "100",
+      });
+
+      if (selectedGateway && selectedGateway !== "all-gateways") {
+        params.append("gatewayId", selectedGateway);
+      }
+      if (searchTerm) {
+        params.append("search", searchTerm);
+      }
+
+      const res = await api.get(`/sensor/pju?${params.toString()}`);
+      const data = res.data.data.rows;
+      set({ lights: data });
+    } catch (error) {
+      console.error("Failed to fetch lights:", error);
+      set({ lights: [] }); // Clear lights on error
+    }
   },
 
   toggleLights: async (id, status) => {
