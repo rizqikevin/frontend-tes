@@ -3,27 +3,31 @@ import { Dialog, DialogTitle } from "@headlessui/react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import api from "@/services/api";
+import { toast } from "sonner";
 
-interface AddVehicleModalProps {
+interface AddCctvModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
 }
 
-export const AddCctvModal: React.FC<AddVehicleModalProps> = ({
+const initialFormState = {
+  group_id: 0,
+  name: "",
+  url: "",
+  url_local: "",
+  latitude: "",
+  longitude: "",
+  description: "",
+  status_id: 0,
+};
+
+export const AddCctvModal: React.FC<AddCctvModalProps> = ({
   isOpen,
   onClose,
   onSuccess,
 }) => {
-  const [form, setForm] = useState({
-    radio_id: "",
-    vehicle_number: "",
-    vehicle_name: "",
-    type: "car",
-    target: 0,
-    average_fuel_consumption: 0,
-  });
-
+  const [form, setForm] = useState(initialFormState);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (
@@ -33,25 +37,21 @@ export const AddCctvModal: React.FC<AddVehicleModalProps> = ({
     setForm((prev) => ({
       ...prev,
       [name]:
-        name === "target" || name === "average_fuel_consumption"
-          ? Number(value)
-          : value,
+        name === "group_id" || name === "status_id" ? Number(value) : value,
     }));
   };
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const res = await api.post("/vehicle", form);
-      // console.log("Vehicle added:", res.data);
-
-      if (!res) throw new Error("Failed to add vehicle");
-
+      await api.post("/cctv", form);
       if (onSuccess) onSuccess();
-      onClose();
+      setForm(initialFormState); // Reset form
     } catch (err) {
       console.error(err);
-      alert("Gagal menambahkan kendaraan");
+      toast.error("Failed to add CCTV", {
+        description: err.message,
+      });
     } finally {
       setLoading(false);
     }
@@ -68,7 +68,7 @@ export const AddCctvModal: React.FC<AddVehicleModalProps> = ({
         <div className="relative bg-[#1e1e1e] text-white rounded-lg w-full max-w-md p-6 z-10">
           <div className="flex justify-between items-center mb-4">
             <DialogTitle className="text-lg font-semibold">
-              <span className="text-white text-lg">Add Vehicle</span>
+              <span className="text-white text-lg">Add CCTV</span>
               <p className="text-sm text-gray-400">
                 Please fill out the form below
               </p>
@@ -79,50 +79,61 @@ export const AddCctvModal: React.FC<AddVehicleModalProps> = ({
           </div>
           <div className="space-y-4">
             <input
-              name="radio_id"
-              placeholder="Radio ID"
-              className="w-full px-3 py-2 rounded bg-[#2a2a2a] text-white"
-              value={form.radio_id}
-              onChange={handleChange}
-            />
-            <input
-              name="vehicle_number"
-              placeholder="Vehicle Number"
-              className="w-full px-3 py-2 rounded bg-[#2a2a2a] text-white"
-              value={form.vehicle_number}
-              onChange={handleChange}
-            />
-            <input
-              name="vehicle_name"
-              placeholder="Vehicle Name"
-              className="w-full px-3 py-2 rounded bg-[#2a2a2a] text-white"
-              value={form.vehicle_name}
-              onChange={handleChange}
-            />
-            <select
-              name="type"
-              className="w-full px-3 py-2 rounded bg-[#2a2a2a] text-white"
-              value={form.type}
-              onChange={handleChange}
-            >
-              <option value="car">Car</option>
-              <option value="truck">Truck</option>
-              <option value="bus">Bus</option>
-            </select>
-            <input
-              name="target"
+              name="group_id"
               type="number"
-              placeholder="Target"
+              placeholder="Group ID"
               className="w-full px-3 py-2 rounded bg-[#2a2a2a] text-white"
-              value={form.target}
+              value={form.group_id}
               onChange={handleChange}
             />
             <input
-              name="average_fuel_consumption"
-              type="number"
-              placeholder="Average Fuel Consumption"
+              name="name"
+              placeholder="Nama Kamera"
               className="w-full px-3 py-2 rounded bg-[#2a2a2a] text-white"
-              value={form.average_fuel_consumption}
+              value={form.name}
+              onChange={handleChange}
+            />
+            <input
+              name="url"
+              placeholder="URL"
+              className="w-full px-3 py-2 rounded bg-[#2a2a2a] text-white"
+              value={form.url}
+              onChange={handleChange}
+            />
+            <input
+              name="url_local"
+              placeholder="URL Local"
+              className="w-full px-3 py-2 rounded bg-[#2a2a2a] text-white"
+              value={form.url_local}
+              onChange={handleChange}
+            />
+            <input
+              name="latitude"
+              placeholder="Latitude"
+              className="w-full px-3 py-2 rounded  bg-[#2a2a2a] text-white"
+              value={form.latitude}
+              onChange={handleChange}
+            />
+            <input
+              name="longitude"
+              placeholder="Longitude"
+              className="w-full px-3 py-2 rounded  bg-[#2a2a2a] text-white"
+              value={form.longitude}
+              onChange={handleChange}
+            />
+            <input
+              name="description"
+              placeholder="Description"
+              className="w-full px-3 py-2 rounded  bg-[#2a2a2a] text-white"
+              value={form.description}
+              onChange={handleChange}
+            />
+            <input
+              name="status_id"
+              type="number"
+              placeholder="Status ID"
+              className="w-full px-3 py-2 rounded  bg-[#2a2a2a] text-white"
+              value={form.status_id}
               onChange={handleChange}
             />
           </div>
