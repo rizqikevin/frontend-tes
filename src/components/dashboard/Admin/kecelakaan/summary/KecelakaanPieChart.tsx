@@ -190,7 +190,7 @@ const KecelakaanPieChart: React.FC = () => {
           </Select>
         </div>
 
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-4 sm:flex-col sm:gap-6 lg:flex-row lg:gap-8">
           {/* Faktor Kecelakaan */}
           {loading ? (
             <div className="bg-dashboard-accent p-6 rounded-xl shadow-md w-[350px] h-[260px] flex flex-col items-center">
@@ -199,7 +199,7 @@ const KecelakaanPieChart: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="bg-dashboard-accent p-6 rounded-xl shadow-md w-full h-[260px] flex flex-col items-center">
+            <div className="bg-dashboard-accent p-6 rounded-xl shadow-md  w-full h-[260px] flex flex-col items-center">
               <div className="relative -left-20">
                 <h2 className="mb-3 font-semibold">FAKTOR KECELAKAAN</h2>
               </div>

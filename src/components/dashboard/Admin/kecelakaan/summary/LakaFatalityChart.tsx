@@ -164,7 +164,7 @@ export const LakaFatalityChart: React.FC = () => {
           </thead>
           <tbody>
             <tr className="text-white text-sm">
-              <td className="p-1 text-left">Tingkat Kecelakaan</td>
+              <td className="p-1 text-left">Tingkat Laka</td>
               {chartData.datasets[0]?.data.map((value, index) => (
                 <td
                   key={index}

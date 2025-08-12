@@ -124,7 +124,7 @@ export const KecelakaanBarChart: React.FC = () => {
               {chartData.labels?.map((label) => (
                 <th
                   key={label}
-                  className="py-0 pl-0 text-left border-b border-gray-600"
+                  className="py-0 pl-2 text-left border-b border-gray-600"
                 >
                   {label}
                 </th>
@@ -135,13 +135,13 @@ export const KecelakaanBarChart: React.FC = () => {
             {chartData.datasets.map((ds) => (
               <tr key={ds.label} className="border-t border-gray-600">
                 <td
-                  className="py-2 pl-2 font-semibold relative right-2 text-left"
+                  className="py-4 pl-0 font-semibold relative right-0 text-left"
                   style={{ color: ds.backgroundColor as string }}
                 >
                   {ds.label}
                 </td>
                 {ds.data.map((val, i) => (
-                  <td key={i} className="py-1 pl-1 text-left">
+                  <td key={i} className="py-1 pl-4 text-left">
                     {val}
                   </td>
                 ))}
