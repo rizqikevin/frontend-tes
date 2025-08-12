@@ -167,7 +167,7 @@ export const DetailOdol: React.FC = () => {
           {data ? (
             <div className="grid grid-cols-2 md:grid-cols-2 w-full gap-5">
               <div className="space-y-4 max-w-4xl w-full">
-                <ImageCard title="Gambar Transaksi" imageUrl={data.url2} />
+                <ImageCard title="Gambar Transaksi" imageUrl={data.url1} />
 
                 <div className="overflow-auto mt-4 bg-dashboard-accent rounded-sm p-5">
                   <ImageCard title="Gardan" imageUrl={gardanImageUrl} />

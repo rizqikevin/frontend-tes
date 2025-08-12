@@ -96,15 +96,32 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
         <span>: {dimensi.slice(5)}</span>
         <span>Status :</span>
       </div>
-      <div className="bg-red-900 w-full h-20 flex items-center justify-center text-6xl font-bold rounded-lg">
-        {status === "OL"
-          ? "Overload"
-          : status === "OD"
-          ? "Over Dimention"
-          : status === "ODOL"
-          ? "Overload-Overdimention"
-          : "Overload-Overdimention"}
-      </div>
+      {status === "PATUH" && (
+        <div className="bg-green-900 w-full h-20 flex items-center justify-center text-6xl font-bold rounded-lg">
+          Patuh
+        </div>
+      )}
+      {status === "OD" && (
+        <div className="bg-red-900 w-full h-20 flex items-center justify-center text-6xl font-bold rounded-lg">
+          Over Dimention
+        </div>
+      )}
+      {status === "OL" && (
+        <div className="bg-red-900 w-full h-20 flex items-center justify-center text-6xl font-bold rounded-lg">
+          Overload
+        </div>
+      )}
+      {status === "ODOL" && (
+        <div className="bg-red-900 w-full h-20 flex items-center justify-center text-6xl font-bold rounded-lg">
+          Overload-Overdimention
+        </div>
+      )}
+      {!status && (
+        <div className="bg-red-900 w-full h-20 flex items-center justify-center text-6xl font-bold rounded-lg">
+          Tidak Diketahui
+        </div>
+      )}
+
       <div className="text-center grid grid-cols-1 mt-5">
         <button
           className="bg-yellow-400 text-black font-semibold w-full py-2 mt-60 rounded-md"
