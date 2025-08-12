@@ -172,10 +172,7 @@ const LogReportViolation: React.FC = () => {
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td
-                        colSpan={14}
-                        className="p-4 text-center text-gray-400"
-                      >
+                      <td colSpan={6} className="p-4 text-center text-gray-400">
                         Loading...
                       </td>
                     </tr>

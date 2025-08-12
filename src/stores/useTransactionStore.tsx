@@ -18,6 +18,8 @@ interface AchievementData {
   rkapTarget: string;
   rkapPercent: number;
   percent?: string;
+  monthly?: string;
+  yearly?: string;
   otherTargets: TargetData[];
 }
 
@@ -88,14 +90,20 @@ export const useTransactionStore = create<TransactionStoreState>((set) => ({
 
       const rkap = data.target.find((t) => t.target_name === "RKAP");
       const others = data.target.filter((t) => t.target_name !== "RKAP");
+      const monthly = data.month;
+      const yearly = data.year;
 
-      console.log("others :", others);
-      console.log("rkap :", rkap);
+      // console.log(monthly, yearly);
+
+      // console.log("others :", others);
+      // console.log("rkap :", rkap);
 
       // console.log("data :", data);
 
       set((state) => ({
         [freq]: {
+          yearly: yearly,
+          monthly: monthly,
           percent: rkap?.percent_lhr,
           lhr_achievement: data.lhr_achievement,
           revenueAchievement: data.lhr_achievement,

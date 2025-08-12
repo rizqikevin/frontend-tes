@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useTransactionStore } from "@/stores/useTransactionStore";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 import { Nested } from "@alptugidin/react-circular-progress-bar";
+import { Dayjs } from "dayjs";
 
 interface AchievementProgressBarProps {
-  title: string;
+  title?: string;
   color: string;
   freq: "monthly" | "yearly" | "daily";
 }
@@ -21,6 +22,8 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
   useEffect(() => {
     fetchAchievement(freq);
   }, [start_date, end_date, freq]);
+
+  // console.log("Achievement Data:", achievementData);
 
   const percent = Number(achievementData.rkapPercent);
   const LHRPercent = Number(achievementData.percent);

@@ -13,6 +13,7 @@ import { useTransactionStore } from "@/stores/useTransactionStore";
 import { useSettlementStore } from "@/stores/useSettlementAchievementStore";
 import { AchievementProgressBar } from "./AchievementCard/AchievementProgressBar";
 import { Button } from "@/components/ui/button";
+
 export const Bagian1 = ({
   selectedTab,
   setSelectedTab,
@@ -31,7 +32,7 @@ export const Bagian1 = ({
     useTransactionOverviewStore();
   const { start_date, end_date } = useDateFilterStore();
   const { chartData, fetchChartData } = useTransactionChartStore();
-  const { daily, fetchAchievement } = useTransactionStore();
+  const { daily, fetchAchievement, monthly, yearly } = useTransactionStore();
   const { data, fetchData } = useSettlementStore();
 
   const rkapPercent = daily.rkapPercent;
@@ -43,6 +44,32 @@ export const Bagian1 = ({
   ];
 
   // console.log(transactionAchievement);
+  const monthNames = [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
+  ];
+
+  const monthNumber = monthly.monthly ? parseInt(monthly.monthly, 10) : 0;
+
+  const getMonthName = (monthNumber: number) => {
+    if (monthNumber > 0 && monthNumber <= 12) {
+      return monthNames[monthNumber - 1];
+    }
+    return "Bulan Tidak Valid";
+  };
+
+  // console.log(monthly.monthly);
+  // console.log(yearly.yearly);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -162,73 +189,20 @@ export const Bagian1 = ({
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
         <div className="col-span-1 md:col-span-6 gap-4 bg-dashboard-accent shadow-md rounded-lg">
           <AchievementProgressBar
+            title={`Pencapaian Bulan ${getMonthName(monthNumber)} ${
+              yearly.yearly
+            } `}
             color="#4169e4"
-            title="Pencapaian Bulan Juli 2025"
             freq="monthly"
           />
         </div>
         <div className="col-span-1 md:col-span-6 gap-4 bg-dashboard-accent shadow-md rounded-lg">
           <AchievementProgressBar
             color="#4169e4"
-            title="Pencapaian Tahun 2025"
+            title={`Pencapaian Tahun ${yearly.yearly}`}
             freq="yearly"
           />
         </div>
-      </div>
-      {/* ROW 3 - Charts */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {/* <BarChart
-            title="Pendapatan vs Prognosa"
-            labels={chartData.revenue["1"].labels}
-            datasets={chartData.revenue["1"].series}
-          />
-          <BarChart
-            title="Pendapatan vs Business Plan"
-            labels={chartData.revenue["2"].labels}
-            datasets={chartData.revenue["2"].series}
-          />
-          <BarChart
-            title="Pendapatan vs RKAP"
-            labels={chartData.revenue["3"].labels}
-            datasets={chartData.revenue["3"].series}
-          /> */}
-      </div>
-      {/* ROW 4 - Charts */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {/* <BarChart
-          title="LHR vs Prognosa"
-          labels={chartData.lhr["1"].labels}
-          datasets={chartData.lhr["1"].series}
-        />
-        <BarChart
-          title="LHR vs Business Plan"
-          labels={chartData.lhr["2"].labels}
-          datasets={chartData.lhr["2"].series}
-        />
-        <BarChart
-          title="LHR vs RKAP"
-          labels={chartData.lhr["3"].labels}
-          datasets={chartData.lhr["3"].series}
-        /> */}
-      </div>
-      {/* ROW 5 - Card Panel */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-4">
-        {/* {transactionOverview && transactionOverview.length > 0 ? (
-          transactionOverview.map((item) => (
-            <CardPanel
-              key={item.gate_code}
-              title={item.name}
-              value={item.pendapatan}
-              percentage={0}
-              location={item.name}
-              dateRange={`${start_date} / ${end_date}`}
-            />
-          ))
-        ) : (
-          <div className="col-span-full text-center text-sm text-gray-400">
-            Tidak ada data revenue yang tersedia.
-          </div>
-        )} */}
       </div>
     </div>
   );
