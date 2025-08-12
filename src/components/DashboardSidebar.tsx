@@ -490,7 +490,7 @@ theme === "dark" ? "bg-gray-400" : "bg-gray-600"
               </div>
             </div>
 
-            {isAdmin && (
+            {/* {isAdmin && (
               <div className="px-3 mb-2">
                 <SidebarItem
                   icon={<Timer size={18} />}
@@ -498,7 +498,7 @@ theme === "dark" ? "bg-gray-400" : "bg-gray-600"
                   to="/log-history"
                 />
               </div>
-            )}
+            )} */}
 
             {isAdmin && (
               <div className="mt-10 mb-auto px-3 space-y-4">
