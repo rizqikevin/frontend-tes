@@ -18,6 +18,7 @@ import api from "@/services/api";
 import ViolationValidationModal from "./ViolationValidationModal";
 import { useAuth } from "@/context/AuthContext";
 import { UserRole } from "@/types";
+import { stat } from "fs";
 
 export const getVehicleIcon = (type: string) => {
   switch (type) {
@@ -128,6 +129,7 @@ export default function MapViewGps({
       for (const vehicle of vehicles) {
         const lat = parseFloat(vehicle.lat);
         const lon = parseFloat(vehicle.lon);
+        const status = vehicle.status.toLowerCase();
 
         if (isNaN(lat) || isNaN(lon)) continue;
 
@@ -135,37 +137,60 @@ export default function MapViewGps({
         const isInside = turf.booleanPointInPolygon(point, polygon);
         const location = locationDetails[vehicle.radio_id];
 
+        // console.log(vehicle);
+        // console.log({ lat, lon, isInside, status });
+        if (isInside && status === "out") {
+          await api.patch(`/vehicle/${vehicle.radio_id}`, {
+            status: "in",
+          });
+          toast.success(
+            `Status kendaraan ${vehicle.vehicle_name} (${vehicle.radio_id}) telah diubah menjadi "masuk".`
+          );
+        }
+
         if (
           !isInside &&
           location &&
           !reportedViolations.has(vehicle.radio_id)
         ) {
-          try {
-            console.log(
-              `Reporting violation for ${vehicle.radio_id} at ${location}`
-            );
-            await api.post("/violation/vehicle", {
-              radio_id: vehicle.radio_id,
-              area: location,
+          console.log(
+            `Melaporkan pelanggaran untuk ${vehicle.status}, ${status}  ${vehicle.radio_id} di ${location}`
+          );
+          if (status === "in") {
+            await api.patch(`/vehicle/${vehicle.radio_id}`, {
+              status: "out",
             });
-
             toast.success(
-              `Pelanggaran oleh ${vehicle.vehicle_name} (${vehicle.radio_id}) telah dilaporkan.`
+              `Status kendaraan ${vehicle.vehicle_name} (${vehicle.radio_id}) telah diubah menjadi "keluar".`
             );
 
-            setReportedViolations((prev) => {
-              const newSet = new Set(prev);
-              newSet.add(vehicle.radio_id);
-              return newSet;
-            });
-          } catch (error) {
-            console.error(
-              `Gagal melaporkan pelanggaran untuk ${vehicle.radio_id}:`,
-              error
-            );
-            toast.error(
-              `Gagal melaporkan pelanggaran untuk ${vehicle.vehicle_name}.`
-            );
+            try {
+              console.log(
+                `Reporting violation for ${vehicle.radio_id} at ${location}`
+              );
+              await api.post("/violation/vehicle", {
+                radio_id: vehicle.radio_id,
+                area: location,
+              });
+
+              toast.success(
+                `Pelanggaran oleh ${vehicle.vehicle_name} (${vehicle.radio_id}) telah dilaporkan.`
+              );
+
+              setReportedViolations((prev) => {
+                const newSet = new Set(prev);
+                newSet.add(vehicle.radio_id);
+                return newSet;
+              });
+            } catch (error) {
+              console.error(
+                `Gagal melaporkan pelanggaran untuk ${vehicle.radio_id}:`,
+                error
+              );
+              toast.error(
+                `Gagal melaporkan pelanggaran untuk ${vehicle.vehicle_name}.`
+              );
+            }
           }
         }
       }
