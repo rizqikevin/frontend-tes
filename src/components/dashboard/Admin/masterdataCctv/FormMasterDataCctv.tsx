@@ -66,7 +66,7 @@ export const FormMasterDataCctv: React.FC = () => {
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1); // Reset to first page
+    setCurrentPage(1);
   };
 
   return (
@@ -116,15 +116,41 @@ export const FormMasterDataCctv: React.FC = () => {
                 <td className="px-4 py-2">{item.description}</td>
                 <td className="px-4 py-2">{item.updatedby}</td>
                 <td className="px-4 py-2">
-                  <Button
-                    onClick={() => {
-                      setSelectedCctv(item);
-                      setEditModalOpen(true);
-                    }}
-                    className="bg-blue-500 text-white hover:bg-blue-600"
-                  >
-                    Edit
-                  </Button>
+                  <div className="flex space-x-2">
+                    <Button
+                      onClick={() => {
+                        setSelectedCctv(item);
+                        setEditModalOpen(true);
+                      }}
+                      className="bg-blue-500 w-16 text-white hover:bg-blue-600"
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            "Are you sure you want to delete this CCTV?"
+                          )
+                        ) {
+                          api
+                            .delete(`/cctv/${item.id}`)
+                            .then(() => {
+                              toast.success("CCTV deleted successfully.");
+                              fetchCctv();
+                            })
+                            .catch((error) => {
+                              toast.error("Error deleting CCTV:", {
+                                description: error.message,
+                              });
+                            });
+                        }
+                      }}
+                      className="bg-red-500 w-16 text-white hover:bg-red-600"
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}
