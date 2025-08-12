@@ -408,13 +408,13 @@ theme === "dark" ? "bg-gray-400" : "bg-gray-600"
                   </div>
                 )}
               </div>
-              <div className="px-3 mb-2">
+              {/* <div className="px-3 mb-2">
                 <SidebarItem
                   icon={<MessageCircleMoreIcon size={18} />}
                   text="Sosial Media"
                   to="/sosial-media"
                 />
-              </div>
+              </div> */}
               <div className="px-3 mb-2">
                 <SidebarItem
                   icon={<LucideCloudy size={18} />}
