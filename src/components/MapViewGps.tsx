@@ -16,6 +16,8 @@ import { Polyline } from "react-leaflet";
 import { toast } from "sonner";
 import api from "@/services/api";
 import ViolationValidationModal from "./ViolationValidationModal";
+import { useAuth } from "@/context/AuthContext";
+import { UserRole } from "@/types";
 
 export const getVehicleIcon = (type: string) => {
   switch (type) {
@@ -93,6 +95,12 @@ export default function MapViewGps({
   onVehicleClick,
   trackCoordinates,
 }: MapViewGpsProps) {
+  const { user } = useAuth();
+
+  if (!user) {
+    return null;
+  }
+  const isAdmin = user.role === UserRole.ADMIN;
   const mapRef = useRef<Map | null>(null);
   const [locationDetails, setLocationDetails] = useState<
     Record<string, string>
@@ -127,7 +135,11 @@ export default function MapViewGps({
         const isInside = turf.booleanPointInPolygon(point, polygon);
         const location = locationDetails[vehicle.radio_id];
 
-        if (!isInside && location && !reportedViolations.has(vehicle.radio_id)) {
+        if (
+          !isInside &&
+          location &&
+          !reportedViolations.has(vehicle.radio_id)
+        ) {
           try {
             console.log(
               `Reporting violation for ${vehicle.radio_id} at ${location}`
@@ -306,7 +318,7 @@ export default function MapViewGps({
                 >
                   View on Google Maps
                 </a>
-                {!isInside && (
+                {!isInside && isAdmin && (
                   <button
                     onClick={() => handleOpenModal(vehicle)}
                     className="w-full bg-orange-500 text-white px-3 py-1 rounded-md mt-2 text-sm"
