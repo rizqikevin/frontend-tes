@@ -75,16 +75,18 @@ const VehicleStatusCard: React.FC = () => {
         ))}
       </div>
 
-      <div className="mb-2">
-        <div className="text-sm text-gray-400 mb-1">
-          Total Kendaraan Tidak Patuh
-        </div>
-        <div className="text-sm font-bold">{totalTidakPatuh} Kendaraan</div>
-      </div>
+      <hr className="border-gray-500 mb-4" />
 
-      <div className="mb-2">
-        <div className="text-sm text-gray-400 mb-1">Total Normal</div>
-        <div className="text-sm font-bold">{data.total_normal} Kendaraan</div>
+      <div className="grid grid-cols-2 gap-32">
+        <div className="mb-2">
+          <div className="text-sm text-gray-400 mb-1">Total Kendaraan</div>
+          <div className="text-sm font-bold">{totalTidakPatuh} Kendaraan</div>
+        </div>
+
+        <div className="mb-2">
+          <div className="text-sm text-gray-400 mb-1">Total Normal</div>
+          <div className="text-sm font-bold">{data.total_normal} Kendaraan</div>
+        </div>
       </div>
     </div>
   );

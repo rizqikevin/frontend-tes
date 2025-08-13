@@ -108,7 +108,7 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
                 {isHovered ? percentLHR ?? 0 : displayPercent ?? 0}%
               </span>
               <p className="text-2xl text-white">
-                {isHovered ? "LHR" : "RKAP"}
+                {isHovered ? "LHR / RKAP" : "RKAP"}
               </p>
             </div>
           </div>
