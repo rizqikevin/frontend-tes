@@ -174,7 +174,7 @@ const KecelakaanPieChart: React.FC = () => {
               <SelectValue placeholder="Bulanan" />
             </SelectTrigger>
             <SelectContent className="bg-dashboard-accent">
-              <SelectItem value="januari">Januari</SelectItem>
+              <SelectItem value="monthly">Januari</SelectItem>
               <SelectItem value="februari">Februari</SelectItem>
               <SelectItem value="maret">Maret</SelectItem>
               <SelectItem value="april">April</SelectItem>

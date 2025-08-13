@@ -113,7 +113,7 @@ export const KecelakaanBarChart: React.FC = () => {
   const renderContent = () => {
     if (loading) {
       return (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center h-[420px]">
           <p className="text-white">Memuat data...</p>
         </div>
       );

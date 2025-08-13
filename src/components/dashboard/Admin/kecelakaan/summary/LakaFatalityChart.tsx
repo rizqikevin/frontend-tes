@@ -111,7 +111,7 @@ export const LakaFatalityChart: React.FC = () => {
           ],
         });
       } catch (err) {
-        setError("Gagal mengambil data grafik.");
+        setError("Gagal mengambil data grafik silahkan coba lagi.");
         console.error("Gagal mengambil data grafik:", err);
       } finally {
         setLoading(false);
@@ -159,7 +159,7 @@ export const LakaFatalityChart: React.FC = () => {
   const renderContent = () => {
     if (loading) {
       return (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center h-[410px]">
           <p className="text-white">Memuat data...</p>
         </div>
       );

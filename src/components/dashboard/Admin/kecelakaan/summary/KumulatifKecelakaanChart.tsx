@@ -136,7 +136,7 @@ const KumulatifKecelakaanChart: React.FC = () => {
   const renderContent = () => {
     if (loading) {
       return (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center h-[250px]">
           <p className="text-white">Memuat data...</p>
         </div>
       );
@@ -165,7 +165,7 @@ const KumulatifKecelakaanChart: React.FC = () => {
                     key={i}
                     className="p-1 border-l border-gray-700 text-center"
                   >
-                    {month}
+                    {String(month)}
                   </th>
                 ))}
               </tr>
