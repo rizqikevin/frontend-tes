@@ -19,6 +19,7 @@ export interface VehicleData {
   status: string;
   type: string; // 'car', 'ambulance', etc.
   radio_time: string;
+  is_valid: boolean;
   lat: string;
   lon: string;
   speed: number;

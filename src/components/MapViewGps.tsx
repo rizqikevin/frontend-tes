@@ -18,7 +18,6 @@ import api from "@/services/api";
 import ViolationValidationModal from "./ViolationValidationModal";
 import { useAuth } from "@/context/AuthContext";
 import { UserRole } from "@/types";
-import { stat } from "fs";
 
 export const getVehicleIcon = (type: string) => {
   switch (type) {
@@ -87,16 +86,17 @@ const polygon = turf.polygon([
   ],
 ]);
 
-const point = turf.point([3.0522134461444947, 99.1946832627015]);
-const inside = turf.booleanPointInPolygon(point, polygon);
-// console.log(inside);
-
 export default function MapViewGps({
   vehicles,
   onVehicleClick,
   trackCoordinates,
 }: MapViewGpsProps) {
   const { user } = useAuth();
+  const [internalVehicles, setInternalVehicles] = useState<VehicleData[]>([]);
+
+  useEffect(() => {
+    setInternalVehicles(vehicles);
+  }, [vehicles]);
 
   if (!user) {
     return null;
@@ -124,9 +124,17 @@ export default function MapViewGps({
     setIsModalOpen(false);
   };
 
+  const handleValidationComplete = (vehicleId: string, isValid: boolean) => {
+    setInternalVehicles((prevVehicles) =>
+      prevVehicles.map((v) =>
+        v.radio_id === vehicleId ? { ...v, is_valid: isValid } : v
+      )
+    );
+  };
+
   useEffect(() => {
     const reportViolations = async () => {
-      for (const vehicle of vehicles) {
+      for (const vehicle of internalVehicles) {
         const lat = parseFloat(vehicle.lat);
         const lon = parseFloat(vehicle.lon);
         const status = vehicle.status.toLowerCase();
@@ -137,8 +145,6 @@ export default function MapViewGps({
         const isInside = turf.booleanPointInPolygon(point, polygon);
         const location = locationDetails[vehicle.radio_id];
 
-        // console.log(vehicle);
-        // console.log({ lat, lon, isInside, status });
         if (isInside && status === "out") {
           await api.patch(`/vehicle/${vehicle.radio_id}`, {
             status: "in",
@@ -193,10 +199,13 @@ export default function MapViewGps({
       }
     };
 
-    if (vehicles.length > 0 && Object.keys(locationDetails).length > 0) {
+    if (
+      internalVehicles.length > 0 &&
+      Object.keys(locationDetails).length > 0
+    ) {
       reportViolations();
     }
-  }, [vehicles, locationDetails, reportedViolations]);
+  }, [internalVehicles, locationDetails, reportedViolations]);
 
   const polygonRef: LatLngExpression[] = [
     [3.3481490716505355, 99.47624550906254],
@@ -214,7 +223,9 @@ export default function MapViewGps({
   // Fetch addresses once for all vehicles
   useEffect(() => {
     const fetchAllAddresses = async () => {
-      const pending = vehicles.filter((v) => !locationDetails[v.radio_id]);
+      const pending = internalVehicles.filter(
+        (v) => !locationDetails[v.radio_id]
+      );
 
       for (const vehicle of pending) {
         try {
@@ -242,15 +253,15 @@ export default function MapViewGps({
       }
     };
 
-    if (vehicles.length > 0) {
+    if (internalVehicles.length > 0) {
       fetchAllAddresses();
     }
-  }, [vehicles]);
+  }, [internalVehicles]);
 
   // Hitung posisi rata-rata sebagai fallback center
   const center = useMemo<[number, number]>(() => {
-    if (!vehicles.length) return [3.226, 99.227];
-    const total = vehicles.reduce(
+    if (!internalVehicles.length) return [3.226, 99.227];
+    const total = internalVehicles.reduce(
       (acc, v) => {
         acc.lat += parseFloat(v.lat);
         acc.lon += parseFloat(v.lon);
@@ -258,23 +269,30 @@ export default function MapViewGps({
       },
       { lat: 0, lon: 0 }
     );
-    return [total.lat / vehicles.length, total.lon / vehicles.length];
-  }, [vehicles]);
+    return [
+      total.lat / internalVehicles.length,
+      total.lon / internalVehicles.length,
+    ];
+  }, [internalVehicles]);
 
   // Zoom otomatis ke semua marker
   useEffect(() => {
-    if (!mapRef.current || vehicles.length === 0 || hasFitBoundsRef.current)
+    if (
+      !mapRef.current ||
+      internalVehicles.length === 0 ||
+      hasFitBoundsRef.current
+    )
       return;
 
     const bounds = L.latLngBounds(
-      vehicles.map(
+      internalVehicles.map(
         (v) => [parseFloat(v.lat), parseFloat(v.lon)] as [number, number]
       )
     );
 
     mapRef.current.fitBounds(bounds, { padding: [50, 50] });
     hasFitBoundsRef.current = true;
-  }, [vehicles]);
+  }, [internalVehicles]);
 
   return (
     <MapContainer
@@ -291,7 +309,7 @@ export default function MapViewGps({
       <FullscreenControl />
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-      {vehicles.map((vehicle) => {
+      {internalVehicles.map((vehicle) => {
         const lat = parseFloat(vehicle.lat);
         const lon = parseFloat(vehicle.lon);
 
@@ -300,10 +318,10 @@ export default function MapViewGps({
         const point = turf.point([lon, lat]);
         const isInside = turf.booleanPointInPolygon(point, polygon);
 
-        // console.log(vehicle.vehicle_name, { lat, lon, isInside });
-        const icon = isInside
-          ? getVehicleIcon(vehicle.type)
-          : getVehicleIconOutOfBounds(vehicle.type);
+        const icon =
+          isInside || vehicle.is_valid
+            ? getVehicleIcon(vehicle.type)
+            : getVehicleIconOutOfBounds(vehicle.type);
 
         return (
           <Marker
@@ -340,7 +358,7 @@ export default function MapViewGps({
                 >
                   View on Google Maps
                 </a>
-                {!isInside && isAdmin && (
+                {!isInside && isAdmin && !vehicle.is_valid && (
                   <button
                     onClick={() => handleOpenModal(vehicle)}
                     className="w-full bg-orange-500 text-white px-3 py-1 rounded-md mt-2 text-sm"
@@ -376,6 +394,7 @@ export default function MapViewGps({
           location={locationDetails[selectedVehicle.radio_id]}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
+          onValidationComplete={handleValidationComplete}
         />
       )}
     </MapContainer>
