@@ -26,6 +26,11 @@ ChartJS.register(
   Filler
 );
 
+interface Series {
+  name: "accidents" | "fatalities";
+  data: number[];
+}
+
 export const LakaFatalityChart: React.FC = () => {
   const [chartData, setChartData] = useState<
     ChartData<"line", number[], string>
@@ -33,9 +38,13 @@ export const LakaFatalityChart: React.FC = () => {
     labels: [],
     datasets: [],
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const res = await api2.get(
           "/ticket/list_kecelakaan/chart/by/fatalities?frequency=monthly"
@@ -43,14 +52,16 @@ export const LakaFatalityChart: React.FC = () => {
         const response = res.data.data;
 
         const labels = response.labels;
+        const series: Series[] = response.series;
 
-        const accidentsData = response.series.find(
-          (s: any) => s.name === "accidents"
+        const accidentsData = series.find((s) => s.name === "accidents")?.data;
+        const fatalitiesData = series.find(
+          (s) => s.name === "fatalities"
         )?.data;
 
-        const fatalitiesData = response.series.find(
-          (s: any) => s.name === "fatalities"
-        )?.data;
+        if (!accidentsData || !fatalitiesData) {
+          throw new Error("Format data tidak valid dari API.");
+        }
 
         setChartData({
           labels,
@@ -99,8 +110,11 @@ export const LakaFatalityChart: React.FC = () => {
             },
           ],
         });
-      } catch (error) {
-        console.error("Gagal mengambil data grafik:", error);
+      } catch (err) {
+        setError("Gagal mengambil data grafik.");
+        console.error("Gagal mengambil data grafik:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -109,6 +123,7 @@ export const LakaFatalityChart: React.FC = () => {
 
   const options: ChartOptions<"line"> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top",
@@ -141,53 +156,79 @@ export const LakaFatalityChart: React.FC = () => {
     },
   };
 
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center h-full">
+          <p className="text-white">Memuat data...</p>
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="flex items-center justify-center h-full">
+          <p className="text-red-500">{error}</p>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <div className="relative h-[410px]">
+          <Line data={chartData} options={options} />
+        </div>
+        <div className="mt-6">
+          <table className="relative -left-10 w-full min-w-[760px] text-sm text-white border-collapse">
+            <thead>
+              <tr className="text-white text-sm">
+                <th className="p-1 text-left">Jenis</th>
+                {chartData.labels?.map((label, index) => (
+                  <th
+                    key={index}
+                    className="p-1 border-l border-gray-700 text-left"
+                  >
+                    {label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="text-white text-sm">
+                <td className="p-1 text-left">Tingkat Laka</td>
+                {chartData.datasets[0]?.data.map((value, index) => (
+                  <td
+                    key={index}
+                    className="py-0 pl-0 text-left border-b border-gray-600"
+                  >
+                    {value}
+                  </td>
+                ))}
+              </tr>
+              <tr className="text-white text-sm">
+                <td className="p-1 text-left">Tingkat Fatality</td>
+                {chartData.datasets[1]?.data.map((value, index) => (
+                  <td
+                    key={index}
+                    className="py-0 pl-0 text-left border-b border-gray-600"
+                  >
+                    {value}
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </>
+    );
+  };
+
   return (
-    <div className="bg-dashboard-accent p-10 rounded-lg h-full w-full max-h-[1000px]">
-      <h2 className="text-sm mb-2 font-semibold text-white">
+    <div className="bg-dashboard-accent p-10 rounded-lg h-full w-full flex flex-col">
+      <h2 className="text-sm mb-2 font-semibold text-white shrink-0">
         Tingkat Laka & Fatality
       </h2>
-      <Line data={chartData} options={options} height={170} />
-      <div className="mt-6">
-        <table className="relative -left-10 w-full min-w-[760px] text-sm text-white border-collapse">
-          <thead>
-            <tr className="text-white text-sm">
-              <th className="p-1 text-left">Bulan</th>
-              {chartData.labels.map((label, index) => (
-                <th
-                  key={index}
-                  className="p-1 border-l border-gray-700 text-left"
-                >
-                  {label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="text-white text-sm">
-              <td className="p-1 text-left">Tingkat Laka</td>
-              {chartData.datasets[0]?.data.map((value, index) => (
-                <td
-                  key={index}
-                  className="py-0 pl-0 text-left border-b border-gray-600"
-                >
-                  {value}
-                </td>
-              ))}
-            </tr>
-            <tr className="text-white text-sm">
-              <td className="p-1 text-left">Tingkat Fatality</td>
-              {chartData.datasets[1]?.data.map((value, index) => (
-                <td
-                  key={index}
-                  className="py-0 pl-0 text-left border-b border-gray-600"
-                >
-                  {value}
-                </td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <div className="flex-grow">{renderContent()}</div>
     </div>
   );
 };
