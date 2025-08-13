@@ -103,7 +103,7 @@ export const KecelakaanBarChartTime: React.FC = () => {
   const renderContent = () => {
     if (loading) {
       return (
-        <div className="flex items-center justify-center h-[250px]">
+        <div className="flex items-center justify-center h-[270px]">
           <p className="text-white">Memuat data...</p>
         </div>
       );
@@ -119,12 +119,11 @@ export const KecelakaanBarChartTime: React.FC = () => {
 
     return (
       <>
-        <div className="relative h-[250px]">
+        <div className="relative h-[270px]">
           <Chart type="bar" data={chartData} options={options} />
         </div>
 
-        <div className="mt-6">
-          <table className="relative -left-10 w-full min-w-[760px] text-sm text-white border-collapse">
+        {/* <table className="relative -left-10 w-full min-w-[760px] text-sm text-white border-collapse">
             <thead>
               <tr className="border-t border-gray-600">
                 <th className="py-1 pl-2 text-left border-b border-gray-600 w-20">
@@ -157,8 +156,7 @@ export const KecelakaanBarChartTime: React.FC = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
-        </div>
+          </table> */}
       </>
     );
   };

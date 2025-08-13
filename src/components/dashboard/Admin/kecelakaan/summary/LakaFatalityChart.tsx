@@ -159,7 +159,7 @@ export const LakaFatalityChart: React.FC = () => {
   const renderContent = () => {
     if (loading) {
       return (
-        <div className="flex items-center justify-center h-[410px]">
+        <div className="flex items-center justify-center h-[440px]">
           <p className="text-white">Memuat data...</p>
         </div>
       );
@@ -175,7 +175,7 @@ export const LakaFatalityChart: React.FC = () => {
 
     return (
       <>
-        <div className="relative h-[410px]">
+        <div className="relative h-[440px]">
           <Line data={chartData} options={options} />
         </div>
         <div className="mt-6">
