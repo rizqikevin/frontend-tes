@@ -346,6 +346,20 @@ export default function MapViewGps({
                     {isInside ? "Di dalam batas" : "Melewati batas"}
                   </span>
                 </p>
+                {!isInside && (
+                  <p className="text-sm">
+                    Validasi:{" "}
+                    <span
+                      className={
+                        vehicle.is_valid ? "text-blue-600" : "text-orange-500"
+                      }
+                    >
+                      {vehicle.is_valid
+                        ? "Sudah Divalidasi"
+                        : "Belum Divalidasi"}
+                    </span>
+                  </p>
+                )}
                 <p className="text-sm">Lokasi:</p>
                 <p className="text-sm italic">
                   {locationDetails[vehicle.radio_id] || "Memuat alamat..."}
