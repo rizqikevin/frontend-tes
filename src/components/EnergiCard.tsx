@@ -24,6 +24,8 @@ const EnergiCard: React.FC = () => {
     total_active: "0",
     total_inactive: "0",
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const fetchTotalLights = async () => {
     const res = await api.get("/sensor/pju/total");
@@ -57,6 +59,25 @@ const EnergiCard: React.FC = () => {
       clearTimeout(handler);
     };
   }, [localSearch, searchTerm, setSearchTerm]);
+
+  // Pagination logic
+  const lastItemIndex = currentPage * itemsPerPage;
+  const firstItemIndex = lastItemIndex - itemsPerPage;
+  const currentItems = lights.slice(firstItemIndex, lastItemIndex);
+  const totalPages = Math.ceil(lights.length / itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1);
+  };
 
   return (
     <>
@@ -121,7 +142,7 @@ const EnergiCard: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {lights.map((light) => (
+            {currentItems.map((light) => (
               <tr key={light.id} className="border-b border-gray-600">
                 <td className="py-3 px-3 text-center">{light.sensor_name}</td>
                 {light.status === 0 ? (
@@ -137,6 +158,59 @@ const EnergiCard: React.FC = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="flex text-sm justify-between items-center mt-4">
+        <div>
+          {/* <span className="text-sm text-gray-400">
+            Showing {firstItemIndex + 1} to{" "}
+            {Math.min(lastItemIndex, lights.length)} of {lights.length} entries
+          </span> */}
+        </div>
+        <div className="flex items-center space-x-2">
+          <select
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+            className="px-2 py-1 rounded bg-dashboard-accent text-white text-sm"
+          >
+            <option value={5}>5 per page</option>
+            <option value={10}>10 per page</option>
+            <option value={20}>20 per page</option>
+            <option value={50}>50 per page</option>
+          </select>
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-2 py-1"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                d="M12.5 15L7.5 10L12.5 5"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+          <span className="text-xs">
+            {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages || totalPages === 0}
+            className="px-2 py-1"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                d="M7.5 15L12.5 10L7.5 5"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </>
   );
