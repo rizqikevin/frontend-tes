@@ -225,8 +225,10 @@ export default function MapView() {
           //   console.log(`Rendering vehicle marker at ${lat}, ${lng}`);
           // }
 
+          const icon = item.last_status === "on" ? marker : marker2;
+
           return (
-            <Marker key={index} position={[lat, lng]} icon={marker}>
+            <Marker key={index} position={[lat, lng]} icon={icon}>
               <Popup>
                 <div className="w-[250px] text-gray-900">
                   <h2 className="text-base font-semibold mb-2">
@@ -239,6 +241,9 @@ export default function MapView() {
                   <p className="mb-1">
                     <span className="font-semibold">Deskripsi:</span>{" "}
                     {item.last_status || "-"}
+                  </p>
+                  <p className="mb-1">
+                    <span className="font-semibold">Latitude:</span> {lat}
                   </p>
                 </div>
               </Popup>

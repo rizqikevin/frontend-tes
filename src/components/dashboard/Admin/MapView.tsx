@@ -32,8 +32,15 @@ const marker = new L.Icon({
   popupAnchor: [0, -16],
 });
 
-const marker2 = new L.Icon({
-  iconUrl: "/marker/green.png",
+const marker2 = new L.DivIcon({
+  className: "incident-pulse-icon",
+  html: `
+    <div class="blink-container">
+      <img src="/marker/errorToll.png" class="blink-icon-img" />
+      <div class="pulse-circle"></div>
+    </div>
+  `,
+  iconUrl: "/marker/errorToll.png",
   iconSize: [32, 32],
   iconAnchor: [16, 16],
   popupAnchor: [0, -16],
@@ -221,8 +228,10 @@ export default function MapView() {
           //   console.log(`Rendering vehicle marker at ${lat}, ${lng}`);
           // }
 
+          const icon = item.last_status === "off" ? marker2 : marker;
+
           return (
-            <Marker key={index} position={[lat, lng]} icon={marker}>
+            <Marker key={index} position={[lat, lng]} icon={icon}>
               <Popup>
                 <div className="w-[250px] text-gray-900">
                   <h2 className="text-base font-semibold mb-2">
