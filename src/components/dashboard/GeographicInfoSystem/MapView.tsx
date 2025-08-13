@@ -33,7 +33,7 @@ const marker = new L.Icon({
 });
 
 const marker2 = new L.Icon({
-  iconUrl: "/marker/green.png",
+  iconUrl: "/marker/errorToll.png",
   iconSize: [32, 32],
   iconAnchor: [16, 16],
   popupAnchor: [0, -16],

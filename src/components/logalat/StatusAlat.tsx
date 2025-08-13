@@ -274,7 +274,7 @@ const StatusAlat: React.FC = () => {
                           }`}
                         >
                           {item.last_status === "off"
-                            ? dayjs(item.insert_at).fromNow(true)
+                            ? dayjs(item.insert_at).fromNow(false)
                             : item.last_status === "on"
                             ? "Normal"
                             : "Normal"}
