@@ -5,6 +5,13 @@ import { VehicleData } from "@/types";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface Violation extends VehicleData {
   id: string;
@@ -26,8 +33,9 @@ export default function ViolationValidationModal({
   onClose,
 }: ViolationValidationModalProps) {
   const [violation, setViolation] = useState<Violation | null>(null);
-  const [reason, setReason] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [reason, setReason] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isValid, setIsValid] = useState<Boolean>();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -102,6 +110,7 @@ export default function ViolationValidationModal({
       if (violation.id) {
         await api.put(`/violation/vehicle/${violation.id}`, {
           reason: reason,
+          is_valid: isValid,
         });
       } else {
         await api.post(`/violation/vehicle`, {
@@ -170,11 +179,22 @@ export default function ViolationValidationModal({
                   id="reason"
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 text-black shadow-sm p-2 text-blackfocus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md bg-gray-100 text-black shadow-sm p-2 text-blackfocus:outline-none focus:ring-2 focus:ring-blue-500"
                   rows={4}
                   required
                   placeholder="Masukkan alasan..."
                 />
+                <label className="block text-sm font-semibold text-gray-700 mt-2">
+                  Status Validasi
+                </label>
+                <select
+                  className="mt-2 block w-full rounded-md border-gray-100 text-black shadow-sm p-2"
+                  value={isValid ? "valid" : "invalid"}
+                  onChange={(e) => setIsValid(e.target.value === "true")}
+                >
+                  <option value="true">Valid</option>
+                  <option value="false">Tidak Valid</option>
+                </select>
               </div>
               <div className="flex justify-end space-x-4 mt-6">
                 <Dialog.Close asChild>

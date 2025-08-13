@@ -153,9 +153,6 @@ export default function MapViewGps({
           location &&
           !reportedViolations.has(vehicle.radio_id)
         ) {
-          console.log(
-            `Melaporkan pelanggaran untuk ${vehicle.status}, ${status}  ${vehicle.radio_id} di ${location}`
-          );
           if (status === "in") {
             await api.patch(`/vehicle/${vehicle.radio_id}`, {
               status: "out",
