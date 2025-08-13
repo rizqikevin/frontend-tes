@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 
 interface OperationalHourModalProps {
   isOpen: boolean;
@@ -50,6 +51,7 @@ export const OperationalHourModal: React.FC<OperationalHourModalProps> = ({
   const handleSave = () => {
     postJamOperasional();
     onClose();
+    toast.success("Jam operasional berhasil disimpan.");
   };
 
   return (
