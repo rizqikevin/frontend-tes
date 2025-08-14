@@ -100,7 +100,7 @@ export const LoginOdol = () => {
 
         {/* Welcome Text */}
         <div className="text-center mb-6">
-          <p className="text-gray-300">Welcome to WIM</p>
+          <p className="text-gray-300">Welcome to WIM HMW</p>
         </div>
 
         {/* Form */}

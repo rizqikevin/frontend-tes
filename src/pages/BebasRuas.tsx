@@ -149,7 +149,7 @@ export const BebanRuas: React.FC = () => {
       <DashboardSidebar />
       <div
         className={`flex-1 bg-dashboard-dark relative overflow-hidden ${
-          isSidebarCollapsed ? "ml-16" : "ml-64"
+          isSidebarCollapsed ? "ml-0" : "ml-64"
         }`}
       >
         <Header

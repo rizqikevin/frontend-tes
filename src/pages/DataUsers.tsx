@@ -43,7 +43,7 @@ export const DataUsers: React.FC = () => {
       <DashboardSidebar />
       <div
         className={`flex-1 bg-dashboard-dark ${
-          isSidebarCollapsed ? "ml-16" : "ml-64"
+          isSidebarCollapsed ? "ml-0" : "ml-64"
         }`}
       >
         {/* HEADER */}

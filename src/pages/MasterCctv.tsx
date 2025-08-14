@@ -48,9 +48,9 @@ export const DataCctv: React.FC = () => {
     <div className="flex min-h-screen text-white">
       <DashboardSidebar />
       <div
-        className={`flex-1 bg-dashboard-dark ${
-          isSidebarCollapsed ? "ml-16" : "ml-64"
-        }`}
+        className={`flex-1 ${
+          isSidebarCollapsed ? "ml-0" : "ml-64"
+        } transition-all duration-300`}
       >
         {/* HEADER */}
         <Header

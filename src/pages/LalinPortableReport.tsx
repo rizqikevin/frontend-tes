@@ -75,7 +75,11 @@ export const LalinPortableReport: React.FC = () => {
       } transition-all duration-300`}
     >
       <DashboardSidebar />
-      <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
+      <div
+        className={`flex-1 ${
+          isSidebarCollapsed ? "ml-0" : "ml-64"
+        } transition-all duration-300`}
+      >
         <Header
           isDark={isDark}
           user={

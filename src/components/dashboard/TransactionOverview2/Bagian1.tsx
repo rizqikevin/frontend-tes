@@ -153,7 +153,7 @@ export const Bagian1 = ({
                     setSelectedTab("bagian2");
                   }}
                 >
-                  Selanjutnya
+                  Selengkapnya
                 </Button>
               </div>
             </div>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { Button } from "@/components/ui/button";
-import { Chart } from "@/components/floods/chart/Chart";
 import { Daily } from "@/components/floods/daily/Daily";
 import { Monthly } from "@/components/floods/monthly/Monthly";
 import { Yearly } from "@/components/floods/yearly/Yearly";
@@ -82,7 +81,11 @@ export const Floods: React.FC = () => {
       } transition-all duration-300`}
     >
       <DashboardSidebar />
-      <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
+      <div
+        className={`flex-1 ${
+          isSidebarCollapsed ? "ml-0" : "ml-64"
+        } transition-all duration-300`}
+      >
         <Header
           isDark={isDark}
           user={

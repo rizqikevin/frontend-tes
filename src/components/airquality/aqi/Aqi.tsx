@@ -11,7 +11,7 @@ export const Aqi: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen text-white p-6 space-y-6 font-sans">
+    <div className="min-h-screen text-white p-0 space-y-6 font-sans">
       <AqiHeader data={data} />
       <AqiTable data={data} loading={loading} />
     </div>

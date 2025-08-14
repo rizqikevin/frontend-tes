@@ -123,7 +123,11 @@ export const Incident: React.FC = () => {
     <div className="flex min-h-screen bg-dashboard-dark text-white">
       <DashboardSidebar />
 
-      <div className={`flex-1 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
+      <div
+        className={`flex-1 ${
+          isSidebarCollapsed ? "ml-0" : "ml-64"
+        } transition-all duration-300`}
+      >
         <Header
           isDark={theme === "dark"}
           user={user ? { name: user.name, role: String(user.role) } : null}
