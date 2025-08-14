@@ -10,7 +10,7 @@ import VehicleStatusCard from "./VehicleStatusCard";
 
 export const OverloadOverDimention: React.FC = () => {
   return (
-    <div className="bg-[#1e1e1e] text-white p-0 space-y-4">
+    <div className="bg-dashboard-dark text-white p-0 space-y-4">
       <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
         {/* Kolom grafik total */}
         <VehichleDougnut />

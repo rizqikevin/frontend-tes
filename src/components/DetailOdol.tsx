@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { NavLink, useParams, useSearchParams } from "react-router-dom";
 import api from "@/services/api";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import { ImageCard } from "./dashboard/OverloadOverDimention/ImageCard";
 import { VehicleInfo } from "./dashboard/OverloadOverDimention/VehicleInfo";
-import { c } from "node_modules/framer-motion/dist/types.d-Bq-Qm38R";
 import { toast } from "sonner";
+import { Button } from "./ui/button";
 
 interface RawData {
   id: number;
@@ -162,6 +162,12 @@ export const DetailOdol: React.FC = () => {
               </h1>
               <p className="text-gray-400">Pantau setiap detail</p>
             </div>
+          </div>
+
+          <div>
+            <Button>
+              <NavLink to="/odol">Kembali</NavLink>
+            </Button>
           </div>
 
           {data ? (

@@ -51,6 +51,7 @@ import LogAlat from "./components/logalat/LogAlat";
 import LogAlatDetail from "./components/logalat/LogAlatDetail";
 import { Kecelakaan } from "./pages/Kecelakaan";
 import LogReportViolation from "./pages/LogReportViolation";
+import { LoginOdol } from "./pages/LoginOdol";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -76,6 +77,7 @@ const App = () => {
                   </ProtectedRoute>
                 }
               />
+              <Route path="/login-wim" element={<LoginOdol />} />
               <Route
                 path="/dashboard/admin"
                 element={

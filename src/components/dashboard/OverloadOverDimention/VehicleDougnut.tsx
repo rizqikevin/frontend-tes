@@ -78,7 +78,7 @@ export const VehichleDougnut = () => {
   };
 
   return (
-    <div className="bg-[#2b2b2b] rounded-lg p-4 shadow-sm text-white w-auto h-auto flex flex-col justify-between">
+    <div className="bg-dashboard-accent rounded-lg p-4 shadow-sm text-white w-auto h-auto flex flex-col justify-between">
       <div className="flex justify-between mb-4 text-xl font-semibold">
         <span>{chartTitle || "Semua Golongan"}</span>
         <span>{chartDate || "-"}</span>

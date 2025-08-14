@@ -82,7 +82,7 @@ export const ComparisonChart1: React.FC = () => {
 
   if (isloading) {
     return (
-      <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
+      <div className="bg-dashboard-accent p-4 rounded-lg h-full w-full">
         <h2 className="text-xl mb-2 font-semibold uppercase text-white">
           {title}
         </h2>

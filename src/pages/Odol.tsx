@@ -218,6 +218,7 @@ const Odol: React.FC = () => {
                     <th className="p-2">Golongan</th>
                     <th className="p-2">Data Overload</th>
                     <th className="p-2">Dimention (Lebar x Tinggi)</th>
+                    <th className="p-2">Status</th>
 
                     <th className="p-2">Action</th>
                   </tr>
@@ -273,8 +274,17 @@ const Odol: React.FC = () => {
 
                           <td className="p-2">{item.berat}</td>
 
-                          <td className="p-2">
+                          <td className="relative p-2 left-7">
                             {item.dimensi.split(" x ").slice(1).join(" x ")}
+                          </td>
+                          <td
+                            className={` mt-3 px-2 py-5 w-[100px] max-h-4 inline-flex rounded-lg text-sm font-medium text-white items-center justify-center text-center ${
+                              item.status === "PATUH"
+                                ? "bg-green-500"
+                                : "bg-red-500"
+                            }`}
+                          >
+                            {item.status}
                           </td>
                           <td className="p-2">
                             <Link
