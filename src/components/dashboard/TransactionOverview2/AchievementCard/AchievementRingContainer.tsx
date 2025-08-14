@@ -25,6 +25,8 @@ export const AchievementRingContainer: React.FC<
     value: target.percent_lhr,
   }));
 
+  // console.log(achievementData);
+
   const colors = ["#FF9800", "#2196F3", "#4CAF50", "#FF69B4", "#8BC34A"];
 
   return (
@@ -32,7 +34,7 @@ export const AchievementRingContainer: React.FC<
       color={color}
       title={title}
       dateRange={dateRange}
-      percent={Number(achievementData.rkapPercent)}
+      percent={Number(achievementData.percent)}
       revenue={`${Number(achievementData.revenueAchievement).toLocaleString(
         "id-ID"
       )}`}

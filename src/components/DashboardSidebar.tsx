@@ -65,7 +65,7 @@ export const DashboardSidebar: React.FC = () => {
 
   const [expandedItem, setExpandedItem] = useState<string[] | null>([
     "LalinHarian",
-    "Incident",
+    // "Incident",
     // "settings",
     // "account",
   ]);
@@ -212,7 +212,7 @@ export const DashboardSidebar: React.FC = () => {
             <div
               ref={scrollRef}
               onScroll={handleScroll}
-              className="overflow-y-auto max-h-[60vh] pr-1 scrollbar-hidden"
+              className="overflow-y-auto max-h-[60vh] pr-1  scrollbar-thumb-gray-700 scrollbar-track-gray-700"
             >
               <div className="px-3 mb-3">
                 <div
