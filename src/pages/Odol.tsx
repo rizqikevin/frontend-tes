@@ -38,6 +38,8 @@ const Odol: React.FC = () => {
     fetchData,
     gateId,
     setGateId,
+    selectStatus,
+    setSelectStatus,
   } = useOdolStore();
 
   // console.log(data);
@@ -92,7 +94,7 @@ const Odol: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, [gateId, startDate, endDate, page, limit]);
+  }, [gateId, startDate, endDate, page, limit, selectStatus]);
 
   const isDark = theme === "dark";
 
@@ -153,6 +155,19 @@ const Odol: React.FC = () => {
                   ))}
                 </select>
               </div>
+              <div className="bg-dashboard-accent border border-white flex rounded text-white">
+                <select
+                  value={Number(selectStatus)}
+                  onChange={(e) => setSelectStatus(Number(e.target.value))}
+                  className="text-white bg-dashboard-accent p-3 rounded-lg outline-none"
+                >
+                  <option value="">Semua Status</option>
+                  <option value="0">Patuh</option>
+                  <option value="1">Overload-OverDimention</option>
+                  <option value="11">OverLoad</option>
+                  <option value="21">OverDimention</option>
+                </select>
+              </div>
 
               <div className="bg-dashboard-accent border border-white flex rounded px-0 py-2 text-white">
                 <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
@@ -202,8 +217,12 @@ const Odol: React.FC = () => {
           <div className="bg-dashboard-accent rounded-lg p-6 mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
-                <h1 className="text-xl font-semibold">Riwayat ODOL</h1>
-                <p className="text-gray-400">Jumlah Aktifitas ODOL</p>
+                <h1 className="text-xl font-semibold">
+                  Riwayat Overload - OverDimention
+                </h1>
+                <p className="text-gray-400">
+                  Jumlah Aktifitas Overload - OverDimention
+                </p>
               </div>
             </div>
             <div className="overflow-x-auto mt-5">
