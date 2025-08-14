@@ -30,9 +30,11 @@ interface OdolStore {
   startDate: Date;
   endDate: Date;
   gateId: string;
-  selectStatus: Number;
+  selectStatus: string;
+  search: string;
 
-  setSelectStatus: (status: Number) => void;
+  setSearch: (search: string) => void;
+  setSelectStatus: (status: string) => void;
   setPage: (page: number) => void;
   setLimit: (limit: number) => void;
   setStartDate: (date: Date) => void;
@@ -50,8 +52,10 @@ export const useOdolStore = create<OdolStore>((set, get) => ({
   startDate: new Date(),
   endDate: new Date(),
   gateId: "",
-  selectStatus: Number(),
+  selectStatus: "",
+  search: "",
 
+  setSearch: (search) => set({ search }),
   setSelectStatus: (status) => set({ selectStatus: status }),
   setPage: (page) => set({ page }),
   setLimit: (limit) => set({ limit }),
@@ -61,7 +65,8 @@ export const useOdolStore = create<OdolStore>((set, get) => ({
 
   fetchData: async () => {
     set({ loading: true });
-    const { startDate, endDate, page, limit, gateId, selectStatus } = get();
+    const { startDate, endDate, page, limit, gateId, selectStatus, search } =
+      get();
 
     try {
       const res = await api.get("/odol", {
@@ -70,8 +75,9 @@ export const useOdolStore = create<OdolStore>((set, get) => ({
           end_time: dayjs(endDate).format("YYYY-MM-DD"),
           page,
           limit,
-          odol: selectStatus,
-          ...(gateId ? { gate: gateId } : {}),
+          ...(selectStatus && { odol: selectStatus }),
+          ...(gateId && { gate: gateId }),
+          ...(search && { search: search }),
         },
       });
 

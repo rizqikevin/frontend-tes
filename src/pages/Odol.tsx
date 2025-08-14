@@ -40,6 +40,8 @@ const Odol: React.FC = () => {
     setGateId,
     selectStatus,
     setSelectStatus,
+    search,
+    setSearch,
   } = useOdolStore();
 
   // console.log(data);
@@ -143,6 +145,20 @@ const Odol: React.FC = () => {
 
             <div className="flex justify-center items-center space-x-4">
               <div className="bg-dashboard-accent border border-white flex rounded text-white">
+                <input
+                  type="text"
+                  placeholder="Cari Plat Nomor atau Kartu"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      fetchData();
+                    }
+                  }}
+                  className="text-white bg-dashboard-accent p-3 rounded-lg outline-none"
+                />
+              </div>
+              <div className="bg-dashboard-accent border border-white flex rounded text-white">
                 <select
                   onChange={(e) => setGateId(e.target.value)}
                   className="text-white bg-dashboard-accent p-3 rounded-lg outline-none"
@@ -157,9 +173,9 @@ const Odol: React.FC = () => {
               </div>
               <div className="bg-dashboard-accent border border-white flex rounded text-white">
                 <select
-                  value={Number(selectStatus)}
-                  onChange={(e) => setSelectStatus(Number(e.target.value))}
-                  className="text-white bg-dashboard-accent p-3 rounded-lg outline-none"
+                  value={selectStatus}
+                  onChange={(e) => setSelectStatus(e.target.value)}
+                  className="text-white bg-dashboard-accent w-40 p-3 rounded-lg outline-none"
                 >
                   <option value="">Semua Status</option>
                   <option value="0">Patuh</option>
