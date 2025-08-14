@@ -108,7 +108,7 @@ const EnergiCard: React.FC = () => {
               value={localSearch}
               onChange={(e) => setLocalSearch(e.target.value)}
               placeholder="Search..."
-              className="w-full px-2 py-1 text-black rounded"
+              className="w-full px-2 py-1 text-black rounded bg-dashboard-accent border border-gray-300 focus:outline-none focus:border-blue-500"
             />
           </div>
           <div>
@@ -116,7 +116,7 @@ const EnergiCard: React.FC = () => {
               onValueChange={(value) => setSelectedGateway(value)}
               value={selectedGateway}
             >
-              <SelectTrigger className="w-48 bg-dashboard-accent">
+              <SelectTrigger className="w-48 bg-dashboard-accent border border-gray-300 focus:outline-none focus:border-blue-500">
                 <SelectValue placeholder="Semua Gerbang" />
               </SelectTrigger>
               <SelectContent className="z-[9999] bg-dashboard-accent">
