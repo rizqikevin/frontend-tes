@@ -21,7 +21,8 @@ interface LogReportViolation {
 
 const LogReportViolation: React.FC = () => {
   const { user, logout } = useAuth();
-  const [logs, setLogs] = useState<LogReportViolation[]>([]);
+  const [allLogs, setAllLogs] = useState<LogReportViolation[]>([]); // All logs from API
+  const [logs, setLogs] = useState<LogReportViolation[]>([]); // Paginated logs
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [loading, setLoading] = useState<boolean>(false);
@@ -67,12 +68,11 @@ const LogReportViolation: React.FC = () => {
             ? dayjs(startDate).format("YYYY-MM-DD")
             : undefined,
           end_date: endDate ? dayjs(endDate).format("YYYY-MM-DD") : undefined,
-          limit,
-          page,
         },
       });
-      setLogs(response.data.data);
-      setTotal(response.data.total || 0);
+      setAllLogs(response.data.data);
+      setTotal(response.data.data.length || 0);
+      setPage(1); // Reset to first page
     } catch (error) {
       toast.error("Failed to fetch logs");
       console.error(error);
@@ -83,9 +83,13 @@ const LogReportViolation: React.FC = () => {
 
   useEffect(() => {
     fetchLogs();
-  }, [startDate, endDate, limit, page]);
+  }, [startDate, endDate]);
 
-  console.log("Logs:", logs);
+  useEffect(() => {
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    setLogs(allLogs.slice(startIndex, endIndex));
+  }, [allLogs, page, limit]);
 
   const isDark = theme === "dark";
 
@@ -284,11 +288,11 @@ const LogReportViolation: React.FC = () => {
                     onClick={() =>
                       setPage((prev) => Math.min(prev + 1, totalPages))
                     }
-                    disabled={page === totalPages}
+                    disabled={page === totalPages || totalPages === 0}
                   >
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                       <path
-                        d="M7.5 15L12.5 10L7.5 5"
+                        d="M7.5 5L12.5 10L7.5 15"
                         stroke="white"
                         strokeWidth="2"
                         strokeLinecap="round"
