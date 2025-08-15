@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import { useGpsStore, useTrackGpsStore } from "@/stores/useGpsStore";
 import DatePicker from "react-datepicker";
 import { useMileageStore } from "@/stores/useMileageStore";
+import { VehicleData } from "@/types";
 
 export const GPSVehicleTracking: React.FC = () => {
   const { user, logout } = useAuth();
@@ -38,11 +39,22 @@ export const GPSVehicleTracking: React.FC = () => {
   } = useTrackGpsStore();
   const { fetchMileage, data } = useMileageStore();
 
+  // Pagination state for the vehicle list
+  const [vehicleListPage, setVehicleListPage] = useState(1);
+  const [vehicleListLimit, setVehicleListLimit] = useState(10);
+  const [paginatedVehicles, setPaginatedVehicles] = useState<VehicleData[]>([]);
+
   useEffect(() => {
     fetchMileage();
   }, [startDate]);
 
-  // console.log(mileage, fuel);
+  const totalVehiclePages = Math.ceil(vehicles.length / vehicleListLimit);
+
+  useEffect(() => {
+    const startIndex = (vehicleListPage - 1) * vehicleListLimit;
+    const endIndex = startIndex + vehicleListLimit;
+    setPaginatedVehicles(vehicles.slice(startIndex, endIndex));
+  }, [vehicles, vehicleListPage, vehicleListLimit]);
 
   const mappedData = Object.values(data).map((item) => ({
     id: item.id,
@@ -50,19 +62,11 @@ export const GPSVehicleTracking: React.FC = () => {
     fuel: item.fuel,
   }));
 
-  // console.log("track data : ", allTrackData);
-
-  // console.log(mappedData);
-
   const totalPages = Math.ceil(total / limit);
   const trackCoordinates: [number, number][] = allTrackData.map((track) => [
     Number(track.lat),
     Number(track.lon),
   ]);
-
-  // console.log("Track Coordinates", trackCoordinates);
-  // console.log("Track Data", trackData);
-  // console.log("All Track Data", allTrackData);
 
   useEffect(() => {
     fetchVehicles();
@@ -363,11 +367,11 @@ export const GPSVehicleTracking: React.FC = () => {
                     <span className="text-center">Last Update</span>
                     <span className="text-center">Action</span>
                   </div>
-                  {vehicles.map((vehicle, index) => (
+                  {paginatedVehicles.map((vehicle, index) => (
                     <div
                       key={index}
                       onClick={() => setSelectedVehicle(vehicle)}
-                      className="grid grid-cols-6 text-xs border-b border-gray-600 py-2 cursor-pointer hover:bg-gray-800"
+                      className="grid grid-cols-6 text-xs border-b border-gray-600 py-2 cursor-pointer hover:bg-gray-800 items-center"
                     >
                       <img
                         src={`/icons/${vehicle.type}.png`}
@@ -402,6 +406,93 @@ export const GPSVehicleTracking: React.FC = () => {
                       </span>
                     </div>
                   ))}
+                  {/* Pagination for Vehicle List */}
+                  <div className="flex justify-end items-center mt-4 text-sm">
+                    <div>
+                      Rows per page:
+                      <select
+                        className="ml-2 bg-transparent border border-gray-700 rounded px-2 py-1"
+                        value={vehicleListLimit}
+                        onChange={(e) => {
+                          setVehicleListPage(1);
+                          setVehicleListLimit(Number(e.target.value));
+                        }}
+                      >
+                        {[10, 20, 50].map((num) => (
+                          <option key={num} value={num}>
+                            {num}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="flex items-center ml-5">
+                      <span className="mr-4">
+                        {Math.min(
+                          (vehicleListPage - 1) * vehicleListLimit + 1,
+                          vehicles.length
+                        )}
+                        -
+                        {Math.min(
+                          vehicleListPage * vehicleListLimit,
+                          vehicles.length
+                        )}{" "}
+                        of {vehicles.length}
+                      </span>
+                      <div className="inline-flex">
+                        <button
+                          className="px-2 py-1"
+                          onClick={() =>
+                            setVehicleListPage(Math.max(vehicleListPage - 1, 1))
+                          }
+                          disabled={vehicleListPage === 1}
+                        >
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                          >
+                            <path
+                              d="M12.5 15L7.5 10L12.5 5"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                        <button
+                          className="px-2 py-1"
+                          onClick={() =>
+                            setVehicleListPage(
+                              Math.min(vehicleListPage + 1, totalVehiclePages)
+                            )
+                          }
+                          disabled={
+                            vehicleListPage === totalVehiclePages ||
+                            totalVehiclePages === 0
+                          }
+                        >
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            className="transform rotate-180"
+                          >
+                            <path
+                              d="M12.5 15L7.5 10L12.5 5"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

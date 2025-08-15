@@ -24,18 +24,18 @@ export const getVehicleIcon = (type: string) => {
     case "ambulance":
       return new L.Icon({
         iconUrl: "/icons/Ambulance.svg",
-        iconSize: [50, 50],
+        iconSize: [25, 25],
       });
     case "rescue":
       return new L.Icon({
         iconUrl: "/icons/Towing.svg",
-        iconSize: [50, 50],
+        iconSize: [25, 25],
       });
     case "car":
     default:
       return new L.Icon({
         iconUrl: "/icons/Car.svg",
-        iconSize: [50, 50],
+        iconSize: [25, 25],
       });
   }
 };
@@ -44,12 +44,12 @@ export const getVehicleIconOutOfBounds = (type: string) => {
   switch (type) {
     case "ambulance":
       return new L.Icon({
-        iconUrl: "/icons/Car.svg",
+        iconUrl: "/icons/Ambulance.svg",
       });
     case "rescue":
       return new L.Icon({
         iconUrl: "/icons/Towing.svg",
-        iconSize: [50, 50],
+        iconSize: [25, 25],
       });
     case "car":
     default:
@@ -62,7 +62,7 @@ export const getVehicleIconOutOfBounds = (type: string) => {
     </div>
   `,
         iconUrl: "/icons/Car.svg",
-        iconSize: [50, 50],
+        iconSize: [25, 25],
       });
   }
 };

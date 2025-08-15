@@ -108,7 +108,7 @@ const EnergiCard: React.FC = () => {
               value={localSearch}
               onChange={(e) => setLocalSearch(e.target.value)}
               placeholder="Search..."
-              className="w-full px-2 py-1 text-black rounded bg-dashboard-accent border border-gray-300 focus:outline-none focus:border-blue-500"
+              className="w-full h-[40px] px-3 py-1 text-black rounded bg-dashboard-accent border border-gray-300 focus:outline-none focus:border-blue-500"
             />
           </div>
           <div>
