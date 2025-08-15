@@ -18,17 +18,24 @@ export interface Vehicle {
 
 export const FormMasterDataVehicle: React.FC = () => {
   const [addModalOpen, setAddModalOpen] = useState(false);
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [allVehicles, setAllVehicles] = useState<Vehicle[]>([]);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]); // for paginated data
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
+  const [total, setTotal] = useState<number>(0);
+
   const fetchVehicles = async () => {
     try {
       const response = await api.get("/vehicle");
-
-      setVehicles(response.data);
-      // console.log("Fetched vehicles:", response.data);
+      const data = response.data || [];
+      setAllVehicles(data);
+      setTotal(data.length);
+      setPage(1);
     } catch (error) {
-      toast.error("Error fetching vehicles:", error);
+      toast.error("Error fetching vehicles");
+      console.error("Error fetching vehicles:", error);
     }
   };
 
@@ -36,7 +43,13 @@ export const FormMasterDataVehicle: React.FC = () => {
     fetchVehicles();
   }, []);
 
-  // console.log("Vehicles from FormMasterData:", vehicles);
+  useEffect(() => {
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    setVehicles(allVehicles.slice(startIndex, endIndex));
+  }, [allVehicles, page, limit]);
+
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="bg-dashboard-accent text-white rounded-lg p-6">
@@ -72,7 +85,7 @@ export const FormMasterDataVehicle: React.FC = () => {
             {vehicles.map((vehicle, index) => (
               <tr key={index} className="bg-[#2a2a2a] rounded-md">
                 <td className="px-2 py-2">
-                  {(index + 1).toString().padStart(2, "0")}
+                  {(page - 1) * limit + index + 1}
                 </td>
                 <td className="px-2 py-2">{vehicle.radio_id}</td>
                 <td className="px-2 py-2">{vehicle.vehicle_number}</td>
@@ -99,6 +112,66 @@ export const FormMasterDataVehicle: React.FC = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      {/* Pagination */}
+      <div className="flex justify-end items-center mt-4 text-sm text-white">
+        <div>
+          Rows per page:
+          <select
+            className="ml-2 bg-transparent border border-gray-700 rounded px-2 py-1"
+            value={limit}
+            onChange={(e) => {
+              setPage(1);
+              setLimit(Number(e.target.value));
+            }}
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+
+        <div className="flex items-center ml-5">
+          <span className="mr-4">
+            {Math.min((page - 1) * limit + 1, total)}-
+            {Math.min(page * limit, total)} of {total}
+          </span>
+          <div className="inline-flex">
+            <button
+              className="px-2 py-1"
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              disabled={page === 1}
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M12.5 15L7.5 10L12.5 5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              className="px-2 py-1"
+              onClick={() =>
+                setPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={page === totalPages || totalPages === 0}
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="transform rotate-180">
+                <path
+                  d="M12.5 15L7.5 10L12.5 5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
       <AddVehicleModal
         isOpen={addModalOpen}
