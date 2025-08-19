@@ -74,6 +74,7 @@ export const Daily: React.FC = () => {
                 <th className="p-5">TSP</th>
                 <th className="p-5">Temp</th>
                 <th className="p-5">Humidity</th>
+                <th className="p-5">Ispu</th>
               </tr>
             </thead>
             <tbody>
@@ -113,6 +114,7 @@ export const Daily: React.FC = () => {
                     <td className="p-5">{row.tsp}</td>
                     <td className="p-5">{row.suhu}</td>
                     <td className="p-5">{row.humidity}</td>
+                    <td className="p-5">{row.ispu}</td>
                   </tr>
                 ))
               )}

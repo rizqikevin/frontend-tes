@@ -1,6 +1,7 @@
 // src/components/AqiHeader.tsx
 import React from "react";
 import { getAqiColor } from "./AqiTable";
+import { LucideAArrowDown } from "lucide-react";
 
 interface AqiHeaderProps {
   data: any[];
@@ -39,34 +40,49 @@ const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
         </div>
       </div>
 
-      <div className="flex items-center text-left gap-32 text-sm">
-        <div>
-          <p className="text-gray-400">O2</p>
-          <p>{aqi?.o2.slice(0, 4) || "--"}</p>
-        </div>
-        <div>
-          <p className="text-gray-400">Air Quality Index</p>
-          <p>{aqi?.ispu.slice(0, 4) || "--"}</p>
-        </div>
+      <div className="flex items-center text-left gap-24 text-sm">
         <div>
           <p className="text-gray-400">Sensor Name</p>
           <p>{aqi?.sensor_name || "--"}</p>
         </div>
         <div>
+          <p className="text-gray-400">CO</p>
+          <p>{aqi?.co.slice(0, 4) || "--"} ug/m3</p>
+        </div>
+        <div>
+          <p className="text-gray-400">O³</p>
+          <p>{aqi?.o3.slice(0, 4) || "--"} ug/m3</p>
+        </div>
+        <div>
+          <p className="text-gray-400">SO³</p>
+          <p>{aqi?.so2.slice(0, 4) || "--"} ug/m3</p>
+        </div>
+        <div>
+          <p className="text-gray-400">CO³</p>
+          <p>{aqi?.no2.slice(0, 4) || "--"} ppm</p>
+        </div>
+        <div>
+          <p className="text-gray-400">NO³</p>
+          <p>{aqi?.no2.slice(0, 4) || "--"} ug/m3</p>
+        </div>
+
+        <div>
           <p className="text-gray-400">PM10</p>
-          <p>{aqi?.pm10.slice(0, 5) || "--"}</p>
+          <p>{aqi?.pm10.slice(0, 5) || "--"} ug/m3</p>
         </div>
         <div>
           <p className="text-gray-400">PM2.5</p>
-          <p>{aqi?.pm25.slice(0, 5) || "--"}</p>
+          <p>{aqi?.pm25.slice(0, 5) || "--"} ug/m3</p>
         </div>
       </div>
 
       <div>
         <div
-          className={`bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 p-3 rounded-full`}
+          className={`${getAqiColor(
+            aqi?.ispu || undefined
+          )} px-4 py-2 rounded-lg text-center`}
         >
-          <span className="text-2xl">❤️</span>
+          <img src="/icons/paru.svg" alt="Air Quality" className="w-15" />
         </div>
       </div>
     </div>
