@@ -155,9 +155,8 @@ export default function MapViewGps({
         }
 
         if (
-          !isInside &&
-          location &&
-          !reportedViolations.has(vehicle.radio_id)
+          (!isInside && !reportedViolations.has(vehicle.radio_id)) ||
+          location
         ) {
           if (status === "in") {
             await api.patch(`/vehicle/${vehicle.radio_id}`, {
@@ -221,42 +220,42 @@ export default function MapViewGps({
   const hasFitBoundsRef = useRef(false);
 
   // Fetch addresses once for all vehicles
-  useEffect(() => {
-    const fetchAllAddresses = async () => {
-      const pending = internalVehicles.filter(
-        (v) => !locationDetails[v.radio_id]
-      );
+  // useEffect(() => {
+  //   const fetchAllAddresses = async () => {
+  //     const pending = internalVehicles.filter(
+  //       (v) => !locationDetails[v.radio_id]
+  //     );
 
-      for (const vehicle of pending) {
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${vehicle.lat}&lon=${vehicle.lon}&zoom=18&addressdetails=1`,
-            {
-              headers: {
-                "User-Agent": "Dashboard/1.0 (kevin.octavian@delameta.com)",
-              },
-            }
-          );
-          const data = await res.json();
-          const address = data.display_name || "Alamat tidak ditemukan";
-          setLocationDetails((prev) => ({
-            ...prev,
-            [vehicle.radio_id]: address,
-          }));
-        } catch (error) {
-          // console.error("Gagal ambil alamat:", error);
-          setLocationDetails((prev) => ({
-            ...prev,
-            [vehicle.radio_id]: "Gagal mengambil alamat",
-          }));
-        }
-      }
-    };
+  //     for (const vehicle of pending) {
+  //       try {
+  //         const res = await fetch(
+  //           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${vehicle.lat}&lon=${vehicle.lon}&zoom=18&addressdetails=1`,
+  //           {
+  //             headers: {
+  //               "User-Agent": "Dashboard/1.0 (kevin.octavian@delameta.com)",
+  //             },
+  //           }
+  //         );
+  //         const data = await res.json();
+  //         const address = data.display_name || "Alamat tidak ditemukan";
+  //         setLocationDetails((prev) => ({
+  //           ...prev,
+  //           [vehicle.radio_id]: address,
+  //         }));
+  //       } catch (error) {
+  //         // console.error("Gagal ambil alamat:", error);
+  //         setLocationDetails((prev) => ({
+  //           ...prev,
+  //           [vehicle.radio_id]: "Gagal mengambil alamat",
+  //         }));
+  //       }
+  //     }
+  //   };
 
-    if (internalVehicles.length > 0) {
-      fetchAllAddresses();
-    }
-  }, [internalVehicles]);
+  //   if (internalVehicles.length > 0) {
+  //     fetchAllAddresses();
+  //   }
+  // }, [internalVehicles]);
 
   // Hitung posisi rata-rata sebagai fallback center
   const center = useMemo<[number, number]>(() => {
