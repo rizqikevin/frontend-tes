@@ -54,7 +54,7 @@ export default {
         },
         dashboard: {
           dark: "#1E1E1E",
-          sidebar: "#161616",
+          sidebar: "#303030",
           accent: "#323232",
         },
         sidebar: {

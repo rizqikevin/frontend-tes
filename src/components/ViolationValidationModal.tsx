@@ -131,8 +131,8 @@ export default function ViolationValidationModal({
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Dialog.Portal>
         <Dialog.Overlay className="bg-black/60 fixed inset-0 z-50" />
-        <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-lg w-[90vw] max-w-lg z-50">
-          <Dialog.Title className="text-2xl font-bold mb-5 text-gray-800">
+        <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#1F1F1F] p-6 rounded-lg shadow-lg w-[90vw] max-w-lg z-50">
+          <Dialog.Title className="text-2xl font-bold mb-5 text-white">
             Validasi Pelanggaran Kendaraan
           </Dialog.Title>
           {loading ? (
@@ -146,31 +146,31 @@ export default function ViolationValidationModal({
           ) : (
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-700">
+                <label className="block text-sm font-semibold text-white">
                   Nama Kendaraan
                 </label>
                 <input
                   type="text"
                   value={violation.radio_id}
                   readOnly
-                  className="mt-1 block w-full rounded-md text-black border-gray-300 shadow-sm bg-gray-100 p-2"
+                  className="mt-1 block w-full rounded-md text-white border-gray-300 shadow-sm bg-dashboard-accent p-2"
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-700">
+                <label className="block text-sm font-semibold text-white">
                   Lokasi Pelanggaran
                 </label>
                 <textarea
                   value={violation.area}
                   readOnly
-                  className="mt-1 block text-black w-full rounded-md border-gray-300 shadow-sm bg-gray-100 p-2"
+                  className="mt-1 block text-white w-full rounded-md border-gray-300 shadow-sm bg-dashboard-accent p-2"
                   rows={3}
                 />
               </div>
               <div className="mb-4">
                 <label
                   htmlFor="reason"
-                  className="block text-sm font-semibold text-gray-700"
+                  className="block text-sm font-semibold text-white"
                 >
                   Alasan Keluar Wilayah
                 </label>
@@ -178,16 +178,16 @@ export default function ViolationValidationModal({
                   id="reason"
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  className="mt-1 block w-full rounded-md bg-gray-100 text-black shadow-sm p-2 text-blackfocus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md bg-dashboard-accent text-white shadow-sm p-2 text-blackfocus:outline-none focus:ring-2 focus:ring-blue-500"
                   rows={4}
                   required
                   placeholder="Masukkan alasan..."
                 />
-                <label className="block text-sm font-semibold text-gray-700 mt-2">
+                <label className="block text-sm font-semibold text-white mt-2">
                   Status Validasi
                 </label>
                 <select
-                  className="mt-2 block w-full rounded-md border-gray-100 text-black shadow-sm p-2"
+                  className="mt-2 block w-full rounded-md border-gray-100 text-white shadow-sm p-2 bg-dashboard-accent"
                   value={String(isValid)}
                   onChange={(e) => setIsValid(e.target.value === "true")}
                 >

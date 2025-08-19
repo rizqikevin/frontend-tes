@@ -327,7 +327,7 @@ export default function MapViewGps({
         const isInside = turf.booleanPointInPolygon(point, polygon);
 
         const icon =
-          (isInside && vehicle.is_valid) || (!isInside && vehicle.is_valid)
+          isInside || vehicle.is_valid
             ? getVehicleIcon(vehicle.type)
             : getVehicleIconOutOfBounds(vehicle.type);
 
@@ -342,7 +342,7 @@ export default function MapViewGps({
             }}
           >
             <Popup>
-              <div className="w-[250px] text-black">
+              <div className="w-[250px] text-white">
                 <h4 className="font-bold text-md">{vehicle.vehicle_name}</h4>
                 <p className="text-sm">Plat: {vehicle.vehicle_number}</p>
                 <p className="text-sm">Kecepatan: {vehicle.speed} Km/h</p>
@@ -357,21 +357,20 @@ export default function MapViewGps({
                     {isInside ? "Di dalam batas" : "Melewati batas"}
                   </span>
                 </p>
-                {!isInside ||
-                  (isInside && !vehicle.is_valid && (
-                    <p className="text-sm">
-                      Validasi:{" "}
-                      <span
-                        className={
-                          vehicle.is_valid ? "text-blue-600" : "text-orange-500"
-                        }
-                      >
-                        {vehicle.is_valid
-                          ? "Sudah Divalidasi"
-                          : "Belum Divalidasi"}
-                      </span>
-                    </p>
-                  ))}
+                {!isInside && !vehicle.is_valid && (
+                  <p className="text-sm">
+                    Validasi:{" "}
+                    <span
+                      className={
+                        vehicle.is_valid ? "text-blue-600" : "text-orange-500"
+                      }
+                    >
+                      {vehicle.is_valid
+                        ? "Sudah Divalidasi"
+                        : "Belum Divalidasi"}
+                    </span>
+                  </p>
+                )}
                 <p className="text-sm">Lokasi:</p>
                 <p className="text-sm italic">
                   {locationDetails[vehicle.radio_id] || "Memuat alamat..."}

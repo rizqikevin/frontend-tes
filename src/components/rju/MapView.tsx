@@ -52,7 +52,7 @@ export default function MapView() {
             icon={icon}
           >
             <Popup>
-              <div className="text-sm space-y-1">
+              <div className="text-sm space-y-1 text-white">
                 <p>
                   <strong>ID:</strong> {light.id}
                 </p>
