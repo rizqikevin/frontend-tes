@@ -47,7 +47,7 @@ const marker2 = new L.DivIcon({
 });
 
 const car = new L.Icon({
-  iconUrl: "/icons/car.png",
+  iconUrl: "/icons/Car.svg",
   iconSize: [40, 40],
   iconAnchor: [16, 16],
   popupAnchor: [0, -16],
