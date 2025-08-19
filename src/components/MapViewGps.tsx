@@ -327,7 +327,7 @@ export default function MapViewGps({
         const isInside = turf.booleanPointInPolygon(point, polygon);
 
         const icon =
-          isInside || vehicle.is_valid
+          (isInside && vehicle.is_valid) || (!isInside && vehicle.is_valid)
             ? getVehicleIcon(vehicle.type)
             : getVehicleIconOutOfBounds(vehicle.type);
 
@@ -357,20 +357,21 @@ export default function MapViewGps({
                     {isInside ? "Di dalam batas" : "Melewati batas"}
                   </span>
                 </p>
-                {!isInside && (
-                  <p className="text-sm">
-                    Validasi:{" "}
-                    <span
-                      className={
-                        vehicle.is_valid ? "text-blue-600" : "text-orange-500"
-                      }
-                    >
-                      {vehicle.is_valid
-                        ? "Sudah Divalidasi"
-                        : "Belum Divalidasi"}
-                    </span>
-                  </p>
-                )}
+                {!isInside ||
+                  (isInside && !vehicle.is_valid && (
+                    <p className="text-sm">
+                      Validasi:{" "}
+                      <span
+                        className={
+                          vehicle.is_valid ? "text-blue-600" : "text-orange-500"
+                        }
+                      >
+                        {vehicle.is_valid
+                          ? "Sudah Divalidasi"
+                          : "Belum Divalidasi"}
+                      </span>
+                    </p>
+                  ))}
                 <p className="text-sm">Lokasi:</p>
                 <p className="text-sm italic">
                   {locationDetails[vehicle.radio_id] || "Memuat alamat..."}
@@ -383,14 +384,15 @@ export default function MapViewGps({
                 >
                   View on Google Maps
                 </a>
-                {!isInside && isAdmin && !vehicle.is_valid && (
-                  <button
-                    onClick={() => handleOpenModal(vehicle)}
-                    className="w-full bg-orange-500 text-white px-3 py-1 rounded-md mt-2 text-sm"
-                  >
-                    Validasi Pelanggaran
-                  </button>
-                )}
+                {!isInside ||
+                  (isInside && !vehicle.is_valid && isAdmin && (
+                    <button
+                      onClick={() => handleOpenModal(vehicle)}
+                      className="w-full bg-orange-500 text-white px-3 py-1 rounded-md mt-2 text-sm"
+                    >
+                      Validasi Pelanggaran
+                    </button>
+                  ))}
               </div>
             </Popup>
           </SmoothMarker>
