@@ -376,7 +376,7 @@ export const GPSVehicleTracking: React.FC = () => {
                       <img
                         src={`/icons/${vehicle.type}.png`}
                         alt={vehicle.vehicle_name}
-                        className="text-center h-10 w-10 mx-auto"
+                        className="text-center h-8 w-14 mx-auto"
                       />
                       <span className="text-center">
                         {vehicle.vehicle_name}
