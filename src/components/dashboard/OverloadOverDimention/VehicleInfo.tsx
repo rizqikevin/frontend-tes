@@ -66,6 +66,13 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
     saveAs(file, `data_kendaraan_${platnomor}.xlsx`);
   };
 
+  const formatNumber = (value?: string) => {
+    if (!value || value === "N/A") return "N/A";
+    const number = parseInt(value, 10);
+    if (isNaN(number)) return value;
+    return number.toLocaleString("id-ID");
+  };
+
   return (
     <div className="bg-dashboard-accent rounded-lg p-4 shadow-sm text-xl h-full space-y-9">
       <h4 className="text-lg font-bold mb-8">Informasi Data Kendaraan</h4>
@@ -87,11 +94,11 @@ export const VehicleInfo: React.FC<VehicleInfoProps> = ({
         <span>Golongan</span>
         <span>: {golongan}</span>
         <span>Data Berat</span>
-        <span>: {berat}</span>
+        <span>: {formatNumber(berat)} Kg</span>
         <span>Standar JBI</span>
-        <span>: {StandarJBI} Kg</span>
+        <span>: {formatNumber(StandarJBI)} Kg</span>
         <span>Kelebihan Beban</span>
-        <span>: {OverWeight} Kg</span>
+        <span>: {formatNumber(OverWeight)} Kg</span>
         <span>Data Dimensi (Lebar x Tinggi) </span>
         <span>: {dimensi.slice(5)}</span>
         <span>Status :</span>

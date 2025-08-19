@@ -102,6 +102,13 @@ const Odol: React.FC = () => {
 
   const totalPages = Math.ceil(total / limit);
 
+  const formatNumber = (value?: string) => {
+    if (!value || value === "N/A") return "N/A";
+    const number = parseInt(value, 10);
+    if (isNaN(number)) return value;
+    return number.toLocaleString("id-ID");
+  };
+
   return (
     <div className="flex min-h-screen bg-dashboard-dark text-white">
       {/* Sidebar */}
@@ -311,7 +318,7 @@ const Odol: React.FC = () => {
                           <td className="p-2">{item.kartu}</td>
                           <td className="p-2">{`Gol-${item.golongan}`}</td>
 
-                          <td className="p-2">{item.berat}</td>
+                          <td className="p-2">{formatNumber(item.berat)} Kg</td>
 
                           <td className="relative p-2 left-7">
                             {item.dimensi.split(" x ").slice(1).join(" x ")}
