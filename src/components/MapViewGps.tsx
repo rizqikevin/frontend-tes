@@ -9,6 +9,7 @@ import {
 import L, { LatLngExpression, Map } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { VehicleData } from "@/types";
+import SmoothMarker from "./SmoothMarker";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FullscreenControl } from "react-leaflet-fullscreen";
 import * as turf from "@turf/turf";
@@ -34,7 +35,7 @@ export const getVehicleIcon = (type: string) => {
     case "truck":
       return new L.Icon({
         iconUrl: "/icons/Truck.png",
-        iconSize: [25, 25],
+        iconSize: [15, 25],
       });
     case "car":
     default:
@@ -66,7 +67,7 @@ export const getVehicleIconOutOfBounds = (type: string) => {
     </div>
   `,
         iconUrl: "/icons/Truck.png",
-        iconSize: [25, 25],
+        iconSize: [15, 25],
       });
     case "car":
     default:
@@ -331,7 +332,7 @@ export default function MapViewGps({
             : getVehicleIconOutOfBounds(vehicle.type);
 
         return (
-          <Marker
+          <SmoothMarker
             key={vehicle.radio_id}
             position={[lat, lon]}
             icon={icon}
@@ -392,7 +393,7 @@ export default function MapViewGps({
                 )}
               </div>
             </Popup>
-          </Marker>
+          </SmoothMarker>
         );
       })}
 
