@@ -33,7 +33,7 @@ export const getVehicleIcon = (type: string) => {
       });
     case "truck":
       return new L.Icon({
-        iconUrl: "/icons/truck.png",
+        iconUrl: "/icons/Truck.png",
         iconSize: [25, 25],
       });
     case "car":
@@ -61,11 +61,11 @@ export const getVehicleIconOutOfBounds = (type: string) => {
         className: "incident-pulse-icon",
         html: `
     <div class="blink-container">
-      <img src="/icons/Car.svg" class="blink-icon-img" />
+      <img src="/icons/Truck.png" class="blink-icon-img" />
       <div class="pulse-circle"></div>
     </div>
   `,
-        iconUrl: "/icons/Car.svg",
+        iconUrl: "/icons/Truck.png",
         iconSize: [25, 25],
       });
     case "car":
@@ -238,43 +238,32 @@ export default function MapViewGps({
   const hasFitBoundsRef = useRef(false);
 
   // Fetch addresses once for all vehicles
-  // useEffect(() => {
-  //   const fetchAllAddresses = async () => {
-  //     const pending = internalVehicles.filter(
-  //       (v) => !locationDetails[v.radio_id]
-  //     );
-  //     if (pending.length > 0) {
-  //       for (const vehicle of pending) {
-  //         try {
-  //           const res = await fetch(
-  //             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${vehicle.lat}&lon=${vehicle.lon}&zoom=18&addressdetails=1`,
-  //             {
-  //               headers: {
-  //                 "User-Agent": "Dashboard/1.0 (kevin.octavian@delameta.com)",
-  //               },
-  //             }
-  //           );
-  //           const data = await res.json();
-  //           const address = data.display_name || "Alamat tidak ditemukan";
-  //           setLocationDetails((prev) => ({
-  //             ...prev,
-  //             [vehicle.radio_id]: address,
-  //           }));
-  //         } catch (error) {
-  //           // console.error("Gagal ambil alamat:", error);
-  //           setLocationDetails((prev) => ({
-  //             ...prev,
-  //             [vehicle.radio_id]: "Gagal mengambil alamat",
-  //           }));
-  //         }
-  //       }
-  //     }
-  //   };
+  const fetchAddressForVehicle = async (vehicle: VehicleData) => {
+    if (locationDetails[vehicle.radio_id]) return;
 
-  //   if (internalVehicles.length > 0) {
-  //     fetchAllAddresses();
-  //   }
-  // }, [internalVehicles]);
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${vehicle.lat}&lon=${vehicle.lon}&zoom=18&addressdetails=1`,
+        {
+          headers: {
+            "User-Agent": "Dashboard/1.0 (kevin.octavian@delameta.com)",
+          },
+        }
+      );
+      const data = await res.json();
+      const address = data.display_name || "Alamat tidak ditemukan";
+      setLocationDetails((prev) => ({
+        ...prev,
+        [vehicle.radio_id]: address,
+      }));
+    } catch (error) {
+      console.error("Gagal ambil alamat:", error);
+      setLocationDetails((prev) => ({
+        ...prev,
+        [vehicle.radio_id]: "Gagal mengambil alamat",
+      }));
+    }
+  };
 
   // Hitung posisi rata-rata sebagai fallback center
   const center = useMemo<[number, number]>(() => {
@@ -346,7 +335,10 @@ export default function MapViewGps({
             key={vehicle.radio_id}
             position={[lat, lon]}
             icon={icon}
-            eventHandlers={{ click: () => onVehicleClick(vehicle) }}
+            eventHandlers={{
+              click: () => onVehicleClick(vehicle),
+              popupopen: () => fetchAddressForVehicle(vehicle),
+            }}
           >
             <Popup>
               <div className="w-[250px] text-black">
