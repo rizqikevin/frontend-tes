@@ -22,8 +22,29 @@ interface AQIRow {
   created_at: string;
 }
 
+interface AQISummary {
+  sensor_number: number;
+  sensor_name: string;
+  sensor_type: number;
+  co: string;
+  o3: string;
+  so2: string;
+  no2: string;
+  co2: string;
+  o2: string;
+  pm25: string;
+  pm10: string;
+  tsp: string;
+  suhu: string;
+  humidity: string;
+  ispu: string;
+  tgl: string;
+  created_at: string;
+}
+
 interface AqiState {
   data: AQIRow[];
+  summary: AQISummary[];
   total: number;
   page: number;
   limit: number;
@@ -36,10 +57,12 @@ interface AqiState {
   setTime: (time: Date) => void;
   setSensorNumber: (sensorNumber: number) => void;
   fetchAQI: () => Promise<void>;
+  fetchAQISummary: () => Promise<void>;
 }
 
 export const useAqiStore = create<AqiState>((set, get) => ({
   data: [],
+  summary: [],
   total: 0,
   page: 1,
   limit: 10,
@@ -58,13 +81,26 @@ export const useAqiStore = create<AqiState>((set, get) => ({
 
     try {
       const response = await api.get("/sensor/aqi", {
-        params: { page, limit, time, sensor_number },
+        params: { page, limit, time },
       });
 
       set({
         data: response.data.data.rows,
         total: response.data.data.total,
       });
+    } catch (error) {
+      toast.error("❌ Gagal mengambil data AQI:", error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  fetchAQISummary: async () => {
+    set({ loading: true });
+
+    try {
+      const response = await api.get("/sensor/aqi/summary");
+      set({ summary: response.data.data });
     } catch (error) {
       toast.error("❌ Gagal mengambil data AQI:", error);
     } finally {

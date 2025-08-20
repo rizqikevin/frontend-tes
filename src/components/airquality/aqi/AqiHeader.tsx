@@ -40,7 +40,7 @@ const AqiHeader: React.FC<AqiHeaderProps> = ({ data }) => {
         </div>
       </div>
 
-      <div className="flex items-center text-left gap-24 text-sm font-semibold">
+      <div className="flex items-center text-left gap-20 text-sm font-semibold">
         <div>
           <p className="text-gray-400">Sensor Name</p>
           <p>{aqi?.sensor_name || "--"}</p>
