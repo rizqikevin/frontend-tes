@@ -132,7 +132,7 @@ export const ComparisonChart1: React.FC = () => {
               {displayLabels.map((label) => (
                 <th
                   key={label}
-                  className="py-1 pl-2 text-left border-b border-gray-600"
+                  className="py-1 px-9 text-left border-b border-gray-600"
                 >
                   {label}
                 </th>
@@ -154,7 +154,7 @@ export const ComparisonChart1: React.FC = () => {
                       ? `${percentages[status][i].toFixed(1)}%`
                       : "-";
                   return (
-                    <td key={i} className="py-1 pl-2 text-left">
+                    <td key={i} className="py-1 px-9 text-left">
                       {percent}
                     </td>
                   );

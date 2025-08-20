@@ -70,7 +70,6 @@ export const ComparisonChart2: React.FC = () => {
     );
   });
 
-  // Dataset untuk chart
   const chartData: ChartData<"bar" | "line", number[], string> = {
     labels: displayLabels,
     datasets: filteredDatasets.map((ds) => {
@@ -151,9 +150,14 @@ export const ComparisonChart2: React.FC = () => {
         <table className="w-full text-sm text-white text-center border-collapse">
           <thead>
             <tr className="border-t border-gray-600">
-              <th className="py-2 border-b border-gray-600">Status</th>
+              {/* <th className="relative -left-9 py-2 border-b border-gray-600">
+                Status
+              </th> */}
               {displayLabels.map((label) => (
-                <th key={label} className="py-2 border-b border-gray-600">
+                <th
+                  key={label}
+                  className="relative left-9 py-2 px-4 border-b border-gray-600"
+                >
                   {label}
                 </th>
               ))}
@@ -163,7 +167,7 @@ export const ComparisonChart2: React.FC = () => {
             {filteredDatasets.map((ds) => (
               <tr key={ds.label} className="border-t border-gray-600">
                 <td
-                  className={`py-2 font-semibold text-left px-2 ${
+                  className={`relative -left- py-2  font-semibold text-left px-1 ${
                     ds.label === "ODOL"
                       ? "text-red-500"
                       : ds.label === "Normal"
@@ -174,7 +178,7 @@ export const ComparisonChart2: React.FC = () => {
                   {ds.label}
                 </td>
                 {percentageMap[ds.label].map((val, idx) => (
-                  <td key={idx} className="py-2 text-xs">
+                  <td key={idx} className=" relative text-left py-2 text-xs">
                     {val}%
                   </td>
                 ))}

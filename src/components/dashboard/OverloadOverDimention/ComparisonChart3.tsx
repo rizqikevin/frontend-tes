@@ -181,9 +181,14 @@ export const ComparisonChart3: React.FC = () => {
         <table className="w-full text-sm text-white text-center border-collapse">
           <thead>
             <tr className="border-t border-gray-600">
-              <th className="py-2 border-b border-gray-600">Status</th>
+              <th className="relative -left-1 py-2 border-b border-gray-600">
+                Status
+              </th>
               {displayLabels.map((label) => (
-                <th key={label} className="py-2 border-b border-gray-600">
+                <th
+                  key={label}
+                  className=" relative -left-9 py-2 px-14 border-b border-gray-600"
+                >
                   {label}
                 </th>
               ))}
@@ -204,7 +209,7 @@ export const ComparisonChart3: React.FC = () => {
                   {ds.label}
                 </td>
                 {percentageMap[ds.label].map((val, idx) => (
-                  <td key={idx} className="py-2 text-xs">
+                  <td key={idx} className="relative -left-9 py-2  text-xs">
                     {val}%
                   </td>
                 ))}
