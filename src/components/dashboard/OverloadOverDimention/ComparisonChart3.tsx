@@ -138,7 +138,7 @@ export const ComparisonChart3: React.FC = () => {
 
   if (isloading) {
     return (
-      <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
+      <div className="bg-dashboard-accent p-4 rounded-lg h-full w-full">
         <h2 className="text-sm mb-2 font-semibold uppercase text-white">
           {title}
         </h2>
@@ -174,7 +174,7 @@ export const ComparisonChart3: React.FC = () => {
       </h2>
 
       {/* Chart */}
-      <Chart type="bar" data={chartData} options={options} height={250} />
+      <Chart type="bar" data={chartData} options={options} height={142} />
 
       {/* Table */}
       <div className="overflow-x-auto mt-6">

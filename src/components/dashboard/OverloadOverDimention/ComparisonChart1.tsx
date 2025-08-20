@@ -83,7 +83,7 @@ export const ComparisonChart1: React.FC = () => {
   if (isloading) {
     return (
       <div className="bg-dashboard-accent p-4 rounded-lg h-full w-full">
-        <h2 className="text-xl mb-2 font-semibold uppercase text-white">
+        <h2 className="text-sm mb-2 font-semibold uppercase text-white">
           {title}
         </h2>
         <div className="flex justify-center items-center h-[300px] w-full">
@@ -113,13 +113,13 @@ export const ComparisonChart1: React.FC = () => {
   }
 
   return (
-    <div className="bg-[#2b2b2b] p-4 rounded-lg h-full w-full">
-      <h2 className="text-xl mb-2 font-semibold uppercase text-white">
+    <div className="bg-dashboard-accent p-4 rounded-lg h-full w-full">
+      <h2 className="text-sm mb-2 font-semibold uppercase text-white">
         {title}
       </h2>
 
       {/* Chart */}
-      <Chart type="bar" data={data} options={options} height={150} />
+      <Chart type="bar" data={data} options={options} height={130} />
 
       {/* Table */}
       <div className="overflow-x-auto mt-6">

@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { VehicleSummaryPanel } from "./VehicleSummaryPanel";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
@@ -55,7 +56,7 @@ export const VehichleDougnut = () => {
     plugins: {
       legend: { display: false },
       datalabels: {
-        display: true,
+        display: false,
         color: "#fff",
         formatter: (_value, context) => {
           const index = context.dataIndex;
@@ -69,7 +70,7 @@ export const VehichleDougnut = () => {
         offset: 20,
         font: {
           weight: "bold",
-          size: 35,
+          size: 20,
         },
       },
     },
@@ -78,26 +79,26 @@ export const VehichleDougnut = () => {
   };
 
   return (
-    <div className="bg-dashboard-accent rounded-lg p-4 shadow-sm text-white w-auto h-auto flex flex-col justify-between">
+    <div className="bg-dashboard-accent rounded-lg p-4 shadow-sm text-white w-auto h-auto flex flex-col justify-between border-r-2 border-gray-500">
       <div className="flex justify-between mb-4 text-xl font-semibold">
-        <span>{chartTitle || "Semua Golongan"}</span>
-        <span>{chartDate || "-"}</span>
+        <span>Daily</span>
+        {/* <span className="text-sm text-gray-400">{chartDate || "-"}</span> */}
       </div>
-      <div className="relative w-[500px] h-[500px] mx-auto">
+      <div className="relative w-[200px] h-[200px] mx-auto">
         <Doughnut data={data} options={options} />
       </div>
-      <div className="flex flex-row text-sm mt-4 gap-2 justify-center">
-        <span className="flex text-xl items-center gap-1 text-white">
+      <div className="flex flex-row items-center text-sm mt-4 gap-2 justify-center">
+        <span className="flex text-xs items-center gap-1 text-white">
           <span className=" leading-3 text-green-500">●</span> Patuh
         </span>
-        <span className="flex  text-xl items-center gap-1 text-white">
+        <span className="flex  text-xs items-center gap-1 text-white">
           <span className="leading-3 text-red-500">●</span>Tidak Patuh
         </span>
-        <Link to={"/odol"} className="ml-auto">
+        {/* <Link to={"/odol"} className="ml-auto">
           <Button className="text-xs text-ri text-white bg-dashboard-accent  shadow-sm hover:bg-blue-600 px-3 py-1 rounded-md flex items-center gap-1">
             <span className="font-semibold">Selengkapnya</span>
           </Button>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

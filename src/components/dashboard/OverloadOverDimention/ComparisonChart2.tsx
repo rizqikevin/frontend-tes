@@ -126,7 +126,7 @@ export const ComparisonChart2: React.FC = () => {
       y: {
         ticks: {
           color: "#fff",
-          callback: (value) => `${(+value / 1000).toFixed(0)}K`, // tampilkan angka tanpa persen
+          callback: (value) => `${(+value / 1000).toFixed(0)}K`,
         },
         grid: { color: "rgba(255,255,255,0.1)" },
       },
@@ -144,7 +144,7 @@ export const ComparisonChart2: React.FC = () => {
       </h2>
 
       {/* Chart */}
-      <Chart type="bar" data={chartData} options={options} height={183} />
+      <Chart type="bar" data={chartData} options={options} height={140} />
 
       {/* Table */}
       <div className="overflow-x-auto mt-6">
