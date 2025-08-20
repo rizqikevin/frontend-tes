@@ -10,16 +10,36 @@ import { StatusVehicleCard } from "./StatusVehicleCard";
 import { StatusDougnut } from "./StatusDougnut";
 
 export const OverloadOverDimention: React.FC = () => {
-  const { chartData, chartTitle, fetchChartData } = useGolonganChartStore();
+  const { chartData, fetchChartData } = useGolonganChartStore();
 
-  console.log("chartData", chartData);
+  let date = new Date();
+  let year = date.getFullYear();
+  let month = date.getMonth();
+  let startDate = new Date(year, month, 2).toISOString().split("T")[0];
+  let endDate = new Date(year, month + 1, 1).toISOString().split("T")[0];
+  let startYears = new Date(year, 0, 1).toISOString().split("T")[0];
+  let endYears = new Date(year + 1, 0, 1).toISOString().split("T")[0];
+
+  const monthTitle = new Date().toLocaleString("id-ID", { month: "long" });
+
+  // console.log("monthTitle", monthTitle);
+
+  // console.log("start_years", start_years);
+  // console.log("end_years", end_years);
+
+  // console.log("start_date", start_date);
+  // console.log("end_date", end_date);
+  // console.log("month", month);
+  // console.log("year", year);
+
+  // console.log("chartData", chartData);
 
   let title1 = chartData?.labels[0];
   let title2 = chartData?.labels[1];
   let value1 = chartData?.datasets[0].data[0];
   let value2 = chartData?.datasets[0].data[1];
 
-  console.log("title1", title1);
+  // console.log("title1", title1);
 
   useEffect(() => {
     fetchChartData();
@@ -29,8 +49,8 @@ export const OverloadOverDimention: React.FC = () => {
   const total = data?.reduce((sum, val) => sum + val, 0);
   let percentage = total > 0 ? ((value1 / total) * 100).toFixed(1) : "0.0";
   let percentage2 = total > 0 ? ((value2 / total) * 100).toFixed(1) : "0.0";
-  console.log("percentage", percentage);
-  console.log("percentage2", percentage2);
+  // console.log("percentage", percentage);
+  // console.log("percentage2", percentage2);
 
   return (
     <div className="bg-dashboard-dark min-h-screen text-white p-0 space-y-4">
@@ -49,8 +69,16 @@ export const OverloadOverDimention: React.FC = () => {
           />
         </div>
         <div className=" col-span-7 grid grid-cols-2 gap-4">
-          <StatusDougnut title="Bulan Agustus" />
-          <StatusDougnut title="Tahun 2025" />
+          <StatusDougnut
+            title={`Bulan ${monthTitle} ${year}`}
+            start={startDate}
+            end={endDate}
+          />
+          <StatusDougnut
+            title={`Tahun ${year}`}
+            start={startYears}
+            end={endYears}
+          />
         </div>
       </div>
       <div className="grid grid-cols-12 gap-4">

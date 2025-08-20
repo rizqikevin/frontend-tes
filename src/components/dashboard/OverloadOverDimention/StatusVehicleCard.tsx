@@ -79,6 +79,11 @@ export const StatusVehicleCard: React.FC<StatusVehicleCardProps> = ({
   return (
     <div className="bg-dashboard-accent p-4  h-full w-full text-white shadow-sm flex flex-col justify-start ">
       <div>
+        <span className="flex justify-end text-xs mb-2  text-gray-400 text-right">
+          Tanggal :{start_date}
+        </span>
+      </div>
+      <div>
         <h3 className="text-xs text-gray-400 ">{title}</h3>
         <p className="text-xl font-bold mt-1 mb-2">{value} Kendaraan</p>
         <hr className=" border-gray-500 mb-7" />

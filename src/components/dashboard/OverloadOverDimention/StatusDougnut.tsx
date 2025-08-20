@@ -14,11 +14,20 @@ ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 interface statusDougnutProps {
   title: string;
+  start?: string;
+  end?: string;
 }
 
-export const StatusDougnut: React.FC<statusDougnutProps> = ({ title }) => {
+export const StatusDougnut: React.FC<statusDougnutProps> = ({
+  title,
+  start,
+  end,
+}) => {
   const [dataApi, setDataApi] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  console.log("start", start);
+  console.log("end", end);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,8 +35,8 @@ export const StatusDougnut: React.FC<statusDougnutProps> = ({ title }) => {
         setLoading(true);
         const res = await api.get("/odol/status", {
           params: {
-            start_time: "2025-08-01",
-            end_time: "2025-08-31",
+            start_time: start,
+            end_time: end,
           },
         });
         setDataApi(res.data.data[0]);

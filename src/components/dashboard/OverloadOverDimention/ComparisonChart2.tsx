@@ -55,10 +55,8 @@ export const ComparisonChart2: React.FC = () => {
   ];
   const displayLabels = labels.length ? labels : defaultLabels;
 
-  // Hapus dataset total dari chart
   const filteredDatasets = datasets.filter((ds) => ds.label !== "Total");
 
-  // Hitung persentase per kategori berdasarkan total per bulan
   const totalPerLabel = displayLabels.map((_, i) =>
     filteredDatasets.reduce((sum, ds) => sum + (ds.data[i] || 0), 0)
   );

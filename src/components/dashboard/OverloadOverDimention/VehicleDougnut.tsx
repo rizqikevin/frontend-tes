@@ -88,10 +88,10 @@ export const VehichleDougnut = () => {
         <Doughnut data={data} options={options} />
       </div>
       <div className="flex flex-row items-center text-sm mt-4 gap-2 justify-center">
-        <span className="flex text-xs items-center gap-1 text-white">
+        <span className="flex text-base items-center gap-1 text-white">
           <span className=" leading-3 text-green-500">●</span> Patuh
         </span>
-        <span className="flex  text-xs items-center gap-1 text-white">
+        <span className="flex  text-base items-center gap-1 text-white">
           <span className="leading-3 text-red-500">●</span>Tidak Patuh
         </span>
         {/* <Link to={"/odol"} className="ml-auto">
