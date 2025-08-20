@@ -96,12 +96,12 @@ export const StatusDougnut: React.FC<statusDougnutProps> = ({
       legend: { display: false },
       datalabels: { display: false },
     },
-    cutout: "70%",
+    cutout: "55%",
     maintainAspectRatio: false,
   };
 
   return (
-    <div className="bg-dashboard-accent rounded-lg p-4 shadow-sm text-white w-auto h-auto flex flex-col border border-gray-700">
+    <div className="bg-dashboard-accent  rounded-lg p-4 shadow-sm text-white w-auto h-auto flex flex-col border border-gray-700">
       {/* Title */}
       <div className="flex justify-between mb-4 text-xl font-semibold">
         <span>{title}</span>
@@ -110,7 +110,7 @@ export const StatusDougnut: React.FC<statusDougnutProps> = ({
       {/* Chart + Legend */}
       <div className="flex justify-center items-center gap-6 mt-2">
         {/* Chart */}
-        <div className="relative w-[200px] h-[200px]">
+        <div className="relative w-[150px] h-[150px]">
           <Doughnut data={data} options={options} />
         </div>
 
