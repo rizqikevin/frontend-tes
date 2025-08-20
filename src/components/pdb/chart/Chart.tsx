@@ -52,6 +52,12 @@ export const Chart: React.FC = () => {
   return (
     <>
       <div className="bg-dashboard-dark max-h-screen p-0 text-white space-y-4">
+        <div className="flex flex-row justify-between mb-3">
+          <div className="flex flex-col">
+            <h1 className="text-2xl text-white font-bold">PDB</h1>
+            <p className="text-lg text-gray-400">Riwayat Pemakaian</p>
+          </div>
+        </div>
         <div className="p-1">
           <LineChart title="PDB" labels={labels} datasets={datasets} />
         </div>
