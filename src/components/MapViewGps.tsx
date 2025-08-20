@@ -357,7 +357,7 @@ export default function MapViewGps({
                     {isInside ? "Di dalam batas" : "Melewati batas"}
                   </span>
                 </p>
-                {!isInside && !vehicle.is_valid && (
+                {!isInside && (
                   <p className="text-sm">
                     Validasi:{" "}
                     <span
