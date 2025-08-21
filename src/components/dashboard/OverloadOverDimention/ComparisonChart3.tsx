@@ -169,8 +169,8 @@ export const ComparisonChart3: React.FC = () => {
   }
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg h-full w-full">
-      <h2 className="text-sm mb-2 font-semibold uppercase text-white">
-        {title}
+      <h2 className="text-lg mb-2 font-semibold text-white">
+        Perbandingan Kepatuhan 2021-2025
       </h2>
 
       {/* Chart */}
