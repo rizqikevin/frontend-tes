@@ -10,7 +10,7 @@ import Header from "@/components/Header";
 
 export const Pdb: React.FC = () => {
   const { user, logout } = useAuth();
-  const [selectedTab, setSelectedTab] = useState("daily");
+  const [selectedTab, setSelectedTab] = useState("chart");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 

@@ -1,54 +1,61 @@
-import LineChart from "./LineChart";
-
-const labels = [
-  "00:00",
-  "01:00",
-  "02:00",
-  "03:00",
-  "04:00",
-  "05:00",
-  "06:00",
-  "07:00",
-  "08:00",
-  "09:00",
-  "10:00",
-  "11:00",
-  "12:00",
-  "13:00",
-  "14:00",
-  "15:00",
-  "16:00",
-  "17:00",
-  "18:00",
-  "19:00",
-  "20:00",
-  "21:00",
-  "22:00",
-  "23:00",
-];
-
-const datasets = [
-  {
-    label: "CCTV On Ramp TEBING TINGGI (1A)",
-    data: [
-      120, 150, 200, 240, 300, 500, 700, 1000, 1300, 1600, 1700, 1800, 1900,
-      1850, 1900, 1950, 2000, 2100, 2200, 2300, 2400, 2600, 2800, 3000,
-    ],
-    borderColor: "#FACC15", // yellow-400
-    backgroundColor: "#FACC15",
-    tension: 0.3,
-  },
-];
-
-const tableData = [
-  {
-    id: 1,
-    location: "CCTV COUNTING TEBING TINGGI (ANTRIAN EXIT) A (1A)",
-    hourlyData: Array(24).fill(2918),
-  },
-];
+import { useEffect, useState } from "react";
+import LineChart from "./beban/LineChart";
+import { Button } from "@/components/ui/button";
+import StatsCard from "./StatsCard";
+import Beban from "./beban/Beban";
 
 export const Chart: React.FC = () => {
+  const [selectedTab, setSelectedTab] = useState("beban");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+  useEffect(() => {
+    const handleSidebarChange = (event: CustomEvent) => {
+      setIsSidebarCollapsed(event.detail.collapsed);
+    };
+
+    const checkTheme = () => {
+      const savedTheme =
+        (localStorage.getItem("theme") as "light" | "dark") || "dark";
+      setTheme(savedTheme);
+    };
+
+    // Initial theme check
+    checkTheme();
+
+    // Listen for theme changes
+    const themeInterval = setInterval(checkTheme, 100);
+
+    window.addEventListener(
+      "sidebarStateChange",
+      handleSidebarChange as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        "sidebarStateChange",
+        handleSidebarChange as EventListener
+      );
+      clearInterval(themeInterval);
+    };
+  }, []);
+
+  const isDark = theme === "dark";
+
+  const renderContent = () => {
+    switch (selectedTab) {
+      case "beban":
+        return <Beban />;
+      case "power":
+        return null;
+      case "fasa":
+        return null;
+      case "anomali":
+        return null;
+      default:
+        return null;
+    }
+  };
   return (
     <>
       <div className="bg-dashboard-dark max-h-screen p-0 text-white space-y-4">
@@ -58,9 +65,56 @@ export const Chart: React.FC = () => {
             <p className="text-lg text-gray-400">Riwayat Pemakaian</p>
           </div>
         </div>
-        <div className="p-1">
-          <LineChart title="PDB" labels={labels} datasets={datasets} />
+        <div className="flex flex-wrap gap-4">
+          <StatsCard title="Total Beban" value="2.6" satuan=" kWh" />
+          <StatsCard title="Demand Rata-rata" value="19.341" satuan=" kW" />
+          <StatsCard title="Beban Puncak" value="20.341" satuan=" kW" />
+          <StatsCard title="PF Median" value="0.4" satuan=" ɸ" />
+          <StatsCard title="Freq Rata-rata" value="59.9" satuan=" Hz" />
         </div>
+        <div className="flex items-center space-x-2">
+          <Button
+            onClick={() => setSelectedTab("beban")}
+            className={`${
+              selectedTab === "beban"
+                ? "bg-gray-50 text-gray-900"
+                : "bg-dashboard-accent text-white"
+            }`}
+          >
+            Beban (kW)
+          </Button>
+          <Button
+            onClick={() => setSelectedTab("power")}
+            className={`${
+              selectedTab === "power"
+                ? "bg-gray-50 text-gray-900"
+                : "bg-dashboard-accent text-white"
+            }`}
+          >
+            Power Quality
+          </Button>
+          <Button
+            onClick={() => setSelectedTab("fasa")}
+            className={`${
+              selectedTab === "fasa"
+                ? "bg-gray-50 text-gray-900"
+                : "bg-dashboard-accent text-white"
+            }`}
+          >
+            Per Fasa
+          </Button>
+          <Button
+            onClick={() => setSelectedTab("anomali")}
+            className={`${
+              selectedTab === "anomali"
+                ? "bg-gray-50 text-gray-900"
+                : "bg-dashboard-accent text-white"
+            }`}
+          >
+            Anomali
+          </Button>
+        </div>
+        <div className="p-0">{renderContent()}</div>
       </div>
     </>
   );

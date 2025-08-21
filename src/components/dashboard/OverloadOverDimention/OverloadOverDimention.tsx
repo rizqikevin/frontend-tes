@@ -55,7 +55,7 @@ export const OverloadOverDimention: React.FC = () => {
   return (
     <div className="bg-dashboard-dark min-h-screen text-white p-0 space-y-4">
       <div className="grid grid-cols-12 gap-4 h-full">
-        <div className="bg-dashboard-accent col-span-5 grid grid-cols-2 gap-4">
+        <div className="bg-dashboard-accent col-span-5 grid grid-cols-2 rounded-lg gap-4">
           <VehichleDougnut />
           <StatusVehicleCard
             title="Jumlah Kendaraan"

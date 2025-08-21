@@ -77,7 +77,7 @@ export const StatusVehicleCard: React.FC<StatusVehicleCardProps> = ({
     // { label: "Normal", value: data.total_normal, color: "bg-green-500" },
   ];
   return (
-    <div className="bg-dashboard-accent p-4  h-full w-full text-white shadow-sm flex flex-col justify-start ">
+    <div className="bg-dashboard-accent p-4  h-full w-full text-white shadow-sm flex flex-col justify-start rounded-lg ">
       <div>
         <span className="flex justify-end text-xs mb-2  text-gray-400 text-right">
           Tanggal :{start_date}
