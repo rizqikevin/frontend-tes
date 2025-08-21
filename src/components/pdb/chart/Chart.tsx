@@ -3,6 +3,7 @@ import LineChart from "./LineChart";
 import { Button } from "@/components/ui/button";
 import StatsCard from "./StatsCard";
 import Beban from "./beban/Beban";
+import PowerQuality from "./powerquality/PowerQuality";
 
 export const Chart: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("beban");
@@ -47,7 +48,7 @@ export const Chart: React.FC = () => {
       case "beban":
         return <Beban />;
       case "power":
-        return null;
+        return <PowerQuality />;
       case "fasa":
         return null;
       case "anomali":
