@@ -36,7 +36,7 @@ const BarChart: React.FC<BarChartProps> = ({ title, labels, datasets }) => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: false }, // bisa true kalau perlu
+      legend: { display: false },
       tooltip: { mode: "index", intersect: false },
     },
     scales: {
