@@ -54,6 +54,31 @@ const PowerQuality: React.FC = () => {
           },
         ]}
       />
+      <LineChart
+        title="Imbalance"
+        labels={[
+          "08:55:55",
+          "08:55:55",
+          "08:55:55",
+          "08:55:55",
+          "08:55:55",
+          "08:55:55",
+          "08:55:55",
+          "08:55:55",
+          "08:55:55",
+        ]}
+        datasets={[
+          {
+            label: "Frekuensi (Hz)",
+            data: [65, 100, 80, 92, 88, 85, 89, 100, 95],
+            borderColor: "limegreen",
+            backgroundColor: "rgba(0, 255, 0, 0.2)",
+            tension: 0.4,
+            fill: true,
+            pointRadius: 0,
+          },
+        ]}
+      />
     </div>
   );
 };
