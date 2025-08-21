@@ -7,6 +7,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartOptions,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
@@ -19,27 +20,24 @@ ChartJS.register(
   Legend
 );
 
-const DistribusiBebanChart: React.FC = () => {
-  // Dummy data
-  const labels = ["8.0-8.5", "8.5-9.0"];
+interface BarChartProps {
+  title: string;
+  labels: string[];
+  datasets: any[];
+}
+
+const BarChart: React.FC<BarChartProps> = ({ title, labels, datasets }) => {
   const data = {
     labels,
-    datasets: [
-      {
-        label: "Distribusi Beban",
-        data: [95, 70],
-        backgroundColor: "limegreen",
-        borderWidth: 0,
-      },
-    ],
+    datasets,
   };
 
-  const options = {
+  const options: ChartOptions<"bar"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: false },
-      tooltip: { mode: "index" as const, intersect: false },
+      legend: { display: false }, // bisa true kalau perlu
+      tooltip: { mode: "index", intersect: false },
     },
     scales: {
       x: {
@@ -57,9 +55,7 @@ const DistribusiBebanChart: React.FC = () => {
   return (
     <div className="w-full bg-dashboard-accent text-white rounded-md px-4 py-3">
       {/* Title */}
-      <h2 className="text-md font-semibold mb-2">
-        Distribusi beban (Histogram kW)
-      </h2>
+      <h2 className="text-md font-semibold mb-2">{title}</h2>
 
       {/* Chart */}
       <div className="h-[220px] w-full">
@@ -69,4 +65,4 @@ const DistribusiBebanChart: React.FC = () => {
   );
 };
 
-export default DistribusiBebanChart;
+export default BarChart;

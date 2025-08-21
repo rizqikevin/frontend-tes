@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import LineChart from "./beban/LineChart";
+import LineChart from "./LineChart";
 import { Button } from "@/components/ui/button";
 import StatsCard from "./StatsCard";
 import Beban from "./beban/Beban";
