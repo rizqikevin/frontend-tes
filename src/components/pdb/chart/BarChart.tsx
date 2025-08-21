@@ -58,7 +58,7 @@ const BarChart: React.FC<BarChartProps> = ({ title, labels, datasets }) => {
       <h2 className="text-md font-semibold mb-2">{title}</h2>
 
       {/* Chart */}
-      <div className="h-[220px] w-full">
+      <div className="h-[250px] w-full">
         <Bar data={data} options={options} />
       </div>
     </div>

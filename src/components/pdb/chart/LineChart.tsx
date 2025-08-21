@@ -28,19 +28,26 @@ interface LineChartProps {
   title: string;
   labels: string[];
   datasets: any[];
+  showLegends?: boolean;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ title, labels, datasets }) => {
+const LineChart: React.FC<LineChartProps> = ({
+  title,
+  labels,
+  datasets,
+  showLegends = false,
+}) => {
   const data = {
     labels,
     datasets,
+    showLegends,
   };
 
   const options: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: false },
+      legend: { display: showLegends, position: "top" },
       tooltip: {
         mode: "index",
         intersect: false,
@@ -77,7 +84,7 @@ const LineChart: React.FC<LineChartProps> = ({ title, labels, datasets }) => {
       <h2 className="text-md font-semibold mb-2">{title}</h2>
 
       {/* Chart */}
-      <div className="h-[200px] w-full">
+      <div className="h-[250px] w-full">
         <Line data={data} options={options} />
       </div>
     </div>
