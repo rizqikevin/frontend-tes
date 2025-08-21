@@ -201,7 +201,9 @@ const KecelakaanPieChart: React.FC = () => {
           ) : (
             <div className="bg-dashboard-accent p-6 rounded-xl shadow-md  w-full h-[260px] flex flex-col items-center">
               <div className="relative -left-20">
-                <h2 className="mb-3 font-semibold">FAKTOR KECELAKAAN</h2>
+                <h2 className="mb-3 font-semibold text-lg">
+                  Faktor Kecelakaan
+                </h2>
               </div>
               <div className="relative -top-16 w-80 h-80">
                 <Doughnut data={faktorKecelakaanData} options={options} />
@@ -222,7 +224,7 @@ const KecelakaanPieChart: React.FC = () => {
           ) : (
             <div className="bg-dashboard-accent p-6 rounded-xl shadow-md w-full h-[260px] flex flex-col items-center">
               <div className="relative -left-20">
-                <h2 className="mb-5 font-semibold">JENIS KECELAKAAN</h2>
+                <h2 className="mb-5 text-lg font-semibold">Jenis Kecelakaan</h2>
               </div>
               <div className="relative -top-16 w-65 h-70">
                 <Pie data={jenisKecelakaanData} options={options2} />

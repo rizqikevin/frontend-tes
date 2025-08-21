@@ -102,10 +102,10 @@ const KumulatifKecelakaanChart: React.FC = () => {
       },
       title: {
         display: true,
-        text: "KUMULATIF ANGKA KECELAKAAN",
+        text: "Kumulatif Angka Kecelakaan",
         color: "#fff",
         font: {
-          size: 16,
+          size: 18,
           weight: "bold",
         },
         align: "start",

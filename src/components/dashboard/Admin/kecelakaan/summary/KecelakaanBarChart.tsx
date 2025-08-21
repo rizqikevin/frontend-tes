@@ -171,8 +171,8 @@ export const KecelakaanBarChart: React.FC = () => {
 
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg h-full w-full flex flex-col">
-      <h2 className="text-sm mb-2 font-semibold uppercase text-white shrink-0">
-        DATA KECELAKAAN PER GOLONGAN
+      <h2 className="text-lg mb-2 font-semibold  text-white shrink-0">
+        Data Kecelakaan Per Golongan
       </h2>
       <div className="flex-grow">{renderContent()}</div>
     </div>

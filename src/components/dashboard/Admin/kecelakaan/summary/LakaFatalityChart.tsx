@@ -225,7 +225,7 @@ export const LakaFatalityChart: React.FC = () => {
 
   return (
     <div className="bg-dashboard-accent p-10 rounded-lg h-full w-full flex flex-col">
-      <h2 className="text-sm mb-2 font-semibold text-white shrink-0">
+      <h2 className="text-lg mb-2 font-semibold text-white shrink-0">
         Tingkat Laka & Fatality
       </h2>
       <div className="flex-grow">{renderContent()}</div>
