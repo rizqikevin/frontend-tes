@@ -6,10 +6,11 @@ import { Daily } from "@/components/floods/daily/Daily";
 import { Monthly } from "@/components/floods/monthly/Monthly";
 import { Yearly } from "@/components/floods/yearly/Yearly";
 import Header from "@/components/Header";
+import Chart from "@/components/floods/chart/Chart";
 
 export const Floods: React.FC = () => {
   const { user, logout } = useAuth();
-  const [selectedTab, setSelectedTab] = useState("daily");
+  const [selectedTab, setSelectedTab] = useState("chart");
   const [selectedOption, setSelectedOption] = useState("");
   const [startDate, setStartDate] = useState("27 - February - 2025");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -62,7 +63,7 @@ export const Floods: React.FC = () => {
 
     switch (selectedTab) {
       case "chart":
-        return <Daily {...commonProps} />;
+        return <Chart />;
       case "daily":
         return <Daily {...commonProps} />;
       case "monthly":
@@ -104,7 +105,7 @@ export const Floods: React.FC = () => {
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
-              {/* <Button
+              <Button
                 onClick={() => setSelectedTab("chart")}
                 className={`${
                   selectedTab === "chart"
@@ -113,7 +114,7 @@ export const Floods: React.FC = () => {
                 }`}
               >
                 Chart
-              </Button> */}
+              </Button>
               <Button
                 onClick={() => setSelectedTab("daily")}
                 className={`${
