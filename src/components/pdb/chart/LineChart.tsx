@@ -79,7 +79,7 @@ const LineChart: React.FC<LineChartProps> = ({
   };
 
   return (
-    <div className="w-full bg-dashboard-accent text-white rounded-md px-4 py-3 flex flex-1 flex-col">
+    <div className="w-full bg-dashboard-accent rounded-lg p-4 overflow-x-auto mt-4 text-white px-4 py-3 flex flex-1 flex-col">
       {/* Title */}
       <h2 className="text-md font-semibold mb-2">{title}</h2>
 

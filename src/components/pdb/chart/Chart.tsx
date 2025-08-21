@@ -5,6 +5,7 @@ import StatsCard from "./StatsCard";
 import Beban from "./beban/Beban";
 import PowerQuality from "./powerquality/PowerQuality";
 import Fasa from "./fasa/Fasa";
+import Anomali from "./anomali/Anomali";
 
 export const Chart: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("beban");
@@ -53,7 +54,7 @@ export const Chart: React.FC = () => {
       case "fasa":
         return <Fasa />;
       case "anomali":
-        return null;
+        return <Anomali />;
       default:
         return null;
     }
