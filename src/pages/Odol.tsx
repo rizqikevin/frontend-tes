@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import { useOdolStore } from "@/stores/useOdolStore";
 import api from "@/services/api";
+import { UserRole } from "@/types";
 
 const Odol: React.FC = () => {
   const { user, logout } = useAuth();
@@ -17,6 +18,12 @@ const Odol: React.FC = () => {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
   const [gateOptions, setGateOptions] = useState<Gate[]>([]);
+
+  if (!user) {
+    return null;
+  }
+
+  const isSupport = user.role === UserRole.SUPPORT;
 
   type Gate = {
     id_gerbang: string;
@@ -138,6 +145,10 @@ const Odol: React.FC = () => {
           <div className="flex justify-between mb-8">
             <div className="flex justify-between items-center px-0">
               <div>
+                {isSupport && (
+                  <h1 className="text-2xl font-semibold">ODOL Dashboard </h1>
+                )}
+
                 {/* <Button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200">
                   Report
                 </Button>
@@ -150,7 +161,7 @@ const Odol: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex justify-center items-center space-x-4">
+            <div className="flex justify-start items-center space-x-4">
               <div className="bg-dashboard-accent border border-white flex rounded text-white">
                 <input
                   type="text"
