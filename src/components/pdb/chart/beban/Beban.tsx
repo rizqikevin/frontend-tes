@@ -1,27 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import LineChart from "../LineChart";
 import DistribusiBebanChart from "../BarChart";
+import { useBebanActiveStore } from "@/stores/useBebanActiveStore";
+import { usePdbHistoryStore } from "@/stores/useStatsCardPdbStore";
+
 const Beban: React.FC = () => {
+  const { data, fetchChartData } = useBebanActiveStore();
+  const { sensorName } = usePdbHistoryStore();
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      await fetchChartData("active_power");
+      await fetchChartData("tegangan");
+      await fetchChartData("active_power_weekly");
+      await fetchChartData("active_power_monthly");
+    };
+    const interval = setInterval(fetchAll, 100);
+    return () => clearInterval(interval);
+  }, [sensorName]);
+
+  // console.log(data.active_power.datasets[0].label);
+
   return (
     <div className="flex flex-col gap-1 h-full ">
       <div className="flex flex-col gap-x-4">
         <LineChart
-          title="Total Active Power (kW)"
-          labels={[
-            "08:50",
-            "08:55",
-            "09:00",
-            "09:05",
-            "09:10",
-            "09:15",
-            "09:20",
-            "09:25",
-            "09:30",
-          ]}
+          title={data.active_power.metadata.title}
+          labels={data.active_power.labels}
           datasets={[
             {
-              label: "Total Active Power",
-              data: [65, 70, 80, 92, 88, 85, 89, 100, 95],
+              label: data.active_power.datasets[0].label,
+              data: data.active_power.datasets[0].data,
               borderColor: "limegreen",
               backgroundColor: "rgba(0, 255, 0, 0.2)",
               tension: 0.4,
@@ -32,21 +41,11 @@ const Beban: React.FC = () => {
         />
         <LineChart
           title="Tegangan (Volt)"
-          labels={[
-            "08:50",
-            "08:55",
-            "09:00",
-            "09:05",
-            "09:10",
-            "09:15",
-            "09:20",
-            "09:25",
-            "09:30",
-          ]}
+          labels={data.tegangan.labels}
           datasets={[
             {
-              label: "Total Active Power",
-              data: [65, 70, 80, 92, 88, 85, 89, 100, 95],
+              label: data.tegangan.datasets[0].label,
+              data: data.tegangan.datasets[0].data,
               borderColor: "orange",
               backgroundColor: "rgba(255, 165, 0, 0.2)",
               tension: 0.4,
@@ -59,22 +58,12 @@ const Beban: React.FC = () => {
 
       <div className="flex flex-row gap-x-4">
         <LineChart
-          title="Total Active Power (kW) (Mingguan)"
-          labels={[
-            "08:50",
-            "08:55",
-            "09:00",
-            "09:05",
-            "09:10",
-            "09:15",
-            "09:20",
-            "09:25",
-            "09:30",
-          ]}
+          title={data.active_power_weekly.metadata.title}
+          labels={data.active_power_weekly.labels}
           datasets={[
             {
-              label: "Total Active Power",
-              data: [65, 70, 80, 92, 88, 85, 89, 100, 95],
+              label: data.active_power_weekly.datasets[0].label,
+              data: data.active_power_weekly.datasets[0].data,
               borderColor: "limegreen",
               backgroundColor: "rgba(0, 255, 0, 0.2)",
               tension: 0.4,
@@ -84,22 +73,12 @@ const Beban: React.FC = () => {
           ]}
         />
         <LineChart
-          title="Total Active Power (kW) (Bulanan)"
-          labels={[
-            "08:50",
-            "08:55",
-            "09:00",
-            "09:05",
-            "09:10",
-            "09:15",
-            "09:20",
-            "09:25",
-            "09:30",
-          ]}
+          title={data.active_power_monthly.metadata.title}
+          labels={data.active_power_monthly.labels}
           datasets={[
             {
-              label: "Total Reactive Power",
-              data: [65, 70, 80, 92, 88, 85, 89, 100, 95],
+              label: data.active_power_monthly.datasets[0].label,
+              data: data.active_power_monthly.datasets[0].data,
               borderColor: "limegreen",
               backgroundColor: "rgba(0, 255, 0, 0.2)",
               tension: 0.4,

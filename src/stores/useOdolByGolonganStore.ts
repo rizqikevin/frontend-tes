@@ -2,23 +2,6 @@ import { create } from "zustand";
 import { api } from "@/services/api";
 import { useDateFilterStore } from "./useDateFilterStore";
 
-interface Dataset {
-  type: string;
-  label: string;
-  data: number[];
-  percentages: number[];
-}
-
-interface ChartDataResponse {
-  labels: string[];
-  datasets: Dataset[];
-}
-
-interface Metadata {
-  title: string;
-  date: string;
-}
-
 interface OdolComparisonState {
   labels: string[];
   odolData: Record<string, number[]>;
