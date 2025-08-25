@@ -240,7 +240,7 @@ const KecelakaanPieChart: React.FC = () => {
           ) : (
             <div
               className={`bg-dashboard-accent p-6 rounded-xl shadow-md flex flex-col items-center transition-all duration-300
-    ${isSidebarCollapsed ? "w-full" : "w-[300px]"} 
+    ${isSidebarCollapsed ? "w-[350px]" : "w-[300px]"} 
     ${isSidebarCollapsed ? "h-[260px]" : "h-[260px]"}
   `}
             >
@@ -268,7 +268,7 @@ const KecelakaanPieChart: React.FC = () => {
           ) : (
             <div
               className={`bg-dashboard-accent p-6 rounded-xl shadow-md flex flex-col items-center transition-all duration-300
-    ${isSidebarCollapsed ? "w-full" : "w-[300px]"} 
+    ${isSidebarCollapsed ? "w-[350px]" : "w-[300px]"} 
     ${isSidebarCollapsed ? "h-[260px]" : "h-[260px]"}
   `}
             >

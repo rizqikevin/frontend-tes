@@ -146,7 +146,12 @@ const Odol: React.FC = () => {
             <div className="flex justify-between items-center px-0">
               <div>
                 {isSupport && (
-                  <h1 className="text-2xl font-semibold">ODOL Dashboard </h1>
+                  <div>
+                    <h1 className="text-4xl font-semibold">ODOL Dashboard </h1>
+                    <p className="text-sm text-gray-400">
+                      Pantau Setiap Detail ODOL
+                    </p>
+                  </div>
                 )}
 
                 {/* <Button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200">
