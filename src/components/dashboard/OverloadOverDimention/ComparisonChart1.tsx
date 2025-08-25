@@ -114,7 +114,7 @@ export const ComparisonChart1: React.FC = () => {
 
   return (
     <div className="bg-dashboard-accent p-4 rounded-lg h-full w-full">
-      <h2 className="text-sm mb-2 font-semibold text-white">
+      <h2 className="text-lg mb-2 font-semibold text-white">
         Perbandingan Dan Persentase Odol Per Golongan
       </h2>
 

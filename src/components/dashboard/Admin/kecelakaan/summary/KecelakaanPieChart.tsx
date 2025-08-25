@@ -30,6 +30,43 @@ const KecelakaanPieChart: React.FC = () => {
   );
   const [tipeKecelakaanTotal, setTipeKecelakaanTotal] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+  useEffect(() => {
+    const handleSidebarChange = (event: CustomEvent) => {
+      setIsSidebarCollapsed(event.detail.collapsed);
+    };
+
+    const checkTheme = () => {
+      const savedTheme =
+        (localStorage.getItem("theme") as "light" | "dark") || "dark";
+      setTheme(savedTheme);
+    };
+
+    // Initial theme check
+    checkTheme();
+
+    // Listen for theme changes
+    const themeInterval = setInterval(checkTheme, 100);
+
+    window.addEventListener(
+      "sidebarStateChange",
+      handleSidebarChange as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        "sidebarStateChange",
+        handleSidebarChange as EventListener
+      );
+      clearInterval(themeInterval);
+    };
+  }, []);
+
+  const isDark = theme === "dark";
+
   const fetchFaktorData = async () => {
     try {
       const res = await api2.get("/ticket/list_kecelakaan/chart?by=factor");
@@ -108,6 +145,7 @@ const KecelakaanPieChart: React.FC = () => {
 
   const options: ChartOptions<"doughnut"> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "right",
@@ -124,7 +162,7 @@ const KecelakaanPieChart: React.FC = () => {
         offset: 20,
         font: {
           weight: "bold",
-          size: 20,
+          size: 15,
         },
       },
       tooltip: {
@@ -136,6 +174,7 @@ const KecelakaanPieChart: React.FC = () => {
 
   const options2: ChartOptions<"pie"> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "right",
@@ -156,7 +195,7 @@ const KecelakaanPieChart: React.FC = () => {
         offset: 12,
         font: {
           weight: "bold",
-          size: 15,
+          size: 13,
         },
       },
       tooltip: {
@@ -167,7 +206,7 @@ const KecelakaanPieChart: React.FC = () => {
 
   return (
     <div className="relative p-0 w-full">
-      <div className="bg-[#2b2a2a] flex flex-col items-center p-6 text-white rounded-lg w-full h-[350px]">
+      <div className="bg-[#2b2a2a] flex flex-col items-center p-6 text-white rounded-lg h-[350px]">
         <div className="flex mb-2 ml-auto justify-end rounded-lg">
           <Select>
             <SelectTrigger className="bg-dashboard-accent">
@@ -199,15 +238,20 @@ const KecelakaanPieChart: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="bg-dashboard-accent p-6 rounded-xl shadow-md  w-full h-[260px] flex flex-col items-center">
-              <div className="relative -left-20">
-                <h2 className="mb-3 font-semibold text-lg">
+            <div
+              className={`bg-dashboard-accent p-6 rounded-xl shadow-md flex flex-col items-center transition-all duration-300
+    ${isSidebarCollapsed ? "w-full" : "w-[300px]"} 
+    ${isSidebarCollapsed ? "h-[260px]" : "h-[260px]"}
+  `}
+            >
+              <div className="relative -left-14">
+                <h2 className="mb-5 text-lg font-semibold">
                   Faktor Kecelakaan
                 </h2>
               </div>
-              <div className="relative -top-16 w-80 h-80">
+              <div className="relative w-full h-80">
                 <Doughnut data={faktorKecelakaanData} options={options} />
-                <div className="absolute inset-0 flex items-center left-36 transform -translate-x-1/2 text-3xl font-bold">
+                <div className="absolute inset-0 flex items-center left-28 transform -translate-x-1/2 text-2xl font-bold">
                   {faktorTotal}
                 </div>
               </div>
@@ -216,17 +260,22 @@ const KecelakaanPieChart: React.FC = () => {
 
           {/* Jenis Kecelakaan */}
           {loading ? (
-            <div className="bg-dashboard-accent p-6 rounded-xl shadow-md w-[350px] h-[260px] flex flex-col items-center">
+            <div className="bg-dashboard-accent p-6 rounded-xl shadow-md sm:w-full h-[260px] flex flex-col items-center">
               <div className="flex items-center justify-center h-full">
                 <p className="text-white">Loading...</p>
               </div>
             </div>
           ) : (
-            <div className="bg-dashboard-accent p-6 rounded-xl shadow-md w-full h-[260px] flex flex-col items-center">
-              <div className="relative -left-20">
+            <div
+              className={`bg-dashboard-accent p-6 rounded-xl shadow-md flex flex-col items-center transition-all duration-300
+    ${isSidebarCollapsed ? "w-full" : "w-[300px]"} 
+    ${isSidebarCollapsed ? "h-[260px]" : "h-[260px]"}
+  `}
+            >
+              <div className="relative -left-14">
                 <h2 className="mb-5 text-lg font-semibold">Jenis Kecelakaan</h2>
               </div>
-              <div className="relative -top-16 w-65 h-70">
+              <div className="relative w-full h-80">
                 <Pie data={jenisKecelakaanData} options={options2} />
               </div>
             </div>
