@@ -29,7 +29,7 @@ export const usePdbHistoryStore = create<PdbHistoryState>((set, get) => ({
 
   // default filters
   time: new Date(),
-  sensorName: "",
+  sensorName: "PDB_KOPS",
 
   setTime: (time) => set({ time }),
   setSensorName: (name) => set({ sensorName: name }),
@@ -43,7 +43,7 @@ export const usePdbHistoryStore = create<PdbHistoryState>((set, get) => ({
         params: { time: time, sensor_name: sensorName },
       });
 
-      console.log(res.data.data);
+      //   console.log(res.data.data);
 
       if (res.data.status === "success") {
         set({ data: res.data?.data, loading: false });
