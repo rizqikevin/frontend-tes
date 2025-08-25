@@ -1,5 +1,7 @@
+import api from "@/services/api";
 import { MoveUpRightIcon } from "lucide-react";
 import React from "react";
+import { useEffect, useState } from "react";
 
 interface StatsCardProps {
   title: string;
@@ -7,7 +9,21 @@ interface StatsCardProps {
   satuan: string;
 }
 
+interface StatsCard {
+  energy: string;
+  avg_frequency: string;
+  avg_energy_perhour: string;
+  beban_puncak: string;
+}
+
 const StatsCard = ({ title, value, satuan }: StatsCardProps) => {
+  const [stats, setStats] = useState<StatsCard>({
+    energy: "",
+    avg_frequency: "",
+    avg_energy_perhour: "",
+    beban_puncak: "",
+  });
+
   return (
     <div className=" bg-dashboard-accent p-4 rounded-md text-white w-full max-w-[307px]">
       <h3 className="text-sm font-bold mb-4">{title}</h3>

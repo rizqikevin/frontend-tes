@@ -34,7 +34,7 @@ export const getVehicleIcon = (type: string) => {
       });
     case "truck":
       return new L.Icon({
-        iconUrl: "/icons/Truck.png",
+        iconUrl: "/icons/Truck.svg",
         iconSize: [15, 25],
       });
     case "car":
@@ -62,11 +62,11 @@ export const getVehicleIconOutOfBounds = (type: string) => {
         className: "incident-pulse-icon",
         html: `
     <div class="blink-container">
-      <img src="/icons/Truck.png" class="blink-icon-img" />
+      <img src="/icons/Truck.svg" class="blink-icon-img" />
       <div class="pulse-circle"></div>
     </div>
   `,
-        iconUrl: "/icons/Truck.png",
+        iconUrl: "/icons/Truck.svg",
         iconSize: [15, 25],
       });
     case "car":
