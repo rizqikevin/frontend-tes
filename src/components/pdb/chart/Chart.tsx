@@ -10,6 +10,7 @@ import api from "@/services/api";
 import { usePdbHistoryStore } from "@/stores/useStatsCardPdbStore";
 import { Calendar } from "lucide-react";
 import DatePicker from "react-datepicker";
+import { setTime } from "node_modules/react-datepicker/dist/date_utils";
 
 interface OptionsData {
   sensor_name: string;
@@ -20,8 +21,16 @@ export const Chart: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [sensorOptions, setSensorOptions] = useState<OptionsData[]>([]);
-  const { data, time, loading, error, fetchData, sensorName, setSensorName } =
-    usePdbHistoryStore();
+  const {
+    data,
+    time,
+    setTime,
+    loading,
+    error,
+    fetchData,
+    sensorName,
+    setSensorName,
+  } = usePdbHistoryStore();
 
   useEffect(() => {
     fetchData();
@@ -96,26 +105,29 @@ export const Chart: React.FC = () => {
             <h1 className="text-2xl text-white font-bold">PDB</h1>
             <p className="text-lg text-gray-400">Overview Pemakaian</p>
           </div>
-          <div className="bg-dashboard-accent items-center border border-white flex rounded px-0 py-2 text-white">
-            <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
-            <DatePicker
-              selected={time}
-              onChange={(date: Date) => date}
-              dateFormat="dd/MM/yyyy"
-              className="bg-transparent w-24 outline-none text-white"
-            />
-          </div>
-          <div className="bg-dashboard-accent border  border-white flex rounded text-white">
-            <select
-              onChange={(e) => setSensorName(e.target.value)}
-              className="text-white  bg-dashboard-accent p-3 rounded-lg outline-none"
-            >
-              {sensorOptions.map((g) => (
-                <option key={g.sensor_name} value={g.sensor_name}>
-                  {g.sensor_name}
-                </option>
-              ))}
-            </select>
+          <div className="flex flex-row gap-4">
+            {" "}
+            <div className="bg-dashboard-accent items-center border border-white flex rounded px-0 py-2 text-white">
+              <Calendar className="h-5 w-5 mr-2 ml-1 text-gray-400" />
+              <DatePicker
+                selected={time}
+                onChange={(date: Date) => setTime(date)}
+                dateFormat="dd/MM/yyyy"
+                className="bg-transparent w-24 outline-none text-white"
+              />
+            </div>
+            <div className="bg-dashboard-accent border  border-white flex rounded text-white">
+              <select
+                onChange={(e) => setSensorName(e.target.value)}
+                className="text-white  bg-dashboard-accent p-3 rounded-lg outline-none"
+              >
+                {sensorOptions.map((g) => (
+                  <option key={g.sensor_name} value={g.sensor_name}>
+                    {g.sensor_name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
         <div className="flex flex-wrap gap-4">
