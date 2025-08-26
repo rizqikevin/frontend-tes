@@ -27,9 +27,10 @@ interface LineChartProps {
   title: string;
   datasets: any[];
   labels: string[];
+  showLegends?: boolean;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ title, datasets, labels }) => {
+const LineChart: React.FC<LineChartProps> = ({ title, datasets, labels, showLegends = false }) => {
   return (
     <div className="w-full bg-dashboard-accent text-white rounded-xl px-6 py-4">
       {/* Header */}
@@ -59,7 +60,7 @@ const LineChart: React.FC<LineChartProps> = ({ title, datasets, labels }) => {
             },
             plugins: {
               legend: {
-                display: false,
+                display: showLegends,
                 position: "bottom",
                 labels: {
                   color: "#fff",
