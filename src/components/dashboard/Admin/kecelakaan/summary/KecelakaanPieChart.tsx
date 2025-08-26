@@ -251,9 +251,9 @@ const KecelakaanPieChart: React.FC = () => {
               </div>
               <div className="relative w-full h-80">
                 <Doughnut data={faktorKecelakaanData} options={options} />
-                <div className="absolute inset-0 flex items-center left-28 transform -translate-x-1/2 text-2xl font-bold">
+                {/* <div className="absolute inset-0 flex items-center left-28 transform -translate-x-1/2 text-2xl font-bold">
                   {faktorTotal}
-                </div>
+                </div> */}
               </div>
             </div>
           )}
