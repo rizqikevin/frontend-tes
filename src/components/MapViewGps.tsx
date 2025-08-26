@@ -34,7 +34,7 @@ export const getVehicleIcon = (type: string) => {
       });
     case "truck":
       return new L.Icon({
-        iconUrl: "/icons/Truck.svg",
+        iconUrl: "/icons/truck.png",
         iconSize: [15, 25],
       });
     case "car":
