@@ -43,7 +43,7 @@ const Chart: React.FC = () => {
   return (
     <div className="flex flex-col gap-1">
       {/* Status Sensor Section */}
-      <div className="w-full bg-dashboard-accent text-white rounded-md p-4">
+      <div className="w-full  text-white rounded-md p-0">
         <StatusSensor />
       </div>
 
