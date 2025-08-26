@@ -4,7 +4,7 @@ import DistribusiBebanChart from "../BarChart";
 import { useBebanActiveStore } from "@/stores/useBebanActiveStore";
 import { usePdbHistoryStore } from "@/stores/useStatsCardPdbStore";
 
-const ChartPlaceholder = ({ title }: { title: string }) => (
+export const ChartPlaceholder = ({ title }: { title: string }) => (
   <div className="w-full bg-dashboard-accent rounded-lg p-4 overflow-x-auto mt-4 text-white px-4 py-3 flex flex-1 flex-col">
     <h2 className="text-md font-semibold mb-2">{title}</h2>
     <div className="h-[250px] w-full bg-dashboard-accent animate-pulse rounded-md">

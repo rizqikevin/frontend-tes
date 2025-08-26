@@ -17,7 +17,11 @@ type ChartType =
   | "active_power"
   | "tegangan"
   | "active_power_weekly"
-  | "active_power_monthly";
+  | "active_power_monthly"
+  | "power_factor"
+  | "frequency"
+  | "tegangan_per_fasa"
+  | "arus_per_fasa";
 
 interface BebanActivePowerState {
   data: Record<ChartType, ChartResponse>;
@@ -49,6 +53,34 @@ export const useBebanActiveStore = create<BebanActivePowerState>(
         },
       },
       active_power_monthly: {
+        labels: [],
+        datasets: [],
+        metadata: {
+          title: "",
+        },
+      },
+      power_factor: {
+        labels: [],
+        datasets: [],
+        metadata: {
+          title: "",
+        },
+      },
+      frequency: {
+        labels: [],
+        datasets: [],
+        metadata: {
+          title: "",
+        },
+      },
+      tegangan_per_fasa: {
+        labels: [],
+        datasets: [],
+        metadata: {
+          title: "",
+        },
+      },
+      arus_per_fasa: {
         labels: [],
         datasets: [],
         metadata: {
