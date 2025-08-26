@@ -17,8 +17,9 @@ const ChartPlaceholder = ({ title }: { title: string }) => (
 );
 
 const Beban: React.FC = () => {
-  const { data, fetchChartData } = useBebanActiveStore();
-  const { sensorName } = usePdbHistoryStore();
+  const data = useBebanActiveStore((state) => state.data);
+  const fetchChartData = useBebanActiveStore((state) => state.fetchChartData);
+  const sensorName = usePdbHistoryStore((state) => state.sensorName);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -31,7 +32,7 @@ const Beban: React.FC = () => {
     return () => clearInterval(interval);
   }, [sensorName]);
 
-  // console.log(data.active_power.datasets[0].label);
+  // console.log(data?.active_power.datasets[0].data);
 
   return (
     <div className="flex flex-col gap-1 h-full ">
