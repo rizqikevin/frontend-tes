@@ -11,6 +11,7 @@ interface Log {
   longitude: string;
   last_status: string;
   insert_at: string;
+  deskripsi: string;
 }
 
 interface LogState {

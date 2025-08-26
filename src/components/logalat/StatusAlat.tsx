@@ -223,6 +223,7 @@ const StatusAlat: React.FC = () => {
                     <th className="px-4 py-3">Waktu</th>
                     <th className="px-4 py-3">Status</th>
                     <th className="px-4 py-3">Lama Error</th>
+                    <th className="px-4 py-3">Keterangan</th>
                     <th className="px-4 py-3">Action</th>
                   </tr>
                 </thead>
@@ -279,6 +280,7 @@ const StatusAlat: React.FC = () => {
                             ? "Normal"
                             : "Normal"}
                         </td>
+                        <td className="px-5 py-5">{item?.deskripsi || "-"}</td>
                         <td className="px-5 py-5">
                           <Link to={`/log-alat/${item.id_lokasi}`}>
                             <Button
