@@ -101,6 +101,10 @@ export default function ViolationValidationModal({
     e.preventDefault();
     if (!violation) return;
 
+    await api.patch(`/vehicle/${vehicle.radio_id}`, {
+      is_valid: isValid,
+    });
+
     try {
       if (violation.id) {
         await api.put(`/violation/vehicle/${violation.id}`, {
@@ -113,10 +117,6 @@ export default function ViolationValidationModal({
           reason: reason,
         });
       }
-
-      await api.patch(`/vehicle/${vehicle.radio_id}`, {
-        is_valid: isValid,
-      });
 
       toast.success("Alasan pelanggaran berhasil disimpan.");
       onValidationComplete(vehicle.radio_id, isValid);

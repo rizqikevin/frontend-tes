@@ -173,16 +173,16 @@ svg text {
   fill: white !important;
 }
 
-/* .leaflet-control { z-index: 0 !important}
+.leaflet-control { z-index: 0 !important}
 .leaflet-pane { z-index: 0 !important}
 .leaflet-top, .leaflet-bottom {z-index: 0 !important}
 
-.leaflet-layer,
+/* .leaflet-layer,
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out,
 .leaflet-control-attribution {
   filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
-} */
+} */ 
 
     .leaflet-popup-content-wrapper,
     .leaflet-popup-tip {

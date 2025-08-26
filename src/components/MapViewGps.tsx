@@ -166,6 +166,7 @@ export default function MapViewGps({
         if (isInside && status === "out") {
           await api.patch(`/vehicle/${vehicle.radio_id}`, {
             status: "in",
+            is_valid: true,
           });
           toast.success(
             `Status kendaraan ${vehicle.vehicle_name} (${vehicle.radio_id}) telah diubah menjadi "masuk".`
@@ -180,6 +181,7 @@ export default function MapViewGps({
           if (status === "in") {
             await api.patch(`/vehicle/${vehicle.radio_id}`, {
               status: "out",
+              is_valid: false,
             });
             toast.success(
               `Status kendaraan ${vehicle.vehicle_name} (${vehicle.radio_id}) telah diubah menjadi "keluar".`
@@ -383,15 +385,14 @@ export default function MapViewGps({
                 >
                   View on Google Maps
                 </a>
-                {!isInside ||
-                  (isInside && !vehicle.is_valid && isAdmin && (
-                    <button
-                      onClick={() => handleOpenModal(vehicle)}
-                      className="w-full bg-orange-500 text-white px-3 py-1 rounded-md mt-2 text-sm"
-                    >
-                      Validasi Pelanggaran
-                    </button>
-                  ))}
+                {!isInside && !vehicle.is_valid && isAdmin && (
+                  <button
+                    onClick={() => handleOpenModal(vehicle)}
+                    className="w-full bg-orange-500 text-white px-3 py-1 rounded-md mt-2 text-sm"
+                  >
+                    Validasi Pelanggaran
+                  </button>
+                )}
               </div>
             </Popup>
           </SmoothMarker>
