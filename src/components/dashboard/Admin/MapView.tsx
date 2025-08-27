@@ -233,7 +233,7 @@ export default function MapView() {
           return (
             <Marker key={index} position={[lat, lng]} icon={icon}>
               <Popup>
-                <div className="w-[250px] text-gray-900">
+                <div className="w-[250px] text-white">
                   <h2 className="text-base font-semibold mb-2">
                     🚨 Info Gerbang - {item.id_alat} - {item.id_lokasi}
                   </h2>

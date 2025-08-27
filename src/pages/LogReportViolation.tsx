@@ -170,7 +170,7 @@ const LogReportViolation: React.FC = () => {
                     <th className="px-4 py-3">#</th>
                     <th className="px-4 py-3">Tanggal</th>
                     <th className="px-4 py-3">Plat Nomor</th>
-                    <th className="px-4 py-3">Nama Mobil</th>
+                    <th className="px-4 py-3">Jenis Kendaraan</th>
                     <th className="px-4 py-3">Area</th>
                     <th className="px-4 py-3">Status</th>
                     <th className="px-4 py-3">Keterangan</th>

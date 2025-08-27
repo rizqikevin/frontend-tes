@@ -111,6 +111,10 @@ const KecelakaanPieChart: React.FC = () => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  const uppercaseAll = (str: string) => {
+    return str.toUpperCase();
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       await fetchFaktorData();
@@ -120,7 +124,7 @@ const KecelakaanPieChart: React.FC = () => {
   }, []);
 
   const faktorKecelakaanData = {
-    labels: faktorLabels,
+    labels: [...faktorLabels.map(uppercaseAll)],
     datasets: [
       {
         label: "Faktor Kecelakaan",
@@ -132,7 +136,7 @@ const KecelakaanPieChart: React.FC = () => {
   };
 
   const jenisKecelakaanData = {
-    labels: tipeKecelakaanLabels,
+    labels: [...tipeKecelakaanLabels.map(uppercaseAll)],
     datasets: [
       {
         label: "Jenis Kecelakaan",
@@ -229,17 +233,17 @@ const KecelakaanPieChart: React.FC = () => {
           </Select>
         </div>
 
-        <div className="flex flex-row gap-4 sm:flex-col sm:gap-6 lg:flex-row lg:gap-8">
+        <div className="flex flex-row gap-4 sm:flex-col sm:gap-6 lg:flex-row lg:gap-2">
           {/* Faktor Kecelakaan */}
           {loading ? (
-            <div className="bg-dashboard-accent p-6 rounded-xl shadow-md w-[350px] h-[260px] flex flex-col items-center">
+            <div className="bg-dashboard-accent p-4 rounded-xl shadow-md w-[350px] h-[260px] flex flex-col items-center">
               <div className="flex items-center justify-center h-full">
                 <p className="text-white">Loading...</p>
               </div>
             </div>
           ) : (
             <div
-              className={`bg-dashboard-accent p-6 rounded-xl shadow-md flex flex-col items-center transition-all duration-300
+              className={`bg-dashboard-accent p-4 rounded-xl shadow-md flex flex-col items-center transition-all duration-300
     ${isSidebarCollapsed ? "w-[350px]" : "w-[300px]"} 
     ${isSidebarCollapsed ? "h-[260px]" : "h-[260px]"}
   `}
@@ -260,15 +264,15 @@ const KecelakaanPieChart: React.FC = () => {
 
           {/* Jenis Kecelakaan */}
           {loading ? (
-            <div className="bg-dashboard-accent p-6 rounded-xl shadow-md sm:w-full h-[260px] flex flex-col items-center">
+            <div className="bg-dashboard-accent p-4 rounded-xl shadow-md sm:w-full h-[260px] flex flex-col items-center">
               <div className="flex items-center justify-center h-full">
                 <p className="text-white">Loading...</p>
               </div>
             </div>
           ) : (
             <div
-              className={`bg-dashboard-accent p-6 rounded-xl shadow-md flex flex-col items-center transition-all duration-300
-    ${isSidebarCollapsed ? "w-[350px]" : "w-[300px]"} 
+              className={`bg-dashboard-accent p-4 rounded-xl shadow-md flex flex-col items-center transition-all duration-300
+    ${isSidebarCollapsed ? "w-[320px]" : "w-[290px]"} 
     ${isSidebarCollapsed ? "h-[260px]" : "h-[260px]"}
   `}
             >
