@@ -69,6 +69,7 @@ const MultiXAxisBarChart: React.FC<MultiXAxisBarChartProps> = ({
         font: { size: 14, weight: "bold" },
         align: "start",
       },
+      datalabels: { display: false },
     },
     scales: {
       x: {

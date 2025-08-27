@@ -7,7 +7,7 @@ const DetailKecelakaan: React.FC = () => {
     <div className=" text-white p-0 space-y-4 ">
       <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
         <div className="flex flex-col gap-3">
-          <div className=" bg-dashboard-accent">
+          <div className=" bg-dashboard-accent rounded-lg">
             <StripMapsChart
               title="STRIP MAPS KECELAKAAN"
               labels={[
@@ -34,7 +34,7 @@ const DetailKecelakaan: React.FC = () => {
               ]}
             />{" "}
           </div>
-          <div className=" bg-dashboard-accent">
+          <div className=" bg-dashboard-accent rounded-lg">
             <MultiXAxisChart
               title="DETAIL PENYEBAB KECELAKAAN"
               labels={[
