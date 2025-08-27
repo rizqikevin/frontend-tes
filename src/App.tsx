@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { UserRole } from "./types";
 import IncidentNotification from "./components/IncidentNotification";
@@ -47,11 +47,11 @@ import BebanRuas from "./pages/BebasRuas";
 import { DataVehicle } from "./pages/MasterVehicle";
 import { DataCctv } from "./pages/MasterCctv";
 import { LogAlatPages } from "./pages/LogAlatPages";
-import LogAlat from "./components/logalat/LogAlat";
 import LogAlatDetail from "./components/logalat/LogAlatDetail";
 import { Kecelakaan } from "./pages/Kecelakaan";
 import LogReportViolation from "./pages/LogReportViolation";
 import { LoginOdol } from "./pages/LoginOdol";
+import { isAuthenticated } from "./services/auth-service";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -65,6 +65,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
+            {isAuthenticated()}
             <IncidentNotification />
 
             <Routes>

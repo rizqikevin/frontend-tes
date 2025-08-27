@@ -20,7 +20,7 @@ const incidentIcon = new L.DivIcon({
     </div>
   `,
   iconUrl: "/marker/pulse.png",
-  iconSize: [100, 100],
+  iconSize: [25, 25],
   iconAnchor: [16, 16],
   popupAnchor: [0, -16],
 });
@@ -41,7 +41,7 @@ const marker2 = new L.Icon({
 
 const car = new L.Icon({
   iconUrl: "/icons/car.png",
-  iconSize: [40, 40],
+  iconSize: [25, 15],
   iconAnchor: [16, 16],
   popupAnchor: [0, -16],
 });

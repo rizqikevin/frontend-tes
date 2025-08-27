@@ -20,7 +20,7 @@ const incidentIcon = new L.DivIcon({
     </div>
   `,
   iconUrl: "/marker/pulse.png",
-  iconSize: [100, 100],
+  iconSize: [25, 25],
   iconAnchor: [16, 16],
   popupAnchor: [0, -16],
 });
@@ -41,14 +41,14 @@ const marker2 = new L.DivIcon({
     </div>
   `,
   iconUrl: "/marker/errorToll.png",
-  iconSize: [32, 32],
+  iconSize: [25, 25],
   iconAnchor: [16, 16],
   popupAnchor: [0, -16],
 });
 
 const car = new L.Icon({
   iconUrl: "/icons/Car.svg",
-  iconSize: [40, 40],
+  iconSize: [25, 25],
   iconAnchor: [16, 16],
   popupAnchor: [0, -16],
 });

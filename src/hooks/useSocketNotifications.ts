@@ -60,11 +60,11 @@ export const useSocketNotifications = () => {
       // );
     });
 
-    socket.on("flood:data", (data) => {
-      toast("Peringatan banjir", {
-        description: data.location || "Lokasi tidak diketahui",
-      });
-    });
+    // socket.on("flood:data", (data) => {
+    //   toast("Peringatan banjir", {
+    //     description: data.location || "Lokasi tidak diketahui",
+    //   });
+    // });
 
     return () => {
       socket.off("incident:data");
