@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import LogAlat from "@/components/logalat/LogAlat";
 import { Summary } from "@/components/dashboard/Admin/kecelakaan/Summary";
+import DetailKecelakaan from "@/components/dashboard/Admin/kecelakaan/DetailKecelakaan";
 
 export const Kecelakaan: React.FC = () => {
   const { user, logout } = useAuth();
@@ -51,7 +52,7 @@ export const Kecelakaan: React.FC = () => {
       case "summary":
         return <Summary />;
       case "rekap":
-        return <LogAlat />;
+        return <DetailKecelakaan />;
       default:
         return <Summary />;
     }
@@ -98,7 +99,7 @@ export const Kecelakaan: React.FC = () => {
                 Summary
               </Button>
 
-              {/* <Button
+              <Button
                 onClick={() => setSelectedTab("rekap")}
                 className={`${
                   selectedTab === "rekap"
@@ -106,8 +107,8 @@ export const Kecelakaan: React.FC = () => {
                     : "bg-dashboard-accent text-white"
                 }`}
               >
-                Rekap Kecelakaan
-              </Button> */}
+                Detail
+              </Button>
             </div>
           </div>
           {renderContent()}

@@ -1,5 +1,5 @@
 import api from "@/services/api";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Calendar } from "lucide-react";
 import DatePicker from "react-datepicker";
