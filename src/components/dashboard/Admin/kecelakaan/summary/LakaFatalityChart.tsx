@@ -178,7 +178,7 @@ export const LakaFatalityChart: React.FC = () => {
         <div className="relative h-[440px]">
           <Line data={chartData} options={options} />
         </div>
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <table className="relative -left-10 w-full min-w-[760px] text-sm text-white border-collapse">
             <thead>
               <tr className="text-white text-sm">
@@ -218,7 +218,7 @@ export const LakaFatalityChart: React.FC = () => {
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> */}
       </>
     );
   };

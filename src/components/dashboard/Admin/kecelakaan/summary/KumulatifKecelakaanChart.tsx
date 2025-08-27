@@ -155,7 +155,7 @@ const KumulatifKecelakaanChart: React.FC = () => {
         <div className="relative h-[250px]">
           <Bar data={data.chartData} options={options} />
         </div>
-        <div className="mt-3 relative -left-9">
+        {/* <div className="mt-3 relative -left-9">
           <table className="text-white text-sm w-full min-w-[740px] border-collapse">
             <thead>
               <tr>
@@ -186,7 +186,7 @@ const KumulatifKecelakaanChart: React.FC = () => {
               ))}
             </tbody>
           </table>
-        </div>
+        </div> */}
       </>
     );
   };
