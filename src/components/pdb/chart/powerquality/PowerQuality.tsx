@@ -19,7 +19,7 @@ const PowerQuality: React.FC = () => {
   }, [sensorName]);
 
   return (
-    <div className="flex flex-col gap-1 h-full ">
+    <div className="grid grid-cols-1 md:grid-cols-1 gap-1 h-full ">
       <div className="flex flex-col gap-x-4">
         {data.power_factor.datasets.length > 0 ? (
           <LineChart

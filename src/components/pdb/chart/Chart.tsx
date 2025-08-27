@@ -130,7 +130,7 @@ export const Chart: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-wrap gap-4">
+        <div className="grid grid-cols-5 md:grid-cols-5 sm:grid-cols-2 gap-1">
           <StatsCard title="Total Beban" value={data?.energy} satuan=" kWh" />
           <StatsCard
             title="Demand Rata-rata"

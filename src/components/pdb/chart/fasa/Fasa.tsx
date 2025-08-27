@@ -21,7 +21,7 @@ const Fasa: React.FC = () => {
   // console.log(data.tegangan_per_fasa.datasets[0].label);
 
   return (
-    <div className="flex flex-col gap-1 h-full">
+    <div className="grid grid-cols-1 md:grid-cols-1 gap-1 h-full">
       <div className="flex flex-col gap-4">
         {data.tegangan_per_fasa.datasets.length > 0 ? (
           <LineChart

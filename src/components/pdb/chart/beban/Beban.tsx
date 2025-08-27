@@ -35,7 +35,7 @@ const Beban: React.FC = () => {
   // console.log(data?.active_power.datasets[0].data);
 
   return (
-    <div className="flex flex-col gap-1 h-full ">
+    <div className="grid grid-cols-1 md:grid-cols-1 gap-1 h-full ">
       <div className="flex flex-col gap-x-4">
         {data.active_power.datasets.length > 0 ? (
           <LineChart
