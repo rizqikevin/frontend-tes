@@ -151,7 +151,11 @@ const Dashboard: React.FC = () => {
               <CctvCard
                 title="CCTV"
                 description="Monitoring CCTV"
-                date={start_date}
+                date={
+                  typeof start_date === "string"
+                    ? start_date
+                    : start_date?.toISOString() ?? ""
+                }
                 active={mappedStatusCctv[0]?.total_active || 0}
                 nonActive={mappedStatusCctv[0]?.total_inactive || 0}
               />
@@ -161,7 +165,11 @@ const Dashboard: React.FC = () => {
               <CctvCard
                 title="VMS"
                 description="Monitoring VMS"
-                date={start_date}
+                date={
+                  typeof start_date === "string"
+                    ? start_date
+                    : start_date?.toISOString() ?? ""
+                }
                 active={mappedStatusVMS[0]?.total_active || 0}
                 nonActive={mappedStatusVMS[0]?.total_inactive || 0}
               />

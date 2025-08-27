@@ -105,7 +105,7 @@ export const BebanRuas: React.FC = () => {
               return realLhr;
             });
 
-            console.log(realisasiLhr);
+            // console.log(realisasiLhr);
 
             const persen = targetBussinesPlan
               ? Math.round((segment.lhr / targetBussinesPlan.lhr) * 100)
