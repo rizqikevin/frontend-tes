@@ -52,6 +52,7 @@ import { Kecelakaan } from "./pages/Kecelakaan";
 import LogReportViolation from "./pages/LogReportViolation";
 import { LoginOdol } from "./pages/LoginOdol";
 import { isAuthenticated } from "./services/auth-service";
+import { DashboardSupport } from "./pages/support/DashboardSupport";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -79,6 +80,14 @@ const App = () => {
                 }
               />
               <Route path="/login-wim" element={<LoginOdol />} />
+              <Route
+                path="/dashboard/support"
+                element={
+                  <ProtectedRoute requiredRole={UserRole.SUPPORT}>
+                    <DashboardSupport />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/dashboard/admin"
                 element={

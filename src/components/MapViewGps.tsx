@@ -34,13 +34,39 @@ export const getVehicleIcon = (type: string) => {
       });
     case "truck":
       return new L.Icon({
-        iconUrl: "/icons/truck.png",
+        iconUrl: "/icons/Truck.svg",
         iconSize: [15, 25],
       });
     case "car":
     default:
       return new L.Icon({
         iconUrl: "/icons/Car.svg",
+        iconSize: [25, 25],
+      });
+  }
+};
+
+export const getVehicleIconValid = (type: string) => {
+  switch (type) {
+    case "ambulance":
+      return new L.Icon({
+        iconUrl: "/icons/AmbulanceValid.svg",
+        iconSize: [25, 25],
+      });
+    case "rescue":
+      return new L.Icon({
+        iconUrl: "/icons/TowingValid.svg",
+        iconSize: [25, 25],
+      });
+    case "truck":
+      return new L.Icon({
+        iconUrl: "/icons/TruckValid.svg",
+        iconSize: [25, 25],
+      });
+    case "car":
+    default:
+      return new L.Icon({
+        iconUrl: "/icons/CarValid.svg",
         iconSize: [25, 25],
       });
   }
@@ -62,11 +88,11 @@ export const getVehicleIconOutOfBounds = (type: string) => {
         className: "incident-pulse-icon",
         html: `
     <div class="blink-container">
-      <img src="/icons/Truck.svg" class="blink-icon-img" />
+      <img src="/icons/TruckValid.svg" class="blink-icon-img" />
       <div class="pulse-circle"></div>
     </div>
   `,
-        iconUrl: "/icons/Truck.svg",
+        iconUrl: "/icons/TruckValid.svg",
         iconSize: [15, 25],
       });
     case "car":
@@ -75,11 +101,11 @@ export const getVehicleIconOutOfBounds = (type: string) => {
         className: "incident-pulse-icon",
         html: `
     <div class="blink-container">
-      <img src="/icons/Car.svg" class="blink-icon-img" />
+      <img src="/icons/CarValid.svg" class="blink-icon-img" />
       <div class="pulse-circle"></div>
     </div>
   `,
-        iconUrl: "/icons/Car.svg",
+        iconUrl: "/icons/CarValid.svg",
         iconSize: [25, 25],
       });
   }
@@ -328,10 +354,15 @@ export default function MapViewGps({
         const point = turf.point([lon, lat]);
         const isInside = turf.booleanPointInPolygon(point, polygon);
 
-        const icon =
-          isInside || vehicle.is_valid
-            ? getVehicleIcon(vehicle.type)
-            : getVehicleIconOutOfBounds(vehicle.type);
+        let icon;
+
+        if (vehicle.is_valid && !isInside) {
+          icon = getVehicleIconValid(vehicle.type);
+        } else if (!vehicle.is_valid && !isInside) {
+          icon = getVehicleIconOutOfBounds(vehicle.type);
+        } else {
+          icon = getVehicleIcon(vehicle.type);
+        }
 
         return (
           <SmoothMarker

@@ -147,10 +147,11 @@ const Odol: React.FC = () => {
               <div>
                 {isSupport && (
                   <div>
-                    <h1 className="text-4xl font-semibold">ODOL Dashboard </h1>
-                    <p className="text-sm text-gray-400">
-                      Pantau Setiap Detail ODOL
-                    </p>
+                    <Link to={"/dashboard/support"}>
+                      <Button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-gray-200">
+                        Kembali
+                      </Button>
+                    </Link>
                   </div>
                 )}
 

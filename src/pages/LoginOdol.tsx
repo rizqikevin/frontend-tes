@@ -60,7 +60,7 @@ export const LoginOdol = () => {
           } else if (role === UserRole.DIREKSI) {
             navigate("/dashboard/direksi", { replace: true });
           } else if (role === UserRole.SUPPORT) {
-            navigate("/odol", { replace: true });
+            navigate("/dashboard/support", { replace: true });
           } else {
             toast.error("Role tidak dikenali");
           }
