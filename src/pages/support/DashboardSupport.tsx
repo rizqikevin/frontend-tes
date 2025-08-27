@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
-import GeographicInfoSystem from "@/components/dashboard/GeographicInfoSystem/GeographicInfoSystem";
-import TransactionOverview2 from "@/components/dashboard/TransactionOverview2/Bagian1";
 import { OverloadOverDimention } from "@/components/dashboard/OverloadOverDimention/OverloadOverDimention";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
@@ -10,18 +8,13 @@ import { subDays } from "date-fns";
 import Header from "@/components/Header";
 import DatePicker from "react-datepicker";
 import { useDateFilterStore } from "@/stores/useDateFilterStore";
-import { Bagian1 } from "@/components/dashboard/TransactionOverview2/Bagian1";
-import { Bagian2 } from "@/components/dashboard/TransactionOverview2/Bagian2";
 import { Link } from "react-router-dom";
 
 export const DashboardSupport: React.FC = () => {
   const { user, logout } = useAuth();
   const [startDate, setStartDate] = useState<Date>(subDays(new Date(), 1));
   const [endDate, setEndDate] = useState<Date>(subDays(new Date(), 1));
-  const [selectedTab, setSelectedTab] = useState<"bagian1" | "bagian2">(
-    "bagian1"
-  );
-  const [selectedView, setSelectedView] = useState("overload");
+  const [selectedView] = useState("overload");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
@@ -65,49 +58,23 @@ export const DashboardSupport: React.FC = () => {
 
   const isDark = theme === "dark";
 
-  useEffect(() => {
-    if (selectedView !== "transaction") {
-      setSelectedTab(null);
-    } else if (selectedTab === null) {
-      setSelectedTab("bagian1");
-    }
-  }, [selectedView]);
-
   const getViewTitle = () => {
     switch (selectedView) {
-      case "geographic":
-        return "Geographic Informasi Sistem";
-      case "transaction":
-        return "Transaction Overview";
       case "overload":
-        return "Overload - Over Dimention";
+        return "ODOL Dashboard";
       default:
-        return "Transaction Overview";
+        return "TOverload - Over Dimention";
     }
   };
 
   const getViewDescription = () => {
     switch (selectedView) {
-      case "geographic":
-        return "Pantau detail dari setiap kejadian";
-      case "transaction":
-        return "Pantau setiap detail transaksi";
       case "overload":
         return "Monitoring kendaraan berlebih muatan dan dimensi";
-      default:
-        return "Pantau setiap detail transaksi";
     }
   };
   const renderContent = () => {
     switch (selectedView) {
-      case "geographic":
-        return <GeographicInfoSystem />;
-      case "transaction":
-        return selectedTab === "bagian1" ? (
-          <Bagian1 selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-        ) : (
-          <Bagian2 selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-        );
       case "overload":
         return <OverloadOverDimention />;
       default:
