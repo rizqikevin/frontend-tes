@@ -39,9 +39,8 @@ const IncidentCard: React.FC = () => {
 
       <div className="space-y-3 max-h-[250px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-600">
         {data.slice(0, 100).map((incident) => (
-          <div className="grid grid-cols-1 gap-1">
+          <div key={incident.id} className="grid grid-cols-1 gap-1">
             <div
-              key={incident.id}
               className="bg-[#3A3A3C] p-3 grid grid-cols-1 gap-2 rounded-lg"
             >
               <div className="rounded-lg flex justify-between items-start mb-2">
@@ -80,8 +79,8 @@ const IncidentCard: React.FC = () => {
                       Kendaraan Terdekat:
                     </p>
                     <ul className="list-disc ml-4 space-y-1">
-                      {vehiclesNearIncidents[incident.id]?.map((vehicle, i) => (
-                        <li key={i}>
+                      {vehiclesNearIncidents[incident.id]?.map((vehicle) => (
+                        <li key={vehicle.radio_id}>
                           {vehicle.vehicle_name} - {vehicle.vehicle_number}
                         </li>
                       ))}
