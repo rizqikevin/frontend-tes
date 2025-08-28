@@ -41,7 +41,7 @@ api3.interceptors.request.use(
 // Create axios instance
 export const api = axios.create({
   baseURL: API_URL,
-  timeout: 50000,
+  timeout: 100000,
   headers: {
     "Content-Type": "application/json",
   },

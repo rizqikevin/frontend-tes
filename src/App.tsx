@@ -56,7 +56,14 @@ import { DashboardSupport } from "./pages/support/DashboardSupport";
 const queryClient = new QueryClient();
 
 const App = () => {
-  useSocketNotifications();
+  isAuthenticated();
+
+  if (UserRole.SUPPORT) {
+    console.log("support tidak di izinkan melihat notifikasi");
+  } else {
+    useSocketNotifications();
+  }
+
   // useIncidentSpeech();
 
   return (
@@ -66,7 +73,6 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
-            {isAuthenticated()}
             <IncidentNotification />
 
             <Routes>

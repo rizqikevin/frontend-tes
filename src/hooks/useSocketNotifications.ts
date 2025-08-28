@@ -6,6 +6,9 @@ import {
 } from "@/stores/useNotificationStore";
 import { toast } from "sonner";
 import { camLocationMap } from "@/components/dashboard/Admin/dummydata/camLocations";
+import { isAuthenticated } from "@/services/auth-service";
+import { User } from "lucide-react";
+import { UserRole } from "@/types";
 
 const socket = io(import.meta.env.VITE_SOCKET_URL, {
   transports: ["websocket"],
@@ -31,7 +34,7 @@ export const useSocketNotifications = () => {
         (description.includes("Stop Vehicle in Fluid Traffic") &&
           settings.stopInFluid);
 
-      if (!shouldNotify) return;
+      if (!shouldNotify || !isAuthenticated()) return;
 
       addPopupIncident({
         id: data.id,
@@ -60,11 +63,15 @@ export const useSocketNotifications = () => {
       // );
     });
 
-    // socket.on("flood:data", (data) => {
-    //   toast("Peringatan banjir", {
-    //     description: data.location || "Lokasi tidak diketahui",
-    //   });
-    // });
+    const isSupport = UserRole.SUPPORT;
+
+    if (isSupport || !isAuthenticated()) return;
+
+    socket.on("flood:data", (data) => {
+      toast("Peringatan banjir", {
+        description: data.location || "Lokasi tidak diketahui",
+      });
+    });
 
     return () => {
       socket.off("incident:data");
