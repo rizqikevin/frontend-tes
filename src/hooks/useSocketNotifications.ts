@@ -6,9 +6,8 @@ import {
 } from "@/stores/useNotificationStore";
 import { toast } from "sonner";
 import { camLocationMap } from "@/components/dashboard/Admin/dummydata/camLocations";
-import { isAuthenticated } from "@/services/auth-service";
-import { User } from "lucide-react";
 import { UserRole } from "@/types";
+import { useAuth } from "@/context/AuthContext";
 
 const socket = io(import.meta.env.VITE_SOCKET_URL, {
   transports: ["websocket"],
@@ -34,7 +33,7 @@ export const useSocketNotifications = () => {
         (description.includes("Stop Vehicle in Fluid Traffic") &&
           settings.stopInFluid);
 
-      if (!shouldNotify || !isAuthenticated()) return;
+      if (!shouldNotify) return;
 
       addPopupIncident({
         id: data.id,
@@ -64,15 +63,24 @@ export const useSocketNotifications = () => {
     });
 
     socket.on("flood:data", (data) => {
-      const isSupport = UserRole.SUPPORT;
-      if (isSupport && !isAuthenticated()) return console.log("Not Allowed");
+      const { user } = useAuth();
+
+      if (!user) {
+        return null;
+      }
+
+      const isSupport = user.role === UserRole.SUPPORT;
+      console.log(isSupport);
 
       if (!isSupport) {
-        console.log("notifikasi banjir", data.location);
-        toast("Peringatan banjir", {
-          description: data.location || "Lokasi tidak diketahui",
-        });
+        console.log("Not Allowed");
+        return;
       }
+
+      console.log("notifikasi banjir", data);
+      toast("Peringatan banjir", {
+        description: data.location || "Lokasi tidak diketahui",
+      });
     });
 
     return () => {

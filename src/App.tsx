@@ -51,14 +51,13 @@ import LogAlatDetail from "./components/logalat/LogAlatDetail";
 import { Kecelakaan } from "./pages/Kecelakaan";
 import LogReportViolation from "./pages/LogReportViolation";
 import { LoginOdol } from "./pages/LoginOdol";
-import { isAuthenticated } from "./services/auth-service";
 import { DashboardSupport } from "./pages/support/DashboardSupport";
 const queryClient = new QueryClient();
 
 const App = () => {
   if (UserRole.DIREKSI && UserRole.ADMIN) {
     useSocketNotifications();
-  } else {
+  } else if (UserRole.SUPPORT) {
     console.log("support tidak di izinkan melihat notifikasi");
   }
 
