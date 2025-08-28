@@ -26,9 +26,6 @@ export const StatusDougnut: React.FC<statusDougnutProps> = ({
   const [dataApi, setDataApi] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  console.log("start", start);
-  console.log("end", end);
-
   useEffect(() => {
     const fetchData = async () => {
       try {

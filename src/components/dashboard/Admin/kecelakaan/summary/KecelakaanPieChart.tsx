@@ -194,12 +194,12 @@ const KecelakaanPieChart: React.FC = () => {
           const value = context.chart.data.datasets[0].data[context.dataIndex];
           return `${uppercaseFirst(label)}\n(${value})`;
         },
-        anchor: "end",
+        anchor: "start",
         align: "start",
         offset: 12,
         font: {
           weight: "bold",
-          size: 13,
+          size: 10,
         },
       },
       tooltip: {
