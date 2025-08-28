@@ -2,6 +2,7 @@ import React from "react";
 import KecelakaanPieChart from "./summary/KecelakaanPieChart";
 import { KecelakaanBarChart } from "./summary/KecelakaanBarChart";
 import LakaFatalityChart from "./summary/LakaFatalityChart";
+import { ComparisonChart5 } from "../../OverloadOverDimention/ComparisonChart5";
 
 export const Summary: React.FC = () => {
   return (
@@ -15,11 +16,6 @@ export const Summary: React.FC = () => {
           <div className="flex flex-row-12">
             <LakaFatalityChart />
           </div>
-        </div>
-      </div>
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-12 grid grid-cols-12 gap-4">
-          <div className="col-span-5">{/* <ComparisonChart5 /> */}</div>
         </div>
       </div>
     </div>

@@ -275,7 +275,10 @@ const StatusAlat: React.FC = () => {
                           }`}
                         >
                           {item.last_status === "off"
-                            ? dayjs(item.insert_at).fromNow(false)
+                            ? dayjs(item.insert_at)
+                                .tz("Asia/Jakarta")
+                                .fromNow(false)
+                                .replace(" days", " hari")
                             : item.last_status === "on"
                             ? "Normal"
                             : "Normal"}

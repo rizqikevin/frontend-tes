@@ -30,7 +30,10 @@ const GeographicInfoSystem: React.FC = () => {
     waktu: dayjs(item.insert_at).format("DD/MM/YYYY, HH:mm:ss") + " WIB",
     lamaError:
       item.last_status === "off"
-        ? dayjs(item.insert_at).fromNow(true)
+        ? dayjs(item.insert_at)
+            .tz("Asia/Jakarta")
+            .fromNow(true)
+            .replace(" days", " hari")
         : "Normal",
     status:
       item.last_status === "off"
