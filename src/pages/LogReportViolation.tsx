@@ -20,6 +20,7 @@ interface LogReportViolation {
   area: string;
   updated_at: string;
   created_at: string;
+  status: string;
   reason: string;
   vehicle_number: string;
   vehicle_name: string;
@@ -178,6 +179,7 @@ const LogReportViolation: React.FC = () => {
                     <th className="px-4 py-3">Tanggal</th>
                     <th className="px-4 py-3">Plat Nomor</th>
                     <th className="px-4 py-3">Jenis Kendaraan</th>
+                    <th className="px-4 py-3">Lokasi</th>
                     <th className="px-4 py-3">Area</th>
                     <th className="px-4 py-3">Status</th>
                     <th className="px-4 py-3">Keterangan</th>
@@ -209,6 +211,7 @@ const LogReportViolation: React.FC = () => {
                         <td className="px-5 py-3">{item.vehicle_number}</td>
                         <td className="px-5 py-3">{item.vehicle_name}</td>
                         <td className="px-5 py-3">{item.area}</td>
+                        <td className="px-5 py-3">{item.status}</td>
                         <td
                           className={` mt-5 px-2 py-5 w-[100px] max-h-4 inline-flex rounded-lg text-sm font-medium text-white items-center justify-center text-center ${
                             item.reason === null ? "bg-red-500" : "bg-green-500"
