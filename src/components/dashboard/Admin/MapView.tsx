@@ -241,9 +241,25 @@ export default function MapView() {
                     <span className="font-semibold">Lokasi:</span>{" "}
                     {item.id_lokasi}
                   </p>
-                  <p className="mb-1">
-                    <span className="font-semibold">Status:</span>{" "}
-                    {item.last_status || "-"}
+
+                  <p className="mb-1 font-semibold">
+                    Status :{" "}
+                    <span
+                      className={`font-semibold ${
+                        item.last_status === "off"
+                          ? "text-red-400"
+                          : "text-green-400"
+                      }`}
+                    >
+                      {item.last_status === "off" ? "◉ Offline" : "◉ Online"}
+                    </span>
+                  </p>
+                  <p className="mb-2">
+                    <Link to={`/log-alat`}>
+                      <button className="mt-3 w-full bg-blue-600 text-white py-1.5 rounded hover:bg-blue-700">
+                        Selengkapnya
+                      </button>
+                    </Link>
                   </p>
                 </div>
               </Popup>

@@ -39,47 +39,52 @@ const IncidentCard: React.FC = () => {
 
       <div className="space-y-3 max-h-[250px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-600">
         {data.slice(0, 100).map((incident) => (
-          <div
-            key={incident.id}
-            className="bg-[#3A3A3C] p-3 rounded-lg flex justify-between items-start"
-          >
-            <div className="flex items-start gap-3">
-              <Button
-                variant="ghost"
-                onClick={() => setExpandedVideo(incident.url_video)}
-              >
-                <img
-                  src={incident.url_image}
-                  alt="preview"
-                  className="w-14 h-14 rounded-sm"
-                />
-              </Button>
+          <div className="grid grid-cols-1 gap-2">
+            <div
+              key={incident.id}
+              className="bg-[#3A3A3C] p-3 rounded-lg flex justify-between items-start"
+            >
+              <div className="flex items-start gap-3">
+                <Button
+                  variant="ghost"
+                  onClick={() => setExpandedVideo(incident.url_video)}
+                >
+                  <img
+                    src={incident.url_image}
+                    alt="preview"
+                    className="w-14 h-14 rounded-sm"
+                  />
+                </Button>
 
-              <div className="text-xs">
-                <p className="font-semibold mb-0.5">{incident.description}</p>
-                <p className="text-gray-400">{incident.cam_loc}</p>
+                <div className="text-xs">
+                  <p className="font-semibold mb-0.5">{incident.description}</p>
+                  <p className="text-gray-400">{incident.cam_loc}</p>
+                </div>
+              </div>
+
+              <span className="text-xs text-gray-400 mt-1 whitespace-nowrap">
+                {new Date(incident.time_logging).toLocaleTimeString("id-ID", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+              <div className="flex items-start">
+                {vehiclesNearIncidents[incident.id]?.length > 0 && (
+                  <div className="ml-1 text-gray-300 text-xs">
+                    <p className="font-semibold text-white mb-1">
+                      Kendaraan Terdekat:
+                    </p>
+                    <ul className="list-disc ml-4 space-y-1">
+                      {vehiclesNearIncidents[incident.id]?.map((vehicle, i) => (
+                        <li key={i}>
+                          {vehicle.vehicle_name} - {vehicle.vehicle_number}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
-            {vehiclesNearIncidents[incident.id]?.length > 0 && (
-              <div className="ml-1 text-gray-300 text-xs">
-                <p className="font-semibold text-white mb-1">
-                  Kendaraan Terdekat:
-                </p>
-                <ul className="list-disc ml-4 space-y-1">
-                  {vehiclesNearIncidents[incident.id]?.map((vehicle, i) => (
-                    <li key={i}>
-                      {vehicle.vehicle_name} - {vehicle.vehicle_number}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <span className="text-xs text-gray-400 mt-1 whitespace-nowrap">
-              {new Date(incident.time_logging).toLocaleTimeString("id-ID", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </span>
           </div>
         ))}
         {data.length === 0 && (

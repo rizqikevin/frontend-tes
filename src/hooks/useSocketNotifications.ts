@@ -63,14 +63,16 @@ export const useSocketNotifications = () => {
       // );
     });
 
-    const isSupport = UserRole.SUPPORT;
-
-    if (isSupport || !isAuthenticated()) return;
-
     socket.on("flood:data", (data) => {
-      toast("Peringatan banjir", {
-        description: data.location || "Lokasi tidak diketahui",
-      });
+      const isSupport = UserRole.SUPPORT;
+      if (isSupport && !isAuthenticated()) return console.log("Not Allowed");
+
+      if (!isSupport) {
+        console.log("notifikasi banjir", data.location);
+        toast("Peringatan banjir", {
+          description: data.location || "Lokasi tidak diketahui",
+        });
+      }
     });
 
     return () => {

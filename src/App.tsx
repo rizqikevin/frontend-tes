@@ -56,12 +56,10 @@ import { DashboardSupport } from "./pages/support/DashboardSupport";
 const queryClient = new QueryClient();
 
 const App = () => {
-  isAuthenticated();
-
-  if (UserRole.SUPPORT) {
-    console.log("support tidak di izinkan melihat notifikasi");
-  } else {
+  if (UserRole.DIREKSI && UserRole.ADMIN) {
     useSocketNotifications();
+  } else {
+    console.log("support tidak di izinkan melihat notifikasi");
   }
 
   // useIncidentSpeech();
