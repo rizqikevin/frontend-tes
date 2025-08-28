@@ -20,6 +20,12 @@ import ViolationValidationModal from "./ViolationValidationModal";
 import { useAuth } from "@/context/AuthContext";
 import { UserRole } from "@/types";
 
+interface Violation extends VehicleData {
+  id: string;
+  reason: string | null;
+  area: string;
+}
+
 export const getVehicleIcon = (type: string) => {
   switch (type) {
     case "ambulance":
@@ -197,6 +203,28 @@ export default function MapViewGps({
           toast.success(
             `Status kendaraan ${vehicle.vehicle_name} (${vehicle.radio_id}) telah diubah menjadi "masuk".`
           );
+
+          try {
+            const response = await api.get("/violation/vehicle");
+            const violations: Violation[] = response.data.data || response.data;
+            const violationToUpdate = violations.find(
+              (v) => v.radio_id === vehicle.radio_id
+            );
+
+            console.log(violationToUpdate);
+
+            if (violationToUpdate) {
+              await api.patch(`/violation/vehicle/${violationToUpdate.id}`, {
+                time_in: true,
+              });
+              toast.info(
+                `Catatan pelanggaran untuk ${vehicle.vehicle_name} telah diperbarui.`
+              );
+            }
+          } catch (error) {
+            console.error("Gagal memperbarui catatan pelanggaran:", error);
+            toast.error("Gagal memperbarui catatan pelanggaran.");
+          }
         }
 
         if (

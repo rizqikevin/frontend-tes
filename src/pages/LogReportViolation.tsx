@@ -3,6 +3,10 @@ import DashboardSidebar from "@/components/DashboardSidebar";
 import Header from "@/components/Header";
 import api from "@/services/api";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 import DatePicker from "react-datepicker";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
@@ -19,6 +23,9 @@ interface LogReportViolation {
   reason: string;
   vehicle_number: string;
   vehicle_name: string;
+  duration_minutes: string;
+  time_in: string;
+  time_out: string;
 }
 
 const LogReportViolation: React.FC = () => {
@@ -174,6 +181,9 @@ const LogReportViolation: React.FC = () => {
                     <th className="px-4 py-3">Area</th>
                     <th className="px-4 py-3">Status</th>
                     <th className="px-4 py-3">Keterangan</th>
+                    <th className="px-4 py-3">Jam Keluar</th>
+                    <th className="px-4 py-3">Jam Masuk</th>
+                    <th className="px-4 py-3">Lama Keluar</th>
                     <th className="px-4 py-3">Action</th>
                   </tr>
                 </thead>
@@ -209,6 +219,33 @@ const LogReportViolation: React.FC = () => {
                         <td className="px-5 py-3">
                           {!item.reason ? "Belum Validasi" : item.reason}
                         </td>
+                        {item.time_out !== null ? (
+                          <td className="px-5 py-3">
+                            {dayjs(item.time_out)
+                              .tz("Asia/Jakarta")
+                              .format("HH:mm:ss")}
+                          </td>
+                        ) : (
+                          <td className="px-5 py-3">-</td>
+                        )}
+
+                        {item.time_in !== null ? (
+                          <td className="px-5 py-3">
+                            {dayjs(item.time_in)
+                              .tz("Asia/Jakarta")
+                              .format("HH:mm:ss")}
+                          </td>
+                        ) : (
+                          <td className="px-5 py-3">-</td>
+                        )}
+                        {item.duration_minutes !== null ? (
+                          <td className="px-5 py-3">
+                            {item.duration_minutes} menit
+                          </td>
+                        ) : (
+                          <td className="px-5 py-3">-</td>
+                        )}
+
                         <td className="px-5 py-3">
                           <Button
                             className="bg-yellow-500 text-white rounded hover:bg-yellow-600"

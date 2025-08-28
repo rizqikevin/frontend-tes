@@ -6,8 +6,6 @@ import {
 } from "@/stores/useNotificationStore";
 import { toast } from "sonner";
 import { camLocationMap } from "@/components/dashboard/Admin/dummydata/camLocations";
-import { UserRole } from "@/types";
-import { useAuth } from "@/context/AuthContext";
 
 const socket = io(import.meta.env.VITE_SOCKET_URL, {
   transports: ["websocket"],
@@ -63,24 +61,24 @@ export const useSocketNotifications = () => {
     });
 
     socket.on("flood:data", (data) => {
-      const { user } = useAuth();
+      // const { user } = useAuth();
 
-      if (!user) {
-        return null;
-      }
+      // if (!user) {
+      //   return null;
+      // }
 
-      const isSupport = user.role === UserRole.SUPPORT;
-      console.log(isSupport);
+      // const isSupport = user.role === UserRole.SUPPORT;
+      // console.log(isSupport);
 
-      if (!isSupport) {
-        console.log("Not Allowed");
-        return;
-      }
+      // if (!isSupport) {
+      //   console.log("Not Allowed");
+      //   return;
+      // }
 
       console.log("notifikasi banjir", data);
-      toast("Peringatan banjir", {
-        description: data.location || "Lokasi tidak diketahui",
-      });
+      // toast("Peringatan banjir", {
+      //   description: data.location || "Lokasi tidak diketahui",
+      // });
     });
 
     return () => {
