@@ -123,7 +123,7 @@ export const Floods: React.FC = () => {
                     : "bg-dashboard-accent text-white"
                 }`}
               >
-                Daily
+                Log
               </Button>
               {/* <Button
                 onClick={() => setSelectedTab("monthly")}

@@ -113,7 +113,7 @@ export const Pdb: React.FC = () => {
               >
                 Daily
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => setSelectedTab("monthly")}
                 className={`${
                   selectedTab === "monthly"
@@ -132,7 +132,7 @@ export const Pdb: React.FC = () => {
                 }`}
               >
                 Yearly
-              </Button>
+              </Button> */}
             </div>
             {/* <div className="bg-dashboard-accent rounded-lg p-1 flex items-center">
               <Button className="bg-dashboard-accent text-white">Search</Button>
