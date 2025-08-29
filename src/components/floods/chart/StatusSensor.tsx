@@ -1,9 +1,10 @@
 import React from "react";
 
-const StatusSensor: React.FC = () => {
-  // dummy data
-  const sensors = ["Flood_Sensor_1", "Flood_Sensor_2"];
+interface StatusSensorProps {
+  sensors: string[];
+}
 
+const StatusSensor: React.FC<StatusSensorProps> = ({ sensors }) => {
   return (
     <div className="w-full text-white rounded-md p-0 flex flex-col gap-4">
       {/* Row atas - Threshold Inputs */}
