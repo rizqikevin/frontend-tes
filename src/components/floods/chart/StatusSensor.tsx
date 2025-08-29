@@ -5,6 +5,10 @@ interface StatusSensorProps {
 }
 
 const StatusSensor: React.FC<StatusSensorProps> = ({ sensors }) => {
+  const dummySensor = ["Flood_Sensor_2", "Flood_Sensor_3"];
+
+  const spreadsensor = [...sensors, ...dummySensor];
+
   return (
     <div className="w-full text-white rounded-md p-0 flex flex-col gap-4">
       {/* Row atas - Threshold Inputs */}
@@ -57,7 +61,7 @@ const StatusSensor: React.FC<StatusSensorProps> = ({ sensors }) => {
         {/* Row kedua - Sensor selector + detail box */}
         <div className="flex items-center mt-4 mb-4 gap-2">
           <span className="text-sm">Sensor :</span>
-          {sensors.map((s) => (
+          {spreadsensor.map((s) => (
             <span
               key={s}
               className="bg-orange-600 px-3 py-1 rounded-full text-xs cursor-pointer"
