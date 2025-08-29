@@ -15,6 +15,7 @@ const Chart: React.FC = () => {
   const data = useChartFloodStore((state) => state.data);
   const fetchChartData = useChartFloodStore((state) => state.fetchChartData);
   const sensor = optionsSensor.map((item) => item.sensor_name);
+  const sensorTambahan = [...sensor, "Flood_Sensor_2", "Flood_Sensor_3"];
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -78,7 +79,7 @@ const Chart: React.FC = () => {
       </div>
       {/* Status Sensor Section */}
       <div className="w-full  text-white rounded-md p-0">
-        <StatusSensor sensors={sensor} />
+        <StatusSensor sensors={sensorTambahan} />
       </div>
 
       {/* Level Air Section */}

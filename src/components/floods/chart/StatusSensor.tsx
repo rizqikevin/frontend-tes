@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 interface StatusSensorProps {
   sensors: string[];
 }
 
 const StatusSensor: React.FC<StatusSensorProps> = ({ sensors }) => {
-  const dummySensor = ["Flood_Sensor_2", "Flood_Sensor_3"];
+  const [selectedSensor, setSelectedSensor] = useState<string>("");
 
-  const spreadsensor = [...sensors, ...dummySensor];
+  useEffect(() => {
+    if (sensors && sensors.length > 0) {
+      setSelectedSensor(sensors[0]);
+    }
+  }, [sensors]);
+
+  const getSensorDetails = (sensorName: string) => {
+    return {
+      name: sensorName,
+      date: "23 sampel",
+      zero: "0%",
+      maxGap: "3 menit",
+      flatLine: "Tidak",
+    };
+  };
+
+  const sensorDetails = selectedSensor
+    ? getSensorDetails(selectedSensor)
+    : null;
 
   return (
     <div className="w-full text-white rounded-md p-0 flex flex-col gap-4">
-      {/* Row atas - Threshold Inputs */}
       <div className="bg-dashboard-accent p-4 rounded-md">
         <div className="grid grid-cols-5 gap-4">
           <div>
@@ -61,47 +79,39 @@ const StatusSensor: React.FC<StatusSensorProps> = ({ sensors }) => {
         {/* Row kedua - Sensor selector + detail box */}
         <div className="flex items-center mt-4 mb-4 gap-2">
           <span className="text-sm">Sensor :</span>
-          {spreadsensor.map((s) => (
-            <span
+          {sensors.map((s) => (
+            <Button
+              onClick={() => setSelectedSensor(s)}
               key={s}
-              className="bg-orange-600 px-3 py-1 rounded-full text-xs cursor-pointer"
+              className={`px-3 py-1 rounded-full text-xs cursor-pointer ${
+                selectedSensor === s
+                  ? "bg-orange-600"
+                  : "bg-gray-600 hover:bg-gray-500"
+              }`}
             >
               {s}
-            </span>
+            </Button>
           ))}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          {/* Sensor 1 */}
-          <div className="bg-[#3b3b3b] rounded-md p-4 text-sm space-y-7">
-            <h3 className="font-semibold">Flood_Sensor_1</h3>
-            <div className="grid grid-cols-2 gap-y-1">
-              <span>Date</span>
-              <span>: 23 sampel</span>
-              <span>Zero (Kering)</span>
-              <span>: 0%</span>
-              <span>Max Gap</span>
-              <span>: 3 menit</span>
-              <span>Flat-linr</span>
-              <span>: Tidak</span>
+        {sensorDetails && (
+          <div className="grid grid-cols-1 gap-4">
+            {/* Sensor Detail */}
+            <div className="bg-[#3b3b3b] rounded-md p-4 text-sm space-y-7">
+              <h3 className="font-semibold">{sensorDetails.name}</h3>
+              <div className="grid grid-cols-2 gap-y-1">
+                <span>Date</span>
+                <span>: {sensorDetails.date}</span>
+                <span>Zero (Kering)</span>
+                <span>: {sensorDetails.zero}</span>
+                <span>Max Gap</span>
+                <span>: {sensorDetails.maxGap}</span>
+                <span>Flat-linr</span>
+                <span>: {sensorDetails.flatLine}</span>
+              </div>
             </div>
           </div>
-
-          {/* Sensor 2 */}
-          <div className="bg-[#3b3b3b] rounded-md p-4 text-sm space-y-2">
-            <h3 className="font-semibold">Flood_Sensor_2</h3>
-            <div className="grid grid-cols-2 gap-y-1">
-              <span>Date</span>
-              <span>: 23 sampel</span>
-              <span>Zero (Kering)</span>
-              <span>: 0%</span>
-              <span>Max Gap</span>
-              <span>: 3 menit</span>
-              <span>Flat-linr</span>
-              <span>: Tidak</span>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
       {/* Row ketiga - Summary boxes */}
       <div className="grid grid-cols-4 gap-4 text-sm">
@@ -138,8 +148,8 @@ const StatusSensor: React.FC<StatusSensorProps> = ({ sensors }) => {
         <div className="bg-[#3b3b3b] rounded-md p-4">
           <div className="flex flex-col gap-4">
             <p className="font-semibold mb-2">Sensor</p>
-            <p>2</p>
-            <p className="text-xs text-gray-400">Terpilih</p>
+            <p>{sensors.length}</p>
+            <p className="text-xs text-gray-400">Total</p>
           </div>
         </div>
       </div>
