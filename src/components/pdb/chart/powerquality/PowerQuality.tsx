@@ -59,7 +59,7 @@ const PowerQuality: React.FC = () => {
         ) : (
           <ChartPlaceholder title="Frekuensi (Hz)" />
         )}
-
+        {/* 
         <LineChart
           title="Imbalance"
           labels={[
@@ -84,7 +84,7 @@ const PowerQuality: React.FC = () => {
               pointRadius: 0,
             },
           ]}
-        />
+        /> */}
       </div>
     </div>
   );
