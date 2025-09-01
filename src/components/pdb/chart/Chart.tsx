@@ -10,7 +10,6 @@ import api from "@/services/api";
 import { usePdbHistoryStore } from "@/stores/useStatsCardPdbStore";
 import { Calendar } from "lucide-react";
 import DatePicker from "react-datepicker";
-import { setTime } from "node_modules/react-datepicker/dist/date_utils";
 
 interface OptionsData {
   sensor_name: string;

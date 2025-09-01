@@ -93,7 +93,7 @@ export const useBebanActiveStore = create<BebanActivePowerState>(
       const res = await api.get(`/sensor/pdb/chart/${type}`, {
         params: {
           sensor_name: sensorName,
-          points: 10,
+          points: 20,
         },
       });
       set({ data: { ...get().data, [type]: res.data?.data } });
