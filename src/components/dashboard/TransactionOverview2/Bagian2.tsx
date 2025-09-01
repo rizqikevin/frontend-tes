@@ -89,32 +89,32 @@ export const Bagian2 = ({
       {/* Charts Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         <BarChart
-          title="Pendapatan vs Prognosa"
+          title="Revenue Target RKAP vs Actual Revenue"
           labels={chartData.revenue["1"].labels}
           datasets={chartData.revenue["1"].series}
         />
         <BarChart
-          title="Pendapatan vs Business Plan"
+          title="Revenue Target Business Plan vs Actual Revenue"
           labels={chartData.revenue["2"].labels}
           datasets={chartData.revenue["2"].series}
         />
         <BarChart
-          title="Pendapatan vs RKAP"
+          title="Revenue Target Prognosa vs Actual Revenue"
           labels={chartData.revenue["3"].labels}
           datasets={chartData.revenue["3"].series}
         />
         <BarChart
-          title="LHR vs Prognosa"
+          title="Target RKAP vs Actual LHR"
           labels={chartData.lhr["1"].labels}
           datasets={chartData.lhr["1"].series}
         />
         <BarChart
-          title="LHR vs Business Plan"
+          title="Target Business Plan vs Actual LHR"
           labels={chartData.lhr["2"].labels}
           datasets={chartData.lhr["2"].series}
         />
         <BarChart
-          title="LHR vs RKAP"
+          title="Target Prognosa vs Actual LHR"
           labels={chartData.lhr["3"].labels}
           datasets={chartData.lhr["3"].series}
         />
