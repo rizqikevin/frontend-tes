@@ -2,18 +2,10 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { login } from "@/services/auth-service";
 import { useNavigate } from "react-router-dom";
-import { AxiosError } from "axios";
-import { decodeJWT } from "../utils/decodeJWT";
 import { UserRole } from "@/types";
 import { TransitionOverlay } from "@/components/TransitionOverlay";
-
-interface ErrorResponse {
-  message: string;
-  status?: number;
-  error?: string;
-}
+import { useAuth } from "@/context/AuthContext";
 
 export const Login = () => {
   const [username, setUsername] = useState("");
@@ -22,6 +14,7 @@ export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [showTransition, setShowTransition] = useState(false);
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,31 +23,17 @@ export const Login = () => {
     try {
       if (!username || !password) {
         toast.error("Email dan password harus diisi");
+        setIsLoading(false);
         return;
       }
 
-      const response = await login({
-        username: username.trim(),
-        password,
-      });
+      const user = await login(username.trim(), password);
 
-      const token = localStorage.getItem("auth_token");
-      let role: number | null = null;
-
-      if (token) {
-        try {
-          const decoded = decodeJWT();
-          role = decoded.user.role;
-        } catch (err) {
-          toast.error("Gagal membaca role dari token");
-          return;
-        }
-      }
-
-      if (response) {
+      if (user) {
         toast.success("Login berhasil");
         setShowTransition(true);
         setTimeout(() => {
+          const role = user.role;
           if (role === UserRole.ADMIN) {
             navigate("/dashboard/admin", { replace: true });
           } else if (role === UserRole.DIREKSI) {
@@ -63,19 +42,14 @@ export const Login = () => {
             navigate("/dashboard/support", { replace: true });
           } else {
             toast.error("Role tidak dikenali");
+            navigate("/", { replace: true });
           }
-          window.location.assign(window.location.href);
         }, 1500);
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        const axiosError = error as AxiosError<ErrorResponse>;
-        toast.error(
-          axiosError.response?.data?.message || "Email atau password salah"
-        );
       } else {
         toast.error("Email atau password salah");
       }
+    } catch (error) {
+      toast.error("Terjadi kesalahan saat login.");
     } finally {
       setIsLoading(false);
     }

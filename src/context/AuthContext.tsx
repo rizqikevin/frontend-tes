@@ -12,10 +12,12 @@ import {
   isAuthenticated,
 } from "../services/auth-service";
 
+type User = ReturnType<typeof getCurrentUser>;
+
 interface AuthContextType {
-  user: ReturnType<typeof getCurrentUser>;
+  user: User;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<User | null>;
   logout: () => void;
 }
 
@@ -37,16 +39,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await authLogin({ username, password });
       const currentUser = getCurrentUser();
       setUser(currentUser);
-      return !!currentUser;
+      return currentUser;
     } catch (error) {
       console.error("Login failed", error);
-      return false;
+      setUser(null);
+      // Manually clear token instead of calling authLogout to avoid page refresh
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("token_cctv");
+      return null;
     }
   };
 
   const logout = () => {
-    setUser(null);
     authLogout();
+    setUser(null);
   };
 
   return (
