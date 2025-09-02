@@ -1,4 +1,5 @@
 import { api } from "@/services/api";
+import { isAuthenticated } from "@/services/auth-service";
 import { create } from "zustand";
 
 interface Light {
@@ -55,13 +56,13 @@ export const useStreetLightStore = create<StreetLightState>((set, get) => ({
       const res = await api.get("/sensor/pju-gateway");
       const data = res.data.data.rows;
       set({ gateways: data });
-      get().fetchLights();
     } catch (error) {
       console.error("Failed to fetch gateways:", error);
     }
   },
 
   fetchLights: async () => {
+    if (!isAuthenticated()) return; // Prevent API call if not authenticated
     try {
       const { selectedGateway, searchTerm } = get();
       const params = new URLSearchParams({
