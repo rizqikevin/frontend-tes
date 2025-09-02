@@ -48,15 +48,36 @@ export const StatusDougnut: React.FC<statusDougnutProps> = ({
 
   if (loading) {
     return (
-      <div className="w-full text-center text-white py-10">
-        Memuat data grafik...
+      <div className="bg-dashboard-accent rounded-lg p-4 shadow-sm text-white w-auto flex flex-col items-center justify-center border border-gray-700 min-h-[358px]">
+        <div className="flex justify-center items-center h-[300px] w-full">
+          <svg
+            className="animate-spin h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4"
+            />
+          </svg>
+        </div>
       </div>
     );
   }
 
   if (!dataApi) {
     return (
-      <div className="w-full text-center text-white py-10">
+      <div className="bg-dashboard-accent rounded-lg p-4 shadow-sm text-white w-auto flex flex-col items-center justify-center border border-gray-700 min-h-[358px]">
         Tidak ada data tersedia
       </div>
     );
@@ -98,7 +119,7 @@ export const StatusDougnut: React.FC<statusDougnutProps> = ({
   };
 
   return (
-    <div className="bg-dashboard-accent  rounded-lg p-4 shadow-sm text-white w-auto h-auto flex flex-col border border-gray-700">
+    <div className="bg-dashboard-accent rounded-lg p-4 shadow-sm text-white w-auto flex flex-col border border-gray-700 min-h-[358px]">
       {/* Title */}
       <div className="flex justify-between mb-4 text-xl font-semibold">
         <span>{title}</span>
