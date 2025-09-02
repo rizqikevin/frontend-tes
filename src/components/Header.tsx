@@ -27,7 +27,11 @@ const Header: React.FC<HeaderProps> = ({ isDark, user, logout }) => {
     setIsLoggingOut(true);
     setTimeout(() => {
       logout();
-      navigate("/", { replace: true });
+      if (user && user.name.toLowerCase() === "support") {
+        navigate("/login-wim", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
     }, 1500);
   };
 
@@ -79,7 +83,10 @@ const Header: React.FC<HeaderProps> = ({ isDark, user, logout }) => {
         </div>
       </header>
       {isLoggingOut &&
-        createPortal(<TransitionOverlay text="Logging out..." />, document.body)}
+        createPortal(
+          <TransitionOverlay text="Logging out..." />,
+          document.body
+        )}
     </>
   );
 };
