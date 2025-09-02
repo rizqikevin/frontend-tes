@@ -60,7 +60,7 @@ export const useSocketNotifications = () => {
       });
 
       socket.on("flood:data", (data) => {
-        console.log(data);
+        // console.log(data);
         toast("Peringatan banjir", {
           description: `Nama Sensor : ${data.sensorName} Ketinggian : ${data.sensorValue} M `,
         });
