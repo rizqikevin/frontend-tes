@@ -84,14 +84,14 @@ export const FormMasterDataVehicle: React.FC = () => {
           <tbody>
             {vehicles.map((vehicle, index) => (
               <tr key={index} className="bg-[#2a2a2a] rounded-md">
-                <td className="px-2 py-2">
-                  {(page - 1) * limit + index + 1}
-                </td>
+                <td className="px-2 py-2">{(page - 1) * limit + index + 1}</td>
                 <td className="px-2 py-2">{vehicle.radio_id}</td>
                 <td className="px-2 py-2">{vehicle.vehicle_number}</td>
                 <td className="px-2 py-2">{vehicle.vehicle_name}</td>
                 <td className="px-2 py-2">{vehicle.status}</td>
-                <td className="px-2 py-2">{vehicle.created_at}</td>
+                <td className="px-2 py-2">
+                  {vehicle.created_at.split("T")[0]}
+                </td>
                 <td className="px-2 py-2">{vehicle.type}</td>
                 <td className="px-2 py-2">{vehicle.target}</td>
                 <td className="px-1 py-2 text-center">
@@ -155,12 +155,16 @@ export const FormMasterDataVehicle: React.FC = () => {
             </button>
             <button
               className="px-2 py-1"
-              onClick={() =>
-                setPage((prev) => Math.min(prev + 1, totalPages))
-              }
+              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
               disabled={page === totalPages || totalPages === 0}
             >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="transform rotate-180">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                className="transform rotate-180"
+              >
                 <path
                   d="M12.5 15L7.5 10L12.5 5"
                   stroke="currentColor"
