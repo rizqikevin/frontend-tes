@@ -18,6 +18,8 @@ type TargetType = "1" | "2" | "3";
 
 interface TransactionChartState {
   chartData: Record<ChartType, Record<TargetType, ChartResponse>>;
+  loading: boolean;
+  error: string | null;
   fetchChartData: (type: ChartType, target_type: TargetType) => Promise<void>;
 }
 
@@ -35,9 +37,13 @@ export const useTransactionChartStore = create<TransactionChartState>(
         "3": { title: "", labels: [], series: [] },
       },
     },
+    loading: false,
+    error: null,
 
     fetchChartData: async (type, target_type) => {
       const { start_date, end_date } = useDateFilterStore.getState();
+
+      set({ loading: true, error: null });
 
       try {
         const res = await api3.get("/tracomm/transaction/graph/compare", {
@@ -45,7 +51,9 @@ export const useTransactionChartStore = create<TransactionChartState>(
         });
 
         const raw = res.data?.data;
-        if (!raw || !Array.isArray(raw.series)) return;
+        if (!raw || !Array.isArray(raw.series)) {
+          throw new Error("Invalid data format");
+        }
 
         const colorPalette = [
           "#42A5F5",
@@ -99,12 +107,17 @@ export const useTransactionChartStore = create<TransactionChartState>(
               [target_type]: mappedData,
             },
           },
+          loading: false,
+          error: null,
         }));
-      } catch (err) {
-        toast.error(
-          `Error fetching chart data for ${type}-${target_type}`,
-          err
-        );
+      } catch (err: any) {
+        const message =
+          err?.response?.data?.message ||
+          err?.message ||
+          "Gagal memuat data chart";
+
+        set({ loading: false, error: message });
+        toast.error(`Error fetching chart data: ${message}`);
       }
     },
   })
