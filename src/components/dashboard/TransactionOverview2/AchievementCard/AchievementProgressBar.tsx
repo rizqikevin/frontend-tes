@@ -136,7 +136,7 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
                     <div
                       className="h-3 rounded-full"
                       style={{
-                        width: `${bar.value}%`,
+                        width: `${Math.min(Number(bar.value), 100)}%`,
                         backgroundColor: bar.color,
                       }}
                     />
