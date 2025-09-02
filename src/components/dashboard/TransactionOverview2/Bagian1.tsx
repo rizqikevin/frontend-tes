@@ -83,7 +83,7 @@ export const Bagian1 = ({
       await fetchChartData("revenue", "3");
     };
 
-    const interval = setInterval(fetchAll, 50000); // realtime setiap 5 menit
+    const interval = setInterval(fetchAll, 100000);
 
     return () => clearInterval(interval);
   }, [start_date, end_date]);
