@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronDown, LogOut } from "lucide-react";
 import {
   DropdownMenu,
@@ -17,6 +18,13 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ isDark, user, logout }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/", { replace: true });
+  };
+
   return (
     <header
       className={`flex justify-end items-center py-1 px-8 ${
@@ -52,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({ isDark, user, logout }) => {
                       ? "text-gray-200 hover:bg-gray-700"
                       : "text-gray-900 hover:bg-gray-100"
                   } flex items-center space-x-2`}
-                  onClick={logout}
+                  onClick={handleLogout}
                 >
                   <LogOut className="h-4 w-4 mr-2" />
                   <span>Logout</span>
