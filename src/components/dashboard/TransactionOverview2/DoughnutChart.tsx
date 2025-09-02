@@ -108,7 +108,7 @@ export const DoughnutChart = ({
                 <div
                   className="h-3 rounded-full transition-all duration-500"
                   style={{
-                    width: `${bar.value}%`,
+                    width: `${Math.min(bar.value, 100)}%`,
                     backgroundColor: bar.color,
                   }}
                 />

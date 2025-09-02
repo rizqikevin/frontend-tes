@@ -119,7 +119,7 @@ export const AchievementRing: React.FC<AchievementRingProps> = ({
               <div
                 className="h-3 rounded-full"
                 style={{
-                  width: `${bar.value}%`,
+                  width: `${Math.min(bar.value, 100)}%`,
                   backgroundColor: bar.color,
                 }}
               />
