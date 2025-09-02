@@ -106,7 +106,7 @@ export const useTransactionStore = create<TransactionStoreState>((set) => ({
           monthly: monthly,
           percent: rkap?.percent_lhr,
           lhr_achievement: data.lhr_achievement,
-          revenueAchievement: data.lhr_achievement,
+          revenueAchievement: data.revenue_achievement,
           rkapTarget: rkap?.revenue_target,
           rkapPercent: parseFloat(rkap.percent),
           otherTargets: others,

@@ -30,7 +30,7 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
   const displayPercent = percent.toFixed(2);
   const percentLHR = LHRPercent.toFixed(2);
 
-  const totalRevenue = Number(achievementData.rkapTarget) || 0;
+  const totalRevenue = Number(achievementData.revenueAchievement) || 0;
   const totalLHR = Number(achievementData.lhr_achievement) || 0;
 
   const colorRevenue = "#FF9800";
@@ -44,16 +44,18 @@ export const AchievementProgressBar: React.FC<AchievementProgressBarProps> = ({
     ],
   }));
 
-  const businessPlan = achievementData.otherTargets.find(
-    (t) => t.target_name === "BUSSINES PLAN"
-  );
-  const prognosa = achievementData.otherTargets.find(
-    (t) => t.target_name === "PROGNOSA"
-  );
-  const BUSINESS_PLAN_REVENUE = businessPlan?.percent ?? 0;
-  const BUSINESS_PLAN_LHR = businessPlan?.percent_lhr ?? 0;
-  const PROGNOSA_REVENUE = prognosa?.percent ?? 0;
-  const PROGNOSA_LHR = prognosa?.percent_lhr ?? 0;
+  // console.log("data", achievementData.revenueAchievement);
+
+  // const businessPlan = achievementData.otherTargets.find(
+  //   (t) => t.target_name === "BUSSINES PLAN"
+  // );
+  // const prognosa = achievementData.otherTargets.find(
+  //   (t) => t.target_name === "PROGNOSA"
+  // );
+  // const BUSINESS_PLAN_REVENUE = businessPlan?.percent ?? 0;
+  // const BUSINESS_PLAN_LHR = businessPlan?.percent_lhr ?? 0;
+  // const PROGNOSA_REVENUE = prognosa?.percent ?? 0;
+  // const PROGNOSA_LHR = prognosa?.percent_lhr ?? 0;
 
   return (
     <div className="text-white p-6 rounded-lg w-full">
