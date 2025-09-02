@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { UserRole } from "./types";
 import IncidentNotification from "./components/IncidentNotification";
@@ -54,15 +54,14 @@ import { LoginOdol } from "./pages/LoginOdol";
 import { DashboardSupport } from "./pages/support/DashboardSupport";
 const queryClient = new QueryClient();
 
+// Component to safely call hooks that need AuthContext
+const AppHooks = () => {
+  useSocketNotifications();
+  useIncidentSpeech();
+  return null; // This component renders nothing
+};
+
 const App = () => {
-  if (UserRole.DIREKSI && UserRole.ADMIN) {
-    useSocketNotifications();
-  } else if (UserRole.SUPPORT) {
-    console.log("support tidak di izinkan melihat notifikasi");
-  }
-
-  // useIncidentSpeech();
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -70,6 +69,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
+            <AppHooks />
             <IncidentNotification />
 
             <Routes>
