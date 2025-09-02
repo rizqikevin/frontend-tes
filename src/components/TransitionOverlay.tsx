@@ -1,6 +1,12 @@
 import { motion } from "framer-motion";
 
-export const TransitionOverlay = () => {
+interface TransitionOverlayProps {
+  text?: string;
+}
+
+export const TransitionOverlay: React.FC<TransitionOverlayProps> = ({
+  text = "Redirecting...",
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -13,10 +19,14 @@ export const TransitionOverlay = () => {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.7, opacity: 0 }}
         transition={{ duration: 0.5 }}
+        className="text-center"
       >
-        <img src="/img/Logo.png" className="w-24 h-24 animate-pulse" />
+        <img
+          src="/img/Logo.png"
+          className="w-24 h-24 animate-pulse mx-auto"
+        />
         <p className="mt-4 text-gray-800 dark:text-white font-semibold">
-          Redirecting...
+          {text}
         </p>
       </motion.div>
     </motion.div>
