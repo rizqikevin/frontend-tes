@@ -291,7 +291,7 @@ export default function MapView() {
           return (
             <Marker key={`vehicle-${index}`} position={[lat, lon]} icon={car}>
               <Popup>
-                <div className="w-[250px] text-black">
+                <div className="w-[250px] text-white">
                   <h4 className="font-bold text-md">{vehicle.vehicle_name}</h4>
                   <p className="text-sm">Plat: {vehicle.vehicle_number}</p>
                   <p className="text-sm">Kecepatan: {vehicle.speed} Km/h</p>

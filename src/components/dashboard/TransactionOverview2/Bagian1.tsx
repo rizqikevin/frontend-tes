@@ -83,9 +83,11 @@ export const Bagian1 = ({
       await fetchChartData("revenue", "3");
     };
 
-    const interval = setInterval(fetchAll, 100000);
+    // const interval = setInterval(fetchAll, 100000);
 
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
+
+    fetchAll();
   }, [start_date, end_date]);
 
   const formatCurrency = (value: number) =>
