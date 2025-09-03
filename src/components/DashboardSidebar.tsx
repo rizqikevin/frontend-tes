@@ -226,15 +226,15 @@ export const DashboardSidebar: React.FC = () => {
                   <SidebarItem
                     icon={<LayoutDashboard size={18} />}
                     text="Dashboard"
-                    to="/dashboard/direksi"
+                    to="/dashboard"
                   />
                 )}
 
                 {isAdmin && (
                   <SidebarItem
                     icon={<LayoutDashboard size={18} />}
-                    text="Dashboard Admin"
-                    to="/dashboard/admin"
+                    text="Dashboard"
+                    to="/dashboard"
                   />
                 )}
               </div>

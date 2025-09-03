@@ -34,12 +34,12 @@ export const Login = () => {
         setShowTransition(true);
         setTimeout(() => {
           const role = user.role;
-          if (role === UserRole.ADMIN) {
-            navigate("/dashboard/admin", { replace: true });
-          } else if (role === UserRole.DIREKSI) {
-            navigate("/dashboard/direksi", { replace: true });
-          } else if (role === UserRole.SUPPORT) {
-            navigate("/dashboard/support", { replace: true });
+          if (
+            role === UserRole.ADMIN ||
+            role === UserRole.DIREKSI ||
+            role === UserRole.SUPPORT
+          ) {
+            navigate("/dashboard", { replace: true });
           } else {
             toast.error("Role tidak dikenali");
             navigate("/", { replace: true });

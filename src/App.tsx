@@ -14,7 +14,7 @@ import "leaflet/dist/leaflet.css";
 
 // Pages
 import { Login } from "./pages/Login";
-import { Dashboard } from "./pages/direksi/Dashboard";
+import DashboardPage from "./pages/DashboardPage";
 import NotFound from "./pages/NotFound";
 import Voip from "./pages/Voip";
 import InputBusiness from "./pages/InputBusiness";
@@ -74,28 +74,12 @@ const App = () => {
 
             <Routes>
               <Route path="/" element={<Login />} />
-              <Route
-                path="/dashboard/direksi"
-                element={
-                  <ProtectedRoute requiredRole={UserRole.DIREKSI}>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
               <Route path="/login-wim" element={<LoginOdol />} />
               <Route
-                path="/dashboard/support"
+                path="/dashboard"
                 element={
-                  <ProtectedRoute requiredRole={UserRole.SUPPORT}>
-                    <DashboardSupport />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/dashboard/admin"
-                element={
-                  <ProtectedRoute requiredRole={UserRole.ADMIN}>
-                    <DashboardAdmin />
+                  <ProtectedRoute>
+                    <DashboardPage />
                   </ProtectedRoute>
                 }
               />

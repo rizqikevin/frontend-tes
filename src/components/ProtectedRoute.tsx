@@ -33,16 +33,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   }
 
   if (requiredRole && user.role !== requiredRole) {
-    return (
-      <Navigate
-        to={
-          user.role === UserRole.ADMIN
-            ? "/dashboard/admin"
-            : "/dashboard/direksi"
-        }
-        replace
-      />
-    );
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;

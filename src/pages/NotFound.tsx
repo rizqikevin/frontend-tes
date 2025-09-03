@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { UserRole } from "@/types";
@@ -7,8 +7,8 @@ const NotFound = () => {
   const location = useLocation();
   const { user } = useAuth();
 
-  const isAdmin = user.role === UserRole.ADMIN;
-  const isDireksi = user.role === UserRole.DIREKSI;
+  const isAdmin = user?.role === UserRole.ADMIN;
+  const isDireksi = user?.role === UserRole.DIREKSI;
 
   useEffect(() => {
     console.error(
@@ -22,21 +22,17 @@ const NotFound = () => {
       <div className="text-center">
         <h1 className="text-4xl font-bold mb-4 text-black">404</h1>
         <p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>
-        {isAdmin && (
+        {user && (isAdmin || isDireksi) ? (
           <a
-            href="/dashboard/admin"
+            href="/dashboard"
             className="text-blue-500 hover:text-blue-700 underline"
           >
             Return to Home
           </a>
-        )}
-        {isDireksi && (
-          <a
-            href="/dashboard/direksi"
-            className="text-blue-500 hover:text-blue-700 underline"
-          >
-            Return to Home
-          </a>
+        ) : (
+          <Link to="/" className="text-blue-500 hover:text-blue-700 underline">
+            Return to Login
+          </Link>
         )}
       </div>
     </div>
