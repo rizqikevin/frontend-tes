@@ -5,44 +5,19 @@ import Header from "@/components/Header";
 import SeksiCard from "@/components/bebanRuas/SeksiCard";
 import Legend from "@/components/bebanRuas/Legend";
 import { api2 } from "@/services/api";
-import { Calendar } from "lucide-react";
-import DatePicker from "react-datepicker";
+import { useRuasStore } from "@/stores/useBebanRuasStore";
 import { Button } from "@/components/ui/button";
-
-interface SegmentTarget {
-  target_name: string;
-  lhr: number;
-  total_lhr: number;
-}
-
-interface SegmentLoad {
-  segment_id: number;
-  segment_name: string;
-  branch_code: string;
-  load: number;
-  lhr: number;
-  target: SegmentTarget[];
-}
-
-interface RuasData {
-  id: number;
-  name: string;
-  persen: number;
-  binisPlanLhr: number;
-  realisasiLhr: number;
-  posisi: {
-    top: string;
-    left: string;
-  };
-}
 
 export const BebanRuas: React.FC = () => {
   const { user, logout } = useAuth();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [ruasData, setRuasData] = useState<RuasData[]>([]);
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
+  const [selectedTab, setSelectedTab] = useState("peta");
+  const ruasInternal = useRuasStore((state) => state.ruasInternal);
+  const ruasExternal = useRuasStore((state) => state.ruasExternal);
+  const fetchRuasData = useRuasStore((state) => state.fetchRuasData);
 
   useEffect(() => {
     const handleSidebarChange = (event: CustomEvent) => {
@@ -71,75 +46,12 @@ export const BebanRuas: React.FC = () => {
     };
   }, []);
 
-  const fetchRuasData = async () => {
-    const posisiMapping: { [key: number]: { top: string; left: string } } = {
-      1: { top: "82%", left: "25%" }, // SINAKSAK - SIMPANG PANEI
-      2: { top: "60%", left: "25%" }, // DOLOK MERAWAN -SINAKSAK
-      3: { top: "41%", left: "25%" }, // JC TEBING TINGGI - DOLOK MERAWAN
-      4: { top: "15%", left: "81%" }, // KUALA TANJUNG - INDRAPURA
-      5: { top: "1000%", left: "59%" }, // INDRAPURA - SS INDRAPURA
-      6: { top: "42%", left: "57%" }, // TEBING TINGGI - SS INDRAPURA
-      7: { top: "23%", left: "33%" }, // JC TEBING TINGGI - TEBING TINGGI
-    };
-
-    try {
-      api2
-        .get("/tracomm/transaction/segment/load", {
-          params: {
-            start_date: startDate.toISOString().split("T")[0],
-            end_date: endDate.toISOString().split("T")[0],
-            freq: "yearly",
-          },
-        })
-        .then((response) => {
-          const data = response.data?.data?.segment_load;
-          if (!Array.isArray(data)) return;
-
-          const ruas = data.map((segment) => {
-            const targetBussinesPlan = segment.target.find(
-              (t: SegmentTarget) => t.target_name === "BUSSINES PLAN"
-            );
-
-            const realisasiLhr = data.map((segment) => {
-              const realLhr = segment.lhr;
-              return realLhr;
-            });
-
-            // console.log(realisasiLhr);
-
-            const persen = targetBussinesPlan
-              ? Math.round((segment.lhr / targetBussinesPlan.lhr) * 100)
-              : 0;
-
-            // console.log(
-            //   `Segment: ${segment.segment_name}, LHR: ${segment.lhr}, Target: ${targetBussinesPlan?.lhr}, Persen: ${persen}`
-            // );
-
-            return {
-              id: segment.segment_id,
-              name: segment.segment_name,
-              persen: persen,
-              binisPlanLhr: targetBussinesPlan?.lhr ?? 0,
-              realisasiLhr: Math.round(segment.lhr),
-              posisi: posisiMapping[segment.segment_id] || {
-                top: "0%",
-                left: "0%",
-              },
-            };
-          });
-
-          setRuasData(ruas);
-        })
-        .catch((error) => {
-          console.error("Failed to load segment data:", error);
-        });
-    } catch (error) {
-      console.error("Failed to load segment data:", error);
-    }
-  };
-
   useEffect(() => {
-    fetchRuasData();
+    const fetchAll = async () => {
+      await fetchRuasData();
+      await fetchRuasData("external");
+    };
+    fetchAll();
   }, []);
 
   const isDark = theme === "dark";
@@ -166,6 +78,31 @@ export const BebanRuas: React.FC = () => {
         />
 
         <main className="p-10 relative">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center space-x-2">
+              <Button
+                onClick={() => setSelectedTab("status")}
+                className={`${
+                  selectedTab === "status"
+                    ? "bg-gray-50 text-gray-900"
+                    : "bg-dashboard-accent text-white"
+                }`}
+              >
+                Peta
+              </Button>
+
+              <Button
+                onClick={() => setSelectedTab("log")}
+                className={`${
+                  selectedTab === "log"
+                    ? "bg-gray-50 text-gray-900"
+                    : "bg-dashboard-accent text-white"
+                }`}
+              >
+                Riwayat
+              </Button>
+            </div>
+          </div>
           <div className="flex flex-row justify-between mb-3">
             <div className="flex flex-col">
               <h1 className="text-2xl text-white font-bold">
@@ -227,7 +164,7 @@ export const BebanRuas: React.FC = () => {
               className="absolute w-full h-full object-contain pointer-events-none select-none"
             />
 
-            {ruasData.map((ruas) => (
+            {ruasInternal.map((ruas) => (
               <div
                 key={ruas.id}
                 className="absolute"
