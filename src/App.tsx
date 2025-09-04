@@ -57,7 +57,7 @@ const queryClient = new QueryClient();
 // Component to safely call hooks that need AuthContext
 const AppHooks = () => {
   useSocketNotifications();
-  useIncidentSpeech();
+  // useIncidentSpeech();
   return null; // This component renders nothing
 };
 
