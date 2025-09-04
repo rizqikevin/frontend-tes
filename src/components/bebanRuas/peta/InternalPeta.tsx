@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import SeksiCard from "./SeksiCard";
 
 const posisiMapping: { [key: number]: { top: string; left: string } } = {
-  1: { top: "82%", left: "25%" },
-  2: { top: "60%", left: "25%" },
-  3: { top: "41%", left: "25%" },
+  1: { top: "82%", left: "27%" },
+  2: { top: "60%", left: "27%" },
+  3: { top: "41%", left: "27%" },
   4: { top: "15%", left: "81%" },
   5: { top: "1000%", left: "59%" },
   6: { top: "42%", left: "57%" },

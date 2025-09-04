@@ -64,7 +64,7 @@ export const PetaBebanRuas: React.FC = () => {
           </div>
         </div>
 
-        <div className="relative w-full h-[90vh] bg-dashboard-accent rounded-lg">
+        <div className="relative w-full h-[90vh] bg-dashboard-accent rounded-lg @container">
           {display === "internal" ? (
             <img
               src="/gate/tolgatemap.svg"
