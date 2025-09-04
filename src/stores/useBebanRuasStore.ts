@@ -53,11 +53,11 @@ export const useRuasStore = create<RuasState>((set) => ({
     const posisiMappingexternal: {
       [key: number]: { top: string; left: string };
     } = {
-      8: { top: "80%", left: "55%" }, // JMT
-      9: { top: "25%", left: "10%" }, // BALMERA
-      10: { top: "41%", left: "55%" }, // BINJAI-STABAT
-      11: { top: "25%", left: "80%" }, // INDAPURA-KISARAN
-      12: { top: "15%", left: "51%" }, // MEDAN-BINJAI
+      8: { top: "41%", left: "65%" }, // JMT
+      9: { top: "25%", left: "24%" }, // BALMERA
+      10: { top: "81%", left: "42%" }, // BINJAI-STABAT
+      11: { top: "15%", left: "88%" }, // INDAPURA-KISARAN
+      12: { top: "61%", left: "20%" }, // MEDAN-BINJAI
     };
 
     try {

@@ -65,11 +65,19 @@ export const PetaBebanRuas: React.FC = () => {
         </div>
 
         <div className="relative w-full h-[90vh] bg-dashboard-accent rounded-lg">
-          <img
-            src="/gate/tolgatemap.svg"
-            alt="Gate Mapping"
-            className="absolute w-full h-full object-contain pointer-events-none select-none"
-          />
+          {display === "internal" ? (
+            <img
+              src="/gate/tolgatemap.svg"
+              alt="Gate Mapping"
+              className="absolute w-full h-full object-contain pointer-events-none select-none"
+            />
+          ) : (
+            <img
+              src="/gate/eksternal.svg"
+              alt="Gate Mapping"
+              className="absolute w-full h-full object-contain pointer-events-none select-none"
+            />
+          )}
 
           {renderContent()}
 
