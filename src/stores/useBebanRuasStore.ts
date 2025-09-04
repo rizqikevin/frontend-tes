@@ -22,7 +22,6 @@ interface RuasData {
   persen: number;
   binisPlanLhr: number;
   realisasiLhr: number;
-  posisi: { top: string; left: string };
 }
 
 interface RuasState {
@@ -40,26 +39,6 @@ export const useRuasStore = create<RuasState>((set) => ({
   isExternalLoading: false,
 
   fetchRuasData: async (segment?: "external") => {
-    const posisiMapping: { [key: number]: { top: string; left: string } } = {
-      1: { top: "82%", left: "25%" },
-      2: { top: "60%", left: "25%" },
-      3: { top: "41%", left: "25%" },
-      4: { top: "15%", left: "81%" },
-      5: { top: "1000%", left: "59%" },
-      6: { top: "42%", left: "57%" },
-      7: { top: "23%", left: "33%" },
-    };
-
-    const posisiMappingexternal: {
-      [key: number]: { top: string; left: string };
-    } = {
-      8: { top: "41%", left: "65%" }, // JMT
-      9: { top: "25%", left: "24%" }, // BALMERA
-      10: { top: "81%", left: "42%" }, // BINJAI-STABAT
-      11: { top: "15%", left: "88%" }, // INDAPURA-KISARAN
-      12: { top: "61%", left: "20%" }, // MEDAN-BINJAI
-    };
-
     try {
       if (segment === "external") {
         set({ isExternalLoading: true });
@@ -94,10 +73,6 @@ export const useRuasStore = create<RuasState>((set) => ({
             persen: 0,
             binisPlanLhr: 0,
             realisasiLhr: Math.round(seg.lhr),
-            posisi: posisiMappingexternal[seg.segment_id] || {
-              top: "0%",
-              left: "0%",
-            },
           };
         });
         set({ ruasExternal: ruasExternal, isExternalLoading: false });
@@ -117,7 +92,6 @@ export const useRuasStore = create<RuasState>((set) => ({
             persen,
             binisPlanLhr: targetBussinesPlan?.lhr ?? 0,
             realisasiLhr: Math.round(seg.lhr),
-            posisi: posisiMapping[seg.segment_id] || { top: "0%", left: "0%" },
           };
         });
         set({ ruasInternal: ruasInternal, isInternalLoading: false });

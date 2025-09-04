@@ -2,6 +2,16 @@ import { useRuasStore } from "@/stores/useBebanRuasStore";
 import React, { useEffect } from "react";
 import SeksiCard from "./SeksiCard";
 
+const posisiMappingexternal: {
+  [key: number]: { top: string; left: string };
+} = {
+  8: { top: "41%", left: "65%" }, // JMT
+  9: { top: "25%", left: "24%" }, // BALMERA
+  10: { top: "81%", left: "42%" }, // BINJAI-STABAT
+  11: { top: "15%", left: "88%" }, // INDAPURA-KISARAN
+  12: { top: "61%", left: "20%" }, // MEDAN-BINJAI
+};
+
 const EksternalPeta: React.FC = () => {
   const ruasExternal = useRuasStore((state) => state.ruasExternal);
   const fetchRuasData = useRuasStore((state) => state.fetchRuasData);
@@ -12,18 +22,9 @@ const EksternalPeta: React.FC = () => {
   }, [fetchRuasData]);
 
   if (isLoading && ruasExternal.length === 0) {
-    // Show skeleton loaders
-    const skeletonPositions = [
-      { top: "80%", left: "55%" },
-      { top: "60%", left: "55%" },
-      { top: "41%", left: "55%" },
-      { top: "15%", left: "51%" },
-      { top: "23%", left: "33%" },
-    ];
-
     return (
       <>
-        {skeletonPositions.map((pos, index) => (
+        {Object.values(posisiMappingexternal).map((pos, index) => (
           <div
             key={index}
             className="absolute animate-pulse rounded-lg w-44 h-[88px] bg-gray-700/50"
@@ -40,23 +41,26 @@ const EksternalPeta: React.FC = () => {
 
   return (
     <>
-      {ruasExternal.map((ruas) => (
-        <div
-          key={ruas.id}
-          className="absolute"
-          style={{
-            top: ruas.posisi.top,
-            left: ruas.posisi.left,
-            transform: "translate(-50%, -50%)",
-          }}
-        >
-          <SeksiCard
-            name={ruas.name}
-            realisasiLhr={ruas.realisasiLhr}
-            variant="external"
-          />
-        </div>
-      ))}
+      {ruasExternal.map((ruas) => {
+        const posisi = posisiMappingexternal[ruas.id] || { top: "0%", left: "0%" };
+        return (
+          <div
+            key={ruas.id}
+            className="absolute"
+            style={{
+              top: posisi.top,
+              left: posisi.left,
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            <SeksiCard
+              name={ruas.name}
+              realisasiLhr={ruas.realisasiLhr}
+              variant="external"
+            />
+          </div>
+        );
+      })}
     </>
   );
 };
