@@ -1,7 +1,6 @@
 import { useRuasStore } from "@/stores/useBebanRuasStore";
 import React, { useEffect } from "react";
 import SeksiCard from "./SeksiCard";
-import Legend from "./Legend";
 
 const InternalPeta: React.FC = () => {
   const ruasInternal = useRuasStore((state) => state.ruasInternal);
@@ -42,7 +41,6 @@ const InternalPeta: React.FC = () => {
               }}
             />
           ))}
-          <Legend />
         </div>
       </>
     );

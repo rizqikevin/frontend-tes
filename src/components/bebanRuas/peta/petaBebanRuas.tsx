@@ -37,6 +37,8 @@ export const PetaBebanRuas: React.FC = () => {
     }
   };
 
+  const display = selectView === "internal" ? "internal" : "external";
+
   return (
     <>
       <div className="bg-dashboard-dark text-white">
@@ -70,7 +72,20 @@ export const PetaBebanRuas: React.FC = () => {
           />
 
           {renderContent()}
-          <Legend />
+
+          {display === "internal" ? (
+            <Legend
+              titleRed="Pencapaian BP/Real"
+              titleBlue="Bisnis Plan LHR"
+              titleWhite="Realisasi LHR"
+            />
+          ) : (
+            <Legend
+              titleRed="Pencapaian BP/Real"
+              titleBlue="Beban Ruas"
+              titleWhite="Nama Ruas"
+            />
+          )}
         </div>
       </div>
     </>
