@@ -60,7 +60,7 @@ const WeatherCard: React.FC = () => {
 
   if (loading || error || !weather) {
     return (
-      <div className="w-full p-4 text-center text-sm text-gray-400 bg-[#082d72] rounded-lg">
+      <div className="w-full p-2 text-center text-sm text-gray-400 bg-[#082d72] rounded-lg">
         {error ? (
           <>
             <Cloud className="mx-auto h-8 w-8 text-red-500 mb-2" />
@@ -75,21 +75,31 @@ const WeatherCard: React.FC = () => {
   }
 
   return (
-    <div className=" rounded-lg p-1 text-sm text-white">
-      <div className="flex justify-between items-center mb-3">
-        <h2 className="text-base font-semibold">{weather.location}</h2>
-        <p className="text-xs text-gray-400">{weather.localTime}</p>
+    <div className="rounded-lg p-2 sm:p-0 text-sm text-white">
+      <div className="flex justify-between items-center mb-2 sm:mb-3">
+        <h2 className="text-sm sm:text-base font-semibold">
+          {weather.location}
+        </h2>
+        <p className="text-[10px] sm:text-xs text-gray-400">
+          {weather.localTime}
+        </p>
       </div>
 
-      <div className="flex items-center justify-center gap-3">
-        <img src={weather.icon} alt="Weather Icon" className="h-11 w-11" />
+      <div className="flex items-center justify-center gap-2 sm:gap-3">
+        <img
+          src={weather.icon}
+          alt="Weather Icon"
+          className="h-9 w-9 sm:h-11 sm:w-11"
+        />
         <div>
-          <p className="text-2xl font-bold">{weather.temperature}</p>
-          <p className="text-xs text-gray-400">{weather.condition}</p>
+          <p className="text-xl sm:text-2xl font-bold">{weather.temperature}</p>
+          <p className="text-[10px] sm:text-xs text-gray-400">
+            {weather.condition}
+          </p>
         </div>
       </div>
 
-      <div className="mt-2 grid grid-cols-3 text-center gap-2 text-xs text-gray-300">
+      <div className="mt-3 sm:mt-4 grid grid-cols-2 sm:grid-cols-3 text-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-gray-300">
         <p>
           Wind Dir: <span className="text-white">{weather.windDirection}</span>
         </p>
