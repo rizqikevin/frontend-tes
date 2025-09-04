@@ -84,7 +84,7 @@ export const BebanRuas: React.FC = () => {
                 Peta
               </Button>
 
-              <Button
+              {/* <Button
                 onClick={() => setSelectedTab("riwayat")}
                 className={`${
                   selectedTab === "riwayat"
@@ -93,7 +93,7 @@ export const BebanRuas: React.FC = () => {
                 }`}
               >
                 Riwayat
-              </Button>
+              </Button> */}
             </div>
           </div>
 
