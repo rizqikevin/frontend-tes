@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import GeographicInfoSystem from "@/components/dashboard/GeographicInfoSystem/GeographicInfoSystem";
-import TransactionOverview2 from "@/components/dashboard/TransactionOverview2/Bagian1";
 import { OverloadOverDimention } from "@/components/dashboard/OverloadOverDimention/OverloadOverDimention";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
@@ -36,40 +35,6 @@ export const Dashboard: React.FC = () => {
 
   const handleSearch = () => {
     setDateRange(startDate, endDate);
-  };
-
-  const renderTab = () => {
-    if (selectedView !== "transaction") return null;
-
-    return (
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            onClick={() => setSelectedTab("bagian1")}
-            className={`${
-              selectedTab === "bagian1"
-                ? "bg-gray-50 text-gray-900"
-                : "bg-transparent text-white border border-white"
-            }`}
-          >
-            Bagian 1
-          </Button>
-
-          <Button
-            variant="outline"
-            onClick={() => setSelectedTab("bagian2")}
-            className={`${
-              selectedTab === "bagian2"
-                ? "bg-gray-50 text-gray-900"
-                : "bg-transparent text-white border border-white"
-            }`}
-          >
-            Bagian 2
-          </Button>
-        </div>
-      </div>
-    );
   };
 
   // Listen for theme changes and sidebar state changes
