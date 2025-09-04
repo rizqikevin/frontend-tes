@@ -5,11 +5,11 @@ import SeksiCard from "./SeksiCard";
 const posisiMappingexternal: {
   [key: number]: { top: string; left: string };
 } = {
-  8: { top: "41%", left: "65%" }, // JMT
-  9: { top: "25%", left: "24%" }, // BALMERA
-  10: { top: "81%", left: "42%" }, // BINJAI-STABAT
-  11: { top: "15%", left: "88%" }, // INDAPURA-KISARAN
-  12: { top: "61%", left: "20%" }, // MEDAN-BINJAI
+  21: { top: "41%", left: "65%" }, // JMT
+  22: { top: "25%", left: "24%" }, // BALMERA
+  23: { top: "81%", left: "42%" }, // BINJAI-STABAT
+  24: { top: "15%", left: "88%" }, // INDAPURA-KISARAN
+  25: { top: "61%", left: "20%" }, // MEDAN-BINJAI
 };
 
 const EksternalPeta: React.FC = () => {
@@ -42,7 +42,10 @@ const EksternalPeta: React.FC = () => {
   return (
     <>
       {ruasExternal.map((ruas) => {
-        const posisi = posisiMappingexternal[ruas.id] || { top: "0%", left: "0%" };
+        const posisi = posisiMappingexternal[ruas.id] || {
+          top: "0%",
+          left: "0%",
+        };
         return (
           <div
             key={ruas.id}
