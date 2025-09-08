@@ -2,17 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useUserMenuStore } from "@/stores/useUserMenu";
 import UserModal from "./UserModalMenu";
 import { Pencil, Trash2, Plus } from "lucide-react";
-import { toast } from "sonner";
 
 const UserTable: React.FC = () => {
-  const userMenu = useUserMenuStore((state) => state.userMenu);
-  const page = useUserMenuStore((state) => state.page);
-  const limit = useUserMenuStore((state) => state.limit);
-  const setPage = useUserMenuStore((state) => state.setPage);
-  const setLimit = useUserMenuStore((state) => state.setLimit);
-  const fetchUserMenu = useUserMenuStore((state) => state.fetchUserMenu);
-  const deleteUserMenu = useUserMenuStore((state) => state.deleteUserMenu);
-  const loading = useUserMenuStore((state) => state.loading);
+  const {
+    userMenu,
+    page,
+    limit,
+    total,
+    loading,
+    error,
+    setPage,
+    setLimit,
+    fetchUserMenu,
+    deleteUserMenu,
+  } = useUserMenuStore();
+
   const [selectedUserMenu, setSelectedUserMenu] = useState<any | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -20,8 +24,8 @@ const UserTable: React.FC = () => {
   const [filterMethod, setFilterMethod] = useState<string>("");
 
   useEffect(() => {
-    fetchUserMenu();
-  }, [page, limit]);
+    fetchUserMenu({ method: filterMethod, user_level: filterUserLevel });
+  }, [page, limit, filterMethod, filterUserLevel, fetchUserMenu]);
 
   const handleEdit = (user: any) => {
     setSelectedUserMenu(user);
@@ -31,8 +35,11 @@ const UserTable: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     if (confirm("Are you sure you want to delete this user?")) {
-      await deleteUserMenu(id);
-      toast.success("User deleted");
+      try {
+        await deleteUserMenu(id);
+      } catch (error) {
+        // Error is already handled by the store
+      }
     }
   };
 
@@ -42,18 +49,10 @@ const UserTable: React.FC = () => {
     setShowModal(true);
   };
 
-  const userLevels = [...new Set(userMenu.map((user) => user.user_level))];
-  const methods = [...new Set(userMenu.map((user) => user.method))];
-
-  const filteredUserMenu = userMenu.filter((user) => {
-    return (
-      (filterUserLevel ? user.user_level === filterUserLevel : true) &&
-      (filterMethod ? user.method === filterMethod : true)
-    );
-  });
-
-  const total = userMenu.reduce((sum, val) => sum + val.id, 0);
   const totalPages = Math.ceil(total / limit);
+
+  const userLevels = ["1", "2", "4"]; // Assuming fixed levels: Admin, User, Support
+  const methods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
 
   return (
     <div className="p-5 bg-dashboard-accent text-white rounded-lg">
@@ -99,34 +98,47 @@ const UserTable: React.FC = () => {
                   <option value="">All</option>
                   {userLevels.map((level) => (
                     <option key={level} value={level}>
-                      {level}
+                      {level === "1"
+                        ? "Administrator"
+                        : level === "2"
+                        ? "User"
+                        : "Support"}
                     </option>
                   ))}
                 </select>
               </th>
-
               <th className="px-4 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={9} className="px-4 py-6 text-center text-gray-400">
-                  Loading usersMenu...
+                <td colSpan={6} className="px-4 py-6 text-center text-gray-400">
+                  Loading...
+                </td>
+              </tr>
+            ) : error ? (
+              <tr>
+                <td colSpan={6} className="px-4 py-6 text-center text-red-400">
+                  Error: {error}
+                </td>
+              </tr>
+            ) : userMenu.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="px-4 py-6 text-center text-gray-400">
+                  No data found.
                 </td>
               </tr>
             ) : (
-              filteredUserMenu.map((user, index) => (
+              userMenu.map((user, index) => (
                 <tr
                   key={user.id}
                   className="border-t border-gray-700 hover:bg-gray-800 text-base"
                 >
-                  <td className="px-4 py-2">{index + 1}</td>
+                  <td className="px-4 py-2">{(page - 1) * limit + index + 1}</td>
                   <td className="px-4 py-2">{user.id}</td>
                   <td className="px-4 py-2">{user.method}</td>
-
                   <td className="px-4 py-2">{user.path}</td>
-
                   <td className="px-4 py-2">{user.user_level}</td>
                   <td className="px-4 py-2 flex gap-2">
                     <button
@@ -148,7 +160,7 @@ const UserTable: React.FC = () => {
           </tbody>
         </table>
         {/* Pagination */}
-        <div className="flex justify-end items-center mt-4 text-sm">
+        <div className="flex justify-end items-center mt-4 text-sm p-2">
           <div>
             Rows per page:
             <select
@@ -164,21 +176,21 @@ const UserTable: React.FC = () => {
 
           <div className="flex items-center ml-5">
             <span className="mr-4">
-              {Math.min((page - 1) * limit + 1, total)} -{" "}
+              {total > 0 ? (page - 1) * limit + 1 : 0} -{" "}
               {Math.min(page * limit, total)} of {total}
             </span>
             <div className="inline-flex">
               <button
-                className="px-2 py-1"
-                onClick={() => setPage(Math.max(page - 1, 1))}
+                className="px-2 py-1 disabled:opacity-50"
+                onClick={() => setPage(page - 1)}
                 disabled={page === 1}
               >
                 &lt;
               </button>
               <button
-                className="px-2 py-1"
-                onClick={() => setPage(Math.min(page + 1, totalPages))}
-                disabled={page === totalPages}
+                className="px-2 py-1 disabled:opacity-50"
+                onClick={() => setPage(page + 1)}
+                disabled={page === totalPages || totalPages === 0}
               >
                 &gt;
               </button>
