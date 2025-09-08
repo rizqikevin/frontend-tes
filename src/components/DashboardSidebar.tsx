@@ -567,6 +567,15 @@ theme === "dark" ? "bg-gray-400" : "bg-gray-600"
                           />
                         </div>
                       )}
+                      {expandedItem.includes("account") && (
+                        <div className="m-1 space-y-1">
+                          <SidebarItem
+                            icon={<UserX2Icon size={18} />}
+                            text="User Menu"
+                            to="/user-menu"
+                          />
+                        </div>
+                      )}
                     </SidebarItem>
                   </div>
 

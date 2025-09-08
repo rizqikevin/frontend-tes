@@ -52,6 +52,7 @@ import { Kecelakaan } from "./pages/Kecelakaan";
 import LogReportViolation from "./pages/LogReportViolation";
 import { LoginOdol } from "./pages/LoginOdol";
 import { DashboardSupport } from "./pages/support/DashboardSupport";
+import UserMenu from "./pages/UserMenu";
 const queryClient = new QueryClient();
 
 // Component to safely call hooks that need AuthContext
@@ -297,6 +298,14 @@ const App = () => {
                 element={
                   <ProtectedRoute requiredRole={UserRole.ADMIN}>
                     <UsersLevel />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/user-menu"
+                element={
+                  <ProtectedRoute requiredRole={UserRole.ADMIN}>
+                    <UserMenu />
                   </ProtectedRoute>
                 }
               />
