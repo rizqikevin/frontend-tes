@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useUserMenuStore } from "@/stores/useUserMenu";
 import UserModal from "./UserModalMenu";
 import { Pencil, Trash2, Plus } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 const UserTable: React.FC = () => {
   const {
@@ -15,6 +16,7 @@ const UserTable: React.FC = () => {
     setLimit,
     fetchUserMenu,
     deleteUserMenu,
+    updateUserMenu,
   } = useUserMenuStore();
 
   const [selectedUserMenu, setSelectedUserMenu] = useState<any | null>(null);
@@ -23,8 +25,10 @@ const UserTable: React.FC = () => {
   const [filterUserLevel, setFilterUserLevel] = useState<string>("");
   const [filterMethod, setFilterMethod] = useState<string>("");
 
+  console.log("User Menu:", userMenu);
+
   useEffect(() => {
-    fetchUserMenu({ method: filterMethod, user_level: filterUserLevel });
+    fetchUserMenu({ method: filterMethod, user_level_id: filterUserLevel });
   }, [page, limit, filterMethod, filterUserLevel, fetchUserMenu]);
 
   const handleEdit = (user: any) => {
@@ -37,9 +41,7 @@ const UserTable: React.FC = () => {
     if (confirm("Are you sure you want to delete this user?")) {
       try {
         await deleteUserMenu(id);
-      } catch (error) {
-        // Error is already handled by the store
-      }
+      } catch (error) {}
     }
   };
 
@@ -51,8 +53,27 @@ const UserTable: React.FC = () => {
 
   const totalPages = Math.ceil(total / limit);
 
-  const userLevels = ["1", "2", "4"]; // Assuming fixed levels: Admin, User, Support
+  const userLevels = ["1", "2", "4"];
   const methods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
+
+  const handleToggle = async (id: number) => {
+    const user = userMenu.find((u) => u.id === id);
+    if (!user) return;
+
+    const newLevel =
+      user.user_level === "Administrator"
+        ? "10"
+        : user.user_level === "Direksi"
+        ? "20"
+        : user.user_level === "Support"
+        ? "30"
+        : "40";
+
+    await updateUserMenu(id, {
+      ...user,
+      user_level_id: newLevel,
+    });
+  };
 
   return (
     <div className="p-5 bg-dashboard-accent text-white rounded-lg">
@@ -101,7 +122,7 @@ const UserTable: React.FC = () => {
                       {level === "1"
                         ? "Administrator"
                         : level === "2"
-                        ? "User"
+                        ? "Direksi"
                         : "Support"}
                     </option>
                   ))}
@@ -135,7 +156,9 @@ const UserTable: React.FC = () => {
                   key={user.id}
                   className="border-t border-gray-700 hover:bg-gray-800 text-base"
                 >
-                  <td className="px-4 py-2">{(page - 1) * limit + index + 1}</td>
+                  <td className="px-4 py-2">
+                    {(page - 1) * limit + index + 1}
+                  </td>
                   <td className="px-4 py-2">{user.id}</td>
                   <td className="px-4 py-2">{user.method}</td>
                   <td className="px-4 py-2">{user.path}</td>
@@ -147,12 +170,16 @@ const UserTable: React.FC = () => {
                     >
                       <Pencil className="w-4 h-4" />
                     </button>
-                    <button
-                      onClick={() => handleDelete(user.id)}
-                      className="text-red-400 hover:text-red-600"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    <Switch
+                      checked={
+                        user.user_level === "Administrator" ||
+                        user.user_level === "Direksi" ||
+                        user.user_level === "Support"
+                          ? false
+                          : true
+                      }
+                      onCheckedChange={() => handleToggle(user.id)}
+                    />
                   </td>
                 </tr>
               ))
@@ -171,6 +198,7 @@ const UserTable: React.FC = () => {
               <option value="10">10</option>
               <option value="20">20</option>
               <option value="50">50</option>
+              <option value="100">100</option>
             </select>
           </div>
 

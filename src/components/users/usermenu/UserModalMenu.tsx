@@ -16,7 +16,7 @@ const UserModal: React.FC<Props> = ({ isEdit = false, userMenu, onClose }) => {
     id: 0,
     method: "",
     path: "",
-    user_level_id: "",
+    user_level: "",
   });
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const UserModal: React.FC<Props> = ({ isEdit = false, userMenu, onClose }) => {
         id: userMenu.id,
         method: userMenu.method,
         path: userMenu.path,
-        user_level_id: userMenu.user_level,
+        user_level: userMenu.user_level,
       });
     }
   }, [isEdit, userMenu]);
@@ -42,13 +42,13 @@ const UserModal: React.FC<Props> = ({ isEdit = false, userMenu, onClose }) => {
   };
 
   const handleSave = async () => {
-    if (!form.method || !form.user_level_id || !form.path)
+    if (!form.method || !form.user_level || !form.path)
       return toast.error("Please fill in required fields");
 
     const payload = {
       method: form.method,
       path: form.path,
-      user_level_id: form.user_level_id,
+      user_level_id: form.user_level,
     };
 
     try {
@@ -78,7 +78,6 @@ const UserModal: React.FC<Props> = ({ isEdit = false, userMenu, onClose }) => {
           value={form.method}
           onChange={handleChange}
         >
-          <option value="">Select Method</option>
           <option value="GET">GET</option>
           <option value="POST">POST</option>
           <option value="PUT">PUT</option>
@@ -89,11 +88,10 @@ const UserModal: React.FC<Props> = ({ isEdit = false, userMenu, onClose }) => {
 
         <select
           name="user_level"
-          value={form.user_level_id}
+          value={form.user_level}
           onChange={handleChange}
           className="w-full p-2 rounded bg-dashboard-accent border border-white text-white"
         >
-          <option value="">Select User Level</option>
           <option value={1}>Administrator</option>
           <option value={2}>User</option>
           <option value={4}>Support</option>

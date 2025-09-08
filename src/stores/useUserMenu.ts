@@ -4,16 +4,17 @@ import { toast } from "sonner";
 
 export interface userMenu {
   id: number;
-  user_level: string;
-  path: string;
-  method: string;
+  user_level?: string;
+  user_level_id?: string;
+  path?: string;
+  method?: string;
 }
 
 interface FetchParams {
   page?: number;
   limit?: number;
   method?: string;
-  user_level?: string;
+  user_level_id?: string;
 }
 
 interface userMenuStore {
@@ -29,13 +30,10 @@ interface userMenuStore {
 
   fetchUserMenu: (filters?: {
     method?: string;
-    user_level?: string;
+    user_level_id?: string;
   }) => Promise<void>;
   addUserMenu: (userMenu: Omit<userMenu, "id">) => Promise<void>;
-  updateUserMenu: (
-    id: number,
-    userMenu: Omit<userMenu, "id">
-  ) => Promise<void>;
+  updateUserMenu: (id: number, userMenu: Omit<userMenu, "id">) => Promise<void>;
   deleteUserMenu: (id: number) => Promise<void>;
 }
 
@@ -48,7 +46,7 @@ export const useUserMenuStore = create<userMenuStore>((set, get) => ({
   total: 0,
   setPage: (page: number) => set({ page }),
   setLimit: (limit: number) => {
-    set({ limit, page: 1 }); // Reset to page 1 when limit changes
+    set({ limit, page: 1 });
   },
 
   fetchUserMenu: async (filters = {}) => {
@@ -61,13 +59,13 @@ export const useUserMenuStore = create<userMenuStore>((set, get) => ({
         ...filters,
       };
       if (!params.method) delete params.method;
-      if (!params.user_level) delete params.user_level;
+      if (!params.user_level_id) delete params.user_level_id;
 
       const response = await api.get("/authorization", { params });
 
       set({
-        userMenu: response.data.data,
-        total: response.data.total_data || 0,
+        userMenu: response.data.data.row,
+        total: response.data.data.pagination.total,
         loading: false,
       });
     } catch (error: any) {

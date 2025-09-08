@@ -157,7 +157,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/gps-vehicle-tracking"
+                path="/gps"
                 element={
                   <ProtectedRoute>
                     <GPSVehicleTracking />
@@ -165,7 +165,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/log-report-violation"
+                path="/violation"
                 element={
                   <ProtectedRoute>
                     <LogReportViolation />
@@ -302,7 +302,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/user-menu"
+                path="/menu"
                 element={
                   <ProtectedRoute requiredRole={UserRole.ADMIN}>
                     <UserMenu />
