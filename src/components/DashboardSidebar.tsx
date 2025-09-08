@@ -501,7 +501,7 @@ theme === "dark" ? "bg-gray-400" : "bg-gray-600"
             )} */}
 
             {isAdmin && (
-              <div className="mt-10 mb-auto px-3 space-y-4">
+              <div className="mt-10 mb-auto px-3 space-y-4 overflow-y-auto max-h-[30vh] pr-1  scrollbar-thumb-gray-700 scrollbar-track-gray-700">
                 <div>
                   <div
                     className={`text-xs font-semibold uppercase tracking-wider mb-2 px-4 ${
