@@ -35,7 +35,7 @@ export const AchievementRingContainer: React.FC<
       title={title}
       dateRange={dateRange}
       percent={Number(achievementData.percent)}
-      revenue={`${Number(achievementData.revenueAchievement).toLocaleString(
+      revenue={`${Number(achievementData.lhr_achievement).toLocaleString(
         "id-ID"
       )}`}
       target={`Rp ${Number(achievementData.rkapTarget).toLocaleString(

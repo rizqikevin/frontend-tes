@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { api3 } from "@/services/api";
 import { toast } from "sonner";
 import { useDateFilterStore } from "./useDateFilterStore";
-import { percent } from "framer-motion";
 
 interface TargetData {
   target_name: string;
