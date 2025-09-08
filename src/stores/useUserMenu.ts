@@ -29,7 +29,7 @@ export const useUserMenuStore = create<userMenuStore>((set, get) => ({
   userMenu: [],
   loading: false,
   page: 1,
-  limit: 10,
+  limit: 20,
   total: 0,
   setPage: (page: number) => set({ page }),
   setLimit: (limit: number) => set({ limit }),

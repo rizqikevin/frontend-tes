@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useUserMenuStore } from "@/stores/useUserMenu";
-import UserModal from "./UserModal";
+import UserModal from "./UserModalMenu";
 import { Pencil, Trash2, Plus } from "lucide-react";
 import { toast } from "sonner";
 
@@ -16,6 +16,8 @@ const UserTable: React.FC = () => {
   const [selectedUserMenu, setSelectedUserMenu] = useState<any | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [filterUserLevel, setFilterUserLevel] = useState<string>("");
+  const [filterMethod, setFilterMethod] = useState<string>("");
 
   useEffect(() => {
     fetchUserMenu();
@@ -40,6 +42,16 @@ const UserTable: React.FC = () => {
     setShowModal(true);
   };
 
+  const userLevels = [...new Set(userMenu.map((user) => user.user_level))];
+  const methods = [...new Set(userMenu.map((user) => user.method))];
+
+  const filteredUserMenu = userMenu.filter((user) => {
+    return (
+      (filterUserLevel ? user.user_level === filterUserLevel : true) &&
+      (filterMethod ? user.method === filterMethod : true)
+    );
+  });
+
   const total = userMenu.reduce((sum, val) => sum + val.id, 0);
   const totalPages = Math.ceil(total / limit);
 
@@ -61,9 +73,37 @@ const UserTable: React.FC = () => {
             <tr className=" text-left bg-[#0d2e52] text-base">
               <th className="px-4 py-3">No</th>
               <th className="px-4 py-3">ID</th>
-              <th className="px-4 py-3">Method</th>
+              <th className="px-4 py-3">
+                Method
+                <select
+                  value={filterMethod}
+                  onChange={(e) => setFilterMethod(e.target.value)}
+                  className="bg-[#0d2e52] border border-gray-600 rounded px-2 py-1 w-full mt-1 text-xs"
+                >
+                  <option value="">All</option>
+                  {methods.map((method) => (
+                    <option key={method} value={method}>
+                      {method}
+                    </option>
+                  ))}
+                </select>
+              </th>
               <th className="px-4 py-3">Path</th>
-              <th className="px-4 py-3">User Level</th>
+              <th className="px-4 py-3">
+                User Level
+                <select
+                  value={filterUserLevel}
+                  onChange={(e) => setFilterUserLevel(e.target.value)}
+                  className="bg-[#0d2e52] border border-gray-600 rounded px-2 py-1 w-full mt-1 text-xs"
+                >
+                  <option value="">All</option>
+                  {userLevels.map((level) => (
+                    <option key={level} value={level}>
+                      {level}
+                    </option>
+                  ))}
+                </select>
+              </th>
 
               <th className="px-4 py-3">Actions</th>
             </tr>
@@ -76,7 +116,7 @@ const UserTable: React.FC = () => {
                 </td>
               </tr>
             ) : (
-              userMenu.map((user, index) => (
+              filteredUserMenu.map((user, index) => (
                 <tr
                   key={user.id}
                   className="border-t border-gray-700 hover:bg-gray-800 text-base"
