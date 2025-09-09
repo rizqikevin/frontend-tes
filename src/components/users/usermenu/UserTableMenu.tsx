@@ -60,18 +60,14 @@ const UserTable: React.FC = () => {
     const user = userMenu.find((u) => u.id === id);
     if (!user) return;
 
-    const newLevel =
-      user.user_level === "Administrator"
-        ? "10"
-        : user.user_level === "Direksi"
-        ? "20"
-        : user.user_level === "Support"
-        ? "30"
-        : "40";
+    const isCurrentlyOff = user.path.endsWith("/off");
+    const newPath = isCurrentlyOff
+      ? user.path.slice(0, -4)
+      : `${user.path}/off`;
 
     await updateUserMenu(id, {
       ...user,
-      user_level_id: newLevel,
+      path: newPath,
     });
   };
 
@@ -170,16 +166,10 @@ const UserTable: React.FC = () => {
                     >
                       <Pencil className="w-4 h-4" />
                     </button>
-                    {/* <Switch
-                      checked={
-                        user.user_level === "Administrator" ||
-                        user.user_level === "Direksi" ||
-                        user.user_level === "Support"
-                          ? false
-                          : true
-                      }
+                    <Switch
+                      checked={!user.path.endsWith("/off")}
                       onCheckedChange={() => handleToggle(user.id)}
-                    /> */}
+                    />
                   </td>
                 </tr>
               ))

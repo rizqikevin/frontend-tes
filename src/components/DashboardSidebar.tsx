@@ -44,6 +44,7 @@ import {
   Videotape,
   Dot,
   ChartAreaIcon,
+  CloudDrizzleIcon,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 import { useMenuStore, MenuItem } from "@/stores/useMenuStore";
@@ -151,6 +152,7 @@ export const DashboardSidebar: React.FC = () => {
     "GPS Vehicle Tracking": <MapPinPlusIcon size={18} />,
     "Log Report Violation": <MessageCircleMoreIcon size={18} />,
     "Street Light": <Lamp size={18} />,
+    Weather: <CloudDrizzleIcon size={18} />,
     PJU: <LucideCloudy size={18} />,
     PDB: <ChartNoAxesColumnIcon size={18} />,
     "Air Quality": <Wind size={18} />,
