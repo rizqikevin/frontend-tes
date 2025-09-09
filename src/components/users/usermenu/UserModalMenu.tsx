@@ -30,6 +30,9 @@ const UserModal: React.FC<Props> = ({ isEdit = false, userMenu, onClose }) => {
     }
   }, [isEdit, userMenu]);
 
+  console.log(userMenu);
+  console.log(form);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -42,9 +45,6 @@ const UserModal: React.FC<Props> = ({ isEdit = false, userMenu, onClose }) => {
   };
 
   const handleSave = async () => {
-    if (!form.method || !form.user_level || !form.path)
-      return toast.error("Please fill in required fields");
-
     const payload = {
       method: form.method,
       path: form.path,
@@ -54,15 +54,11 @@ const UserModal: React.FC<Props> = ({ isEdit = false, userMenu, onClose }) => {
     try {
       if (isEdit) {
         await updateUserMenu(userMenu.id, payload as any);
-        toast.success("User updated!");
       } else {
         await addUserMenu(payload as any);
-        toast.success("User created!");
       }
       onClose();
-    } catch (err) {
-      toast.error("Failed to save user");
-    }
+    } catch (err) {}
   };
 
   return (
@@ -93,7 +89,7 @@ const UserModal: React.FC<Props> = ({ isEdit = false, userMenu, onClose }) => {
           className="w-full p-2 rounded bg-dashboard-accent border border-white text-white"
         >
           <option value={1}>Administrator</option>
-          <option value={2}>User</option>
+          <option value={2}>Direksi</option>
           <option value={4}>Support</option>
         </select>
 

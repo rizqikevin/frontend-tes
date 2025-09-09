@@ -41,6 +41,7 @@ export const login = async (
 export const logout = () => {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(TOKEN_CCTV);
+  localStorage.removeItem("sidebarMenu");
 };
 
 export const getToken = (): string | null => {

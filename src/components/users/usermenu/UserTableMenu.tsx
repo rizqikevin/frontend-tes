@@ -170,7 +170,7 @@ const UserTable: React.FC = () => {
                     >
                       <Pencil className="w-4 h-4" />
                     </button>
-                    <Switch
+                    {/* <Switch
                       checked={
                         user.user_level === "Administrator" ||
                         user.user_level === "Direksi" ||
@@ -179,7 +179,7 @@ const UserTable: React.FC = () => {
                           : true
                       }
                       onCheckedChange={() => handleToggle(user.id)}
-                    />
+                    /> */}
                   </td>
                 </tr>
               ))
