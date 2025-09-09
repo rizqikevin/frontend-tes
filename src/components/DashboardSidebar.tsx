@@ -150,6 +150,8 @@ export const DashboardSidebar: React.FC = () => {
     "Beban Ruas": <BookOpenTextIcon size={18} />,
     "GPS Vehicle Tracking": <MapPinPlusIcon size={18} />,
     "Log Report Violation": <MessageCircleMoreIcon size={18} />,
+    "Street Light": <Lamp size={18} />,
+    PJU: <LucideCloudy size={18} />,
     PDB: <ChartNoAxesColumnIcon size={18} />,
     "Air Quality": <Wind size={18} />,
     "Log Alat": <Timer size={18} />,

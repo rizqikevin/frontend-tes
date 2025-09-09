@@ -14,9 +14,9 @@ const UserModal: React.FC<Props> = ({ isEdit = false, userMenu, onClose }) => {
 
   const [form, setForm] = useState({
     id: 0,
-    method: "",
+    method: "GET",
     path: "",
-    user_level: "",
+    user_level: "1",
   });
 
   useEffect(() => {
